@@ -4,7 +4,7 @@
     <string name="app_version_text">โปรแกรมเป็นเวอร์ชั่นล่าสุด</string>
     <string name="app_update_version_text">Update Version</string>
     <string name="app_dev">-=@ Powered by IT @=-</string>
-    <string name="app_name_dtl">DM FIRST ORDER 1.0.5</string>
+    <string name="app_name_dtl">DM Delivery 1.0.0</string>
     <string name="action_truck_no">ระบุเบอร์รถ</string>
     <string name="action_sign_in">เข้าสู่ระบบ</string>
     <string name="action_search">ค้นหา</string>
@@ -41,7 +41,7 @@
     <string name="txt_text_mail_group">MAIL GROUP</string>
     <string name="txt_text_date">วันที่</string>
     <string name="txt_text_bdate">Booking Date</string>
-    <string name="txt_text_ddate">วันที่จัดส่ง :</string>
+    <string name="txt_text_ddate">วันที่จัดส่ง</string>
     <string name="txt_text_update_success">UPDATE SUCCESS !!</string>
     <string name="txt_text_close">ปิด</string>
     <string name="txt_text_save">จองออเดอร์</string>
@@ -60,7 +60,7 @@
     <string name="txt_text_order_assigncount">เลือก</string>
     <string name="txt_text_carton_count">จำนวนกล่อง/ถุง</string>
     <string name="txt_text_tel">  โทรหาสมาชิก</string>
-    <string name="txt_text_truck">เบอร์รถ :</string>
+    <string name="txt_text_truck">เบอร์รถ</string>
     <string name="txt_text_notpincode">รหัสไม่ถูกต้อง !!</string>
     <string name="btn_text_ok">ตกลง</string>
     <string name="btn_text_ordercancel">ยกเลิก</string>

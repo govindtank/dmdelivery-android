@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_root"
+    android:weightSum="1"
+    android:background="@drawable/background_dialog">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/imvTitle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:id="@+id/txtTitle"
+            android:textSize="@dimen/textDialogSize"
+            android:textColor="@color/colorPrimaryText"
+            android:layout_marginLeft="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@color/colorAccent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="left"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Msg"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/textDialogSize" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="2" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center">
+
+                        <!--  <Button
+                              style="@style/btnmenuinactive"
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:drawableTop="@mipmap/ic_cancel64"
+                              android:text="@string/btn_text_close"
+                              android:id="@+id/btnClose"
+                              android:padding="8dp" />-->
+
+
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="right">
+
+                        <!-- <Button
+                             style="@style/btnmenuinactive"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:drawableTop="@mipmap/ic_save64"
+                             android:text="@string/btn_text_confirm"
+                             android:id="@+id/btnConfirm"
+                             android:padding="8dp" />-->
+
+
+                        <Button
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:id="@+id/btClose"
+                            android:text="@string/txt_text_close"
+                            android:textSize="@dimen/textDialogSize"
+                            style="@style/btnclose"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:textColor="@color/colorPrimaryText" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
