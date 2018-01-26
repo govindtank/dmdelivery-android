@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             mBtnlogin.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
-                    Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent myIntent = new Intent(getApplicationContext(), MainMenuActivity.class);
                     startActivity(myIntent);
                     //getWindow().setWindowAnimations(0);
                     overridePendingTransition(0,0);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EB6164</color>
+    <color name="colorPrimary">#eb6164</color>
     <!--<color name="colorPrimary">#FF5722</color>-->
     <color name="colorPrimaryDark">#eb6164</color>
     <color name="colorPrimaryMoreDark">#e65457</color>
@@ -19,6 +19,7 @@
     <color name="colorBackgroundLogin">#f0f0f0</color>
     <color name="colorBackground">#f5f5f5</color>
     <color name="colorBackgroundDark">#41414c</color>
+    <color name="colorDark">#2a2a31</color>
     <color name="colorBlue">#007cba</color>
     <color name="colorYellow">#d7a900</color>
     <color name="colorGreen">#006b10</color>
