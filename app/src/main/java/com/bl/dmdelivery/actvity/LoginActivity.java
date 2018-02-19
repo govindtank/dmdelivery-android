@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -56,6 +57,10 @@ public class LoginActivity extends AppCompatActivity {
     private ACProgressFlower mProgressDialog;
     private Response resResponse;
     private String truckNo = "";
+    private String deliveryDate = "";
+
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
+        sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
+
         bindWidget();
 
         setWidgetControl();
@@ -83,16 +90,29 @@ public class LoginActivity extends AppCompatActivity {
 
         try {
 
+            String truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
+            String deliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
+
+
             mTxtLogotext = (TextView) findViewById(R.id.txtlogo);
             mEdtTroukno = (EditText) findViewById(R.id.edttruck);
             mBtnlogin = (Button) findViewById(R.id.btnlogin);
             mTxtLogotext.setText(getResources().getString(R.string.app_name_dtl));
             mTxtDate = (TextView) findViewById(R.id.txtdate);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            String currentDate = sdf.format(new Date());
+            if(deliveryDate.equals(""))
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                String currentDate = sdf.format(new Date());
+                mTxtDate.setText(currentDate);
+            }
+            else
+            {
+                mTxtDate.setText(deliveryDate);
+            }
 
-            mTxtDate.setText(currentDate);
+
+            mEdtTroukno.setText(truckNo);
 
         } catch (Exception e) {
             showMsgDialog(e.toString());
@@ -156,17 +176,19 @@ public class LoginActivity extends AppCompatActivity {
             mBtnlogin.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
-                    hideSoftKeyboard(LoginActivity.this);
+                    //hideSoftKeyboard(LoginActivity.this);
 
                     //checkLogin();
+
+                    setTruck();
 
 
                     //serverUrl = TagUtils.WEBSERVICEURI + "IsTruckActiveState/"+mEdtTroukno;
                     //new loginAsynTask().execute(serverUrl);
 
-                    finish();
-                    Intent myIntent = new Intent(getApplicationContext(), MainMenuActivity.class);
-                    startActivity(myIntent);
+//                    finish();
+//                    Intent myIntent = new Intent(getApplicationContext(), MainMenuActivity.class);
+//                    startActivity(myIntent);
                     //overridePendingTransition(0,0);
 
 
@@ -180,6 +202,43 @@ public class LoginActivity extends AppCompatActivity {
             showMsgDialog(e.toString());
         }
 
+
+    }
+
+    private void setTruck() {
+
+        try {
+
+            mBtnlogin.setEnabled(false);
+
+            hideSoftKeyboard(LoginActivity.this);
+
+            if(!mEdtTroukno.getText().toString().trim().equals(""))
+            {
+                deliveryDate = mTxtDate.getText().toString().trim().toUpperCase();
+                truckNo = mEdtTroukno.getText().toString().trim().toUpperCase();
+
+                editor = sp.edit();
+                editor.putString(TagUtils.PREF_DELIVERY_DATE, deliveryDate);
+                editor.putString(TagUtils.PREF_LOGIN_TRUCK_NO, truckNo);
+                editor.apply();
+
+
+
+                mBtnlogin.setEnabled(true);
+
+                finish();
+                Intent myIntent = new Intent(getApplicationContext(), MainMenuActivity.class);
+                startActivity(myIntent);
+
+            }else
+            {
+                mBtnlogin.setEnabled(true);
+                showMsgDialog(getResources().getString(R.string.error_truck_no_empty));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
