@@ -24,7 +24,7 @@ public class DownLoadTelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_down_load_tel);
+        setContentView(R.layout.dialog_confirm_down_load_tel);
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

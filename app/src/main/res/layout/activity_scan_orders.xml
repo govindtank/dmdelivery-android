@@ -16,6 +16,11 @@
             layout="@layout/header_scan_orders"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <include
+            android:id="@+id/includeToolbarScanOrdersSum"
+            layout="@layout/toolbar_scan_orders_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"

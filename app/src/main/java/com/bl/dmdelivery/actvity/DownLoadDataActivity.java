@@ -24,7 +24,7 @@ public class DownLoadDataActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_down_load_data);
+        setContentView(R.layout.activity_down_load_data_old);
 
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

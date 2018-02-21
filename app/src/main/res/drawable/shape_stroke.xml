@@ -4,7 +4,7 @@
 
     <solid android:color="@color/colorBackground"></solid>
 
-    <stroke android:color="@color/colorBG"
+    <stroke android:color="@color/colorAccent"
         android:width="2dp">
     </stroke>
 

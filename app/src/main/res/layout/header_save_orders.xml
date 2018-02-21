@@ -55,7 +55,7 @@
                     android:id="@+id/txtHeader"
                     android:textStyle="bold"
                     android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textSize"
+                    android:textSize="@dimen/textHeadDtlSize"
                     android:layout_marginLeft="10dp" />
 
             </LinearLayout>

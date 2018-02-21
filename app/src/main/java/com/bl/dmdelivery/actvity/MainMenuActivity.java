@@ -13,14 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.CustomGridViewAdapter;
@@ -116,9 +114,12 @@ public class MainMenuActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             break;
                         case "โหลดข้อมูล":
-                            myIntent = new Intent(getApplicationContext(), DownLoadDataActivity.class);
-                            startActivity(myIntent);
-                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                            myIntent = new Intent(getApplicationContext(), DownLoadDataActivity.class);
+//                            startActivity(myIntent);
+//                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+
+                            showMsgConfirmDialog("ต้องการโหลดข้อมูล ใช่หรือไม่?");
                             break;
                         case "สินค้านอกกล่อง":
                             myIntent = new Intent(getApplicationContext(), UnpackListActivity.class);
@@ -134,11 +135,16 @@ public class MainMenuActivity extends AppCompatActivity {
                             myIntent = new Intent(getApplicationContext(), DownLoadTelActivity.class);
                             startActivity(myIntent);
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+//                            showMsgConfirmDialog("ต้องการโหลดเบอร์ติดต่อ ใช่หรือไม่?");
                             break;
                         case "อัพเดทโปรแกรม":
-                            myIntent = new Intent(getApplicationContext(), UpdateProgramActivity.class);
-                            startActivity(myIntent);
-                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                            myIntent = new Intent(getApplicationContext(), UpdateProgramActivity.class);
+//                            startActivity(myIntent);
+//                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+
+                            showMsgConfirmDialog("ต้องการอัพเดทโปรแกรม ใช่หรือไม่?");
                             break;
                     }
 
@@ -164,7 +170,7 @@ public class MainMenuActivity extends AppCompatActivity {
         mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
         mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
 
 //        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
 //        mmTxtMsg.setTypeface(tf);
@@ -173,6 +179,36 @@ public class MainMenuActivity extends AppCompatActivity {
 
         mmImvTitle.setImageResource(R.mipmap.ic_launcher);
         mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
+
+        DialogBuilder.setView(v);
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+    }
+
+    public void showMsgConfirmDialog(String msg)
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_confirm, null, false);
+
+
+//        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+
+//        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText("ยืนยัน");
         mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);

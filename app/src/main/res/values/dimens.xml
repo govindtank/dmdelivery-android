@@ -9,6 +9,7 @@
     <dimen name="textHeadDtlSize">20dp</dimen>
     <dimen name="textRowSize">20dp</dimen>
     <dimen name="textRowHeadSize">18dp</dimen>
+    <dimen name="textDialogSize20">20dp</dimen>
     <dimen name="textDialogSize">24dp</dimen>
     <dimen name="textbtnDialogSize">18dp</dimen>
     <dimen name="textbtnMenuSize">22dp</dimen>
