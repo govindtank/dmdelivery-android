@@ -6,7 +6,7 @@
     <string name="app_version_text">โปรแกรมเป็นเวอร์ชั่นล่าสุด</string>
     <string name="app_update_version_text">Update Version</string>
     <string name="app_dev">-=@ Powered by IT @=-</string>
-    <string name="app_name_dtl">DM Delivery 1.0.0</string>
+    <string name="app_name_dtl">DM DELIVERY</string>
     <string name="action_truck_no">ระบุเบอร์รถ</string>
     <string name="action_sign_in">เข้าสู่ระบบ</string>
     <string name="action_search">ค้นหา</string>
@@ -38,6 +38,8 @@
     <string name="btn_text_cancelconfirm">ยกเลิกการจอง</string>
     <string name="btn_dc_select">เลือก</string>
     <string name="btn_text_search">ระบุคำค้นหา</string>
+    <string name="btn_text_scanorderscheck">ตรวจเช็คการแสกนสินค้า</string>
+    <string name="btn_text_scanordersconfirm">ยืนยันสินค้าขึ้นรถจัดส่ง</string>
     <string name="txt_text_dc">ศูนย์ :</string>
     <string name="txt_text_status">สถานะ :</string>
     <string name="txt_text_mail_group">MAIL GROUP</string>
@@ -57,6 +59,14 @@
     <string name="txt_text_headder_dtl_my">เบอร์รถ :</string>
     <string name="txt_text_headder_my">ค้นหารายการจอง</string>
     <string name="txt_text_headder_my_list">รายการจอง</string>
+    <string name="txt_text_headder_scanorders_list">แสกนสินค้า</string>
+    <string name="txt_text_headder_download_data">โหลดข้อมูล</string>
+    <string name="txt_text_headder_unpack_list">สินค้านอกกล่อง</string>
+    <string name="txt_text_headder_delivery_list">จัดส่งสินค้า</string>
+    <string name="txt_text_headder_tel_list">โหลดข้อมูลเบอร์ติดต่อ</string>
+    <string name="txt_text_headder_update_program">อัพเดทโปรแกรม</string>
+
+
     <string name="menu_text_headder_print">พิมพ์รายงาน</string>
     <string name="txt_text_order_count">จำนวนออเดอร์</string>
     <string name="txt_text_order_assigncount">เลือก</string>

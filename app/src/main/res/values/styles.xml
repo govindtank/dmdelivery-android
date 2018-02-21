@@ -20,18 +20,37 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <!--<style name="TextViewStyle" parent="android:Widget.TextView">-->
+        <!--<item name="android:fontFamily">@font/pslpro</item>-->
+    <!--</style>-->
+    <!--<style name="EditTextStyle" parent="android:Widget.EditText">-->
+        <!--<item name="android:fontFamily">@font/pslpro</item>-->
+    <!--</style>-->
+    <!--<style name="ButtonTextStyle" parent="android:Widget.Button">-->
+        <!--<item name="android:fontFamily">@font/pslpro</item>-->
+    <!--</style>-->
+
+
     <style name="TextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/pslpro</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
     <style name="EditTextStyle" parent="android:Widget.EditText">
-        <item name="android:fontFamily">@font/pslpro</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
     <style name="ButtonTextStyle" parent="android:Widget.Button">
-        <item name="android:fontFamily">@font/pslpro</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
     <style name="DatePickerDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="btnnostroke" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@drawable/btnnostroke</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
     </style>
 
 </resources>

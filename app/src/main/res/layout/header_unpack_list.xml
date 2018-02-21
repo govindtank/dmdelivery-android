@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:id="@+id/linlaoMain"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/colorPrimaryMoreDark"
+            android:weightSum="3"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp">
+
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:drawableLeft="@mipmap/ic_first_menu"
+                    android:id="@+id/btnBack"
+                    android:paddingLeft="3dp"
+                    android:background="@null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryMoreDark"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Header"
+                    android:id="@+id/txtHeader"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBG"
+                    android:textSize="@dimen/textSize"
+                    android:layout_marginLeft="10dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="right"
+                android:layout_marginRight="10dp">
+
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/btnMenu"
+                    android:paddingLeft="9dp"
+                    android:background="@null" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|left">
+
+                <Button
+                    android:id="@+id/btnMulti"
+                    style="@style/btnnostroke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="2dp"
+                    android:text="Multi"
+                    android:textColor="@color/colorBG"
+                    android:textSize="@dimen/textRowSize" />
+
+                <Button
+                    android:id="@+id/btnScan"
+                    style="@style/btnnostroke"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="2dp" />
+
+                <TextView
+                    android:id="@+id/txtSlip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Slip : 0"
+                    android:textColor="@color/colorBG"
+                    android:textSize="@dimen/textRowSize" />
+
+                <Button
+                    style="@style/btnnostroke"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/btnKeyboard"
+                    android:paddingLeft="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/txtOrder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="101/101"
+                    android:textColor="@color/colorBG"
+                    android:textSize="@dimen/textRowSize" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/linlaoMain"
+        android:background="@color/colorPrimaryMoreDark"></LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/linlaoMain"
+        android:background="@color/colorPrimaryMoreDark" />
+
+</RelativeLayout>
