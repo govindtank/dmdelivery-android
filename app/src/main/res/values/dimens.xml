@@ -12,5 +12,5 @@
     <dimen name="textDialogSize">24dp</dimen>
     <dimen name="textbtnDialogSize">18dp</dimen>
     <dimen name="textbtnMenuSize">22dp</dimen>
-    <dimen name="textbtnMenuSize14">14dp</dimen>
+    <dimen name="textbtnMenuSize16">16dp</dimen>
 </resources>

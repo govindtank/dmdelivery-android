@@ -13,9 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".actvity.MainActivity">
-
-        </activity>
+        <activity android:name=".actvity.MainActivity" />
         <activity android:name=".actvity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,10 +21,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".actvity.MainMenuActivity">
-
-
-        </activity>
+        <activity android:name=".actvity.MainMenuActivity" />
+        <activity android:name=".actvity.ScanOrdersActivity" />
+        <activity android:name=".actvity.ScanOrdersCheckActivity" />
+        <activity android:name=".actvity.ScanOrdersConfirmActivity" />
+        <activity android:name=".actvity.DownLoadDataActivity" />
+        <activity android:name=".actvity.UnpackListActivity" />
+        <activity android:name=".actvity.SaveOrdersActivity" />
+        <activity android:name=".actvity.SaveOrdersCompleteActivity" />
+        <activity android:name=".actvity.SaveOrdersReturnListActivity" />
+        <activity android:name=".actvity.SaveOrdersSlipActivity" />
+        <activity android:name=".actvity.SaveOrdersSlipCancelActivity" />
+        <activity android:name=".actvity.ShowUnpackActivity" />
+        <activity android:name=".actvity.SaveOrdersReturnActivity" />
+        <activity android:name=".actvity.SaveOrdersReturnCancelActivity" />
+        <activity android:name=".actvity.SaveOrdersReturnSlipActivity" />
+        <activity android:name=".actvity.DownLoadTelActivity" />
+        <activity android:name=".actvity.UpdateProgramActivity" />
+        <activity android:name=".actvity.OthersMenuActivity"></activity>
     </application>
 
 </manifest>

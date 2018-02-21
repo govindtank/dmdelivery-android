@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.StrictMode;
@@ -35,16 +36,28 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button mmBtnClose;
     private ImageView mmImvTitle;
     private static TextView mTxtDate;
+    private Intent myIntent=null;
+
+//    private String[] gridViewString = {
+//            "Scan Order", "Save Order", "Load Contact", "Unpack", "Update Program", "Logout",
+//
+//    } ;
 
     private String[] gridViewString = {
-            "Scan Order", "Save Order", "Load Contact", "Unpack", "Update Program", "Logout",
-
+            "แสกนสินค้าขึ้นรถ", "โหลดข้อมูล", "สินค้านอกกล่อง", "บันทึกผลการจัดส่ง", "โหลดเบอร์ติดต่อ", "อัพเดทโปรแกรม",
     } ;
 
+//    private int[] gridViewImageId = {
+//            R.mipmap.ic_barcodereaderfilled100, R.mipmap.ic_saveasfilled100, R.mipmap.ic_contactfilled100, R.mipmap.ic_formfilled100, R.mipmap.ic_downloadfromfilled100, R.mipmap.ic_padlockfilled100,
+//
+//    };
+
+
     private int[] gridViewImageId = {
-            R.mipmap.ic_barcodereaderfilled100, R.mipmap.ic_saveasfilled100, R.mipmap.ic_contactfilled100, R.mipmap.ic_formfilled100, R.mipmap.ic_downloadfromfilled100, R.mipmap.ic_padlockfilled100,
+            R.mipmap.ic_menu_barcode128, R.mipmap.ic_menu_downloaddata128, R.mipmap.ic_menu_unpack128, R.mipmap.ic_menu_saveorders128, R.mipmap.ic_menu_downloadtel128, R.mipmap.ic_menu_undateprogram128,
 
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +97,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void setWidgetControl()
     {
-
         try {
-
-
             CustomGridViewAdapter adapterViewAndroid = new CustomGridViewAdapter(getApplicationContext(), gridViewString, gridViewImageId);
             menuGridView.setAdapter(adapterViewAndroid);
             menuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,17 +105,50 @@ public class MainMenuActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int i, long id) {
-                    Toast.makeText(getApplicationContext(), "GridView Item: " + gridViewString[+i], Toast.LENGTH_LONG).show();
+
+//                    Toast.makeText(getApplicationContext(), "GridView Item: " + gridViewString[+i], Toast.LENGTH_LONG).show();
+
+
+                    switch (gridViewString[+i]){
+                        case "แสกนสินค้าขึ้นรถ":
+                            myIntent = new Intent(getApplicationContext(), ScanOrdersActivity.class);
+                            startActivity(myIntent);
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            break;
+                        case "โหลดข้อมูล":
+                            myIntent = new Intent(getApplicationContext(), DownLoadDataActivity.class);
+                            startActivity(myIntent);
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            break;
+                        case "สินค้านอกกล่อง":
+                            myIntent = new Intent(getApplicationContext(), UnpackListActivity.class);
+                            startActivity(myIntent);
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            break;
+                        case "บันทึกผลการจัดส่ง":
+                            myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
+                            startActivity(myIntent);
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            break;
+                        case "โหลดเบอร์ติดต่อ":
+                            myIntent = new Intent(getApplicationContext(), DownLoadTelActivity.class);
+                            startActivity(myIntent);
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            break;
+                        case "อัพเดทโปรแกรม":
+                            myIntent = new Intent(getApplicationContext(), UpdateProgramActivity.class);
+                            startActivity(myIntent);
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            break;
+                    }
+
                 }
             });
-
 
         } catch (Exception e) {
 
             showMsgDialog(e.toString());
         }
-
-
     }
 
     public void showMsgDialog(String msg)

@@ -97,14 +97,14 @@
                 <Button
                     android:id="@+id/btnMulti"
                     style="@style/btnnostroke"
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingLeft="4dp"
                     android:paddingTop="2dp"
                     android:text="ตรวจเช็คแสกนสินค้า"
                     android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textbtnMenuSize14" />
+                    android:textSize="@dimen/textbtnMenuSize16" />
 
                 <!--<Button-->
                 <!--android:id="@+id/btnScan"-->
@@ -135,7 +135,7 @@
                     android:paddingTop="2dp"
                     android:text="ยืนยันสินค้าขึ้นรถ"
                     android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textbtnMenuSize14" />
+                    android:textSize="@dimen/textbtnMenuSize16" />
 
                 <!--<TextView-->
                 <!--android:id="@+id/txtOrder"-->
