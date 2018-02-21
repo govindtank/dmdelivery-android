@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark" >
@@ -38,6 +40,7 @@
                     android:background="@null" />
             </LinearLayout>
 
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -49,14 +52,14 @@
                 android:layout_weight="0.5">
 
                 <TextView
+                    android:id="@+id/txtHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="Header"
-                    android:id="@+id/txtHeader"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textHeadDtlSize"
-                    android:layout_marginLeft="10dp" />
+                    android:textColor="@color/colorBGMain"
+                    android:textSize="@dimen/textSize"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -79,6 +82,64 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayoutTruck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_stroke"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imvtruck"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="11dp"
+                    android:foregroundGravity="center"
+                    android:paddingBottom="5dp"
+                    android:src="@android:drawable/ic_menu_search" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/edtSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_edittext"
+                    android:ems="10"
+                    android:hint="@string/btn_text_search"
+                    android:imeActionLabel="@string/action_sign_in"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorHintText"
+                    android:textSize="@dimen/textSize25"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -88,59 +149,63 @@
             android:layout_marginRight="10dp">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|left">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnMulti"
-                    style="@style/btnnostroke"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp"
-                    android:text="Multi"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textRowSize" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnScan"
-                    style="@style/btnnostroke"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp" />
+                    <TextView
+                        android:id="@+id/txttextunpack1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/txt_text_headder_unpack"
+                        android:textColor="@color/colorBGMain"
+                        android:textSize="@dimen/textRowSize" />
 
-                <TextView
-                    android:id="@+id/txtSlip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="Slip : 0"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textRowSize" />
+                    <TextView
+                        android:id="@+id/txtListQty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="0"
+                        android:textColor="@color/colorBGMain"
+                        android:textSize="@dimen/textRowSize" />
 
-                <Button
-                    style="@style/btnnostroke"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/btnKeyboard"
-                    android:paddingLeft="4dp"
-                    android:paddingBottom="4dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp" />
+                    <TextView
+                        android:id="@+id/txtOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/txt_text_headder_unpack_qty"
+                        android:textColor="@color/colorBGMain"
+                        android:textSize="@dimen/textRowSize" />
 
-                <TextView
-                    android:id="@+id/txtOrder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="101/101"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textRowSize" />
+                    <TextView
+                        android:id="@+id/txtUnpackQty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="0"
+                        android:textColor="@color/colorBGMain"
+                        android:textSize="@dimen/textRowSize" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -150,11 +215,13 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark"></LinearLayout>
+        android:background="@color/colorPrimaryMoreDark"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"

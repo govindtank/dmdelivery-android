@@ -25,6 +25,13 @@ tools:context="com.bl.dmdelivery.actvity.UnpackListActivity">
         android:paddingLeft="2.5dp"
         android:paddingRight="2.5dp">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lv"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBackgroundWhite" />
+
     </LinearLayout>
 
 

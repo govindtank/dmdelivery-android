@@ -107,4 +107,7 @@
     <string name="permissions_all_denied_feedback">กรุณาอนุญาตให้เราเข้าถึงคุณสมบัติของอุปกรณ์ของคุณ</string>
     <string name="permission_request_title">DM Delivery ขออนุญาต...</string>
     <string name="menu_settings">ตั้งค่า</string>
+
+    <string name="txt_text_headder_unpack">รายการ :</string>
+    <string name="txt_text_headder_unpack_qty">จำนวนสินค้านอกกล่อง :</string>
 </resources>

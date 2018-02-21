@@ -38,7 +38,7 @@
         <activity android:name=".actvity.SaveOrdersReturnSlipActivity" />
         <activity android:name=".actvity.DownLoadTelActivity" />
         <activity android:name=".actvity.UpdateProgramActivity" />
-        <activity android:name=".actvity.OthersMenuActivity"></activity>
+        <activity android:name=".actvity.OthersMenuActivity" />
     </application>
 
 </manifest>
