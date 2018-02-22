@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackgroundGray"
+    android:background="@color/colorBGMain"
     tools:context="com.bl.dmdelivery.actvity.LoginActivity"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
@@ -18,7 +18,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="45dp"
         android:layout_weight="1"
-        android:paddingTop="5dp"
+        android:paddingTop="2dp"
         android:background="@drawable/shape_stroke"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -43,7 +43,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:foregroundGravity="center"
-                android:paddingBottom="5dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
                 android:src="@mipmap/ic_date_login" />
         </LinearLayout>
 
@@ -108,9 +109,10 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="5dp"
                 android:foregroundGravity="center"
-                android:paddingBottom="5dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="2dp"
                 android:src="@mipmap/ic_truckno_login" />
         </LinearLayout>
 
@@ -163,7 +165,7 @@
         android:layout_marginStart="21dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/btnlogin"
-        android:padding="13dp"
+        android:padding="10dp"
         android:text="@string/action_sign_in"
         android:textColor="@color/colorSecondaryText"
         android:textSize="@dimen/textSize25"
@@ -189,12 +191,12 @@
         android:id="@+id/imageView"
         android:layout_width="351dp"
         android:layout_height="65dp"
-        android:layout_marginStart="9dp"
+        android:layout_marginTop="40dp"
         android:paddingTop="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@null" />
+        app:srcCompat="@mipmap/ic_delivery_red" />
 
 
     <TextView

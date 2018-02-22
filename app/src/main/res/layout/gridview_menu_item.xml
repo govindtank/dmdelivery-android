@@ -3,7 +3,7 @@
     android:id="@+id/android_custom_gridview_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDark"
+    android:background="@color/colorBackground"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/pslpro"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@color/colorDark"
             android:textSize="@dimen/textbtnDialogSize" />
 
 
