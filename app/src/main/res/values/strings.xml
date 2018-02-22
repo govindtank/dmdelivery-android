@@ -110,4 +110,11 @@
 
     <string name="txt_text_headder_unpack">รายการ :</string>
     <string name="txt_text_headder_unpack_qty">จำนวนสินค้านอกกล่อง :</string>
+    <string name="txt_text_header_checkscan">ลำดับ</string>
+    <string name="txt_text_header_order">ออร์เดอร์</string>
+    <string name="txt_text_header_orderall">ออร์เดอร์ทั้งหมด</string>
+    <string name="txt_text_header_orderscan">สแกนแล้ว</string>
+    <string name="txt_text_header_ordernotscan">ยังไม่สแกน</string>
+
+
 </resources>

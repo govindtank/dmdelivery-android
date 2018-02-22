@@ -95,7 +95,7 @@
                 android:weightSum="2">
 
                 <Button
-                    android:id="@+id/btnMulti"
+                    android:id="@+id/btnCheckScan"
                     style="@style/btnnostroke"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -126,7 +126,7 @@
                 <!--android:textSize="@dimen/textRowSize" />-->
 
                 <Button
-                    android:id="@+id/btnKeyboard"
+                    android:id="@+id/btnConfirm"
                     style="@style/btnnostroke"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
