@@ -75,7 +75,7 @@
     <string name="txt_text_truck">เบอร์รถ</string>
     <string name="txt_text_notpincode">รหัสไม่ถูกต้อง !!</string>
     <string name="btn_text_ok">ตกลง</string>
-    <string name="btn_text_ordercancel">ยกเลิก</string>
+    <string name="btn_text_ordercancel">ปิด</string>
     <string name="txt_text_confirmallselect">ยืนยันออเดอร์ที่เลือก</string>
     <string name="txt_text_cancelallselect">ยกเลิกออเดอร์ที่เลือก</string>
     <string name="txt_text_refresh">โหลดข้อมูลใหม่</string>

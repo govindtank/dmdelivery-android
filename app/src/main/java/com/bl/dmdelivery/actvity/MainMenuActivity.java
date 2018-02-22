@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
@@ -31,7 +32,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private GridView menuGridView;
     private TextView mmTxtMsg,mmTxtTitle;
-    private Button mmBtnClose;
+    private Button mmBtnOk,mmBtnClose;
     private ImageView mmImvTitle;
     private static TextView mTxtDate;
     private Intent myIntent=null;
@@ -114,11 +115,6 @@ public class MainMenuActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             break;
                         case "โหลดข้อมูล":
-//                            myIntent = new Intent(getApplicationContext(), DownLoadDataActivity.class);
-//                            startActivity(myIntent);
-//                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-
-
                             showMsgConfirmDialog("ต้องการโหลดข้อมูล ใช่หรือไม่?");
                             break;
                         case "สินค้านอกกล่อง":
@@ -132,18 +128,9 @@ public class MainMenuActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             break;
                         case "โหลดเบอร์ติดต่อ":
-                            myIntent = new Intent(getApplicationContext(), DownLoadTelActivity.class);
-                            startActivity(myIntent);
-                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-
-//                            showMsgConfirmDialog("ต้องการโหลดเบอร์ติดต่อ ใช่หรือไม่?");
+                            showMsgConfirmSelectedSingleDialog();
                             break;
                         case "อัพเดทโปรแกรม":
-//                            myIntent = new Intent(getApplicationContext(), UpdateProgramActivity.class);
-//                            startActivity(myIntent);
-//                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-
-
                             showMsgConfirmDialog("ต้องการอัพเดทโปรแกรม ใช่หรือไม่?");
                             break;
                     }
@@ -167,8 +154,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
         DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+       // mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        //mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
 
@@ -205,6 +192,7 @@ public class MainMenuActivity extends AppCompatActivity {
         mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
 //        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
 
 //        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
@@ -212,6 +200,43 @@ public class MainMenuActivity extends AppCompatActivity {
         mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
+
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+    }
+
+    public void showMsgConfirmSelectedSingleDialog()
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_confirm_down_load_tel, null, false);
+
+
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
+        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+
+        mmTxtTitle.setText("เลือกเงื่อนไขในการโหลดเบอร์ติดต่อ");
+
+        DialogBuilder.setView(v);
+
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
 
         mmBtnClose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

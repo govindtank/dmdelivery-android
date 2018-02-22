@@ -1,34 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.bl.dmdelivery.actvity.DownLoadTelActivity">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorBG"
-    android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_root"
+    android:weightSum="1">
 
-    <include
-        android:id="@+id/includeHeader"
-        layout="@layout/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBG"
-        android:orientation="vertical"
-        android:paddingLeft="2.5dp"
-        android:paddingRight="2.5dp">
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text=""
+            android:id="@+id/txtTitle"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/textDialogSize20"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:textColor="@color/colorBackgroundGray"
+        android:gravity="center_vertical" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:weightSum="3"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+
+                <ScrollView
+                    android:id="@+id/ScrlView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="320dp" >
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <RadioButton
+                        android:id="@+id/radioButton1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ทั้งหมด"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:id="@+id/radioButton2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="BK-กรุงเทพมหานครและปริมณฑล" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CN-ภาคกลาง" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="HY-หาดใหญ่" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton5"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="KK-ขอนแก่น" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton6"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="LP-ลำปาง" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton7"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NS-นครสวรรค์" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton8"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="SR-สุรินทร์" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton9"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ST-สุราษฎร์ธานี" />
+
+
+                </RadioGroup>
+                </ScrollView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="7dp" >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center" >
+
+                        <Button
+                            android:id="@+id/btnOk"
+                            style="@style/btnclose"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="@dimen/textRowSize"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/btn_text_ok" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center" >
+
+                        <Button
+                            android:id="@+id/btnClose"
+                            style="@style/btnclose"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="@dimen/textRowSize"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/btn_text_ordercancel" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
-</RelativeLayout>
-
-
