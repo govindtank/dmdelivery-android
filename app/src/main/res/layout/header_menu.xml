@@ -71,6 +71,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@null"
+                    android:drawableLeft="@mipmap/ic_menu_list"
                     android:paddingLeft="3dp" />
             </LinearLayout>
 
@@ -79,18 +80,18 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark"></LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@+id/linlaoMain"-->
+        <!--android:background="@color/colorPrimaryMoreDark"></LinearLayout>-->
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark" />
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@+id/linlaoMain"-->
+        <!--android:background="@color/colorPrimaryMoreDark" />-->
 
 </RelativeLayout>

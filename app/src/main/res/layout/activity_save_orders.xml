@@ -23,15 +23,15 @@ tools:context="com.bl.dmdelivery.actvity.SaveOrdersActivity">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBG"
-        android:orientation="vertical"
-        android:paddingLeft="2.5dp"
-        android:paddingRight="2.5dp">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/colorBG"-->
+        <!--android:orientation="vertical"-->
+        <!--android:paddingLeft="2.5dp"-->
+        <!--android:paddingRight="2.5dp">-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 
 </LinearLayout>
