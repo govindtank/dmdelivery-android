@@ -115,7 +115,7 @@
                     android:background="@drawable/background_edittext"
                     android:fontFamily="@font/pslpro"
                     android:gravity="center_vertical"
-                    android:text="145"
+                    android:text="-"
                     android:textColor="@color/colorPrimaryLight"
                     android:textSize="@dimen/textSize" />
 

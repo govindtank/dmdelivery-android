@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.StrictMode;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.CustomGridViewAdapter;
+import com.bl.dmdelivery.utility.TagUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,11 +33,14 @@ import java.util.Date;
 public class MainMenuActivity extends AppCompatActivity {
 
     private GridView menuGridView;
-    private TextView mmTxtMsg,mmTxtTitle;
+    private TextView mmTxtMsg,mmTxtTitle,mTxtTroukno;
     private Button mmBtnOk,mmBtnClose;
     private ImageView mmImvTitle;
     private static TextView mTxtDate;
     private Intent myIntent=null;
+
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
 //    private String[] gridViewString = {
 //            "Scan Order", "Save Order", "Load Contact", "Unpack", "Update Program", "Logout",
@@ -71,6 +76,8 @@ public class MainMenuActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
+        sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
+
         bindWidget();
 
         setWidgetControl();
@@ -82,11 +89,24 @@ public class MainMenuActivity extends AppCompatActivity {
             menuGridView = (GridView)findViewById(R.id.grid_view_image_text);
 
             mTxtDate = (TextView) findViewById(R.id.txtdate);
+            mTxtTroukno = (TextView) findViewById(R.id.txttruck);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            String currentDate = sdf.format(new Date());
+            String truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
+            String deliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
 
-            mTxtDate.setText(currentDate);
+            if(deliveryDate.equals(""))
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                String currentDate = sdf.format(new Date());
+                mTxtDate.setText(currentDate);
+            }
+            else
+            {
+                mTxtDate.setText(deliveryDate);
+            }
+
+
+            mTxtTroukno.setText(truckNo);
 
 
         } catch (Exception e) {
