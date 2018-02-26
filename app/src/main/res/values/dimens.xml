@@ -9,6 +9,7 @@
     <dimen name="textHeadDtlSize">20dp</dimen>
 
     <dimen name="textHeadDtlSize16">16dp</dimen>
+    <dimen name="textEdittextSize14">14dp</dimen>
 
     <dimen name="textRowSize">20dp</dimen>
     <dimen name="textRowHeadSize">18dp</dimen>

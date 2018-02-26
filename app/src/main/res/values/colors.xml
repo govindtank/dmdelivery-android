@@ -27,6 +27,8 @@
 
     <color name="colorBackgroundEdt">#dfdfdf</color>
     <color name="colorDividerEdt">#dadada</color>
+
+
     <!--EDF3FB-->
     <color name="colorBackgroundGray">#e6eaf2</color>
     <color name="colorDark">#2a2a31</color>
@@ -37,5 +39,14 @@
     <color name="colorStroke">#9e9e9e</color>
     <color name="colorBlack">#000000</color>
     <color name="colorPink">#b10053</color>
+
+
+    <!-- button menu approve-->
+    <!--<color name="colorPrimary1">#e65457</color>-->
+    <!--<color name="colorPrimaryDark1">#e65457</color>-->
+    <!--<color name="colorPrimaryMoreDark1">#b33f42</color>-->
+    <!--<color name="colorStrokeClose1">#e2696b</color>-->
+
+
 
 </resources>

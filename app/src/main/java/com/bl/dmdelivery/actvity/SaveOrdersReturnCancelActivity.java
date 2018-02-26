@@ -10,6 +10,6 @@ public class SaveOrdersReturnCancelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_save_orders_return_cancel);
+        setContentView(R.layout.dialog_save_orders_return_cancel);
     }
 }

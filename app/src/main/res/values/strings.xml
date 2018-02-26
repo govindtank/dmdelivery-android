@@ -70,8 +70,11 @@
     <string name="txt_text_headder_saveorders_list">รอจัดส่งสินค้า</string>
     <string name="txt_text_headder_saveorders_complete_list">จัดส่งสินค้าแล้ว</string>
     <string name="txt_text_headder_saveorders_return_list">ใบคืนสินค้า</string>
+    <string name="txt_text_headder_saveorders_return">รายการรับคืนสินค้า</string>
     <string name="txt_text_headder_saveorders_othermenu_list">เมนูอื่น</string>
     <string name="txt_text_headder_saveorders_slip">สลิปเซ็นต์รับ</string>
+
+    <string name="txt_text_remark">หมายเหตุ</string>
 
 
     <string name="menu_text_headder_print">พิมพ์รายงาน</string>
@@ -157,6 +160,27 @@
         <item>NS-นครสวรรค์</item>
         <item>SR-สุรินทร์</item>
         <item>ST-สุราษฎร์ธานี</item>
+    </string-array>
+
+
+    <string-array name="returnList">
+        <item>12345 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
+        <item>33256 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>2</item>
+        <item>14526 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
+        <item>32658 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
+    </string-array>
+
+
+    <string-array name="returncancellist">
+        <item>201 ส่งคืนทางไปรษณีย์แล้ว</item>
+        <item>202 MSL ไม่ได้นำสินค้าติดมาด้วย</item>
+        <item>203 MSL ไม่ต้องการคืนสินค้า</item>
+        <item>204 ไม่มีสินค้าไปส่งบริเวณนั้น</item>
+        <item>205 ฝากคืนกับ DSM ไปแล้ว</item>
+        <item>206 ฝากเบอร์รถ.........กลับมาบริษัทฯแล้ว</item>
+        <item>207 บ้าน MSL ปิด</item>
+        <item>208 ไม่พบ MSL</item>
+        <item>301 อื่นๆ.....................</item>
     </string-array>
 
 

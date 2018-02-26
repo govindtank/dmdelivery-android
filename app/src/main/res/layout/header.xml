@@ -79,18 +79,18 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark"></LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@+id/linlaoMain"-->
+        <!--android:background="@color/colorPrimaryMoreDark"></LinearLayout>-->
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark" />
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@+id/linlaoMain"-->
+        <!--android:background="@color/colorPrimaryMoreDark" />-->
 
 </RelativeLayout>
