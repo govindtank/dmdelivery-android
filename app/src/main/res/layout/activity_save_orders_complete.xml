@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bl.dmdelivery.actvity.SaveOrdersCompleteActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBG"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/includeHeader"
+            layout="@layout/header_save_orders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/colorBG"-->
+        <!--android:orientation="vertical"-->
+        <!--android:paddingLeft="2.5dp"-->
+        <!--android:paddingRight="2.5dp">-->
+
+        <!--<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/lv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/colorBG"-->
+        <!--android:footerDividersEnabled="false" />-->
+        <!--</LinearLayout>-->
+
+
+        <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:paddingLeft="2.5dp"-->
+        <!--android:paddingRight="2.5dp"-->
+        <!--android:background="@color/colorBG">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/lv"-->
+        <!--android:footerDividersEnabled="false"-->
+        <!--android:background="@color/colorBackground"-->
+        <!--android:scrollbars="vertical"/>-->
+        <!--</LinearLayout>-->
+
+
+    </LinearLayout>
+</RelativeLayout>
+

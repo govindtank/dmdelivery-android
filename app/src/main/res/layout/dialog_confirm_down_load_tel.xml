@@ -42,97 +42,112 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="350dp"
         android:layout_marginTop="10dp" >
 
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:weightSum="3"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp">-->
+
+            <!--<LinearLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_weight="1" >-->
+
+                <!--<ScrollView-->
+                    <!--android:id="@+id/ScrlView"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="320dp" >-->
+
+                <!--<RadioGroup-->
+                    <!--android:id="@+id/radioGroup"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton1"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="ทั้งหมด"-->
+                        <!--android:checked="true"/>-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton2"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="BK-กรุงเทพมหานครและปริมณฑล" />-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton3"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="CN-ภาคกลาง" />-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton4"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="HY-หาดใหญ่" />-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton5"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="KK-ขอนแก่น" />-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton6"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="LP-ลำปาง" />-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton7"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="NS-นครสวรรค์" />-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton8"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="SR-สุรินทร์" />-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/radioButton9"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="ST-สุราษฎร์ธานี" />-->
+
+
+                <!--</RadioGroup>-->
+                <!--</ScrollView>-->
+            <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
+
+
+
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:weightSum="3"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBG"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1" >
-
-                <ScrollView
-                    android:id="@+id/ScrlView"
-                    android:layout_width="fill_parent"
-                    android:layout_height="320dp" >
-
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <RadioButton
-                        android:id="@+id/radioButton1"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="ทั้งหมด"
-                        android:checked="true"/>
-
-                    <RadioButton
-                        android:id="@+id/radioButton2"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="BK-กรุงเทพมหานครและปริมณฑล" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton3"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="CN-ภาคกลาง" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton4"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="HY-หาดใหญ่" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton5"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="KK-ขอนแก่น" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton6"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="LP-ลำปาง" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton7"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="NS-นครสวรรค์" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton8"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="SR-สุรินทร์" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton9"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="ST-สุราษฎร์ธานี" />
-
-
-                </RadioGroup>
-                </ScrollView>
-            </LinearLayout>
-
+            <include
+                android:id="@+id/includeHeaderMenu"
+                layout="@layout/toolbar_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 

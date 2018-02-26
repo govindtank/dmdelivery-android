@@ -16,11 +16,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.CustomGridViewAdapter;
@@ -41,6 +44,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
+
+    private ListView lv;
+    private String[] sigDcList;
 
 //    private String[] gridViewString = {
 //            "Scan Order", "Save Order", "Load Contact", "Unpack", "Update Program", "Logout",
@@ -90,6 +96,17 @@ public class MainMenuActivity extends AppCompatActivity {
 
             mTxtDate = (TextView) findViewById(R.id.txtdate);
             mTxtTroukno = (TextView) findViewById(R.id.txttruck);
+
+//            //listview
+//            lv = (ListView) findViewById(R.id.lv);
+//
+//            // Create the arrays
+//            sigDcList = getResources().getStringArray(R.array.dcList);
+//
+//            // Create an array adapter
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, sigDcList);
+//            lv.setAdapter(adapter);
+
 
             String truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
             String deliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
@@ -207,15 +224,12 @@ public class MainMenuActivity extends AppCompatActivity {
         View v = li.inflate(R.layout.dialog_confirm, null, false);
 
 
-//        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
         mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-//        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnOk);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
 
-//        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
         mmTxtTitle.setText("ยืนยัน");
         mmTxtMsg.setText(msg);
 
@@ -238,19 +252,25 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void showMsgConfirmSelectedSingleDialog()
     {
-        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
-        DialogBuilder.setIcon(R.mipmap.ic_launcher);
-        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = li.inflate(R.layout.dialog_confirm_down_load_tel, null, false);
+        // Create the arrays
+        sigDcList = getResources().getStringArray(R.array.dcList);
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(MainMenuActivity.this).create();
+        LayoutInflater inflater = getLayoutInflater();
+        View v = (View) inflater.inflate(R.layout.dialog_confirm_down_load_tel, null);
+        DialogBuilder.setView(v);
+//        DialogBuilder.setTitle("เลือกเงื่อนไขในการโหลดเบอร์ติดต่อ");
 
 
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnOk);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+        mmTxtTitle.setText("เลือกเงื่อนไขการโหลดเบอร์ติดต่อ");
 
-        mmTxtTitle.setText("เลือกเงื่อนไขในการโหลดเบอร์ติดต่อ");
 
-        DialogBuilder.setView(v);
+        lv = (ListView) v.findViewById(R.id.lv);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigDcList);
+        lv.setAdapter(adapter);
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -261,6 +281,15 @@ public class MainMenuActivity extends AppCompatActivity {
         mmBtnClose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
+            }
+        });
+
+        // Set item click listener
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String description = sigDcList[position];
+                Toast.makeText(MainMenuActivity.this, description, Toast.LENGTH_SHORT).show();
             }
         });
 

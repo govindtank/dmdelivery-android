@@ -67,6 +67,12 @@
     <string name="txt_text_headder_tel_list">โหลดข้อมูลเบอร์ติดต่อ</string>
     <string name="txt_text_headder_update_program">อัพเดทโปรแกรม</string>
 
+    <string name="txt_text_headder_saveorders_list">รอจัดส่งสินค้า</string>
+    <string name="txt_text_headder_saveorders_complete_list">จัดส่งสินค้าแล้ว</string>
+    <string name="txt_text_headder_saveorders_return_list">ใบคืนสินค้า</string>
+    <string name="txt_text_headder_saveorders_othermenu_list">เมนูอื่น</string>
+    <string name="txt_text_headder_saveorders_slip">สลิปเซ็นต์รับ</string>
+
 
     <string name="menu_text_headder_print">พิมพ์รายงาน</string>
     <string name="txt_text_order_count">จำนวนออเดอร์</string>
@@ -116,6 +122,34 @@
     <string name="txt_text_header_orderall">ออร์เดอร์ทั้งหมด</string>
     <string name="txt_text_header_orderscan">สแกนแล้ว</string>
     <string name="txt_text_header_ordernotscan">ยังไม่สแกน</string>
+
+
+    <string-array name="others_menu">
+        <item>กิจกรรม</item>
+        <item>หน้าจอเซ็นต์รับ</item>
+        <item>ยกเลิกรายการที่เลือก</item>
+        <item>พิกัดของสมาชิก maps.me</item>
+        <item>พิกัดของสมาชิก Google Maps</item>
+        <item>นำทาง</item>
+        <item>โทรหา DSM เบอร์ที่ 1</item>
+        <item>โทรหา DSM เบอร์ที่ 2</item>
+        <item>โทรหาสมาชิก เบอร์ที่ 1</item>
+        <item>โทรหาสมาชิก เบอร์ที่ 2</item>
+        <item>วางสาย</item>
+    </string-array>
+
+    <string-array name="dcList">
+        <item>ทั้งหมด</item>
+        <item>BK-กรุงเทพมหานครและปริมณฑล</item>
+        <item>CN-ภาคกลาง</item>
+        <item>HY-หาดใหญ่</item>
+        <item>KK-ขอนแก่น</item>
+        <item>LP-ลำปาง</item>
+        <item>NS-นครสวรรค์</item>
+        <item>SR-สุรินทร์</item>
+        <item>ST-สุราษฎร์ธานี</item>
+    </string-array>
+
 
 
 </resources>

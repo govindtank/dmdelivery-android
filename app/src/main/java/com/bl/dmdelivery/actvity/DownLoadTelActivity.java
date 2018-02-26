@@ -10,9 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.bl.dmdelivery.R;
 
 public class DownLoadTelActivity extends AppCompatActivity {
@@ -20,6 +23,9 @@ public class DownLoadTelActivity extends AppCompatActivity {
     private TextView mTxtMsg,mTxtHeader;
     private Button mBtnBack;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
+
+    private ListView lv;
+    private String[] sigDcList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +42,7 @@ public class DownLoadTelActivity extends AppCompatActivity {
         try {
 
             bindWidget();
-//
+
 //            setDefaultFonts();
 
             setWidgetControl();
@@ -46,17 +52,25 @@ public class DownLoadTelActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void bindWidget()
     {
         try{
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
 
+            //listview
+            lv = (ListView) findViewById(R.id.lv);
+
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_tel_list));
+
+            // Create the arrays
+            sigDcList = getResources().getStringArray(R.array.dcList);
+
+            // Create an array adapter
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, sigDcList);
+            lv.setAdapter(adapter);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -79,15 +93,18 @@ public class DownLoadTelActivity extends AppCompatActivity {
         try{
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-
-                    //previewing = false;
-                    //mCamera.setPreviewCallback(null);
-                    //mCamera.stopPreview();
-
                     finish();
-
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                }
+            });
 
+            // Set item click listener
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String description = sigDcList[position];
+
+                    Toast.makeText(DownLoadTelActivity.this, description, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {

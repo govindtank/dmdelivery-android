@@ -7,6 +7,9 @@
     <dimen name="textSize25">25dp</dimen>
     <dimen name="textHeadSize">34dp</dimen>
     <dimen name="textHeadDtlSize">20dp</dimen>
+
+    <dimen name="textHeadDtlSize16">16dp</dimen>
+
     <dimen name="textRowSize">20dp</dimen>
     <dimen name="textRowHeadSize">18dp</dimen>
     <dimen name="textDialogSize20">20dp</dimen>

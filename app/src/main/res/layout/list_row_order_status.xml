@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardElevation="1dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardCornerRadius="0.5dp"
+        card_view:contentPadding="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:weightSum="7" >
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="left" >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/txtNo"
+                                    android:textSize="@dimen/textRowSize"
+                                    android:textColor="@color/colorSecondaryText"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/txtInv"
+                                    android:textSize="@dimen/textDialogSize"
+                                    android:layout_marginRight="3dp"
+                                    android:text="INV"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textStyle="bold"
+                                    android:inputType="textNoSuggestions"
+                                    android:lines="1" />
+
+                                <TextView
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:id="@+id/txtMailgroup"
+                                    android:lines="1"
+                                    android:textSize="@dimen/textRowSize"
+                                    android:textColor="@color/colorPrimaryText"
+                                    android:layout_marginLeft="5dp"
+                                    android:inputType="textNoSuggestions"/>
+
+                                <TextView
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:id="@+id/txtOrdertype"
+                                    android:lines="1"
+                                    android:textSize="@dimen/textRowSize"
+                                    android:textColor="@color/colorPrimaryText"
+                                    android:layout_marginLeft="5dp"
+                                    android:inputType="textNoSuggestions"/>
+
+                                <TextView
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:id="@+id/txtCamp"
+                                    android:lines="1"
+                                    android:textSize="@dimen/textRowSize"
+                                    android:textColor="@color/colorPrimaryText"
+                                    android:layout_marginLeft="5dp"
+                                    android:inputType="textNoSuggestions"/>
+
+                                <TextView
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:id="@+id/txtCarton"
+                                    android:lines="1"
+                                    android:textSize="@dimen/textRowSize"
+                                    android:textColor="@color/colorPrimary"
+                                    android:layout_marginLeft="5dp"
+                                    android:inputType="textNoSuggestions"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="left" >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="-"
+                                    android:id="@+id/txtRepcode"
+                                    android:textSize="@dimen/textDialogSize"
+                                    android:layout_marginRight="3dp"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textStyle="bold"
+                                    android:inputType="textNoSuggestions|textAutoCorrect"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="-"
+                                    android:id="@+id/txtRepname"
+                                    android:maxLines="1"
+                                    android:textSize="@dimen/textDialogSize"
+                                    android:textColor="@color/colorPrimary"
+                                    android:layout_marginLeft="5dp"
+                                    android:inputType="textNoSuggestions|textAutoCorrect"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="6"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center|center_vertical|right" >
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/imbChecked"
+                                    android:layout_marginRight="10dp"
+                                    android:src="@mipmap/ic_checked50"
+                                    android:background="@null"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="fill_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="left">
+
+                                <TextView
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/txtAddress"
+                                    android:textSize="@dimen/textRowSize"
+                                    android:layout_marginRight="3dp"
+                                    android:text="-"
+                                    android:textColor="@color/colorPrimaryText"
+                                    android:lines="2"
+                                    android:layout_marginLeft="10dp"
+                                    android:inputType="textMultiLine|textNoSuggestions|textAutoCorrect"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" >
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" >
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="left" >
+
+                                    <TextView
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/txtTelDSM"
+                                        android:textSize="@dimen/textRowSize"
+                                        android:layout_marginRight="3dp"
+                                        android:text="-"
+                                        android:textColor="@color/colorPrimaryText"
+                                        android:layout_marginLeft="10dp"
+                                        android:inputType="textNoSuggestions|textAutoCorrect"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="left" >
+
+                                    <TextView
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/txtTelMSL"
+                                        android:textSize="@dimen/textRowSize"
+                                        android:layout_marginRight="3dp"
+                                        android:text="-"
+                                        android:textColor="@color/colorPrimaryText"
+                                        android:layout_marginLeft="10dp"
+                                        android:inputType="textNoSuggestions|textAutoCorrect"/>
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

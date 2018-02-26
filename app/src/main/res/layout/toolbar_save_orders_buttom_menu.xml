@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="100dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -43,7 +43,7 @@
                         android:id="@+id/textView8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="รอจัดส่ง"
+                        android:text=""
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -57,7 +57,7 @@
                         android:id="@+id/txtOrdersSum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text=""
                         android:textAlignment="center" />
                 </LinearLayout>
             </LinearLayout>
@@ -79,7 +79,7 @@
                         android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="จัดส่งแล้ว"
+                        android:text=""
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -93,7 +93,7 @@
                         android:id="@+id/txtBoxSum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text=""
                         android:textAlignment="center" />
                 </LinearLayout>
             </LinearLayout>
@@ -115,7 +115,7 @@
                         android:id="@+id/textView7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="รอส่ง+ส่งแล้ว"
+                        android:text=""
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -129,7 +129,7 @@
                         android:id="@+id/txtBagSum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text=""
                         android:textAlignment="center" />
                 </LinearLayout>
             </LinearLayout>
@@ -151,7 +151,7 @@
                         android:id="@+id/textView4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="ใบรับคืน"
+                        android:text=""
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -165,7 +165,7 @@
                         android:id="@+id/txtBoxBagSum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0/0"
+                        android:text=""
                         android:textAlignment="center" />
                 </LinearLayout>
             </LinearLayout>
@@ -173,20 +173,5 @@
 
 
     </LinearLayout>
-
-
-    <!--<LinearLayout-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_below="@+id/linlaoMain"-->
-        <!--android:background="@color/colorPrimaryMoreDark"></LinearLayout>-->
-
-    <!--<LinearLayout-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_below="@+id/linlaoMain"-->
-        <!--android:background="@color/colorPrimaryMoreDark" />-->
 
 </RelativeLayout>
