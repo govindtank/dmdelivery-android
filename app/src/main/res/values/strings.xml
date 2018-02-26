@@ -122,6 +122,11 @@
     <string name="txt_text_header_orderall">ออร์เดอร์ทั้งหมด</string>
     <string name="txt_text_header_orderscan">สแกนแล้ว</string>
     <string name="txt_text_header_ordernotscan">ยังไม่สแกน</string>
+    <string name="txt_text_unpack_size">ขนาดสินค้า</string>
+    <string name="txt_text_unpack_weigth">ความกว้าง</string>
+    <string name="txt_text_unpack_length">ความยาว</string>
+    <string name="txt_text_unpack_heigth">ความสูง</string>
+    <string name="menu_text_print_slip">สลิปเซ็นต์จัดส่ง</string>
 
 
     <string-array name="others_menu">
