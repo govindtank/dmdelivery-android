@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.OrderSlipViewAdapter;
 import com.bl.dmdelivery.adapter.RVListDeliveryBWAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.helper.GlobalObject;
@@ -141,11 +142,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_list));
 
 
-
-//            lv = (RecyclerView) findViewById(R.id.lv);
-//
-//            lv.setLayoutManager(new LinearLayoutManager(this));
-//            lv.setHasFixedSize(true);
+          lv = (RecyclerView) findViewById(R.id.lv);
+          lv.setLayoutManager(new LinearLayoutManager(this));
+          lv.setHasFixedSize(true);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -166,6 +165,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+            getInit();
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -209,6 +209,14 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 }
             });
 
+            lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+                    startActivity(myIntent);
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
+            }));
 
         } catch (Exception e) {
             showMsgDialog(e.toString());
@@ -506,6 +514,174 @@ public class SaveOrdersActivity extends AppCompatActivity {
             }
         });
         DialogBuilder.show();
+    }
+
+
+    private void getInit() {
+
+        try {
+
+            new getInitDataInAsync().execute();
+
+           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+            {
+
+                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+                {
+
+                    new getOrderDataInAsync().execute();
+                }
+                else
+                {
+
+                    showMsgDialog(getResources().getString(R.string.error_webservice));
+
+                }
+
+            }else
+            {
+
+                showMsgDialog(getResources().getString(R.string.error_network));
+            }*/
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private class getInitDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mProgressDialog = new ACProgressFlower.Builder(SaveOrdersActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+                mListOrderData.clear();
+
+                OrderData f = new OrderData();
+                f.setItemno(32);
+                f.setInvoiceno("1103842117");
+                f.setInvoice_type("08 ส่งปกติ");
+                f.setCampaign("C17");
+                f.setRepcode("0096061405");
+                f.setRepname("คุณชุฑาทรัพย์ อ่อนสี");
+                f.setAddress("16/69 เทียนทะเล 26 แยก 2 แขวงแสมดำ กรุงเทพมหานคร 10150");
+                f.setMobilemsl("MSL: 028973435");
+                f.setMobiledsm("DSM: 0818159347");
+                f.setInv_return("R");
+                f.setCarton("1C");
+                mListOrderData.add(f);
+
+                f = new OrderData();
+                f.setItemno(33);
+                f.setInvoiceno("1103823188");
+                f.setInvoice_type("08 ส่งปกติ");
+                f.setCampaign("C17");
+                f.setRepcode("0096061405");
+                f.setRepname("คุณวรรณรัตน์ อ่ำถนอม");
+                f.setAddress("142 ตรงข้ามวัดธรรมคุณาราม เทียนทะเล แขวงท่าข้าม เขตบางขุนเทียน กรุงเทพมหานคร 10150");
+                f.setMobilemsl("MSL: 0814898857");
+                f.setMobiledsm("DSM: 0818125698");
+                f.setInv_return("R");
+                f.setCarton("1C (2)");
+                mListOrderData.add(f);
+
+
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : CheckOrderData";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            try {
+
+                if (result.exception != null) {
+                    mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+
+                            mProgressDialog.dismiss();
+
+                            if(mListOrderData.size()>0)
+                            {
+
+                                mAdapter = new OrderSlipViewAdapter(getApplicationContext(),mListOrderData);
+                                lv.setAdapter(mAdapter);
+
+
+                                //ogject.setListCheckOrderData(mListOrderData);
+
+                                //bindData();
+
+                               /* mAdapter = new RVGetOrderAdapter(getApplicationContext(),mListOrderData);
+                                lv.setAdapter(mAdapter);
+
+
+                                mTxtCount.setText(mDelCount+"/"+String.valueOf(mListOrderData.size()));*/
+
+
+
+                            }else
+                            {
+                                //finish();
+                                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
+
+                            }
+
+                        }
+                    }, 200);
+
+                    /*runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    });*/
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private class PageResultHolder {
+        private String content;
+        private Exception exception;
     }
 
 

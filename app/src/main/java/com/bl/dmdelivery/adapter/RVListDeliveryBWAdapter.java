@@ -63,8 +63,8 @@ public class RVListDeliveryBWAdapter extends RecyclerView.Adapter<RVListDelivery
             holder.mTxtInv.setText(f.getInvoiceno().toString());
             holder.mTxtRepcode.setText(f.getRepcode().toString());
             holder.mTxtRepname.setText(f.getRepname().toString());
-            holder.mTxtAddress.setText(f.getRepaddr1().toString()+""+f.getRepaddr2().toString()+""+f.getRepaddr3().toString()+""+f.getRepaddr4().toString());
-            holder.mTxtTel.setText("Tel. : "+f.getRepphone().toString()+""+f.getRepmobile().toString());
+            //holder.mTxtAddress.setText(f.getRepaddr1().toString()+""+f.getRepaddr2().toString()+""+f.getRepaddr3().toString()+""+f.getRepaddr4().toString());
+            //holder.mTxtTel.setText("Tel. : "+f.getRepphone().toString()+""+f.getRepmobile().toString());
 
 
 /*            if(f.getOtrdeliverystatus().toString().equals("05"))
@@ -78,14 +78,14 @@ public class RVListDeliveryBWAdapter extends RecyclerView.Adapter<RVListDelivery
                 //holder.mImbChecked.setImageResource(R.mipmap.ic_truck64);
             }*/
 
-            if(f.getSelect().toString().equals("0"))
+            /*if(f.getSelect().toString().equals("0"))
             {
                 holder.mImbChecked.setVisibility(View.INVISIBLE);
             }else
             {
                 holder.mImbChecked.setVisibility(View.VISIBLE);
                 holder.mImbChecked.setImageResource(R.mipmap.ic_doubletick55);
-            }
+            }*/
 
 
 

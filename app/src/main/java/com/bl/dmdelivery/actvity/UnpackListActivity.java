@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -14,11 +15,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.model.Unpack;
 
@@ -31,8 +35,8 @@ public class UnpackListActivity extends AppCompatActivity {
 
 
     private ACProgressFlower mProgressDialog;
-    private TextView mTxtMsg,mTxtHeader;
-    private Button mBtnBack;
+    private TextView mTxtMsg,mTxtHeader,mTxtCode,mTxtDesc,mTxtW,mTxtL,mTxtH;
+    private Button mBtnBack,mBtnClose;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
@@ -116,6 +120,16 @@ public class UnpackListActivity extends AppCompatActivity {
 
                 }
             });
+
+
+
+            lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    showUnpackDialog("");
+                }
+            }));
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -207,47 +221,20 @@ public class UnpackListActivity extends AppCompatActivity {
                 Unpack f = new Unpack();
                 f.setFscode("11111");
                 f.setFsname("ชื่อสินค้ารายการที่ 1");
-                f.setFsunit("1");
+                f.setFsunit("15");
                 mListOrderData.add(f);
 
-                /*String xmlResult = webHelper.checkTruckno(truckNo);
-                pageResultHolder.content = xmlResult;*/
+                f = new Unpack();
+                f.setFscode("22222");
+                f.setFsname("ชื่อสินค้ารายการที่ 2");
+                f.setFsunit("10");
+                mListOrderData.add(f);
 
-                //SoapObject responseorder = new SoapObject();
-                //responseorder = webHelper.getOrderIntransit(ogject.getDate().toString(),ogject.getTruck().toString(),"0");
-                //responseorder = webHelper.checkOrderData("1100996628");
-
-
-
-                /*mListOrderData.clear();
-                for(int i=0; i<responseorder.getPropertyCount();i++){
-
-                    SoapObject array = (SoapObject)responseorder.getProperty(i);
-
-                    OrderData item = new OrderData();
-                    item.setRepcode(array.getPrimitivePropertySafelyAsString("repcode"));
-                    item.setRepname(array.getPrimitivePropertySafelyAsString("repname"));
-                    item.setRepaddr1(array.getPrimitivePropertySafelyAsString("repaddr1"));
-                    item.setRepaddr2(array.getPrimitivePropertySafelyAsString("repaddr2"));
-                    item.setRepaddr3(array.getPrimitivePropertySafelyAsString("repaddr3"));
-                    item.setRepaddr4(array.getPrimitivePropertySafelyAsString("repaddr4"));
-                    item.setRepphone(array.getPrimitivePropertySafelyAsString("repphone"));
-                    item.setRepmobile(array.getPrimitivePropertySafelyAsString("repmobile"));
-                    item.setInvoiceno(array.getPrimitivePropertySafelyAsString("invoiceno"));
-                    item.setCarton(array.getPrimitivePropertySafelyAsString("carton"));
-                    item.setBag(array.getPrimitivePropertySafelyAsString("bag"));
-                    item.setOtrstatus(array.getPrimitivePropertySafelyAsString("otrstatus"));
-                    item.setOtrdeliverystatus(array.getPrimitivePropertySafelyAsString("otrdeliverystatus"));
-
-*//*                    if(array.getPrimitivePropertySafelyAsString("otrdeliverystatus").equals("05"))
-                    {
-                        mDelCount = mDelCount+1;
-                    }*//*
-
-                    mListOrderData.add(item);
-
-                }*/
-
+                f = new Unpack();
+                f.setFscode("33333");
+                f.setFsname("ชื่อสินค้ารายการที่ 3");
+                f.setFsunit("4");
+                mListOrderData.add(f);
 
 
 
@@ -329,6 +316,41 @@ public class UnpackListActivity extends AppCompatActivity {
         private String content;
         private Exception exception;
     }
+
+    public void showUnpackDialog(String msg)
+    {
+        //final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+        final AlertDialog alert = DialogBuilder.create();
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_show_unpack, null, false);
+
+
+        mTxtCode = (TextView) v.findViewById(R.id.txtCode);
+        mTxtDesc = (TextView) v.findViewById(R.id.txtDesc);
+        mTxtH = (TextView)v.findViewById(R.id.txtHeight);
+        mTxtL = (TextView)v.findViewById(R.id.txtLength);
+        mTxtW = (TextView)v.findViewById(R.id.txtWidth);
+
+
+        mTxtCode.setText("66666");
+        mTxtDesc.setText("หม้อหุงข้าวขนาดใหญ่ 1 ลิตร SMARTHOME");
+        mTxtH.setText("ความสูง 19 เซนติเมตร");
+        mTxtW.setText("ความกว้าง 24 เซนติเมตร");
+        mTxtL.setText("ความยาว 24 เซนติเมตร");
+
+
+        DialogBuilder.setView(v);
+
+        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+        DialogBuilder.show();
+    }
+
 
 
 }

@@ -5,22 +5,43 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.adapter.UnpackViewAdapter;
+import com.bl.dmdelivery.model.Unpack;
+
+import java.util.ArrayList;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class SaveOrdersSlipActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader;
-    private Button mBtnBack,mBtnMenu;
-
+    private TextView mTxtMsg,mTxtHeader,mTxtRepcode,mTxtName,mTxtInv,mTxtAddress,
+            mTxtMobilemsl,mTxtType,mTxtReturn,mTxtMobiledsm,
+            mTxtLat,mTxtLog,mTxtCode,mTxtDesc,mTxtH,mTxtL,mTxtW;
+    private Button mBtnBack,mBtnMenu,mBtnSave,mBtnLoc,mBtnUnpack,mBtnNotsave,mBtnclose;
+    private ACProgressFlower mProgressDialog;
+    private RecyclerView lv;
+    private RecyclerView.Adapter mAdapter;
+    private ArrayList<Unpack> mListOrderData = new ArrayList<Unpack>();
+    private Intent myIntent=null;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
     @Override
@@ -66,8 +87,24 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
+            mBtnSave  = (Button) findViewById(R.id.btnSave);
+            mBtnLoc = (Button)  findViewById(R.id.btnLoc);
+            mBtnUnpack = (Button)findViewById(R.id.btnUnpack);
+            mBtnNotsave = (Button)findViewById(R.id.btnNotsave);
+
+
 
             //textbox
+            mTxtRepcode = (TextView)findViewById(R.id.txtRepcode);
+            mTxtName = (TextView)findViewById(R.id.txtName);
+            mTxtInv = (TextView)findViewById(R.id.txtInv);
+            mTxtAddress = (TextView)findViewById(R.id.txtAddress);
+            mTxtMobilemsl = (TextView)findViewById(R.id.txtMobilemsl);
+            mTxtMobiledsm = (TextView)findViewById(R.id.txtMobiledsm);
+            mTxtType = (TextView)findViewById(R.id.txtTypeInv);
+            mTxtReturn = (TextView)findViewById(R.id.txtReturn);
+            mTxtLat = (TextView)findViewById(R.id.txtLat);
+            mTxtLog = (TextView)findViewById(R.id.txtLog);
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_slip));
         }
@@ -90,10 +127,44 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+            mTxtRepcode.setText("0096061405");
+            mTxtName.setText("คุุณชุฑาทรัพย์ อ่อนสี");
+            mTxtInv.setText("1103842117");
+            mTxtAddress.setText("16/69 เทียนทะเลา 26 แยก 2 แขวงแสมดำ กรุงเทพมหานคร 10150");
+            mTxtMobilemsl.setText("MSL : 028973435");
+            mTxtType.setText("1C");
+            mTxtReturn.setText("R");
+            mTxtMobiledsm.setText("DSM : 0818159347");
+            mTxtLat.setText("Lat=14.0302164");
+            mTxtLog.setText("Log=10.364450");
+
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                }
+            });
+
+            mBtnUnpack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showUnpacklistDialog("");
+                }
+            });
+
+            mBtnNotsave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showReasonDialog("");
+                }
+            });
+
+            mBtnSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
+                    startActivity(myIntent);
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
         } catch (Exception e) {
@@ -123,6 +194,235 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         });
         DialogBuilder.show();
     }
+
+    public void showUnpackDialog(String msg)
+    {
+        //final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+        final AlertDialog alert = DialogBuilder.create();
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_show_unpack, null, false);
+
+
+        mTxtCode = (TextView) v.findViewById(R.id.txtCode);
+        mTxtDesc = (TextView) v.findViewById(R.id.txtDesc);
+        mTxtH = (TextView)v.findViewById(R.id.txtHeight);
+        mTxtL = (TextView)v.findViewById(R.id.txtLength);
+        mTxtW = (TextView)v.findViewById(R.id.txtWidth);
+
+
+        mTxtCode.setText("66666");
+        mTxtDesc.setText("หม้อหุงข้าวขนาดใหญ่ 1 ลิตร SMARTHOME");
+        mTxtH.setText("ความสูง 19 เซนติเมตร");
+        mTxtW.setText("ความกว้าง 24 เซนติเมตร");
+        mTxtL.setText("ความยาว 24 เซนติเมตร");
+
+
+        DialogBuilder.setView(v);
+
+        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+        DialogBuilder.show();
+    }
+
+    public void showReasonDialog(String msg)
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        //final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+        //final AlertDialog alert = DialogBuilder.create();
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_reason, null, false);
+
+        mBtnclose = (Button)v.findViewById(R.id.btnClose);
+        mBtnclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+
+            }
+        });
+
+        DialogBuilder.setView(v);
+
+        /*DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });*/
+        DialogBuilder.show();
+    }
+
+    public void showUnpacklistDialog(String msg)
+    {
+        //final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+        final AlertDialog alert = DialogBuilder.create();
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_list_unpack, null, false);
+
+        lv = (RecyclerView)v.findViewById(R.id.lv);
+        lv.setLayoutManager(new LinearLayoutManager(this));
+        lv.setHasFixedSize(true);
+        lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                showUnpackDialog("");
+            }
+        }));
+        getInit();
+
+        DialogBuilder.setView(v);
+
+        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+        DialogBuilder.show();
+    }
+
+
+    private void getInit() {
+
+        try {
+
+            new getInitDataInAsync().execute();
+
+           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+            {
+
+                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+                {
+
+                    new getOrderDataInAsync().execute();
+                }
+                else
+                {
+
+                    showMsgDialog(getResources().getString(R.string.error_webservice));
+
+                }
+
+            }else
+            {
+
+                showMsgDialog(getResources().getString(R.string.error_network));
+            }*/
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private class getInitDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+           /* mProgressDialog = new ACProgressFlower.Builder(SaveOrdersSlipActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();*/
+
+        }
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+                mListOrderData.clear();
+
+                Unpack f = new Unpack();
+                f.setFscode("11111");
+                f.setFsname("ชื่อสินค้ารายการที่ 1");
+                f.setFsunit("1");
+                mListOrderData.add(f);
+
+                f = new Unpack();
+                f.setFscode("22222");
+                f.setFsname("ชื่อสินค้ารายการที่ 2");
+                f.setFsunit("151");
+                mListOrderData.add(f);
+
+
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : CheckOrderData";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            try {
+
+                if (result.exception != null) {
+                    //mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+
+                            //mProgressDialog.dismiss();
+
+                            if(mListOrderData.size()>0)
+                            {
+
+                                mAdapter = new UnpackViewAdapter(getApplicationContext(),mListOrderData);
+                                lv.setAdapter(mAdapter);
+
+
+
+
+                            }else
+                            {
+
+                                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
+
+                            }
+
+                        }
+                    }, 200);
+
+
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private class PageResultHolder {
+        private String content;
+        private Exception exception;
+    }
+
 
 
 }

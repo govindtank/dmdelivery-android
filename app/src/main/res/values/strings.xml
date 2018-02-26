@@ -127,6 +127,10 @@
     <string name="txt_text_unpack_length">ความยาว</string>
     <string name="txt_text_unpack_heigth">ความสูง</string>
     <string name="menu_text_print_slip">สลิปเซ็นต์จัดส่ง</string>
+    <string name="menu_text_save">ส่งได้</string>
+    <string name="menu_text_notsave">ส่งไม่ได้</string>
+    <string name="menu_text_lat">พิกัด</string>
+    <string name="menu_text_unpack">นอกกล่อง</string>
 
 
     <string-array name="others_menu">
