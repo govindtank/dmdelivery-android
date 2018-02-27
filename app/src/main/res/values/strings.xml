@@ -69,10 +69,11 @@
 
     <string name="txt_text_headder_saveorders_list">รอจัดส่งสินค้า</string>
     <string name="txt_text_headder_saveorders_complete_list">จัดส่งสินค้าแล้ว</string>
-    <string name="txt_text_headder_saveorders_return_list">ใบคืนสินค้า</string>
+    <string name="txt_text_headder_saveorders_return_list">ใบรับคืนสินค้า</string>
     <string name="txt_text_headder_saveorders_return">รายการรับคืนสินค้า</string>
     <string name="txt_text_headder_saveorders_othermenu_list">เมนูอื่น</string>
     <string name="txt_text_headder_saveorders_slip">สลิปเซ็นต์รับ</string>
+    <string name="txt_text_headder_saveorders_return_slip">สลิปเซ็นต์รับคืน</string>
 
     <string name="txt_text_remark">หมายเหตุ</string>
 
@@ -164,12 +165,18 @@
 
 
     <string-array name="returnList">
-        <item>12345 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
-        <item>33256 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>2</item>
-        <item>14526 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
-        <item>32658 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
+        <item>12345 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
+        <item>33256 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>2</item>
+        <item>14526 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
+        <item>32658 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
     </string-array>
 
+    <string-array name="returnList2">
+        <item>0096061405 12345 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020</string>1</item>
+        <item>0096061555 33256 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020</string>2</item>
+        <item>0096061333 14526 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020</string>1</item>
+        <item>0096061222 32658 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020</string>1</item>
+    </string-array>
 
     <string-array name="returncancellist">
         <item>201 ส่งคืนทางไปรษณีย์แล้ว</item>

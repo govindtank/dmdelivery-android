@@ -103,9 +103,6 @@ public class OthersMenuActivity extends AppCompatActivity {
 
                     switch (description){
                         case "กิจกรรม":
-                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
-                            startActivity(myIntent);
-                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             break;
                         case "หน้าจอเซ็นต์รับ":
                             myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);

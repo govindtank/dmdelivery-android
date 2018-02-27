@@ -19,7 +19,7 @@ import com.bl.dmdelivery.R;
 public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader;
-    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList;
+    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnReturnList;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -72,8 +72,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
 
-            mBtnSaveOrders = (Button) findViewById(R.id.btnSaveOrders);
-            mBtnSaveOrdersComplete = (Button) findViewById(R.id.btnSaveOrdersComplete);
+            mBtnSaveOrders = (Button) findViewById(R.id.btnOrdersWait);
+//            mBtnSaveOrdersComplete = (Button) findViewById(R.id.btnSaveOrdersComplete);
             mBtnReturnList = (Button) findViewById(R.id.btnReturnList);
 
             //textbox

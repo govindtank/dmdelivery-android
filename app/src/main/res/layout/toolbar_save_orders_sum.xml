@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackgroundGray" >
+    android:background="@color/colorBGMain" >
 
     <LinearLayout
         android:id="@+id/linlaoMain"
@@ -23,15 +23,14 @@
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="3">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:weightSum="2">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,31 +42,30 @@
                         android:id="@+id/textView8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="รอจัดส่ง"
-                        android:textAlignment="center" />
+                        android:text="รอจัดส่ง(0)"
+                        android:textAlignment="textStart" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical">-->
 
-                    <TextView
-                        android:id="@+id/txtOrdersSum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textAlignment="center" />
-                </LinearLayout>
+                <!--<TextView-->
+                <!--android:id="@+id/txtOrdersSum"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="0"-->
+                <!--android:textAlignment="center" />-->
+                <!--</LinearLayout>-->
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:weightSum="2">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,31 +77,30 @@
                         android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="จัดส่งแล้ว"
-                        android:textAlignment="center" />
+                        android:text="จัดส่งแล้ว(0)"
+                        android:textAlignment="textStart" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical">-->
 
-                    <TextView
-                        android:id="@+id/txtBoxSum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textAlignment="center" />
-                </LinearLayout>
+                <!--<TextView-->
+                <!--android:id="@+id/txtBoxSum"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="0"-->
+                <!--android:textAlignment="center" />-->
+                <!--</LinearLayout>-->
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:weightSum="2">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -115,60 +112,61 @@
                         android:id="@+id/textView7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="รอส่ง+ส่งแล้ว"
-                        android:textAlignment="center" />
+                        android:text="รอส่ง+ส่งแล้ว(0)"
+                        android:textAlignment="textStart" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical">-->
 
-                    <TextView
-                        android:id="@+id/txtBagSum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textAlignment="center" />
-                </LinearLayout>
+                <!--<TextView-->
+                <!--android:id="@+id/txtBagSum"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="0"-->
+                <!--android:textAlignment="center" />-->
+                <!--</LinearLayout>-->
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:weightSum="2">
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
 
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="ใบรับคืน"
-                        android:textAlignment="center" />
-                </LinearLayout>
+            <!--<TextView-->
+            <!--android:id="@+id/textView4"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="ใบรับคืน(0)"-->
+            <!--android:textAlignment="center" />-->
+            <!--</LinearLayout>-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+            <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:orientation="vertical">&ndash;&gt;-->
 
-                    <TextView
-                        android:id="@+id/txtBoxBagSum"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0/0"
-                        android:textAlignment="center" />
-                </LinearLayout>
-            </LinearLayout>
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/txtBoxBagSum"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="0/0"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textAlignment="center" />&ndash;&gt;-->
+            <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+            <!--</LinearLayout>-->
+
+
         </LinearLayout>
 
 

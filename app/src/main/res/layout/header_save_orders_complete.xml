@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
     <LinearLayout
         android:id="@+id/linlaoMain"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="false"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="3">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,146 +26,435 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|left"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-                <Button
-                    android:id="@+id/btnSaveOrders"
-                    style="@style/btnnostroke"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp"
-                    android:text="รอการจัดส่ง"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textbtnMenuSize16" />
-
-                <Button
-                    android:id="@+id/btnSaveOrdersComplete"
-                    style="@style/btnnostroke"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp"
-                    android:text="จัดส่งแล้ว"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textbtnMenuSize16" />
-
-                <Button
-                    android:id="@+id/btnReturnList"
-                    style="@style/btnnostroke"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp"
-                    android:text="ใบรับคืนสินค้า"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textbtnMenuSize16" />
-
-
-            </LinearLayout>
+            <include
+                android:id="@+id/includeToolbarSaveOrdersCompleteMenuBar"
+                layout="@layout/toolbar_save_orders_complete_menu_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
+        <include
+            android:id="@+id/includeSeparatorBarWhite1"
+            layout="@layout/separator_bar_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="0dp"
+
+            android:background="@color/colorBGMain"
             android:orientation="horizontal">
 
             <include
                 android:id="@+id/includeHeaderSerach"
                 layout="@layout/toolbar_search"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
 
+        <include
+            android:id="@+id/includeSeparatorBarWhite2"
+            layout="@layout/separator_bar_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
-            <include
-                android:id="@+id/includeSaveOrdersSum"
-                layout="@layout/toolbar_save_orders_sum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <!--<include-->
+            <!--android:id="@+id/includeHeaderSaveOrdersSum"-->
+            <!--layout="@layout/toolbar_save_orders_sum"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
         </LinearLayout>
 
-
         <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="2">-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:orientation="horizontal">-->
 
-        <!--<LinearLayout-->
+
+        <!--&lt;!&ndash;<android.support.v7.widget.RecyclerView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/lv"&ndash;&gt;-->
+
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:background="@color/colorBackgroundWhite" />&ndash;&gt;-->
+
+
+        <!--<ListView-->
+        <!--android:id="@+id/lv"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="2">-->
-
-
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="2">-->
-
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@color/colorBG"/>-->
 
         <!--</LinearLayout>-->
-
-        <!--</LinearLayout>-->
-
-
-        <!--<LinearLayout-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <!--<include-->
-        <!--android:id="@+id/includeHeaderMenu"-->
-        <!--layout="@layout/toolbar_buttom_menu"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
-        <!--</LinearLayout>      -->
 
     </LinearLayout>
-
-
-    <!--<LinearLayout-->
-    <!--android:orientation="vertical"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="1dp"-->
-    <!--android:layout_below="@+id/linlaoMain"-->
-    <!--android:background="@color/colorPrimaryMoreDark"></LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:orientation="vertical"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="1dp"-->
-    <!--android:layout_below="@+id/linlaoMain"-->
-    <!--android:background="@color/colorPrimaryMoreDark" />-->
-
-
 </LinearLayout>
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@color/colorPrimaryDark">-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/linlaoMain"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="false"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<include-->
+    <!--android:id="@+id/includeHeader"-->
+    <!--layout="@layout/header_menu"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:gravity="center|left"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="3">-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btnSaveOrders"-->
+    <!--style="@style/btnnostroke"-->
+    <!--android:layout_width="40dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:paddingLeft="4dp"-->
+    <!--android:paddingTop="2dp"-->
+    <!--android:text="รอการจัดส่ง"-->
+    <!--android:textColor="@color/colorBG"-->
+    <!--android:textSize="@dimen/textbtnMenuSize16" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btnSaveOrdersComplete"-->
+    <!--style="@style/btnnostroke"-->
+    <!--android:layout_width="40dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:paddingLeft="4dp"-->
+    <!--android:paddingTop="2dp"-->
+    <!--android:text="จัดส่งแล้ว"-->
+    <!--android:textColor="@color/colorBG"-->
+    <!--android:textSize="@dimen/textbtnMenuSize16" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btnReturnList"-->
+    <!--style="@style/btnnostroke"-->
+    <!--android:layout_width="40dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:paddingLeft="4dp"-->
+    <!--android:paddingTop="2dp"-->
+    <!--android:text="ใบรับคืนสินค้า"-->
+    <!--android:textColor="@color/colorBG"-->
+    <!--android:textSize="@dimen/textbtnMenuSize16" />-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:layout_marginRight="15dp"-->
+    <!--android:layout_marginTop="0dp"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<include-->
+    <!--android:id="@+id/includeHeaderSerach"-->
+    <!--layout="@layout/toolbar_search"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginBottom="0dp"-->
+    <!--android:layout_marginTop="0dp"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<include-->
+    <!--android:id="@+id/includeSaveOrdersSum"-->
+    <!--layout="@layout/toolbar_save_orders_sum"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
+
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:weightSum="2">&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:weightSum="2">&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:weightSum="2">&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content">&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<include&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/includeHeaderMenu"&ndash;&gt;-->
+    <!--&lt;!&ndash;layout="@layout/toolbar_buttom_menu"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
+    <!--&lt;!&ndash;</LinearLayout>      &ndash;&gt;-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="vertical"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="fill_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="1dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_below="@+id/linlaoMain"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:background="@color/colorPrimaryMoreDark"></LinearLayout>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="vertical"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="fill_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="1dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_below="@+id/linlaoMain"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:background="@color/colorPrimaryMoreDark" />&ndash;&gt;-->
+
+
+    <!--</LinearLayout>-->
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@color/colorPrimaryDark">-->
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/linlaoMain"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentLeft="false"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<include-->
+                <!--android:id="@+id/includeHeader"-->
+                <!--layout="@layout/header_menu"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:gravity="center|left"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="3">-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btnSaveOrders"-->
+                    <!--style="@style/btnnostroke"-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:paddingLeft="4dp"-->
+                    <!--android:paddingTop="2dp"-->
+                    <!--android:text="รอการจัดส่ง"-->
+                    <!--android:textColor="@color/colorBG"-->
+                    <!--android:textSize="@dimen/textbtnMenuSize16" />-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btnSaveOrdersComplete"-->
+                    <!--style="@style/btnnostroke"-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:paddingLeft="4dp"-->
+                    <!--android:paddingTop="2dp"-->
+                    <!--android:text="จัดส่งแล้ว"-->
+                    <!--android:textColor="@color/colorBG"-->
+                    <!--android:textSize="@dimen/textbtnMenuSize16" />-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btnReturnList"-->
+                    <!--style="@style/btnnostroke"-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:paddingLeft="4dp"-->
+                    <!--android:paddingTop="2dp"-->
+                    <!--android:text="ใบรับคืนสินค้า"-->
+                    <!--android:textColor="@color/colorBG"-->
+                    <!--android:textSize="@dimen/textbtnMenuSize16" />-->
+
+
+            <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:layout_marginLeft="15dp"-->
+            <!--android:layout_marginRight="15dp"-->
+            <!--android:layout_marginTop="0dp"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<include-->
+                <!--android:id="@+id/includeHeaderSerach"-->
+                <!--layout="@layout/toolbar_search"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginBottom="0dp"-->
+            <!--android:layout_marginTop="0dp"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<include-->
+                <!--android:id="@+id/includeSaveOrdersSum"-->
+                <!--layout="@layout/toolbar_save_orders_sum"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
+
+
+        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:weightSum="2">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:weightSum="2">&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:weightSum="2">&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+        <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<include&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/includeHeaderMenu"&ndash;&gt;-->
+        <!--&lt;!&ndash;layout="@layout/toolbar_buttom_menu"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</LinearLayout>      &ndash;&gt;-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="vertical"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="fill_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="1dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_below="@+id/linlaoMain"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:background="@color/colorPrimaryMoreDark"></LinearLayout>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="vertical"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="fill_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="1dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_below="@+id/linlaoMain"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:background="@color/colorPrimaryMoreDark" />&ndash;&gt;-->
+
+
+<!--</LinearLayout>-->

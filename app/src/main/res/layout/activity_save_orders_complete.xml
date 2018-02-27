@@ -13,46 +13,20 @@
 
         <include
             android:id="@+id/includeHeader"
-            layout="@layout/header_save_orders"
+            layout="@layout/header_save_orders_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@color/colorBG"-->
-        <!--android:orientation="vertical"-->
-        <!--android:paddingLeft="2.5dp"-->
-        <!--android:paddingRight="2.5dp">-->
-
-        <!--<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/lv"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@color/colorBG"-->
-        <!--android:footerDividersEnabled="false" />-->
-        <!--</LinearLayout>-->
-
-
-        <!--<LinearLayout-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:paddingLeft="2.5dp"-->
-        <!--android:paddingRight="2.5dp"-->
-        <!--android:background="@color/colorBG">-->
-
-        <!--<android.support.v7.widget.RecyclerView-->
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/lv"-->
-        <!--android:footerDividersEnabled="false"-->
-        <!--android:background="@color/colorBackground"-->
-        <!--android:scrollbars="vertical"/>-->
-        <!--</LinearLayout>-->
-
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/lv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>

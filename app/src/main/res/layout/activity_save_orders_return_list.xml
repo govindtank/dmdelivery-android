@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bl.dmdelivery.actvity.SaveOrdersCompleteActivity">
+    tools:context="com.bl.dmdelivery.actvity.SaveOrdersReturnListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,10 +13,22 @@
 
         <include
             android:id="@+id/includeHeader"
-            layout="@layout/header_save_orders_return_list"
+            layout="@layout/header_save_orders_returnlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/lv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/colorBG"/>
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>

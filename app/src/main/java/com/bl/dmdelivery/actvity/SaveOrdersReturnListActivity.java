@@ -11,7 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bl.dmdelivery.R;
@@ -19,11 +21,14 @@ import com.bl.dmdelivery.R;
 public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader;
-    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList;
+    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnOrdersComptete;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
     private Intent myIntent=null;
+
+    private ListView lv;
+    private String[] sigReturnList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +63,19 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
 
-            mBtnSaveOrders = (Button) findViewById(R.id.btnSaveOrders);
-            mBtnSaveOrdersComplete = (Button) findViewById(R.id.btnSaveOrdersComplete);
-            mBtnReturnList = (Button) findViewById(R.id.btnReturnList);
+            mBtnSaveOrders = (Button) findViewById(R.id.btnOrdersWait);
+            mBtnOrdersComptete = (Button) findViewById(R.id.btnOrdersComptete);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
+
+            // Create the arrays
+            sigReturnList = getResources().getStringArray(R.array.returnList2);
+
+            lv = (ListView) findViewById(R.id.lv);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigReturnList);
+            lv.setAdapter(adapter);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -106,16 +117,16 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
                     startActivity(myIntent);
                     finish();
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
 
-            mBtnSaveOrdersComplete.setOnClickListener(new View.OnClickListener() {
+            mBtnOrdersComptete.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersCompleteActivity.class);
                     startActivity(myIntent);
                     finish();
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
 

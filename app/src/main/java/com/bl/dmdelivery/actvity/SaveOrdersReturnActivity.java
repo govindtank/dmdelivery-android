@@ -23,7 +23,6 @@ import com.bl.dmdelivery.utility.TagUtils;
 
 public class SaveOrdersReturnActivity extends AppCompatActivity {
 
-
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
     private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnApprove,mBtnReject;
 
@@ -32,6 +31,8 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     private ListView lv;
     private String[] sigReturnList;
     private String[] sigReturncancellist;
+
+    private Intent myIntent=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +61,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     private void bindWidget()
     {
         try{
-
-            // Create the arrays
-            sigReturnList = getResources().getStringArray(R.array.returnList);
-
-
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnApprove = (Button) findViewById(R.id.btnApprove);
@@ -74,9 +70,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return));
 
+            // Create the arrays
+            sigReturnList = getResources().getStringArray(R.array.returnList);
 
-//            LayoutInflater inflater = getLayoutInflater();
-//            View v = (View) inflater.inflate(R.layout.list_simple_item_1, null);
             lv = (ListView) findViewById(R.id.lv);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigReturnList);
             lv.setAdapter(adapter);
@@ -112,6 +108,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 public void onClick(View view) {
 //                    finish();
 //                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnSlipActivity.class);
+                    startActivity(myIntent);
                 }
             });
 
@@ -160,6 +159,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
+
+                myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
+                startActivity(myIntent);
             }
         });
 
