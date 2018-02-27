@@ -18,8 +18,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
@@ -33,16 +36,21 @@ import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class SaveOrdersSlipActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader,mTxtRepcode,mTxtName,mTxtInv,mTxtAddress,
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtRepcode,mTxtName,mTxtInv,mTxtAddress,
             mTxtMobilemsl,mTxtType,mTxtReturn,mTxtMobiledsm,
             mTxtLat,mTxtLog,mTxtCode,mTxtDesc,mTxtH,mTxtL,mTxtW;
-    private Button mBtnBack,mBtnMenu,mBtnSave,mBtnLoc,mBtnUnpack,mBtnNotsave,mBtnclose;
+    private Button mBtnBack,mBtnUnpack,mBtnGPS,mBtnApprove,mBtnReject,mmBtnOk,mmBtnClose,mBtnMenu,mBtnSave,mBtnLoc,mBtnNotsave,mBtnclose;
     private ACProgressFlower mProgressDialog;
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
     private ArrayList<Unpack> mListOrderData = new ArrayList<Unpack>();
-    private Intent myIntent=null;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
+
+
+    private ListView lv2;
+    private String[] sigReturncancellist;
+
+    private Intent myIntent=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,27 +94,34 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
-            mBtnMenu = (Button) findViewById(R.id.btnMenu);
-            mBtnSave  = (Button) findViewById(R.id.btnSave);
-            mBtnLoc = (Button)  findViewById(R.id.btnLoc);
-            mBtnUnpack = (Button)findViewById(R.id.btnUnpack);
-            mBtnNotsave = (Button)findViewById(R.id.btnNotsave);
+            mBtnUnpack = (Button) findViewById(R.id.btnUnpack);
+            mBtnGPS = (Button) findViewById(R.id.btnGPS);
+            mBtnApprove = (Button) findViewById(R.id.btnApprove);
+            mBtnReject = (Button) findViewById(R.id.btnReject);
 
 
+//            mBtnMenu = (Button) findViewById(R.id.btnMenu);
+//            mBtnSave  = (Button) findViewById(R.id.btnSave);
+//            mBtnLoc = (Button)  findViewById(R.id.btnLoc);
+//            mBtnUnpack = (Button)findViewById(R.id.btnUnpack);
+//            mBtnNotsave = (Button)findViewById(R.id.btnNotsave);
 
-            //textbox
-            mTxtRepcode = (TextView)findViewById(R.id.txtRepcode);
-            mTxtName = (TextView)findViewById(R.id.txtName);
-            mTxtInv = (TextView)findViewById(R.id.txtInv);
-            mTxtAddress = (TextView)findViewById(R.id.txtAddress);
-            mTxtMobilemsl = (TextView)findViewById(R.id.txtMobilemsl);
-            mTxtMobiledsm = (TextView)findViewById(R.id.txtMobiledsm);
-            mTxtType = (TextView)findViewById(R.id.txtTypeInv);
-            mTxtReturn = (TextView)findViewById(R.id.txtReturn);
-            mTxtLat = (TextView)findViewById(R.id.txtLat);
-            mTxtLog = (TextView)findViewById(R.id.txtLog);
+
+//
+//            //textbox
+//            mTxtRepcode = (TextView)findViewById(R.id.txtRepcode);
+//            mTxtName = (TextView)findViewById(R.id.txtName);
+//            mTxtInv = (TextView)findViewById(R.id.txtInv);
+//            mTxtAddress = (TextView)findViewById(R.id.txtAddress);
+//            mTxtMobilemsl = (TextView)findViewById(R.id.txtMobilemsl);
+//            mTxtMobiledsm = (TextView)findViewById(R.id.txtMobiledsm);
+//            mTxtType = (TextView)findViewById(R.id.txtTypeInv);
+//            mTxtReturn = (TextView)findViewById(R.id.txtReturn);
+//            mTxtLat = (TextView)findViewById(R.id.txtLat);
+//            mTxtLog = (TextView)findViewById(R.id.txtLog);
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_slip));
+
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -127,16 +142,18 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
-            mTxtRepcode.setText("0096061405");
-            mTxtName.setText("คุุณชุฑาทรัพย์ อ่อนสี");
-            mTxtInv.setText("1103842117");
-            mTxtAddress.setText("16/69 เทียนทะเลา 26 แยก 2 แขวงแสมดำ กรุงเทพมหานคร 10150");
-            mTxtMobilemsl.setText("MSL : 028973435");
-            mTxtType.setText("1C");
-            mTxtReturn.setText("R");
-            mTxtMobiledsm.setText("DSM : 0818159347");
-            mTxtLat.setText("Lat=14.0302164");
-            mTxtLog.setText("Log=10.364450");
+
+//            mTxtRepcode.setText("0096061405");
+//            mTxtName.setText("คุุณชุฑาทรัพย์ อ่อนสี");
+//            mTxtInv.setText("1103842117");
+//            mTxtAddress.setText("16/69 เทียนทะเลา 26 แยก 2 แขวงแสมดำ กรุงเทพมหานคร 10150");
+//            mTxtMobilemsl.setText("MSL : 028973435");
+//            mTxtType.setText("1C");
+//            mTxtReturn.setText("R");
+//            mTxtMobiledsm.setText("DSM : 0818159347");
+//            mTxtLat.setText("Lat=14.0302164");
+//            mTxtLog.setText("Log=10.364450");
+
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -152,14 +169,14 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                 }
             });
 
-            mBtnNotsave.setOnClickListener(new View.OnClickListener() {
+            mBtnGPS.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showReasonDialog("");
+
                 }
             });
 
-            mBtnSave.setOnClickListener(new View.OnClickListener() {
+            mBtnApprove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
@@ -167,6 +184,14 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
+
+            mBtnReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showMsgCancelSelectedSingleDialog();
+                }
+            });
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -229,33 +254,75 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         DialogBuilder.show();
     }
 
-    public void showReasonDialog(String msg)
-    {
-        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
-        //final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        //final AlertDialog alert = DialogBuilder.create();
-        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = li.inflate(R.layout.dialog_reason, null, false);
+//    public void showReasonDialog(String msg)
+//    {
+//
+////        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+////        //final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+////        //final AlertDialog alert = DialogBuilder.create();
+////        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+////        View v = li.inflate(R.layout.dialog_reason, null, false);
+////
+////        mBtnclose = (Button)v.findViewById(R.id.btnClose);
+////        mBtnclose.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View view) {
+////                DialogBuilder.dismiss();
+////            }
+////        });
+////        DialogBuilder.setView(v);
+////        DialogBuilder.show();
+//
+//    }
 
-        mBtnclose = (Button)v.findViewById(R.id.btnClose);
-        mBtnclose.setOnClickListener(new View.OnClickListener() {
-            @Override
+
+    public void showMsgCancelSelectedSingleDialog()
+    {
+        // Create the arrays
+        sigReturncancellist = getResources().getStringArray(R.array.returncancellist);
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersSlipActivity.this).create();
+        LayoutInflater inflater = getLayoutInflater();
+        View v = (View) inflater.inflate(R.layout.dialog_save_orders_return_cancel, null);
+        DialogBuilder.setView(v);
+
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
+        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+        mmTxtTitle.setText("ยืนยันการยกเลิกส่งสืนค้า");
+
+
+        lv2 = (ListView) v.findViewById(R.id.lv);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigReturncancellist);
+        lv2.setAdapter(adapter);
+
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
 
+                myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
+                startActivity(myIntent);
             }
         });
 
-        DialogBuilder.setView(v);
-
-        /*DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
-        });*/
+        });
+
+        // Set item click listener
+        lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String description = sigReturncancellist[position];
+                Toast.makeText(SaveOrdersSlipActivity.this, description, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         DialogBuilder.show();
     }
+
 
     public void showUnpacklistDialog(String msg)
     {
