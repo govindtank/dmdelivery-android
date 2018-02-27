@@ -48,7 +48,9 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
 
     private ListView lv2;
+    private ListView lvinv;
     private String[] sigReturncancellist;
+    private String[] sigInvlist;
 
     private Intent myIntent=null;
 
@@ -95,7 +97,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnUnpack = (Button) findViewById(R.id.btnUnpack);
-            mBtnGPS = (Button) findViewById(R.id.btnGPS);
+            mBtnGPS= (Button) findViewById(R.id.btnGPS);
             mBtnApprove = (Button) findViewById(R.id.btnApprove);
             mBtnReject = (Button) findViewById(R.id.btnReject);
 
@@ -120,8 +122,15 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 //            mTxtLat = (TextView)findViewById(R.id.txtLat);
 //            mTxtLog = (TextView)findViewById(R.id.txtLog);
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_slip));
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_slip_details));
 
+
+            // Create the arrays
+            sigInvlist = getResources().getStringArray(R.array.invList);
+
+            lvinv = (ListView) findViewById(R.id.lv);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigInvlist);
+            lvinv.setAdapter(adapter);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -179,7 +188,9 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             mBtnApprove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
+//                    finish();
+
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
                     startActivity(myIntent);
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }

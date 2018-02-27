@@ -126,7 +126,11 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String description = sigReturnList[position];
-                    Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
+
+
+                    showMsgQtyDialog();
+
                 }
             });
 
@@ -177,6 +181,34 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String description = sigReturncancellist[position];
                 Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        DialogBuilder.show();
+    }
+
+
+    public void showMsgQtyDialog()
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersReturnActivity.this).create();
+        LayoutInflater inflater = getLayoutInflater();
+        View v = (View) inflater.inflate(R.layout.dialog_confirm_qty, null);
+        DialogBuilder.setView(v);
+
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
+        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+        mmTxtTitle.setText("แก้ไขจำนวนรับจริง");
+
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
 

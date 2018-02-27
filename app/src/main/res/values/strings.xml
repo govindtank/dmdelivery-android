@@ -74,6 +74,8 @@
     <string name="txt_text_headder_saveorders_othermenu_list">เมนูอื่น</string>
     <string name="txt_text_headder_saveorders_slip">สลิปเซ็นต์รับ</string>
     <string name="txt_text_headder_saveorders_return_slip">สลิปเซ็นต์รับคืน</string>
+    <string name="txt_text_headder_saveorders_slip_details">รายละเอียด</string>
+
 
     <string name="txt_text_remark">หมายเหตุ</string>
 
@@ -190,6 +192,10 @@
         <item>301 อื่นๆ.....................</item>
     </string-array>
 
+    <string-array name="invList">
+        <item>1103842117<string>\u0020\u0020\u0020</string>096061405<string>\u0020\u0020\u0020</string>คุณชุฑาทรัพย์ อ่อนสี</item>
+        <item>1103842100<string>\u0020\u0020\u0020</string>036061406<string>\u0020\u0020\u0020</string>คุณทดสอบ ข้อมูล</item>
+    </string-array>
 
 
 </resources>
