@@ -34,16 +34,10 @@
             <include
                 android:id="@+id/includeToolbarSaveOrdersMenuBar"
                 layout="@layout/toolbar_save_orders_menu_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
-
-        <include
-            android:id="@+id/includeSeparatorBarWhite1"
-            layout="@layout/separator_bar_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="wrap_content"

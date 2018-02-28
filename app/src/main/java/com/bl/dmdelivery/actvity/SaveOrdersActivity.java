@@ -193,18 +193,23 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             mBtnSaveOrdersComplete.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
+
+                    finish();
                     myIntent = new Intent(getApplicationContext(), SaveOrdersCompleteActivity.class);
                     startActivity(myIntent);
-                    finish();
+                    overridePendingTransition(0,0);
+
 ////                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
 
             mBtnReturnList.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
+
+                    finish();
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnListActivity.class);
                     startActivity(myIntent);
-                    finish();
+                    overridePendingTransition(0,0);
 ////                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
