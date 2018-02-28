@@ -41,7 +41,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 //    private ImageView mImvHeader;
     private TextView mTxtMsg,mTxtHeader;
-    private Button mBtnBack,mBtnMenu,mBtnSaveOrdersComplete,mBtnReturnList;
+    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -133,7 +133,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
 
-//            mBtnSaveOrders = (Button) findViewById(R.id.btnOrdersWait);
+            mBtnSaveOrders = (Button) findViewById(R.id.btnOrdersWait);
             mBtnSaveOrdersComplete = (Button) findViewById(R.id.btnOrdersComptete);
             mBtnReturnList = (Button) findViewById(R.id.btnReturnList);
 
@@ -189,6 +189,12 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 //                }
 //            });
+
+            mBtnSaveOrders.setText("รอส่ง\n(2/2)");
+
+            mBtnSaveOrdersComplete.setText("ส่งได้\n(0/2)");
+
+            mBtnReturnList.setText("ใบรับคืน\n(0/2)");
 
 
             mBtnSaveOrdersComplete.setOnClickListener(new View.OnClickListener() {

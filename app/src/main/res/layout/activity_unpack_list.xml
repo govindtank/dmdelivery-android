@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.bl.dmdelivery.actvity.UnpackListActivity">
-
-<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorBG"
-    android:orientation="vertical">
-
-    <include
-        android:id="@+id/includeHeader"
-        layout="@layout/header_unpack_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    tools:context="com.bl.dmdelivery.actvity.UnpackListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBG"
-        android:orientation="vertical"
-        android:paddingLeft="2.5dp"
-        android:paddingRight="2.5dp">
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/lv"
+        <include
+            android:id="@+id/includeHeader"
+            layout="@layout/header_unpack_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorBackgroundWhite" />
+            android:layout_marginTop="2dp"
+            android:background="@color/colorBackground"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/lv"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
-
-
-</LinearLayout>
 </RelativeLayout>
 

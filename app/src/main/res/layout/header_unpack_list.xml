@@ -1,233 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:id="@+id/linlaoMain"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="false"
-        android:id="@+id/linlaoMain"
         android:orientation="vertical"
         android:weightSum="3">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/colorPrimaryMoreDark"
-            android:weightSum="3"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp">
-
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:drawableLeft="@mipmap/ic_first_menu"
-                    android:id="@+id/btnBack"
-                    android:paddingLeft="3dp"
-                    android:background="@null" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimaryMoreDark"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:layout_weight="0.5">
-
-                <TextView
-                    android:id="@+id/txtHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Header"
-                    android:textColor="@color/colorBGMain"
-                    android:textSize="@dimen/textHeadDtlSize16"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:gravity="right"
-                android:layout_marginRight="10dp">
-
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/btnMenu"
-                    android:paddingLeft="9dp"
-                    android:background="@null" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutTruck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_stroke"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:foregroundGravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imvtruck"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="11dp"
-                    android:foregroundGravity="center"
-                    android:paddingBottom="5dp"
-                    android:src="@android:drawable/ic_menu_search" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-
-                <EditText
-                    android:id="@+id/edtSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/background_edittext"
-                    android:ems="10"
-                    android:hint="@string/btn_text_search"
-                    android:imeActionLabel="@string/action_sign_in"
-                    android:inputType="textPersonName"
-                    android:textColor="@color/colorText"
-                    android:textColorHint="@color/colorHintText"
-                    android:textSize="@dimen/textSize25"
-                    android:textStyle="normal" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txttextunpack1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="@string/txt_text_headder_unpack"
-                        android:textColor="@color/colorBGMain"
-                        android:textSize="@dimen/textRowSize" />
-
-                    <TextView
-                        android:id="@+id/txtListQty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="0"
-                        android:textColor="@color/colorBGMain"
-                        android:textSize="@dimen/textRowSize" />
-
-                    <TextView
-                        android:id="@+id/txtOrder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="@string/txt_text_headder_unpack_qty"
-                        android:textColor="@color/colorBGMain"
-                        android:textSize="@dimen/textRowSize" />
-
-                    <TextView
-                        android:id="@+id/txtUnpackQty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="0"
-                        android:textColor="@color/colorBGMain"
-                        android:textSize="@dimen/textRowSize" />
-                </LinearLayout>
-
-            </LinearLayout>
-
+            <include
+                android:id="@+id/includeHeader"
+                layout="@layout/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+
+            android:background="@color/colorBGMain"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/includeHeaderSerach"
+                layout="@layout/toolbar_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <!--<include-->
+            <!--android:id="@+id/includeHeaderSaveOrdersSum"-->
+            <!--layout="@layout/toolbar_save_orders_sum"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+        </LinearLayout>
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:orientation="horizontal">-->
+
+
+        <!--&lt;!&ndash;<android.support.v7.widget.RecyclerView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/lv"&ndash;&gt;-->
+
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:background="@color/colorBackgroundWhite" />&ndash;&gt;-->
+
+
+        <!--<ListView-->
+        <!--android:id="@+id/lv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@color/colorBG"/>-->
+
+        <!--</LinearLayout>-->
+
     </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark" />
-
-</RelativeLayout>
+</LinearLayout>

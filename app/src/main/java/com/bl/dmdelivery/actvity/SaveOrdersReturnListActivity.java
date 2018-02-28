@@ -21,7 +21,7 @@ import com.bl.dmdelivery.R;
 public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader;
-    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnOrdersComptete;
+    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnOrdersComptete,mBtnReturnList;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -65,6 +65,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
             mBtnSaveOrders = (Button) findViewById(R.id.btnOrdersWait);
             mBtnOrdersComptete = (Button) findViewById(R.id.btnOrdersComptete);
+            mBtnReturnList = (Button) findViewById(R.id.btnReturnList);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
@@ -96,6 +97,12 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+
+            mBtnSaveOrders.setText("รอส่ง\n(2/2)");
+
+            mBtnOrdersComptete.setText("ส่งได้\n(0/2)");
+
+            mBtnReturnList.setText("ใบรับคืน\n(0/2)");
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {

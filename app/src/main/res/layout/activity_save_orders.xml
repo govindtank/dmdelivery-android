@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.bl.dmdelivery.actvity.SaveOrdersActivity"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    tools:context="com.bl.dmdelivery.actvity.SaveOrdersActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBG"
+        android:background="@color/colorBackground"
         android:orientation="vertical">
 
         <include
@@ -22,48 +23,51 @@ tools:context="com.bl.dmdelivery.actvity.SaveOrdersActivity"
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:background="@color/colorBackground"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/lv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground" />
         </LinearLayout>
 
 
         <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@color/colorBG"-->
-            <!--android:orientation="vertical"-->
-            <!--android:paddingLeft="2.5dp"-->
-            <!--android:paddingRight="2.5dp">-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/colorBG"-->
+        <!--android:orientation="vertical"-->
+        <!--android:paddingLeft="2.5dp"-->
+        <!--android:paddingRight="2.5dp">-->
 
-            <!--<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"-->
-                <!--android:id="@+id/lv"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="@color/colorBG"-->
-                <!--android:footerDividersEnabled="false" />-->
+        <!--<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/lv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/colorBG"-->
+        <!--android:footerDividersEnabled="false" />-->
         <!--</LinearLayout>-->
 
 
         <!--<LinearLayout-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:paddingLeft="2.5dp"-->
-            <!--android:paddingRight="2.5dp"-->
-            <!--android:background="@color/colorBG">-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:paddingLeft="2.5dp"-->
+        <!--android:paddingRight="2.5dp"-->
+        <!--android:background="@color/colorBG">-->
 
-            <!--<android.support.v7.widget.RecyclerView-->
-                <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:id="@+id/lv"-->
-                <!--android:footerDividersEnabled="false"-->
-                <!--android:background="@color/colorBackground"-->
-                <!--android:scrollbars="vertical"/>-->
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/lv"-->
+        <!--android:footerDividersEnabled="false"-->
+        <!--android:background="@color/colorBackground"-->
+        <!--android:scrollbars="vertical"/>-->
         <!--</LinearLayout>-->
 
 
