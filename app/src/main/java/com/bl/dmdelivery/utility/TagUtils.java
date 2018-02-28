@@ -3,7 +3,7 @@ package com.bl.dmdelivery.utility;
 
 public class TagUtils {
 
-    public static final String WEBSERVICEURI = "http://distributioncenter01.mistine.co.th:9090/dmdelivery/api/";
+    public static final String WEBSERVICEURI = "http://distributioncenter01.mistine.co.th:9090/dmdelivery/api";
     public static final String WEBSERVICEUSER = "bladmin";
     public static final String WEBSERVICEPASS = "P@ssw0rdblSD";
 

@@ -1,24 +1,32 @@
 package com.bl.dmdelivery.actvity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.hardware.Camera;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.bl.dmdelivery.R;
@@ -32,7 +40,14 @@ import com.bl.dmdelivery.model.Unpack;
 import com.bl.dmdelivery.utility.TagUtils;
 import com.google.gson.Gson;
 
+import net.sourceforge.zbar.Config;
+import net.sourceforge.zbar.Image;
+import net.sourceforge.zbar.ImageScanner;
+import net.sourceforge.zbar.Symbol;
+import net.sourceforge.zbar.SymbolSet;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -41,7 +56,7 @@ import okhttp3.Response;
 public class ScanOrdersActivity extends AppCompatActivity {
 
     private ACProgressFlower mProgressDialog;
-    private TextView mTxtMsg,mTxtHeader;
+    private TextView mTxtMsg,mTxtHeader,mTxtResult,mTxtOrderSum;
     private Button mBtnBack,mBtnCheckScan,mBtnOk,mBtnClose,mBtnConfirm;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
     private RecyclerView lv;
@@ -54,6 +69,19 @@ public class ScanOrdersActivity extends AppCompatActivity {
     private String deliveryDate = "";
     private OrderScanReq mOrderScanReq;
     private String serverUrl;
+    private Integer i = 0;
+
+    private Camera mCamera;
+    private CameraPreview mPreview;
+    private boolean barcodeScanned = false;
+    private boolean previewing = true ;
+    ImageScanner scanner;
+    private Handler autoFocusHandler;
+    private FrameLayout preview;
+
+    static {
+        System.loadLibrary("iconv");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +126,21 @@ public class ScanOrdersActivity extends AppCompatActivity {
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_scanorders_list));
+            mTxtResult = (TextView)findViewById(R.id.txtResult);
+            mTxtOrderSum = (TextView)findViewById(R.id.txtOrdersSum);
+
+            //scan
+            autoFocusHandler = new Handler();
+            mCamera = getCameraInstance();
+
+            scanner = new ImageScanner();
+            scanner.setConfig(0, Config.X_DENSITY, 3);
+            scanner.setConfig(0, Config.Y_DENSITY, 3);
+
+            mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCB);
+             preview = (FrameLayout)findViewById(R.id.cameraPreview);
+            preview.addView(mPreview);
+
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -143,6 +186,22 @@ public class ScanOrdersActivity extends AppCompatActivity {
                     showMsgConfirmDialog("ยืนยันการสแกนสินค้าขึ้นรถ");
                 }
             });
+
+
+
+           preview.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   if (barcodeScanned) {
+                       barcodeScanned = false;
+                       mTxtResult.setText("Scanning...");
+                       mCamera.setPreviewCallback(previewCb);
+                       mCamera.startPreview();
+                       previewing = true;
+                       mCamera.autoFocus(autoFocusCB);
+                   }
+               }
+           });
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -370,6 +429,147 @@ public class ScanOrdersActivity extends AppCompatActivity {
         private Exception exception;
     }
 
+
+
+
+    public void onPause() {
+        super.onPause();
+        releaseCamera();
+    }
+
+    /** A safe way to get an instance of the Camera object. */
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open();
+        } catch (Exception e){
+            //e.getMessage();
+        }
+        return c;
+    }
+
+    private void releaseCamera() {
+        if (mCamera != null) {
+            previewing = false;
+            mCamera.setPreviewCallback(null);
+            mCamera.release();
+            mCamera = null;
+        }
+    }
+
+    private Runnable doAutoFocus = new Runnable() {
+        public void run() {
+            if (previewing)
+                mCamera.autoFocus(autoFocusCB);
+        }
+    };
+
+    Camera.PreviewCallback previewCb = new Camera.PreviewCallback() {
+        public void onPreviewFrame(byte[] data, Camera camera) {
+            Camera.Parameters parameters = camera.getParameters();
+            Camera.Size size = parameters.getPreviewSize();
+
+            Image barcode = new Image(size.width, size.height, "Y800");
+            barcode.setData(data);
+
+            int result = scanner.scanImage(barcode);
+
+            if (result != 0) {
+
+                previewing = false;
+                mCamera.setPreviewCallback(null);
+                mCamera.stopPreview();
+
+                SymbolSet syms = scanner.getResults();
+
+
+                if(syms.size()>1)
+                {
+                    for(int i=1; i<syms.size();i++){
+
+                        syms.remove(1);
+                    }
+                }
+
+                for (Symbol sym : syms) {
+                    //showMsgDialog("barcode result " + sym.getData());
+                    //mTxtBarcode.setText("barcode result " + sym.getData());
+
+                    mTxtResult.setText(sym.getData().toString());
+                    i = i+1;
+                    mTxtOrderSum.setText(i.toString());
+
+                    //checkOrder();
+
+                    /*finish();
+                    Intent myIntent = new Intent(getApplicationContext(), SingDeliveryBLActivity.class);
+                    startActivity(myIntent);
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);*/
+
+
+                    barcodeScanned = true;
+                }
+            }
+        }
+    };
+
+    // Mimic continuous auto-focusing
+    Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
+        public void onAutoFocus(boolean success, Camera camera) {
+            autoFocusHandler.postDelayed(doAutoFocus, 1000);
+        }
+    };
+
+    public void onBackPressed() {
+
+        previewing = false;
+        mCamera.setPreviewCallback(null);
+        mCamera.stopPreview();
+
+        finish();
+        overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
+
+            List<String> permissions = new ArrayList<String>();
+
+            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.CAMERA);
+
+            }
+            if (!permissions.isEmpty()) {
+                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 111: {
+                for (int i = 0; i < permissions.length; i++) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        System.out.println("Permissions --> " + "Permission Granted: " + permissions[i]);
+
+
+                    } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                        System.out.println("Permissions --> " + "Permission Denied: " + permissions[i]);
+
+                    }
+                }
+            }
+            break;
+            default: {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
+    }
 
 
 
