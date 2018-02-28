@@ -83,7 +83,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     finish();
 
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
                     startActivity(myIntent);
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }

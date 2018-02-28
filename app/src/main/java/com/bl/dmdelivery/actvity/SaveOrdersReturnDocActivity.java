@@ -20,19 +20,23 @@ import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 
-public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
+public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
-    private Button mBtnBack,mmBtnOk,mmBtnClose;
-
+    private Button mBtnBack,mBtnApprove,mBtnReject;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
+
+    private ListView lvinv;
+    private String[] sigInvlist;
+
     private Intent myIntent=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_save_orders_return_slip);
+        setContentView(R.layout.activity_save_orders_return_doc);
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -42,27 +46,49 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         }
 
         try {
-            bindWidget();
 
+            bindWidget();
+//
 //            setDefaultFonts();
 
             setWidgetControl();
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
     }
+
+    public void onBackPressed() {
+        finish();
+
+        myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
+        startActivity(myIntent);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
 
     private void bindWidget()
     {
         try{
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
-            mmBtnOk = (Button) findViewById(R.id.btnApprove);
-            mmBtnClose = (Button) findViewById(R.id.btnReject);
+            mBtnBack.setVisibility(View.INVISIBLE);
 
-            //textbox
+            mBtnApprove = (Button) findViewById(R.id.btnApprove);
+            mBtnApprove.setText("รีเฟรช");
+
+            mBtnReject = (Button) findViewById(R.id.btnReject);
+
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_slip));
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
+
+
+            // Create the arrays
+            sigInvlist = getResources().getStringArray(R.array.invList);
+
+            lvinv = (ListView) findViewById(R.id.lv);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigInvlist);
+            lvinv.setAdapter(adapter);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -84,30 +110,45 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private void setWidgetControl() {
         try{
 
-            mBtnBack.setOnClickListener(new View.OnClickListener() {
+//            mBtnBack.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    finish();
+//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+//                }
+//            });
+
+
+
+            mBtnApprove.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    finish();
-                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+
                 }
             });
 
-            mmBtnOk.setOnClickListener(new View.OnClickListener() {
+
+            mBtnReject.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
                     startActivity(myIntent);
                 }
             });
 
-            mmBtnClose.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    finish();
-                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                    startActivity(myIntent);
+            // Set item click listener
+            lvinv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String description = sigInvlist[position];
+
+                 if(!description.isEmpty())   {
+                     finish();
+
+                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
+                     startActivity(myIntent);
+                 }
                 }
             });
 
@@ -115,6 +156,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             showMsgDialog(e.toString());
         }
     }
+
 
     public void showMsgDialog(String msg)
     {
@@ -138,4 +180,5 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         });
         DialogBuilder.show();
     }
+
 }

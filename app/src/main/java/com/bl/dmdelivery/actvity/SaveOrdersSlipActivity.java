@@ -188,7 +188,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             mBtnApprove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    finish();
+                    finish();
 
                     myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
                     startActivity(myIntent);
@@ -310,6 +310,8 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
+
+                finish();
 
                 myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
                 startActivity(myIntent);

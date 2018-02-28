@@ -101,6 +101,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                    startActivity(myIntent);
                 }
             });
 
@@ -164,7 +167,8 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
 
-                myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
+                finish();
+                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
                 startActivity(myIntent);
             }
         });
