@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
 
             String truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
-            String deliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
+            //String deliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
 
 
             mTxtLogotext = (TextView) findViewById(R.id.txtlogo);
@@ -100,16 +100,20 @@ public class LoginActivity extends AppCompatActivity {
             mTxtLogotext.setText(getResources().getString(R.string.app_name_dtl));
             mTxtDate = (TextView) findViewById(R.id.txtdate);
 
-            if(deliveryDate.equals(""))
-            {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                String currentDate = sdf.format(new Date());
-                mTxtDate.setText(currentDate);
-            }
-            else
-            {
-                mTxtDate.setText(deliveryDate);
-            }
+//            if(deliveryDate.equals(""))
+//            {
+//                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//                String currentDate = sdf.format(new Date());
+//                mTxtDate.setText(currentDate);
+//            }
+//            else
+//            {
+//                mTxtDate.setText(deliveryDate);
+//            }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String currentDate = sdf.format(new Date());
+            mTxtDate.setText(currentDate);
 
 
             mEdtTroukno.setText(truckNo);
