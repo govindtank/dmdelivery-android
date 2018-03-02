@@ -9,15 +9,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 
 public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
-    private Button mBtnBack,mmBtnOk,mmBtnClose;
+    private Button mBtnBack,mBtnReason,mmBtnOk,mmBtnClose,mBtnApprove,mBtnReject;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -37,7 +41,6 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
-
     }
 
     private void bindWidget()
@@ -45,8 +48,9 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
         try{
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
-            mmBtnOk = (Button) findViewById(R.id.btnApprove);
-            mmBtnClose = (Button) findViewById(R.id.btnReject);
+            mBtnReason = (Button) findViewById(R.id.btnReason);
+            mBtnApprove = (Button) findViewById(R.id.btnApprove);
+            mBtnReject = (Button) findViewById(R.id.btnReject);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
@@ -74,13 +78,19 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
-
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 }
             });
 
-            mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            mBtnReason.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
+                    showMsgReasonApproveSelectedSingleDialog();
+                }
+            });
+
+            mBtnApprove.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    //ตรวจสอบก่อนว่ามีสินค้ารับคือนหรือไม่ ถ้ามีไปที่ใบรับคืน ถ้าไม่มีไปที่ หน้ารายการจัดส่งหลัก
                     finish();
 
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
@@ -89,10 +99,9 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                 }
             });
 
-            mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            mBtnReject.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
-
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 }
             });
@@ -100,6 +109,40 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    public void showMsgReasonApproveSelectedSingleDialog()
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersApproveSlipActivity.this).create();
+        LayoutInflater inflater = getLayoutInflater();
+        View v = (View) inflater.inflate(R.layout.dialog_save_orders_reason_approve, null);
+        DialogBuilder.setView(v);
+
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
+        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+        mmTxtTitle.setText("ป้อนเหตุผลการบันทึกส่งสินค้า");
+
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+
+//                //ตรวจสอบก่อนว่ามีสินค้ารับคือนหรือไม่ ถ้ามีไปที่ใบรับคืน ถ้าไม่มีไปที่ หน้ารายการจัดส่งหลัก
+//                finish();
+//
+//                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                startActivity(myIntent);
+//                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            }
+        });
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
     }
 
     public void showMsgDialog(String msg)

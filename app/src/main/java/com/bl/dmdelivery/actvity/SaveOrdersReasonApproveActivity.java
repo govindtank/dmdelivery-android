@@ -16,27 +16,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 
-public class SaveOrdersReturnDocActivity extends AppCompatActivity {
+public class SaveOrdersReasonApproveActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
-    private Button mBtnBack,mBtnReason,mBtnApprove,mBtnReject;
+    private Button mBtnOk,mBtnClose;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
 
-    private ListView lvinv;
-    private String[] sigInvlist;
-
     private Intent myIntent=null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_save_orders_return_doc);
+        setContentView(R.layout.dialog_save_orders_reason_approve);
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -45,25 +40,17 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        try {
-
-            bindWidget();
+//        try {
 //
-//            setDefaultFonts();
-
-            setWidgetControl();
-
-        } catch (Exception e) {
-            showMsgDialog(e.toString());
-        }
-    }
-
-    public void onBackPressed() {
-        finish();
-
-        myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
-        startActivity(myIntent);
-        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//            bindWidget();
+//
+////            setDefaultFonts();
+//
+//            setWidgetControl();
+//
+//        } catch (Exception e) {
+//            showMsgDialog(e.toString());
+//        }
     }
 
 
@@ -71,27 +58,11 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     {
         try{
             //button
-            mBtnBack = (Button) findViewById(R.id.btnBack);
-            mBtnBack.setVisibility(View.INVISIBLE);
-
-            mBtnReason = (Button) findViewById(R.id.btnReason);
-            mBtnReason.setVisibility(View.INVISIBLE);
-
-            mBtnApprove = (Button) findViewById(R.id.btnApprove);
-            mBtnApprove.setText("รีเฟรช");
-
-            mBtnReject = (Button) findViewById(R.id.btnReject);
+            mBtnOk = (Button) findViewById(R.id.btnOk);
+            mBtnClose = (Button) findViewById(R.id.btnClose);
 
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
 
-
-            // Create the arrays
-            sigInvlist = getResources().getStringArray(R.array.invList);
-
-            lvinv = (ListView) findViewById(R.id.lv);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigInvlist);
-            lvinv.setAdapter(adapter);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -122,38 +93,38 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
 
 
-            mBtnApprove.setOnClickListener(new View.OnClickListener() {
+            mBtnOk.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
                 }
             });
 
 
-            mBtnReject.setOnClickListener(new View.OnClickListener() {
+            mBtnClose.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    finish();
-                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
-                    startActivity(myIntent);
+//                    finish();
+//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+//
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
+//                    startActivity(myIntent);
                 }
             });
 
 
-            // Set item click listener
-            lvinv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String description = sigInvlist[position];
-
-                 if(!description.isEmpty())   {
-                     finish();
-
-                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
-                     startActivity(myIntent);
-                 }
-                }
-            });
+//            // Set item click listener
+//            lvReturnCancellist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    String description = sigReturnCancellist[position];
+//
+//                    if(!description.isEmpty())   {
+////                        finish();
+////
+////                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
+////                        startActivity(myIntent);
+//                    }
+//                }
+//            });
 
         } catch (Exception e) {
             showMsgDialog(e.toString());
@@ -183,5 +154,6 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
         });
         DialogBuilder.show();
     }
+
 
 }

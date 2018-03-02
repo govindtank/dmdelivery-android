@@ -46,7 +46,8 @@
         <activity android:name=".actvity.OthersMenuActivity" />
         <activity android:name=".actvity.SaveOrdersApproveSlipActivity" />
         <activity android:name=".actvity.DialogConfirmQtyActivity" />
-        <activity android:name=".actvity.SaveOrdersReturnDocActivity"></activity>
+        <activity android:name=".actvity.SaveOrdersReturnDocActivity" />
+        <activity android:name=".actvity.SaveOrdersReasonApproveActivity" />
     </application>
 
 </manifest>
