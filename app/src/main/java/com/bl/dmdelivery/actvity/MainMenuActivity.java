@@ -8,11 +8,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,11 +32,27 @@ import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.CustomGridViewAdapter;
+import com.bl.dmdelivery.helper.CheckNetwork;
+import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.helper.WebServiceHelper;
+import com.bl.dmdelivery.model.LoadOrderResponse;
+import com.bl.dmdelivery.model.Order;
+import com.bl.dmdelivery.model.OrderReturn;
+import com.bl.dmdelivery.model.OrderScan;
+import com.bl.dmdelivery.model.OrderScanReq;
+import com.bl.dmdelivery.model.OrderScanResponse;
+import com.bl.dmdelivery.model.Reason;
+import com.bl.dmdelivery.model.Unpack;
 import com.bl.dmdelivery.utility.TagUtils;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -41,6 +62,14 @@ public class MainMenuActivity extends AppCompatActivity {
     private ImageView mmImvTitle;
     private static TextView mTxtDate;
     private Intent myIntent=null;
+    private CheckNetwork chkNetwork = new CheckNetwork();
+    private ACProgressFlower mProgressDialog;
+    private String serverUrl;
+    private OrderScanReq mLoadOrderReq;
+    private LoadOrderResponse mListLoadOrder =new LoadOrderResponse();
+
+    DBHelper mHelper;
+    SQLiteDatabase mDb;
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -128,6 +157,11 @@ public class MainMenuActivity extends AppCompatActivity {
             mTxtTroukno.setText(truckNo);
 
 
+            mLoadOrderReq = new OrderScanReq();
+            mLoadOrderReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
+            mLoadOrderReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
+
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -155,6 +189,9 @@ public class MainMenuActivity extends AppCompatActivity {
                             break;
                         case "โหลดข้อมูล":
                             showMsgConfirmDialog("ต้องการโหลดข้อมูล ใช่หรือไม่?");
+                           /* Order order = new Order();
+                            mHelper = new DBHelper(getApplicationContext());
+                            order = mHelper.getOrders("000");*/
                             break;
                         case "สินค้านอกกล่อง":
                             myIntent = new Intent(getApplicationContext(), UnpackListActivity.class);
@@ -193,10 +230,10 @@ public class MainMenuActivity extends AppCompatActivity {
 
         DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-       // mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-        //mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
 
 //        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
 //        mmTxtMsg.setTypeface(tf);
@@ -239,6 +276,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                loadData();
                 DialogBuilder.dismiss();
             }
         });
@@ -343,4 +381,243 @@ public class MainMenuActivity extends AppCompatActivity {
 
         return sdf.format(date);
     }
+
+    private void loadData() {
+
+        try {
+
+            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+            {
+                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+                {
+
+                    serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/LoadOrder";
+                    new loadDataDataInAsync().execute(serverUrl);
+
+
+                }
+                else
+                {
+                    showMsgDialog(getResources().getString(R.string.error_webservice));
+
+                }
+
+            }else
+            {
+                //showDialog("ไม่สามารถเชื่อมต่อ Internet ได้ กรุณากรุณาตรวจสอบ!!!");
+                showMsgDialog(getResources().getString(R.string.error_network));
+            }
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    private class loadDataDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mProgressDialog = new ACProgressFlower.Builder(MainMenuActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .text(getResources().getString(R.string.progress_loading))
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+
+                mHelper = new DBHelper(getApplicationContext());
+                mDb = mHelper.getWritableDatabase();
+                mHelper.onUpgrade(mDb,0,0);
+
+                //mDb.execSQL("DELETE FROM " + DBHelper.TableOrder + ";");
+
+                Gson gson = new Gson();
+                String json = gson.toJson(mLoadOrderReq);
+                String result = new WebServiceHelper().postServiceAPI(params[0],json);
+                Log.i("LoginResult", result.toString());
+
+                //convert json to obj
+                LoadOrderResponse obj = gson.fromJson(result,LoadOrderResponse.class);
+
+                ArrayList<Order> orders = new ArrayList<Order>();
+                ArrayList<OrderReturn> orderReturns = new ArrayList<OrderReturn>();
+                ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
+                ArrayList<Reason> reasons = new ArrayList<Reason>();
+               // mListLoadOrder. =new LoadOrderResponse();
+
+                if (obj.getResponseCode().equals("1"))
+                {
+                    for(int i=0; i<obj.getOrder().size();i++){
+
+                        Order f = new Order();
+                        f.setOucode(obj.getOrder().get(i).getOucode().toString());
+                        f.setYear(obj.getOrder().get(i).getYear().toString());
+                        f.setGroup(obj.getOrder().get(i).getGroup().toString());
+                        f.setTransNo(obj.getOrder().get(i).getTransNo().toString());
+                        f.setTransdate(obj.getOrder().get(i).getTransdate().toString());
+                        f.setRep_seq(obj.getOrder().get(i).getRep_seq().toString());
+                        f.setRep_code(obj.getOrder().get(i).getRep_code().toString());
+                        f.setRep_name(obj.getOrder().get(i).getRep_name().toString());
+                        f.setRep_nickname(obj.getOrder().get(i).getRep_nickname().toString());
+                        f.setAddress1(obj.getOrder().get(i).getAddress1().toString());
+                        f.setAddress2(obj.getOrder().get(i).getAddress2().toString());
+                        f.setTumbon(obj.getOrder().get(i).getTumbon().toString());
+                        f.setAmphur(obj.getOrder().get(i).getAmphur().toString());
+                        f.setProvince(obj.getOrder().get(i).getProvince().toString());
+                        f.setPostal(obj.getOrder().get(i).getPostal().toString());
+                        f.setRep_telno(obj.getOrder().get(i).getRep_telno().toString());
+                        f.setDsm_name(obj.getOrder().get(i).getDsm_name().toString());
+                        f.setDsm_telno(obj.getOrder().get(i).getDsm_telno().toString());
+                        f.setLoc_code(obj.getOrder().get(i).getLoc_code().toString());
+                        f.setTrans_campaign(obj.getOrder().get(i).getTrans_campaign().toString());
+                        f.setOrd_campaign(obj.getOrder().get(i).getOrd_campaign().toString());
+                        orders.add(f);
+
+                        mHelper.addOrders(f);
+
+                    }
+
+                    for(int i=0; i<obj.getOrderReturn().size();i++){
+
+                        OrderReturn f = new OrderReturn();
+                        f.setOu_code(obj.getOrderReturn().get(i).getOu_code().toString());
+                        f.setReturn_no(obj.getOrderReturn().get(i).getReturn_no().toString());
+                        f.setReturn_code(obj.getOrderReturn().get(i).getReturn_code().toString());
+                        f.setReturn_type(obj.getOrderReturn().get(i).getReturn_type().toString());
+                        f.setReftrans_no(obj.getOrderReturn().get(i).getReftrans_no().toString());
+                        f.setReftrans_year(obj.getOrderReturn().get(i).getReftrans_year().toString());
+                        f.setRep_code(obj.getOrderReturn().get(i).getRep_code().toString());
+                        f.setRep_seq(obj.getOrderReturn().get(i).getRep_seq().toString());
+                        f.setRep_name(obj.getOrderReturn().get(i).getRep_name().toString());
+                        f.setReturn_seq(obj.getOrderReturn().get(i).getReturn_seq().toString());
+                        f.setFs_code(obj.getOrderReturn().get(i).getFs_code().toString());
+                        f.setFs_code(obj.getOrderReturn().get(i).getFs_desc().toString());
+                        f.setReturn_unit(obj.getOrderReturn().get(i).getReturn_unit().toString());
+                        f.setReturn_remark(obj.getOrderReturn().get(i).getReturn_remark().toString());
+                        orderReturns.add(f);
+
+                        mHelper.addOrdersReturn(f);
+
+                    }
+
+                    for(int i=0; i<obj.getUnpack().size();i++){
+
+                        Unpack f = new Unpack();
+                        f.setTransno(obj.getUnpack().get(i).getTransno().toString());
+                        f.setUnpack_code(obj.getUnpack().get(i).getUnpack_code().toString());
+                        f.setUnpack_desc(obj.getUnpack().get(i).getUnpack_desc().toString());
+                        f.setUnpack_qty(obj.getUnpack().get(i).getUnpack_qty().toString());
+                        f.setUnpack_image(obj.getUnpack().get(i).getUnpack_image().toString());
+                        unpacks.add(f);
+
+                        mHelper.addUnpack(f);
+
+                    }
+
+                    for(int i=0; i<obj.getReason().size();i++){
+
+                        Reason f = new Reason();
+                        f.setReason_code(obj.getReason().get(i).getReason_code().toString());
+                        f.setReason_desc(obj.getReason().get(i).getReason_desc().toString());
+                        f.setReason_type(obj.getReason().get(i).getReason_type().toString());
+                        reasons.add(f);
+
+                        mHelper.addReason(f);
+
+                    }
+
+                }
+
+                pageResultHolder.content = obj.getResponseCode();
+
+               /* else
+                {
+
+                }*/
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : NoData";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            //final String msg = "";
+
+            try {
+
+
+
+                if (result.exception != null) {
+                    mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+
+                    if (result.content.equals("1"))
+                    {
+
+                        result.content = getResources().getString(R.string.txt_text_update_success);
+                    }
+                    else
+                    {
+                        result.content = getResources().getString(R.string.error_data_not_in_system);
+                    }
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+
+                            mProgressDialog.dismiss();
+
+                            showMsgDialog(result.content.toString());
+
+                        }
+                    }, 200);
+
+                    /*runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    });*/
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private class PageResultHolder {
+        private String content;
+        private Exception exception;
+    }
+
+
 }

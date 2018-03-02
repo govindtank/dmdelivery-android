@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.OrderScanViewAdapter;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
+import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.WebServiceHelper;
 import com.bl.dmdelivery.model.OrderScan;
 import com.bl.dmdelivery.model.OrderScanReq;
@@ -70,6 +71,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
     private OrderScanReq mOrderScanReq;
     private String serverUrl;
     private Integer i = 0;
+    private CheckNetwork chkNetwork = new CheckNetwork();
 
     private Camera mCamera;
     private CameraPreview mPreview;
@@ -299,14 +301,14 @@ public class ScanOrdersActivity extends AppCompatActivity {
         try {
 
             // TODO Call Webservice
-            //if(checkNetwork.isConnectionAvailable(getContext())){
+            if(chkNetwork.isConnectionAvailable(getApplicationContext())){
                 serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CheckOrderScan";
                 new getScanDataInAsync().execute(serverUrl);
-            //}
+            }
 
-            //else {
-            //    showMsgDialog("Can't Connect Network");
-            //}
+            else {
+                showMsgDialog("Can't Connect Network");
+            }
 
         } catch (Exception e) {
             showMsgDialog(e.toString());

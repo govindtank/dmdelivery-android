@@ -10,32 +10,65 @@ import java.util.ArrayList;
  */
 
 public class Unpack implements Parcelable{
-    private String fscode;
-    private String fsname;
-    private String fsunit;
 
-    public String getFscode() {
-        return fscode;
+    private String transno;
+    private String unpack_code;
+    private String unpack_desc;
+    private String unpack_qty;
+    private String unpack_image;
+
+    public class Column{
+        public static final String transno = "transno";
+        public static final String unpack_code = "unpack_code";
+        public static final String unpack_desc ="unpack_desc";
+        public static final String unpack_qty = "unpack_qty";
+        public static final String unpack_image = "unpack_image";
     }
 
-    public void setFscode(String fscode) {
-        this.fscode = fscode;
+    public String getTransno() {
+        return transno;
     }
 
-    public String getFsname() {
-        return fsname;
+    public void setTransno(String transno) {
+        this.transno = transno;
     }
 
-    public void setFsname(String fsname) {
-        this.fsname = fsname;
+    public String getUnpack_code() {
+        return unpack_code;
     }
 
-    public String getFsunit() {
-        return fsunit;
+    public void setUnpack_code(String unpack_code) {
+        this.unpack_code = unpack_code;
     }
 
-    public void setFsunit(String fsunit) {
-        this.fsunit = fsunit;
+    public String getUnpack_desc() {
+        return unpack_desc;
+    }
+
+    public void setUnpack_desc(String unpack_desc) {
+        this.unpack_desc = unpack_desc;
+    }
+
+
+
+    public String getUnpack_image() {
+        return unpack_image;
+    }
+
+    public void setUnpack_image(String unpack_image) {
+        this.unpack_image = unpack_image;
+    }
+
+    public String getUnpack_qty() {
+        return unpack_qty;
+    }
+
+    public void setUnpack_qty(String unpack_qty) {
+        this.unpack_qty = unpack_qty;
+    }
+
+
+    public Unpack() {
     }
 
     @Override
@@ -45,18 +78,19 @@ public class Unpack implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.fscode);
-        dest.writeString(this.fsname);
-        dest.writeString(this.fsunit);
-    }
-
-    public Unpack() {
+        dest.writeString(this.transno);
+        dest.writeString(this.unpack_code);
+        dest.writeString(this.unpack_desc);
+        dest.writeValue(this.unpack_qty);
+        dest.writeString(this.unpack_image);
     }
 
     protected Unpack(Parcel in) {
-        this.fscode = in.readString();
-        this.fsname = in.readString();
-        this.fsunit = in.readString();
+        this.transno = in.readString();
+        this.unpack_code = in.readString();
+        this.unpack_desc = in.readString();
+        this.unpack_qty = in.readString();
+        this.unpack_image = in.readString();
     }
 
     public static final Creator<Unpack> CREATOR = new Creator<Unpack>() {

@@ -427,15 +427,15 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                 mListOrderData.clear();
 
                 Unpack f = new Unpack();
-                f.setFscode("11111");
-                f.setFsname("ชื่อสินค้ารายการที่ 1");
-                f.setFsunit("1");
+                f.setUnpack_code("11111");
+                f.setUnpack_desc("ชื่อสินค้ารายการที่ 1");
+                f.setUnpack_qty("1");
                 mListOrderData.add(f);
 
                 f = new Unpack();
-                f.setFscode("22222");
-                f.setFsname("ชื่อสินค้ารายการที่ 2");
-                f.setFsunit("151");
+                f.setUnpack_code("22222");
+                f.setUnpack_desc("ชื่อสินค้ารายการที่ 2");
+                f.setUnpack_qty("151");
                 mListOrderData.add(f);
 
 

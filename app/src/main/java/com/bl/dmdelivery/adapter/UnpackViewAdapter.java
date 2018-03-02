@@ -49,9 +49,9 @@ public class UnpackViewAdapter  extends RecyclerView.Adapter<UnpackViewAdapter.V
 
             Unpack f = mData.get(position);
 
-            holder.mTxtFscode.setText(f.getFscode().toString());
-            holder.mTxtFsName.setText(f.getFsname().toString());
-            holder.mTxtQty.setText(f.getFsunit().toString());
+            holder.mTxtFscode.setText(f.getUnpack_code().toString());
+            holder.mTxtFsName.setText(f.getUnpack_desc().toString());
+            holder.mTxtQty.setText(f.getUnpack_qty().toString());
 
         } catch (Exception e) {
             e.printStackTrace();

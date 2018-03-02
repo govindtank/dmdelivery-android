@@ -139,15 +139,15 @@
 
 
                         <Button
+                            android:id="@+id/btClose"
+                            style="@style/btnclose"
                             android:layout_width="80dp"
                             android:layout_height="35dp"
-                            android:id="@+id/btClose"
-                            android:text="@string/txt_text_close"
-                            android:textSize="@dimen/textDialogSize"
-                            style="@style/btnclose"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:textColor="@color/colorPrimaryText" />
+                            android:text="@string/txt_text_close"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="@dimen/textDialogSize" />
 
                     </LinearLayout>
                 </LinearLayout>

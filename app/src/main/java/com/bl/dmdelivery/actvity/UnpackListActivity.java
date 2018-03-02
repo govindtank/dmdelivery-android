@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
+import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.model.Unpack;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class UnpackListActivity extends AppCompatActivity {
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
     private ArrayList<Unpack> mListOrderData = new ArrayList<Unpack>();
+    private CheckNetwork chkNetwork = new CheckNetwork();
 
 
     @Override
@@ -164,15 +166,15 @@ public class UnpackListActivity extends AppCompatActivity {
 
         try {
 
-            new getInitDataInAsync().execute();
 
-           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+
+           if(chkNetwork.isConnectionAvailable(getApplicationContext()))
             {
 
                 if(chkNetwork.isWebserviceConnected(getApplicationContext()))
                 {
 
-                    new getOrderDataInAsync().execute();
+                    new getInitDataInAsync().execute();
                 }
                 else
                 {
@@ -185,8 +187,7 @@ public class UnpackListActivity extends AppCompatActivity {
             {
 
                 showMsgDialog(getResources().getString(R.string.error_network));
-            }*/
-
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -219,21 +220,21 @@ public class UnpackListActivity extends AppCompatActivity {
                 mListOrderData.clear();
 
                 Unpack f = new Unpack();
-                f.setFscode("11111");
-                f.setFsname("ชื่อสินค้ารายการที่ 1");
-                f.setFsunit("15");
+                f.setUnpack_code("11111");
+                f.setUnpack_desc("ชื่อสินค้ารายการที่ 1");
+                f.setUnpack_qty("15");
                 mListOrderData.add(f);
 
                 f = new Unpack();
-                f.setFscode("22222");
-                f.setFsname("ชื่อสินค้ารายการที่ 2");
-                f.setFsunit("10");
+                f.setUnpack_code("22222");
+                f.setUnpack_desc("ชื่อสินค้ารายการที่ 2");
+                f.setUnpack_qty("10");
                 mListOrderData.add(f);
 
                 f = new Unpack();
-                f.setFscode("33333");
-                f.setFsname("ชื่อสินค้ารายการที่ 3");
-                f.setFsunit("4");
+                f.setUnpack_code("33333");
+                f.setUnpack_desc("ชื่อสินค้ารายการที่ 3");
+                f.setUnpack_qty("4");
                 mListOrderData.add(f);
 
 
