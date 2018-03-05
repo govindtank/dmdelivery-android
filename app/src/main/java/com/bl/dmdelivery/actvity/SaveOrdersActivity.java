@@ -14,20 +14,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.OrderAdapter;
 import com.bl.dmdelivery.adapter.OrderSlipViewAdapter;
 import com.bl.dmdelivery.adapter.RVListDeliveryBWAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.helper.GlobalObject;
+import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderData;
+import com.thesurix.gesturerecycler.DefaultItemClickListener;
+import com.thesurix.gesturerecycler.GestureAdapter;
+import com.thesurix.gesturerecycler.GestureManager;
+import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -49,7 +58,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //    private CheckNetwork chkNetwork = new CheckNetwork();
     GlobalObject ogject = GlobalObject.getInstance();
 
-    private ArrayList<OrderData> mListOrderData = new ArrayList<OrderData>();
+    private ArrayList<Order> mListOrderData = new ArrayList<Order>();
+    //private List<Order> mListOrder = new List<Order>();
     private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="";
 
     private RecyclerView lv;
@@ -57,6 +67,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private Integer PositionSelect = 0,mDelCount = 0,selectCount = 0;
 
     private Intent myIntent=null;
+
+    private GestureManager mGestureManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,9 +154,13 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_list));
 
 
-          lv = (RecyclerView) findViewById(R.id.lv);
-          lv.setLayoutManager(new LinearLayoutManager(this));
-          lv.setHasFixedSize(true);
+            lv = (RecyclerView) findViewById(R.id.lv);
+//          lv.setLayoutManager(new LinearLayoutManager(this));
+//          lv.setHasFixedSize(true);
+
+
+
+
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -166,6 +182,71 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private void setWidgetControl() {
         try{
             getInit();
+
+            final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+            lv.setHasFixedSize(true);
+            lv.setLayoutManager(manager);
+
+            final OrderAdapter adapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
+            adapter.setData(mListOrderData);
+
+            lv.setAdapter(adapter);
+            lv.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<Order>() {
+
+                @Override
+                public boolean onItemClick(final Order item, final int position) {
+                    //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+                    startActivity(myIntent);
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+                    return true;
+                }
+
+                @Override
+                public void onItemLongPress(final Order item, final int position) {
+                    //Snackbar.make(view, "Long press event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Long press event on the " + position + " position", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                @Override
+                public boolean onDoubleTap(final Order item, final int position) {
+                    //Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
+                    toast.show();
+                    return true;
+                }
+
+
+            }));
+
+            mGestureManager = new GestureManager.Builder(lv)
+                    .setSwipeEnabled(false)
+                    .setLongPressDragEnabled(true)
+                    .setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+                    .setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN)
+                    .setManualDragEnabled(true)
+                    .build();
+
+            adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<Order>() {
+                @Override
+                public void onItemRemoved(final Order item, final int position) {
+                    //Snackbar.make(view, "Month removed from position " + position, Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Month removed from position " + position, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                @Override
+                public void onItemReorder(final Order item, final int fromPos, final int toPos) {
+                    //Snackbar.make(view, "Month moved from position " + fromPos + " to " + toPos, Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Month moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -190,9 +271,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                }
 //            });
 
-            mBtnSaveOrders.setText("รอส่ง\n(2/2)");
+            mBtnSaveOrders.setText("รอส่งข้อมูล\n(8/8)");
 
-            mBtnSaveOrdersComplete.setText("ส่งได้\n(0/2)");
+            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/8)");
 
             mBtnReturnList.setText("ใบรับคืน\n(0/2)");
 
@@ -220,19 +301,21 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 }
             });
 
-            lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
-                    startActivity(myIntent);
-//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                }
-            }));
+//            lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(View view, int position) {
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+//                    startActivity(myIntent);
+////                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                }
+//            }));
 
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
     }
+
+
 
 //    private void getOrder() {
 //
@@ -532,7 +615,42 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
         try {
 
-            new getInitDataInAsync().execute();
+            mListOrderData.clear();
+
+            Order f = new Order();
+            f.setTransNo("1");
+            mListOrderData.add(f);
+
+            f = new Order();
+            f.setTransNo("2");
+            mListOrderData.add(f);
+
+            f = new Order();
+            f.setTransNo("3");
+            mListOrderData.add(f);
+
+            f = new Order();
+            f.setTransNo("4");
+            mListOrderData.add(f);
+
+            f = new Order();
+            f.setTransNo("5");
+            mListOrderData.add(f);
+
+            f = new Order();
+            f.setTransNo("6");
+            mListOrderData.add(f);
+
+            f = new Order();
+            f.setTransNo("7");
+            mListOrderData.add(f);
+
+            f = new Order();
+            f.setTransNo("8");
+            mListOrderData.add(f);
+
+
+            //new getInitDataInAsync().execute();
 
            /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
             {
@@ -586,32 +704,36 @@ public class SaveOrdersActivity extends AppCompatActivity {
             {
                 mListOrderData.clear();
 
-                OrderData f = new OrderData();
-                f.setItemno(32);
-                f.setInvoiceno("1103842117");
-                f.setInvoice_type("08 ส่งปกติ");
-                f.setCampaign("C17");
-                f.setRepcode("0096061405");
-                f.setRepname("คุณชุฑาทรัพย์ อ่อนสี");
-                f.setAddress("16/69 เทียนทะเล 26 แยก 2 แขวงแสมดำ กรุงเทพมหานคร 10150");
-                f.setMobilemsl("MSL: 028973435");
-                f.setMobiledsm("DSM: 0818159347");
-                f.setInv_return("R");
-                f.setCarton("1C");
+                Order f = new Order();
+                f.setTransNo("1");
                 mListOrderData.add(f);
 
-                f = new OrderData();
-                f.setItemno(33);
-                f.setInvoiceno("1103823188");
-                f.setInvoice_type("08 ส่งปกติ");
-                f.setCampaign("C17");
-                f.setRepcode("0096061405");
-                f.setRepname("คุณวรรณรัตน์ อ่ำถนอม");
-                f.setAddress("142 ตรงข้ามวัดธรรมคุณาราม เทียนทะเล แขวงท่าข้าม เขตบางขุนเทียน กรุงเทพมหานคร 10150");
-                f.setMobilemsl("MSL: 0814898857");
-                f.setMobiledsm("DSM: 0818125698");
-                f.setInv_return("R");
-                f.setCarton("1C (2)");
+                f = new Order();
+                f.setTransNo("2");
+                mListOrderData.add(f);
+
+                f = new Order();
+                f.setTransNo("3");
+                mListOrderData.add(f);
+
+                f = new Order();
+                f.setTransNo("4");
+                mListOrderData.add(f);
+
+                f = new Order();
+                f.setTransNo("5");
+                mListOrderData.add(f);
+
+                f = new Order();
+                f.setTransNo("6");
+                mListOrderData.add(f);
+
+                f = new Order();
+                f.setTransNo("7");
+                mListOrderData.add(f);
+
+                f = new Order();
+                f.setTransNo("8");
                 mListOrderData.add(f);
 
 
@@ -647,8 +769,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
                             if(mListOrderData.size()>0)
                             {
 
-                                mAdapter = new OrderSlipViewAdapter(getApplicationContext(),mListOrderData);
-                                lv.setAdapter(mAdapter);
+                                //mAdapter = new OrderSlipViewAdapter(getApplicationContext(),mListOrderData);
+                                //lv.setAdapter(mAdapter);
 
 
                                 //ogject.setListCheckOrderData(mListOrderData);
@@ -694,6 +816,28 @@ public class SaveOrdersActivity extends AppCompatActivity {
         private String content;
         private Exception exception;
     }
+
+//    protected List<OrderItem> getMonths() {
+//        final List<MonthItem> monthList = new ArrayList<>();
+//        //monthList.add(new MonthHeader("First quarter"));
+//        monthList.add(new Month("JAN", R.drawable.january));
+//        monthList.add(new Month("FEB", R.drawable.february));
+//        monthList.add(new Month("MAR", R.drawable.march));
+//        //monthList.add(new MonthHeader("Second quarter"));
+//        monthList.add(new Month("APR", R.drawable.april));
+//        monthList.add(new Month("MAY", R.drawable.may));
+//        monthList.add(new Month("JUN", R.drawable.june));
+//        //monthList.add(new MonthHeader("Third quarter"));
+//        monthList.add(new Month("JUL", R.drawable.july));
+//        monthList.add(new Month("AUG", R.drawable.august));
+//        monthList.add(new Month("SEP", R.drawable.september));
+//        //monthList.add(new MonthHeader("Fourth quarter"));
+//        monthList.add(new Month("OCT", R.drawable.october));
+//        monthList.add(new Month("NOV", R.drawable.november));
+//        monthList.add(new Month("DEC", R.drawable.december));
+//
+//        return monthList;
+//    }
 
 
 

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.thesurix.gesturerecycler:gesture-recycler-1.5.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/gesture-recycler-1.5.0.aar/200972faf3eec92fc529c22fba2ee0e1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/gesture-recycler-1.5.0.aar/200972faf3eec92fc529c22fba2ee0e1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.thesurix.gesturerecycler/gesture-recycler/1.5.0/5dea0436bd7a53cd8f517f09ff2805c5062b3434/gesture-recycler-1.5.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

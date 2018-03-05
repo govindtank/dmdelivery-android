@@ -98,9 +98,9 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
     private void setWidgetControl() {
         try{
 
-            mBtnSaveOrders.setText("รอส่ง\n(2/2)");
+            mBtnSaveOrders.setText("รอส่งข้อมูล\n(8/8)");
 
-            mBtnOrdersComptete.setText("ส่งได้\n(0/2)");
+            mBtnOrdersComptete.setText("ส่งข้อมูลได้\n(0/8)");
 
             mBtnReturnList.setText("ใบรับคืน\n(0/2)");
 

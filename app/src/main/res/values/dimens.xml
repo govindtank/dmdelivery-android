@@ -26,4 +26,20 @@
     <dimen name="list_pading_head">8dp</dimen>
     <dimen name="list_Padding_above">4dp</dimen>
 
+    <!-- Linear item -->
+    <dimen name="linear_item_height">80dp</dimen>
+    <dimen name="linear_text_width">80dp</dimen>
+    <dimen name="linear_text_padding">20dp</dimen>
+
+    <!-- Drag view -->
+    <dimen name="drag_view_size">40dp</dimen>
+    <dimen name="drag_view_margin">10dp</dimen>
+
+    <!-- Misc -->
+    <dimen name="logo_size">200dp</dimen>
+    <dimen name="main_text_size">36sp</dimen>
+    <dimen name="main_btn_height">80dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="card_elevation">1dp</dimen>
+
 </resources>
