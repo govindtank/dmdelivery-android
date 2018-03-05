@@ -14,6 +14,7 @@ import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.model.Unpack;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 /**
  * Created by sd-m003 on 8/23/2017 AD.
@@ -337,6 +338,45 @@ public class DBHelper extends SQLiteOpenHelper {
         order.setUnpack_image(cursor.getString(4));
 
         return order;
+    }
+
+    public ArrayList<Unpack> getUnpackList() {
+
+        ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
+
+
+        sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(TableUnpack,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+
+            Unpack order = new Unpack();
+            order.setTransno(cursor.getString(0));
+            order.setUnpack_code(cursor.getString(1));
+            order.setUnpack_desc(cursor.getString(2));
+            order.setUnpack_qty(cursor.getString(3));
+            order.setUnpack_image(cursor.getString(4));
+            unpacks.add(order);
+
+            cursor.moveToNext();
+        }
+
+
+
+        return unpacks;
     }
 
     public void addReason(Reason order) {

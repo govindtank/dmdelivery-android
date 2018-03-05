@@ -34,6 +34,8 @@ import com.bl.dmdelivery.adapter.OrderScanViewAdapter;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.WebServiceHelper;
+import com.bl.dmdelivery.model.BookingReq;
+import com.bl.dmdelivery.model.BookingResponse;
 import com.bl.dmdelivery.model.OrderScan;
 import com.bl.dmdelivery.model.OrderScanReq;
 import com.bl.dmdelivery.model.OrderScanResponse;
@@ -69,6 +71,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
     private String truckNo = "";
     private String deliveryDate = "";
     private OrderScanReq mOrderScanReq;
+    private BookingReq mBookingReq;
     private String serverUrl;
     private Integer i = 0;
     private CheckNetwork chkNetwork = new CheckNetwork();
@@ -119,6 +122,10 @@ public class ScanOrdersActivity extends AppCompatActivity {
            mOrderScanReq = new OrderScanReq();
            mOrderScanReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
            mOrderScanReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
+
+            mBookingReq = new BookingReq();
+            mBookingReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
+            mBookingReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
 
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
@@ -317,6 +324,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
     }
 
 
+
     private class getScanDataInAsync extends AsyncTask<String, Void, PageResultHolder>
     {
 
@@ -431,6 +439,134 @@ public class ScanOrdersActivity extends AppCompatActivity {
         private Exception exception;
     }
 
+    private void getInsertData(){
+        try {
+
+            // TODO Call Webservice
+            if(chkNetwork.isConnectionAvailable(getApplicationContext())){
+                serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CreateBooking";
+                new getInsertDataInAsync().execute(serverUrl);
+            }
+
+            else {
+                showMsgDialog("Can't Connect Network");
+            }
+
+        } catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    private class getInsertDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+         /*   mProgressDialog = new ACProgressFlower.Builder(getApplicationContext())
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();*/
+
+        }
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+                //use call api
+                Gson gson = new Gson();
+                String json = gson.toJson(mBookingReq);
+                String result = new WebServiceHelper().postServiceAPI(params[0],json);
+                Log.i("Booking", result.toString());
+
+                //convert json to obj
+                BookingResponse obj = gson.fromJson(result,BookingResponse.class);
+                mListOrderScan.clear();
+                for(int i=0; i<obj.getCheckOrderScan().size();i++){
+
+                    OrderScan f = new OrderScan();
+                    f.setItem(i+1);
+                    f.setInvoiceNo(obj.getCheckOrderScan().get(i).getInvoiceNo().toString());
+                    f.setDeliveryDate(obj.getCheckOrderScan().get(i).getDeliveryDate().toString());
+                    f.setTruckNo(obj.getCheckOrderScan().get(i).getTruckNo().toString());
+                    f.setTotalCanton(obj.getCheckOrderScan().get(i).getTotalCanton());
+                    f.setTotalScan(obj.getCheckOrderScan().get(i).getTotalScan());
+                    f.setTotalNotScan(obj.getCheckOrderScan().get(i).getTotalNotScan());
+                    mListOrderScan.add(f);
+
+                }
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : CheckOrderData";
+                pageResultHolder.exception = e;
+                //return null;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            try {
+
+                if (result.exception != null) {
+                    mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+
+                            //mProgressDialog.dismiss();
+
+                            if(mListOrderScan.size()>0)
+                            {
+
+                                mAdapter = new OrderScanViewAdapter(getApplicationContext(),mListOrderScan);
+                                lv.setAdapter(mAdapter);
+
+
+                            }else
+                            {
+                                //finish();
+                                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
+
+                            }
+
+                        }
+                    }, 200);
+
+                    /*runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    });*/
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 
 
 
@@ -501,12 +637,9 @@ public class ScanOrdersActivity extends AppCompatActivity {
                     i = i+1;
                     mTxtOrderSum.setText(i.toString());
 
-                    //checkOrder();
-
-                    /*finish();
-                    Intent myIntent = new Intent(getApplicationContext(), SingDeliveryBLActivity.class);
-                    startActivity(myIntent);
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);*/
+                    //use call api
+                    mBookingReq.setCartonNo(sym.getData().toString());
+                    getInsertData();
 
 
                     barcodeScanned = true;

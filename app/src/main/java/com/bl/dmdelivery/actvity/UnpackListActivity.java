@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +27,10 @@ import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
+import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.helper.WebServiceHelper;
 import com.bl.dmdelivery.model.Unpack;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -43,6 +48,8 @@ public class UnpackListActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private ArrayList<Unpack> mListOrderData = new ArrayList<Unpack>();
     private CheckNetwork chkNetwork = new CheckNetwork();
+    DBHelper mHelper;
+    SQLiteDatabase mDb;
 
 
     @Override
@@ -217,9 +224,13 @@ public class UnpackListActivity extends AppCompatActivity {
             //String xmlInput = params[0];
             try
             {
-                mListOrderData.clear();
 
-                Unpack f = new Unpack();
+
+                mHelper = new DBHelper(getApplicationContext());
+                mListOrderData.clear();
+                mListOrderData = mHelper.getUnpackList();
+
+                /*Unpack f = new Unpack();
                 f.setUnpack_code("11111");
                 f.setUnpack_desc("ชื่อสินค้ารายการที่ 1");
                 f.setUnpack_qty("15");
@@ -235,7 +246,7 @@ public class UnpackListActivity extends AppCompatActivity {
                 f.setUnpack_code("33333");
                 f.setUnpack_desc("ชื่อสินค้ารายการที่ 3");
                 f.setUnpack_qty("4");
-                mListOrderData.add(f);
+                mListOrderData.add(f);*/
 
 
 
@@ -272,17 +283,6 @@ public class UnpackListActivity extends AppCompatActivity {
 
                                 mAdapter = new UnpackViewAdapter(getApplicationContext(),mListOrderData);
                                 lv.setAdapter(mAdapter);
-
-
-                                //ogject.setListCheckOrderData(mListOrderData);
-
-                                //bindData();
-
-                               /* mAdapter = new RVGetOrderAdapter(getApplicationContext(),mListOrderData);
-                                lv.setAdapter(mAdapter);
-
-
-                                mTxtCount.setText(mDelCount+"/"+String.valueOf(mListOrderData.size()));*/
 
 
 
