@@ -78,94 +78,153 @@
 
         </LinearLayout>
 
+
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp">
+            android:id="@+id/linlaoMain2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:orientation="vertical"
+            android:background="@color/colorBGMain"
+            android:weightSum="1">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|left"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="4">
 
-                <Button
-                    android:id="@+id/btnCheckScan"
-                    style="@style/btnnostroke"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp"
-                    android:text="ตรวจเช็คแสกนสินค้า"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textbtnMenuSize16" />
+                    android:orientation="vertical"
+                    android:weightSum="2">
 
-                <!--<Button-->
-                <!--android:id="@+id/btnScan"-->
-                <!--style="@style/btnnostroke"-->
-                <!--android:layout_width="40dp"-->
-                <!--android:layout_height="40dp"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="10dp"-->
-                <!--android:paddingLeft="4dp"-->
-                <!--android:paddingTop="2dp" />-->
+                </LinearLayout>
 
-                <!--<TextView-->
-                <!--android:id="@+id/txtSlip"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:text="Slip : 0"-->
-                <!--android:textColor="@color/colorBG"-->
-                <!--android:textSize="@dimen/textRowSize" />-->
-
-                <Button
-                    android:id="@+id/btnConfirm"
-                    style="@style/btnnostroke"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp"
-                    android:text="ยืนยันสินค้าขึ้นรถ"
-                    android:textColor="@color/colorBG"
-                    android:textSize="@dimen/textbtnMenuSize16" />
+                    android:orientation="vertical"
+                    android:weightSum="2">
 
-                <!--<TextView-->
-                <!--android:id="@+id/txtOrder"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:text="101/101"-->
-                <!--android:textColor="@color/colorBG"-->
-                <!--android:textSize="@dimen/textRowSize" />-->
+                    <Button
+                        android:id="@+id/btnCheckScan"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btnclose"
+                        android:textSize="@dimen/textHeadDtlSize16"
+                        android:text="ตรวจเช็ค" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/btnConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btnclose"
+                        android:textSize="@dimen/textHeadDtlSize16"
+                        android:text="ยืนยัน" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                </LinearLayout>
             </LinearLayout>
 
+
         </LinearLayout>
+
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:layout_marginRight="10dp">-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:gravity="center|left"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="2">-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btnCheckScan"-->
+                    <!--style="@style/btnnostroke"-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:paddingLeft="4dp"-->
+                    <!--android:paddingTop="2dp"-->
+                    <!--android:text="ตรวจเช็คแสกนสินค้า"-->
+                    <!--android:textColor="@color/colorBG"-->
+                    <!--android:textSize="@dimen/textbtnMenuSize16" />-->
+                <!---->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btnConfirm"-->
+                    <!--style="@style/btnnostroke"-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:paddingLeft="4dp"-->
+                    <!--android:paddingTop="2dp"-->
+                    <!--android:text="ยืนยันสินค้าขึ้นรถ"-->
+                    <!--android:textColor="@color/colorBG"-->
+                    <!--android:textSize="@dimen/textbtnMenuSize16" />-->
+
+            <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark"></LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@+id/linlaoMain"-->
+        <!--android:background="@color/colorPrimaryMoreDark"></LinearLayout>-->
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/linlaoMain"
-        android:background="@color/colorPrimaryMoreDark" />
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@+id/linlaoMain"-->
+        <!--android:background="@color/colorPrimaryMoreDark" />-->
 
 
 
