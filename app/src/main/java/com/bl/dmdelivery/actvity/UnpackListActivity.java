@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -15,12 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bl.dmdelivery.R;
@@ -42,6 +46,7 @@ public class UnpackListActivity extends AppCompatActivity {
 
     private ACProgressFlower mProgressDialog;
     private TextView mTxtMsg,mTxtHeader,mTxtCode,mTxtDesc,mTxtW,mTxtL,mTxtH;
+    private ImageView mImageView;
     private Button mBtnBack,mBtnClose;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
     private RecyclerView lv;
@@ -135,7 +140,10 @@ public class UnpackListActivity extends AppCompatActivity {
             lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    showUnpackDialog("");
+                    if(mListOrderData.get(position).getUnpack_code().toString().equals("")){
+                        return;
+                    }
+                    showUnpackDialog(mListOrderData.get(position));
                 }
             }));
 
@@ -230,26 +238,6 @@ public class UnpackListActivity extends AppCompatActivity {
                 mListOrderData.clear();
                 mListOrderData = mHelper.getUnpackList();
 
-                /*Unpack f = new Unpack();
-                f.setUnpack_code("11111");
-                f.setUnpack_desc("ชื่อสินค้ารายการที่ 1");
-                f.setUnpack_qty("15");
-                mListOrderData.add(f);
-
-                f = new Unpack();
-                f.setUnpack_code("22222");
-                f.setUnpack_desc("ชื่อสินค้ารายการที่ 2");
-                f.setUnpack_qty("10");
-                mListOrderData.add(f);
-
-                f = new Unpack();
-                f.setUnpack_code("33333");
-                f.setUnpack_desc("ชื่อสินค้ารายการที่ 3");
-                f.setUnpack_qty("4");
-                mListOrderData.add(f);*/
-
-
-
             } catch (Exception e) {
                 pageResultHolder.content = "Exception : CheckOrderData";
                 pageResultHolder.exception = e;
@@ -318,7 +306,7 @@ public class UnpackListActivity extends AppCompatActivity {
         private Exception exception;
     }
 
-    public void showUnpackDialog(String msg)
+    public void showUnpackDialog(Unpack obj)
     {
         //final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
@@ -332,13 +320,18 @@ public class UnpackListActivity extends AppCompatActivity {
         mTxtH = (TextView)v.findViewById(R.id.txtHeight);
         mTxtL = (TextView)v.findViewById(R.id.txtLength);
         mTxtW = (TextView)v.findViewById(R.id.txtWidth);
+        mImageView = (ImageView)v.findViewById(R.id.imageView3);
 
 
-        mTxtCode.setText("66666");
-        mTxtDesc.setText("หม้อหุงข้าวขนาดใหญ่ 1 ลิตร SMARTHOME");
+        mTxtCode.setText(obj.getUnpack_code());
+        mTxtDesc.setText(obj.getUnpack_desc());
         mTxtH.setText("ความสูง 19 เซนติเมตร");
         mTxtW.setText("ความกว้าง 24 เซนติเมตร");
         mTxtL.setText("ความยาว 24 เซนติเมตร");
+
+        byte[] decodedByteArray = Base64.decode(obj.getUnpack_image().toString(), Base64.NO_WRAP);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+        mImageView.setImageBitmap(decodedBitmap);
 
 
         DialogBuilder.setView(v);

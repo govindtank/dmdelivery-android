@@ -40,12 +40,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String CREATE_ORDER_TABLE = String.format("CREATE TABLE %s " +
-                        "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT," +
+                        "(%s INTEGER PRIMARY KEY  AUTOINCREMENT,%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT," +
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT)",
                 TableOrder,
+                Order.Column.ID,
                 Order.Column.Oucode,
                 Order.Column.Trans_Year,
                 Order.Column.Trans_Group,
@@ -66,7 +69,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.dsm_telno,
                 Order.Column.loc_code,
                 Order.Column.trans_campaign,
-                Order.Column.ord_campaign
+                Order.Column.ord_campaign,
+                Order.Column.ord_type,
+                Order.Column.del_type,
+                Order.Column.ord_flag_status,
+                Order.Column.return_flag,
+                Order.Column.unpack_items,
+                Order.Column.order_flag_desc,
+                Order.Column.delivery_desc,
+                Order.Column.ordertype_desc,
+                Order.Column.cont_desc,
+                Order.Column.Itemno
         );
 
         Log.i(TAG, CREATE_ORDER_TABLE);
@@ -177,6 +190,17 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.loc_code, order.getLoc_code());
         values.put(Order.Column.trans_campaign, order.getTrans_campaign());
         values.put(Order.Column.ord_campaign, order.getOrd_campaign());
+        values.put(Order.Column.ord_type, order.getOrd_type());
+        values.put(Order.Column.del_type, order.getDel_type());
+        values.put(Order.Column.ord_flag_status, order.getOrd_flag_status());
+        values.put(Order.Column.return_flag, order.getReturn_flag());
+        values.put(Order.Column.unpack_items, order.getUnpack_items());
+        values.put(Order.Column.order_flag_desc, order.getOrder_flag_desc());
+        values.put(Order.Column.delivery_desc, order.getDelivery_desc());
+        values.put(Order.Column.ordertype_desc, order.getOrdertype_desc());
+        values.put(Order.Column.cont_desc, order.getCont_desc());
+        values.put(Order.Column.Itemno, order.getItemno());
+
 
         sqLiteDatabase.insert(TableOrder, null, values);
 
@@ -211,27 +235,39 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         Order order = new Order();
-        order.setOucode(cursor.getString(0));
-        order.setYear(cursor.getString(1));
-        order.setGroup(cursor.getString(2));
-        order.setTransNo(cursor.getString(3));
-        order.setTransdate(cursor.getString(4));
-        order.setRep_seq(cursor.getString(5));
-        order.setRep_code(cursor.getString(6));
-        order.setRep_name(cursor.getString(7));
-        order.setRep_nickname(cursor.getString(8));
-        order.setAddress1(cursor.getString(9));
-        order.setAddress2(cursor.getString(10));
-        order.setTumbon(cursor.getString(11));
-        order.setAmphur(cursor.getString(12));
-        order.setProvince(cursor.getString(13));
-        order.setPostal(cursor.getString(14));
-        order.setRep_telno(cursor.getString(15));
-        order.setDsm_name(cursor.getString(16));
-        order.setDsm_telno(cursor.getString(17));
-        order.setLoc_code(cursor.getString(18));
-        order.setTrans_campaign(cursor.getString(19));
-        order.setOrd_campaign(cursor.getString(20));
+        order.setId(cursor.getInt(0));
+        order.setOucode(cursor.getString(1));
+        order.setYear(cursor.getString(2));
+        order.setGroup(cursor.getString(3));
+        order.setTransNo(cursor.getString(4));
+        order.setTransdate(cursor.getString(5));
+        order.setRep_seq(cursor.getString(6));
+        order.setRep_code(cursor.getString(7));
+        order.setRep_name(cursor.getString(8));
+        order.setRep_nickname(cursor.getString(9));
+        order.setAddress1(cursor.getString(10));
+        order.setAddress2(cursor.getString(11));
+        order.setTumbon(cursor.getString(12));
+        order.setAmphur(cursor.getString(13));
+        order.setProvince(cursor.getString(14));
+        order.setPostal(cursor.getString(15));
+        order.setRep_telno(cursor.getString(16));
+        order.setDsm_name(cursor.getString(17));
+        order.setDsm_telno(cursor.getString(18));
+        order.setLoc_code(cursor.getString(19));
+        order.setTrans_campaign(cursor.getString(20));
+        order.setOrd_campaign(cursor.getString(21));
+        order.setOrd_type(cursor.getString(22));
+        order.setDel_type(cursor.getString(23));
+        order.setOrd_flag_status(cursor.getString(24));
+        order.setReturn_flag(cursor.getString(25));
+        order.setUnpack_items(cursor.getString(26));
+        order.setOrder_flag_desc(cursor.getString(27));
+        order.setDelivery_desc(cursor.getString(28));
+        order.setOrdertype_desc(cursor.getString(29));
+        order.setCont_desc(cursor.getString(30));
+        order.setItemno(cursor.getInt(31));
+
 
         return order;
     }

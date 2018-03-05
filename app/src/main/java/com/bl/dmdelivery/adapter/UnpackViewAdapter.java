@@ -1,7 +1,10 @@
 package com.bl.dmdelivery.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +56,11 @@ public class UnpackViewAdapter  extends RecyclerView.Adapter<UnpackViewAdapter.V
             holder.mTxtFsName.setText(f.getUnpack_desc().toString());
             holder.mTxtQty.setText(f.getUnpack_qty().toString());
 
+
+            byte[] decodedByteArray = Base64.decode(f.getUnpack_image().toString(), Base64.NO_WRAP);
+            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+            holder.mImage.setImageBitmap(decodedBitmap);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,6 +78,7 @@ public class UnpackViewAdapter  extends RecyclerView.Adapter<UnpackViewAdapter.V
 
 
         public TextView mTxtFscode,mTxtFsName,mTxtQty;
+        public ImageView mImage;
 
         public ViewHolder(View v) {
             super(v);
@@ -77,6 +86,7 @@ public class UnpackViewAdapter  extends RecyclerView.Adapter<UnpackViewAdapter.V
             this.mTxtFscode = (TextView) v.findViewById(R.id.txtFscode);
             this.mTxtFsName = (TextView) v.findViewById(R.id.txtFsname);
             this.mTxtQty = (TextView) v.findViewById(R.id.txtQty);
+            this.mImage = (ImageView)v.findViewById(R.id.imageView);
 
         }
     }
@@ -101,6 +111,37 @@ public class UnpackViewAdapter  extends RecyclerView.Adapter<UnpackViewAdapter.V
             viewToAnimate.startAnimation(animation);
             lastPosition = position;
         }
+    }
+
+    private Bitmap getScaledBitmap(Bitmap b, int reqWidth, int reqHeight)
+    {
+        int bWidth = b.getWidth();
+        int bHeight = b.getHeight();
+
+        int nWidth = bWidth;
+        int nHeight = bHeight;
+
+        if(nWidth > reqWidth)
+        {
+            int ratio = bWidth / reqWidth;
+            if(ratio > 0)
+            {
+                nWidth = reqWidth;
+                nHeight = bHeight / ratio;
+            }
+        }
+
+        if(nHeight > reqHeight)
+        {
+            int ratio = bHeight / reqHeight;
+            if(ratio > 0)
+            {
+                nHeight = reqHeight;
+                nWidth = bWidth / ratio;
+            }
+        }
+
+        return Bitmap.createScaledBitmap(b, nWidth, nHeight, true);
     }
 
 }

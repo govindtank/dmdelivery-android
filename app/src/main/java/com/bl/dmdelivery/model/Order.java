@@ -2,12 +2,14 @@ package com.bl.dmdelivery.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.BaseColumns;
 
 /**
  * Created by tHundorn_j on 28/2/2561.
  */
 
 public class Order implements Parcelable {
+    private Integer Itemno;
     private String Oucode;
     private String Year;
     private String Group;
@@ -29,8 +31,22 @@ public class Order implements Parcelable {
     private String loc_code;
     private String trans_campaign;
     private String ord_campaign;
+    private String ord_type;
+    private String del_type;
+    private String ord_flag_status;
+    private String return_flag;
+    private String unpack_items;
+    private String order_flag_desc;
+    private String delivery_desc;
+    private String ordertype_desc;
+    private String cont_desc;
+    private Integer id;
+
 
     public class Column{
+
+        public static final String ID = BaseColumns._ID;
+        public static final String Itemno = "Itemno";
         public static final String Oucode = "Oucode";
         public static final String Trans_Year = "Trans_Year";
         public static final String Trans_Group ="Trans_Group";
@@ -52,7 +68,32 @@ public class Order implements Parcelable {
         public static final String loc_code = "loc_code";
         public static final String trans_campaign = "trans_campaign";
         public static final String ord_campaign = "ord_campaign";
+        public static final String ord_type = "ord_type";
+        public static final String del_type = "del_type";
+        public static final String ord_flag_status = "ord_flag_status";
+        public static final String return_flag = "return_flag";
+        public static final String unpack_items = "unpack_items";
+        public static final String order_flag_desc = "order_flag_desc";
+        public static final String delivery_desc = "delivery_desc";
+        public static final String ordertype_desc = "ordertype_desc";
+        public static final String cont_desc = "cont_desc";
 
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getItemno() {
+        return Itemno;
+    }
+
+    public void setItemno(Integer itemno) {
+        Itemno = itemno;
     }
 
     public String getOucode() {
@@ -295,15 +336,9 @@ public class Order implements Parcelable {
         this.cont_desc = cont_desc;
     }
 
-    private String ord_type;
-    private String del_type;
-    private String ord_flag_status;
-    private String return_flag;
-    private String unpack_items;
-    private String order_flag_desc;
-    private String delivery_desc;
-    private String ordertype_desc;
-    private String cont_desc;
+
+    public Order() {
+    }
 
     @Override
     public int describeContents() {
@@ -312,6 +347,7 @@ public class Order implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.Itemno);
         dest.writeString(this.Oucode);
         dest.writeString(this.Year);
         dest.writeString(this.Group);
@@ -333,6 +369,7 @@ public class Order implements Parcelable {
         dest.writeString(this.loc_code);
         dest.writeString(this.trans_campaign);
         dest.writeString(this.ord_campaign);
+        dest.writeValue(this.id);
         dest.writeString(this.ord_type);
         dest.writeString(this.del_type);
         dest.writeString(this.ord_flag_status);
@@ -344,10 +381,8 @@ public class Order implements Parcelable {
         dest.writeString(this.cont_desc);
     }
 
-    public Order() {
-    }
-
     protected Order(Parcel in) {
+        this.Itemno = (Integer) in.readValue(Integer.class.getClassLoader());
         this.Oucode = in.readString();
         this.Year = in.readString();
         this.Group = in.readString();
@@ -369,6 +404,7 @@ public class Order implements Parcelable {
         this.loc_code = in.readString();
         this.trans_campaign = in.readString();
         this.ord_campaign = in.readString();
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.ord_type = in.readString();
         this.del_type = in.readString();
         this.ord_flag_status = in.readString();

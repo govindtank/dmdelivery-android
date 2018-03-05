@@ -189,9 +189,9 @@ public class MainMenuActivity extends AppCompatActivity {
                             break;
                         case "โหลดข้อมูล":
                             showMsgConfirmDialog("ต้องการโหลดข้อมูล ใช่หรือไม่?");
-                           /* Order order = new Order();
-                            mHelper = new DBHelper(getApplicationContext());
-                            order = mHelper.getOrders("000");*/
+                           /* mHelper = new DBHelper(getApplicationContext());
+                            ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
+                            unpacks = mHelper.getUnpackList();*/
                             break;
                         case "สินค้านอกกล่อง":
                             myIntent = new Intent(getApplicationContext(), UnpackListActivity.class);
@@ -486,6 +486,16 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setLoc_code(obj.getOrder().get(i).getLoc_code().toString());
                         f.setTrans_campaign(obj.getOrder().get(i).getTrans_campaign().toString());
                         f.setOrd_campaign(obj.getOrder().get(i).getOrd_campaign().toString());
+                        f.setOrd_type(obj.getOrder().get(i).getOrd_type().toString());
+                        f.setDel_type(obj.getOrder().get(i).getDel_type().toString());
+                        f.setOrd_flag_status(obj.getOrder().get(i).getOrd_flag_status().toString());
+                        f.setReturn_flag(obj.getOrder().get(i).getReturn_flag().toString());
+                        f.setUnpack_items(obj.getOrder().get(i).getUnpack_items().toString());
+                        f.setOrder_flag_desc(obj.getOrder().get(i).getOrder_flag_desc().toString());
+                        f.setDelivery_desc(obj.getOrder().get(i).getDelivery_desc().toString());
+                        f.setOrdertype_desc(obj.getOrder().get(i).getOrdertype_desc().toString());
+                        f.setCont_desc(obj.getOrder().get(i).getCont_desc().toString());
+                        f.setItemno(obj.getOrder().get(i).getItemno());
                         orders.add(f);
 
                         mHelper.addOrders(f);

@@ -61,9 +61,9 @@ public class WebServiceHelper {
         try {
             // 1. connect server with okHttp
             OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .writeTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS)
+                    .connectTimeout(120, TimeUnit.SECONDS)
+                    .writeTimeout(120, TimeUnit.SECONDS)
+                    .readTimeout(130, TimeUnit.SECONDS)
                     .authenticator(new Authenticator() {
                         @Override public Request authenticate(Route route, Response response) throws IOException {
                             if (response.request().header("Authorization") != null) {
