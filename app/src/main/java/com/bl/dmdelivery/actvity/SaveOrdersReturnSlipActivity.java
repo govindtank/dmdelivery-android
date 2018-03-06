@@ -138,7 +138,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnOk);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-        mmTxtTitle.setText("หมายเหตุ");
+        mmTxtTitle.setText("เหตุผล/หมายเหตุ");
 
 
         lv = (ListView) v.findViewById(R.id.lv);
