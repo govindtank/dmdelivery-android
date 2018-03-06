@@ -23,8 +23,28 @@
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="3">
 
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical"-->
+            <!--android:weightSum="2">-->
+
+            <!--<Button-->
+            <!--android:id="@+id/btnReason"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/btnclose"-->
+            <!--android:textSize="@dimen/textHeadDtlSize16"-->
+            <!--android:text="เหตุผล" />-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,68 +54,59 @@
                 android:weightSum="2">
 
                 <Button
-                    android:id="@+id/btnReason"
+                    android:id="@+id/btnNote"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/btnclose"
-                    android:textSize="@dimen/textHeadDtlSize16"
-                    android:text="เหตุผล" />
-        </LinearLayout>
+                    android:text="หมายเหตุ"
+                    android:textSize="@dimen/textHeadDtlSize16" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:weightSum="2">
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/btnApprove"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/btnclose"
-                android:textSize="@dimen/textHeadDtlSize16"
-                android:text="บันทึก" />
+                android:orientation="vertical"
+                android:weightSum="2">
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btnSendGps"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btnclose"
+                    android:text="บันทึก GPS"
+                    android:textSize="@dimen/textHeadDtlSize16" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:weightSum="2">
-
-            <Button
-                android:id="@+id/btnReject"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/btnclose"
-                android:textSize="@dimen/textHeadDtlSize16"
-                android:text="ปิด" />
-        </LinearLayout>
+                android:orientation="vertical"
+                android:weightSum="2">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:weightSum="2">
-
+                <Button
+                    android:id="@+id/btnSendGpsNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btnclose"
+                    android:text="บันทึกไม่ GPS"
+                    android:textSize="@dimen/textHeadDtlSize16" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
 
 </LinearLayout>

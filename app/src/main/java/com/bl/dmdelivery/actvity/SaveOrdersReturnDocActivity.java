@@ -23,7 +23,7 @@ import com.bl.dmdelivery.R;
 public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
-    private Button mBtnBack,mBtnReason,mBtnApprove,mBtnReject;
+    private Button mBtnBack;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
 
@@ -74,13 +74,13 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnBack.setVisibility(View.INVISIBLE);
 
-            mBtnReason = (Button) findViewById(R.id.btnReason);
-            mBtnReason.setVisibility(View.INVISIBLE);
-
-            mBtnApprove = (Button) findViewById(R.id.btnApprove);
-            mBtnApprove.setText("รีเฟรช");
-
-            mBtnReject = (Button) findViewById(R.id.btnReject);
+//            mBtnReason = (Button) findViewById(R.id.btnNote);
+//            mBtnReason.setVisibility(View.INVISIBLE);
+//
+//            mBtnApprove = (Button) findViewById(R.id.btnApprove);
+//            mBtnApprove.setText("รีเฟรช");
+//
+//            mBtnReject = (Button) findViewById(R.id.btnReject);
 
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
@@ -122,22 +122,22 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
 
 
-            mBtnApprove.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-
-                }
-            });
-
-
-            mBtnReject.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    finish();
-                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
-                    startActivity(myIntent);
-                }
-            });
+//            mBtnApprove.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//
+//                }
+//            });
+//
+//
+//            mBtnReject.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    finish();
+//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+//
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
+//                    startActivity(myIntent);
+//                }
+//            });
 
 
             // Set item click listener

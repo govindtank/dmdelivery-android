@@ -52,7 +52,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/btnclose"
                     android:textSize="@dimen/textHeadDtlSize16"
-                    android:text="เซ็นต์สลิป" />
+                    android:text="ส่งได้" />
 
             </LinearLayout>
 
@@ -73,7 +73,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/btnclose"
                     android:textSize="@dimen/textHeadDtlSize16"
-                    android:text="ยกเลิก" />
+                    android:text="ส่งไม่ได้" />
             </LinearLayout>
 
             <LinearLayout

@@ -23,10 +23,12 @@ import com.bl.dmdelivery.R;
 public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
-    private Button mBtnBack,mBtnReason,mmBtnOk,mmBtnClose;
+    private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnNote,mBtnSendGps,mBtnSendGpsNo;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
+    private ListView lv;
+    private String[] sigDeliverylist;
     private Intent myIntent=null;
 
     @Override
@@ -57,9 +59,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         try{
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
-            mBtnReason = (Button) findViewById(R.id.btnReason);
-            mmBtnOk = (Button) findViewById(R.id.btnApprove);
-            mmBtnClose = (Button) findViewById(R.id.btnReject);
+            mBtnNote = (Button) findViewById(R.id.btnNote);
+            mBtnSendGps = (Button) findViewById(R.id.btnSendGps);
+            mBtnSendGpsNo = (Button) findViewById(R.id.btnSendGpsNo);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
@@ -92,13 +94,13 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                 }
             });
 
-            mBtnReason.setOnClickListener(new View.OnClickListener() {
+            mBtnNote.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     showMsgReasonApproveSelectedSingleDialog();
                 }
             });
 
-            mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            mBtnSendGps.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
@@ -108,7 +110,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                 }
             });
 
-            mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            mBtnSendGpsNo.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
@@ -125,26 +127,32 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
     public void showMsgReasonApproveSelectedSingleDialog()
     {
+        // Create the arrays
+        sigDeliverylist = getResources().getStringArray(R.array.deliverylist);
+
         final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersReturnSlipActivity.this).create();
         LayoutInflater inflater = getLayoutInflater();
-        View v = (View) inflater.inflate(R.layout.dialog_save_orders_reason_approve, null);
+        View v = (View) inflater.inflate(R.layout.dialog_save_orders_return_cancel, null);
         DialogBuilder.setView(v);
 
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnOk);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-        mmTxtTitle.setText("ป้อนเหตุผลการบันทึกคืนสินค้า");
+        mmTxtTitle.setText("หมายเหตุ");
+
+
+        lv = (ListView) v.findViewById(R.id.lv);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigDeliverylist);
+        lv.setAdapter(adapter);
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
 
-//                //ตรวจสอบก่อนว่ามีสินค้ารับคือนหรือไม่ ถ้ามีไปที่ใบรับคืน ถ้าไม่มีไปที่ หน้ารายการจัดส่งหลัก
 //                finish();
 //
-//                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
 //                startActivity(myIntent);
-//                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
 
@@ -154,7 +162,48 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             }
         });
 
+        // Set item click listener
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String description = sigDeliverylist[position];
+                Toast.makeText(SaveOrdersReturnSlipActivity.this, description, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         DialogBuilder.show();
+
+
+//        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersReturnSlipActivity.this).create();
+//        LayoutInflater inflater = getLayoutInflater();
+//        View v = (View) inflater.inflate(R.layout.dialog_save_orders_reason_approve, null);
+//        DialogBuilder.setView(v);
+//
+//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+//        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
+//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+//        mmTxtTitle.setText("ป้อนเหตุผลการบันทึกคืนสินค้า");
+//
+//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//
+////                //ตรวจสอบก่อนว่ามีสินค้ารับคือนหรือไม่ ถ้ามีไปที่ใบรับคืน ถ้าไม่มีไปที่ หน้ารายการจัดส่งหลัก
+////                finish();
+////
+////                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+////                startActivity(myIntent);
+////                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//            }
+//        });
+//
+//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        DialogBuilder.show();
     }
 
 

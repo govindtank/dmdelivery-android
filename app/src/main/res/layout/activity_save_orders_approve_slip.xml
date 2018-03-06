@@ -6,16 +6,39 @@
     tools:context="com.bl.dmdelivery.actvity.SaveOrdersApproveSlipActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBG"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="2">
 
-        <include
-            android:id="@+id/includeHeader"
-            layout="@layout/header_save_orders_return_slip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBG"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/includeHeader"
+                layout="@layout/header_save_orders_return_slip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/includeCameraPreview"
+                layout="@layout/camerapreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
 
     </LinearLayout>
 

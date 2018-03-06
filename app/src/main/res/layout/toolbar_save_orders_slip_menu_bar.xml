@@ -39,8 +39,21 @@
                 android:orientation="vertical"
                 android:weightSum="2">
 
+                <!--<Button-->
+                    <!--android:id="@+id/btnUnpack"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginRight="5dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@drawable/btnclose"-->
+                    <!--android:focusableInTouchMode="true"-->
+                    <!--android:text="นอกกล่อง"-->
+                    <!--android:textSize="@dimen/textHeadDtlSize16" />-->
+
                 <Button
-                    android:id="@+id/btnUnpack"
+                    android:id="@+id/btnApprove"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
@@ -48,8 +61,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/btnclose"
-                    android:focusableInTouchMode="true"
-                    android:text="นอกกล่อง"
+                    android:text="ส่งได้"
                     android:textSize="@dimen/textHeadDtlSize16" />
             </LinearLayout>
 
@@ -81,17 +93,31 @@
                 android:orientation="vertical"
                 android:weightSum="2">
 
+                <!--<Button-->
+                    <!--android:id="@+id/btnApprove"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginRight="5dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@drawable/btnclose"-->
+                    <!--android:text="ส่งได้"-->
+                    <!--android:textSize="@dimen/textHeadDtlSize16" />-->
+
                 <Button
-                    android:id="@+id/btnApprove"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/btnclose"
-                    android:text="ส่งได้"
-                    android:textSize="@dimen/textHeadDtlSize16" />
+                android:id="@+id/btnUnpack"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/btnclose"
+                android:focusableInTouchMode="true"
+                android:text="นอกกล่อง"
+                android:textSize="@dimen/textHeadDtlSize16" />
+
             </LinearLayout>
 
             <LinearLayout

@@ -164,7 +164,6 @@
         <item>ST-สุราษฎร์ธานี</item>
     </string-array>
 
-
     <string-array name="returnList">
         <item>12345 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>1</item>
         <item>33256 ตะหลิวโคลนสีม่วง<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>0<string>\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>2</item>
@@ -191,10 +190,32 @@
         <item>301 อื่นๆ.....................</item>
     </string-array>
 
+    <string-array name="deliverylist">
+        <item>100 อยู่ระหว่างการจัดส่ง</item>
+        <item>101 จัดส่งผลิตภัณฑ์ตามระบุ</item>
+        <item>102 ฝากผลิตภัณฑ์ไว้ข้างบ้าน</item>
+        <item>103 ฝากไว้ที่ ร.ป.ภ.</item>
+        <item>104 จัดส่งทางพัสดุไปรษณีย์</item>
+        <item>105 รับเอง</item>
+        <item>106 ผู้จัดการเขตรับผลิตภัณฑ์</item>
+        <item>107 ฝากบ้านผู้จัดการเขต</item>
+        <item>108 ฝากผลิตภัณฑ์ไว้ที่ร้านค้า</item>
+        <item>109 ฝากไว้ที่ประชาสัมพันธ์</item>
+        <item>110 ฝากสินค้าจุด Drop 3 จังหวัดภาคใต้</item>
+        <item>111 ฝาก DSM 3 จังหวัดภาคใต้</item>
+        <item>112 จัดส่งโดยรถร่วม 3 จังหวัดภาคใต้</item>
+        <item>190 ไม่รับสินค้า(ยกเลิก)</item>
+        <item>9801 รับเองที่ BETERLAND</item>
+        <item>9802 รถขนส่งฝ่ายธุรการรอบเช้า</item>
+        <item>9803 รถขนส่งฝ่ายธุรการรอบบ่าย</item>
+    </string-array>
+
     <string-array name="invList">
         <item>1103842117<string>\u0020\u0020\u0020</string>096061405<string>\u0020\u0020\u0020</string>คุณชุฑาทรัพย์ อ่อนสี</item>
         <item>1103842100<string>\u0020\u0020\u0020</string>036061406<string>\u0020\u0020\u0020</string>คุณทดสอบ ข้อมูล</item>
     </string-array>
+
+
 
 
 </resources>

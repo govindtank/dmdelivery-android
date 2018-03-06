@@ -101,7 +101,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
         }
 
         try {
-            sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
+//            sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
 
             bindWidget();
 //
@@ -119,36 +119,36 @@ public class ScanOrdersActivity extends AppCompatActivity {
     private void bindWidget()
     {
         try{
-           mOrderScanReq = new OrderScanReq();
-           mOrderScanReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
-           mOrderScanReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
-
-            mBookingReq = new BookingReq();
-            mBookingReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
-            mBookingReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
-
-            //button
-            mBtnBack = (Button) findViewById(R.id.btnBack);
-            mBtnCheckScan = (Button)findViewById(R.id.btnCheckScan);
-            mBtnConfirm = (Button)findViewById(R.id.btnConfirm);
-
-            //textbox
-            mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_scanorders_list));
-            mTxtResult = (TextView)findViewById(R.id.txtResult);
-            mTxtOrderSum = (TextView)findViewById(R.id.txtOrdersSum);
-
-            //scan
-            autoFocusHandler = new Handler();
-            mCamera = getCameraInstance();
-
-            scanner = new ImageScanner();
-            scanner.setConfig(0, Config.X_DENSITY, 3);
-            scanner.setConfig(0, Config.Y_DENSITY, 3);
-
-            mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCB);
-             preview = (FrameLayout)findViewById(R.id.cameraPreview);
-            preview.addView(mPreview);
+//           mOrderScanReq = new OrderScanReq();
+//           mOrderScanReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
+//           mOrderScanReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
+//
+//            mBookingReq = new BookingReq();
+//            mBookingReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
+//            mBookingReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
+//
+//            //button
+//            mBtnBack = (Button) findViewById(R.id.btnBack);
+//            mBtnCheckScan = (Button)findViewById(R.id.btnCheckScan);
+//            mBtnConfirm = (Button)findViewById(R.id.btnConfirm);
+//
+//            //textbox
+//            mTxtHeader = (TextView) findViewById(R.id.txtHeader);
+//            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_scanorders_list));
+//            mTxtResult = (TextView)findViewById(R.id.txtResult);
+//            mTxtOrderSum = (TextView)findViewById(R.id.txtOrdersSum);
+//
+//            //scan
+//            autoFocusHandler = new Handler();
+//            mCamera = getCameraInstance();
+//
+//            scanner = new ImageScanner();
+//            scanner.setConfig(0, Config.X_DENSITY, 3);
+//            scanner.setConfig(0, Config.Y_DENSITY, 3);
+//
+//            mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCB);
+//             preview = (FrameLayout)findViewById(R.id.cameraPreview);
+//            preview.addView(mPreview);
 
         }
         catch (Exception e) {
@@ -183,6 +183,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
                 }
             });
+
             mBtnCheckScan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -198,19 +199,19 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
 
 
-           preview.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   if (barcodeScanned) {
-                       barcodeScanned = false;
-                       mTxtResult.setText("Scanning...");
-                       mCamera.setPreviewCallback(previewCb);
-                       mCamera.startPreview();
-                       previewing = true;
-                       mCamera.autoFocus(autoFocusCB);
-                   }
-               }
-           });
+//           preview.setOnClickListener(new View.OnClickListener() {
+//               @Override
+//               public void onClick(View view) {
+//                   if (barcodeScanned) {
+//                       barcodeScanned = false;
+//                       mTxtResult.setText("Scanning...");
+//                       mCamera.setPreviewCallback(previewCb);
+//                       mCamera.startPreview();
+//                       previewing = true;
+//                       mCamera.autoFocus(autoFocusCB);
+//                   }
+//               }
+//           });
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
