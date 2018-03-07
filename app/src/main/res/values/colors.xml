@@ -41,6 +41,13 @@
     <color name="colorPink">#b10053</color>
 
 
+    <!--BUTTON-->
+    <color name="colorBackgroundGreen">#009284</color>
+    <color name="colorBackgroundGreenDark">#00645A</color>
+    <color name="colorBackgroundGrayButton">#8F8D8D</color>
+    <color name="colorBackgroundGrayDarkButton">#676666</color>
+
+
     <!-- button menu approve-->
     <!--<color name="colorPrimary1">#e65457</color>-->
     <!--<color name="colorPrimaryDark1">#e65457</color>-->

@@ -3,13 +3,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal" >
 
-    <ListView
-        android:id="@+id/lv"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </ListView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txtInv"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"/>
+
+        <TextView
+            android:id="@+id/txtMember"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"/>
+
+        <TextView
+            android:id="@+id/txtQty"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"/>
+    </LinearLayout>
+
+    <!--<ListView-->
+        <!--android:id="@+id/lv"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="match_parent">-->
+    <!--</ListView>-->
 
 </LinearLayout>
 

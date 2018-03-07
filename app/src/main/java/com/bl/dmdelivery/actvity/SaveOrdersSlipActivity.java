@@ -38,7 +38,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtRepcode,mTxtName,mTxtInv,mTxtAddress,
             mTxtMobilemsl,mTxtType,mTxtReturn,mTxtMobiledsm,
-            mTxtLat,mTxtLog,mTxtCode,mTxtDesc,mTxtH,mTxtL,mTxtW;
+            mTxtLat,mTxtLog,mTxtCode,mTxtDesc,mTxtH,mTxtL,mTxtW,mTxtSum;
     private Button mBtnBack,mBtnUnpack,mBtnGPS,mBtnApprove,mBtnReject,mmBtnOk,mmBtnClose,mBtnMenu,mBtnSave,mBtnLoc,mBtnNotsave,mBtnclose;
     private ACProgressFlower mProgressDialog;
     private RecyclerView lv;
@@ -96,8 +96,8 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
-            mBtnUnpack = (Button) findViewById(R.id.btnUnpack);
-            mBtnGPS= (Button) findViewById(R.id.btnGPS);
+//            mBtnUnpack = (Button) findViewById(R.id.btnUnpack);
+//            mBtnGPS= (Button) findViewById(R.id.btnGPS);
             mBtnApprove = (Button) findViewById(R.id.btnApprove);
             mBtnReject = (Button) findViewById(R.id.btnReject);
 
@@ -123,7 +123,8 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 //            mTxtLog = (TextView)findViewById(R.id.txtLog);
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_slip_details));
-
+            mTxtSum = (TextView) findViewById(R.id.txtsum);
+            mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 2 รายการ");
 
             // Create the arrays
             sigInvlist = getResources().getStringArray(R.array.invList);
@@ -171,19 +172,19 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                 }
             });
 
-            mBtnUnpack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showUnpacklistDialog("");
-                }
-            });
-
-            mBtnGPS.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
+//            mBtnUnpack.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    showUnpacklistDialog("");
+//                }
+//            });
+//
+//            mBtnGPS.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                }
+//            });
 
             mBtnApprove.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -300,7 +301,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnOk);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-        mmTxtTitle.setText("ยืนยันการยกเลิกส่งสืนค้า");
+        mmTxtTitle.setText("เหตุผล/หมายเหตุ");
 
 
         lv2 = (ListView) v.findViewById(R.id.lv);

@@ -52,16 +52,31 @@
                     <!--android:text="นอกกล่อง"-->
                     <!--android:textSize="@dimen/textHeadDtlSize16" />-->
 
+                <!--<Button-->
+                    <!--android:id="@+id/btnApprove"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginRight="5dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@drawable/btnclose"-->
+                    <!--android:text="ส่งได้"-->
+                    <!--android:textSize="@dimen/textHeadDtlSize16" />-->
+
+
                 <Button
                     android:id="@+id/btnApprove"
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btnclose"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btngreen"
                     android:text="ส่งได้"
+                    android:textColor="@color/colorBackgroundWhite"
                     android:textSize="@dimen/textHeadDtlSize16" />
             </LinearLayout>
 
@@ -72,17 +87,17 @@
                 android:orientation="vertical"
                 android:weightSum="2">
 
-                <Button
-                    android:id="@+id/btnGPS"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/btnclose"
-                    android:text="GPS"
-                    android:textSize="@dimen/textHeadDtlSize16" />
+                <!--<Button-->
+                    <!--android:id="@+id/btnGPS"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginRight="5dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@drawable/btnclose"-->
+                    <!--android:text="GPS"-->
+                    <!--android:textSize="@dimen/textHeadDtlSize16" />-->
 
             </LinearLayout>
 
@@ -108,13 +123,13 @@
                 <Button
                 android:id="@+id/btnUnpack"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/btnclose"
-                android:focusableInTouchMode="true"
+                android:background="@drawable/btngray"
+                    android:textColor="@color/colorBackgroundWhite"
                 android:text="นอกกล่อง"
                 android:textSize="@dimen/textHeadDtlSize16" />
 
@@ -127,15 +142,30 @@
                 android:orientation="vertical"
                 android:weightSum="2">
 
+                <!--<Button-->
+                    <!--android:id="@+id/btnReject"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginRight="5dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@drawable/btnlogin"-->
+                    <!--android:text="ส่งไม่ได้"-->
+                    <!--android:textColor="@color/colorBackgroundWhite"-->
+                    <!--android:textSize="@dimen/textHeadDtlSize16" />-->
+
+
                 <Button
                     android:id="@+id/btnReject"
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btnlogin"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btnred"
                     android:text="ส่งไม่ได้"
                     android:textColor="@color/colorBackgroundWhite"
                     android:textSize="@dimen/textHeadDtlSize16" />
