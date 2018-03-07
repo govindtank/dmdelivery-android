@@ -9,6 +9,8 @@ import android.graphics.Typeface;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,10 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.OrderReturnViewAdapter;
+import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.adapter.UnpackViewAdapter;
+import com.bl.dmdelivery.helper.CheckNetwork;
+import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.OrderReturn;
+import com.bl.dmdelivery.model.Unpack;
+
+import java.util.ArrayList;
 
 public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtsum;
     private Button mBtnBack;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -31,6 +42,12 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     private String[] sigInvlist;
 
     private Intent myIntent=null;
+    private RecyclerView lv;
+    private RecyclerView.Adapter mAdapter;
+
+    private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
+    private CheckNetwork chkNetwork = new CheckNetwork();
+    DBHelper mHelper;
 
 
     @Override
@@ -74,6 +91,10 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnBack.setVisibility(View.INVISIBLE);
 
+            mTxtsum = (TextView) findViewById(R.id.txtsum);
+
+
+
 //            mBtnReason = (Button) findViewById(R.id.btnNote);
 //            mBtnReason.setVisibility(View.INVISIBLE);
 //
@@ -89,9 +110,13 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             // Create the arrays
             sigInvlist = getResources().getStringArray(R.array.invList);
 
-            lvinv = (ListView) findViewById(R.id.lv);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigInvlist);
-            lvinv.setAdapter(adapter);
+            lv = (RecyclerView) findViewById(R.id.lv);
+            lv.setLayoutManager(new LinearLayoutManager(this));
+            lv.setHasFixedSize(true);
+
+//            lvinv = (ListView) findViewById(R.id.lv);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigInvlist);
+//            lvinv.setAdapter(adapter);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -112,6 +137,12 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+
+            getInit();
+
+
+            mTxtsum.setText("จำนวนใบรับคืน : "+String.valueOf( mListOrderReturn.size()));
+
 
 //            mBtnBack.setOnClickListener(new View.OnClickListener() {
 //                public void onClick(View view) {
@@ -141,23 +172,124 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
 
             // Set item click listener
-            lvinv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            lvinv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    String description = sigInvlist[position];
+//
+//                 if(!description.isEmpty())   {
+//                     finish();
+//
+//                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
+//                     startActivity(myIntent);
+//                 }
+//                }
+//            });
+
+            lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String description = sigInvlist[position];
+                public void onItemClick(View view, int position) {
 
-                 if(!description.isEmpty())   {
-                     finish();
-
-                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
-                     startActivity(myIntent);
-                 }
+                    String refno  =  mListOrderReturn.get(position).getReturn_no();
+                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
+                    myIntent.putExtra("REF_RETURN_NO", refno);
+                    startActivity(myIntent);
                 }
-            });
+            }));
 
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    private void getInit() {
+
+        try {
+
+            mListOrderReturn.clear();
+
+            mHelper = new DBHelper(getApplicationContext());
+            mListOrderReturn.clear();
+            mListOrderReturn = mHelper.getOrderReturn();
+
+            if(mListOrderReturn.size()>0)
+            {
+
+                mAdapter = new OrderReturnViewAdapter(getApplicationContext(),mListOrderReturn);
+                lv.setAdapter(mAdapter);
+
+
+
+            }else
+            {
+                //finish();
+                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
+
+            }
+
+
+
+//            Order f = new Order();
+//            f.setTransNo("1");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("2");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("3");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("4");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("5");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("6");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("7");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("8");
+//            mListOrderData.add(f);
+
+
+            //new getInitDataInAsync().execute();
+
+           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+            {
+
+                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+                {
+
+                    new getOrderDataInAsync().execute();
+                }
+                else
+                {
+
+                    showMsgDialog(getResources().getString(R.string.error_webservice));
+
+                }
+
+            }else
+            {
+
+                showMsgDialog(getResources().getString(R.string.error_network));
+            }*/
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

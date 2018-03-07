@@ -61,6 +61,25 @@
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content" />-->
 
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+
+            <!--android:background="@color/colorBGMain"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<include-->
+                <!--android:id="@+id/includeHeaderSerach"-->
+                <!--layout="@layout/toolbar_search"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginLeft="10dp"-->
+
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_marginTop="10dp" />-->
+        <!--</LinearLayout>-->
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -69,8 +88,8 @@
             android:orientation="horizontal">
 
             <include
-                android:id="@+id/includeHeaderSerach"
-                layout="@layout/toolbar_search"
+                android:id="@+id/includeHeaderSumItem"
+                layout="@layout/toolbar_sum_items"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -100,13 +119,20 @@
             <!--android:layout_height="wrap_content"-->
             <!--android:background="@color/colorBackgroundWhite" />-->
 
-
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/lv"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/colorBG" />
+                android:background="@color/colorBackground" />
+
+
+            <!--<ListView-->
+                <!--android:id="@+id/lv"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@color/colorBG" />-->
 
         </LinearLayout>
 

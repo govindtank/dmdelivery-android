@@ -9,6 +9,8 @@ import android.graphics.Typeface;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,20 +21,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.OrderReturnDtlViewAdapter;
+import com.bl.dmdelivery.adapter.OrderReturnViewAdapter;
+import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.helper.CheckNetwork;
+import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.utility.TagUtils;
+
+import java.util.ArrayList;
 
 public class SaveOrdersReturnActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtsum,mmTxtQty;
     private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnApprove,mBtnReject;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
-    private ListView lv;
+    //private ListView lv;
     private String[] sigReturnList;
     private String[] sigReturncancellist;
 
     private Intent myIntent=null;
+
+    private RecyclerView lv;
+    private RecyclerView.Adapter mAdapter;
+
+    String refno;
+
+    private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
+    private CheckNetwork chkNetwork = new CheckNetwork();
+    DBHelper mHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +81,20 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     {
         try{
             //button
+
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                refno= null;
+            } else {
+                refno= extras.getString("REF_RETURN_NO");
+            }
+
+
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnApprove = (Button) findViewById(R.id.btnApprove);
             mBtnReject = (Button) findViewById(R.id.btnReject);
+
+            mTxtsum = (TextView) findViewById(R.id.txtsum);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
@@ -73,9 +103,14 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             // Create the arrays
             sigReturnList = getResources().getStringArray(R.array.returnList);
 
-            lv = (ListView) findViewById(R.id.lv);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigReturnList);
-            lv.setAdapter(adapter);
+//            lv = (ListView) findViewById(R.id.lv);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigReturnList);
+//            lv.setAdapter(adapter);
+
+
+            lv = (RecyclerView) findViewById(R.id.lv);
+            lv.setLayoutManager(new LinearLayoutManager(this));
+            lv.setHasFixedSize(true);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -96,6 +131,12 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+
+
+            getInit();
+
+
+            mTxtsum.setText("จำนวนรายการสินค้า : "+String.valueOf( mListOrderReturn.size()));
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -124,23 +165,67 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             });
 
 
-            // Set item click listener
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String description = sigReturnList[position];
-//                    Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
+                public void onItemClick(View view, int position) {
 
-
-                    showMsgQtyDialog();
-
+                    String retqty  =  mListOrderReturn.get(position).getReturn_unit();
+                    showMsgQtyDialog(retqty);
                 }
-            });
+            }));
+
+
+
+
+            // Set item click listener
+//            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    String description = sigReturnList[position];
+////                    Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
+//
+//
+//                    showMsgQtyDialog();
+//
+//                }
+//            });
 
 
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    private void getInit() {
+
+        try {
+
+
+            mHelper = new DBHelper(getApplicationContext());
+            mListOrderReturn.clear();
+            mListOrderReturn = mHelper.getOrderReturnDtl(refno);
+
+            if(mListOrderReturn.size()>0)
+            {
+
+                mAdapter = new OrderReturnDtlViewAdapter(getApplicationContext(),mListOrderReturn);
+                lv.setAdapter(mAdapter);
+
+
+
+            }else
+            {
+                //finish();
+                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void showMsgCancelSelectedSingleDialog()
@@ -159,9 +244,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         mmTxtTitle.setText("ยืนยันการยกเลิกคืนสืนค้า");
 
 
-        lv = (ListView) v.findViewById(R.id.lv);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigReturncancellist);
-        lv.setAdapter(adapter);
+//        lv = (ListView) v.findViewById(R.id.lv);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigReturncancellist);
+//        lv.setAdapter(adapter);
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -180,29 +265,31 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         });
 
         // Set item click listener
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = sigReturncancellist[position];
-                Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String description = sigReturncancellist[position];
+//                Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         DialogBuilder.show();
     }
 
 
-    public void showMsgQtyDialog()
+    public void showMsgQtyDialog(String retqty)
     {
         final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersReturnActivity.this).create();
         LayoutInflater inflater = getLayoutInflater();
         View v = (View) inflater.inflate(R.layout.dialog_confirm_qty, null);
         DialogBuilder.setView(v);
 
+        mmTxtQty = (TextView) v.findViewById(R.id.txtQty);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnOk);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
         mmTxtTitle.setText("แก้ไขจำนวนรับจริง");
+        mmTxtQty.setText(retqty);
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

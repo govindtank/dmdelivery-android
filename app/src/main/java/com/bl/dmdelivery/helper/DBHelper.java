@@ -482,6 +482,102 @@ public class DBHelper extends SQLiteOpenHelper {
         return unpacks;
     }
 
+    public ArrayList<OrderReturn> getOrderReturn() {
+
+        ArrayList<OrderReturn> orderReturns = new ArrayList<OrderReturn>();
+
+
+        sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(TableOrderReturn,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+
+            OrderReturn orderReturn = new OrderReturn();
+            orderReturn.setOu_code(cursor.getString(0));
+            orderReturn.setReturn_no(cursor.getString(1));
+            orderReturn.setReturn_code(cursor.getString(2));
+            orderReturn.setReturn_type(cursor.getString(3));
+            orderReturn.setReftrans_no(cursor.getString(4));
+            orderReturn.setReftrans_year(cursor.getString(5));
+            orderReturn.setRep_code(cursor.getString(6));
+            orderReturn.setRep_seq(cursor.getString(7));
+            orderReturn.setRep_name(cursor.getString(8));
+            orderReturn.setReturn_seq(cursor.getString(9));
+            orderReturn.setFs_code(cursor.getString(10));
+            orderReturn.setFs_desc(cursor.getString(11));
+            orderReturn.setReturn_unit(cursor.getString(12));
+            orderReturn.setReturn_remark(cursor.getString(13));
+            orderReturns.add(orderReturn);
+
+            cursor.moveToNext();
+        }
+
+
+
+        return orderReturns;
+    }
+
+    public ArrayList<OrderReturn> getOrderReturnDtl(String refno) {
+
+        ArrayList<OrderReturn> orderReturns = new ArrayList<OrderReturn>();
+
+
+        sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(TableOrderReturn,
+                null,
+                OrderReturn.Column.return_no + " = ? ",
+                new String[] { refno },
+                null,
+                null,
+                null,
+                null);
+
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+
+            OrderReturn orderReturn = new OrderReturn();
+            orderReturn.setOu_code(cursor.getString(0));
+            orderReturn.setReturn_no(cursor.getString(1));
+            orderReturn.setReturn_code(cursor.getString(2));
+            orderReturn.setReturn_type(cursor.getString(3));
+            orderReturn.setReftrans_no(cursor.getString(4));
+            orderReturn.setReftrans_year(cursor.getString(5));
+            orderReturn.setRep_code(cursor.getString(6));
+            orderReturn.setRep_seq(cursor.getString(7));
+            orderReturn.setRep_name(cursor.getString(8));
+            orderReturn.setReturn_seq(cursor.getString(9));
+            orderReturn.setFs_code(cursor.getString(10));
+            orderReturn.setFs_desc(cursor.getString(11));
+            orderReturn.setReturn_unit(cursor.getString(12));
+            orderReturn.setReturn_remark(cursor.getString(13));
+            orderReturns.add(orderReturn);
+
+            cursor.moveToNext();
+        }
+
+
+
+        return orderReturns;
+    }
+
     public void addReason(Reason order) {
         sqLiteDatabase = this.getWritableDatabase();
 
