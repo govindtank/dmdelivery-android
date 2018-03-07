@@ -376,6 +376,73 @@ public class DBHelper extends SQLiteOpenHelper {
         return order;
     }
 
+    public ArrayList<Order> getOrderWaitList() {
+
+        ArrayList<Order> orders = new ArrayList<Order>();
+
+
+        sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(TableOrder,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+
+
+            Order order = new Order();
+            order.setId(cursor.getInt(0));
+            order.setOucode(cursor.getString(1));
+            order.setYear(cursor.getString(2));
+            order.setGroup(cursor.getString(3));
+            order.setTransNo(cursor.getString(4));
+            order.setTransdate(cursor.getString(5));
+            order.setRep_seq(cursor.getString(6));
+            order.setRep_code(cursor.getString(7));
+            order.setRep_name(cursor.getString(8));
+            order.setRep_nickname(cursor.getString(9));
+            order.setAddress1(cursor.getString(10));
+            order.setAddress2(cursor.getString(11));
+            order.setTumbon(cursor.getString(12));
+            order.setAmphur(cursor.getString(13));
+            order.setProvince(cursor.getString(14));
+            order.setPostal(cursor.getString(15));
+            order.setRep_telno(cursor.getString(16));
+            order.setDsm_name(cursor.getString(17));
+            order.setDsm_telno(cursor.getString(18));
+            order.setLoc_code(cursor.getString(19));
+            order.setTrans_campaign(cursor.getString(20));
+            order.setOrd_campaign(cursor.getString(21));
+            order.setOrd_type(cursor.getString(22));
+            order.setDel_type(cursor.getString(23));
+            order.setOrd_flag_status(cursor.getString(24));
+            order.setReturn_flag(cursor.getString(25));
+            order.setUnpack_items(cursor.getString(26));
+            order.setOrder_flag_desc(cursor.getString(27));
+            order.setDelivery_desc(cursor.getString(28));
+            order.setOrdertype_desc(cursor.getString(29));
+            order.setCont_desc(cursor.getString(30));
+            order.setItemno(cursor.getInt(31));
+            orders.add(order);
+
+            cursor.moveToNext();
+        }
+
+
+
+        return orders;
+    }
+
     public ArrayList<Unpack> getUnpackList() {
 
         ArrayList<Unpack> unpacks = new ArrayList<Unpack>();

@@ -27,6 +27,7 @@ import com.bl.dmdelivery.adapter.OrderAdapter;
 import com.bl.dmdelivery.adapter.OrderSlipViewAdapter;
 import com.bl.dmdelivery.adapter.RVListDeliveryBWAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.helper.GlobalObject;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderData;
@@ -69,6 +70,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private Intent myIntent=null;
 
     private GestureManager mGestureManager;
+    DBHelper mHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -617,37 +619,43 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             mListOrderData.clear();
 
-            Order f = new Order();
-            f.setTransNo("1");
-            mListOrderData.add(f);
+            mHelper = new DBHelper(getApplicationContext());
+            mListOrderData.clear();
+            mListOrderData = mHelper.getOrderWaitList();
 
-            f = new Order();
-            f.setTransNo("2");
-            mListOrderData.add(f);
 
-            f = new Order();
-            f.setTransNo("3");
-            mListOrderData.add(f);
 
-            f = new Order();
-            f.setTransNo("4");
-            mListOrderData.add(f);
-
-            f = new Order();
-            f.setTransNo("5");
-            mListOrderData.add(f);
-
-            f = new Order();
-            f.setTransNo("6");
-            mListOrderData.add(f);
-
-            f = new Order();
-            f.setTransNo("7");
-            mListOrderData.add(f);
-
-            f = new Order();
-            f.setTransNo("8");
-            mListOrderData.add(f);
+//            Order f = new Order();
+//            f.setTransNo("1");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("2");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("3");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("4");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("5");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("6");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("7");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("8");
+//            mListOrderData.add(f);
 
 
             //new getInitDataInAsync().execute();

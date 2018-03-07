@@ -33,7 +33,7 @@ public class OrderViewHolder extends GestureViewHolder {
 //    @BindView(R.id.month_background_stub)
 //    ViewStub mBackgroundView;
 
-    public TextView mMonthText;
+    public TextView mSeqText,txtRepcode,txtInv,txtAddress,txtMslTel,txtDsmTel;
     public ImageView mMonthPicture,mItemDrag;
     public View mForegroundView;
     public ViewStub mBackgroundView;
@@ -41,8 +41,14 @@ public class OrderViewHolder extends GestureViewHolder {
     public OrderViewHolder(final View view) {
         super(view);
 
-        this.mMonthText = (TextView) view.findViewById(R.id.month_text);
-        this.mMonthPicture = (ImageView) view.findViewById(R.id.month_image);
+        this.mSeqText = (TextView) view.findViewById(R.id.seqTxt);
+        this.txtRepcode = (TextView) view.findViewById(R.id.txtRepcode);
+        this.txtInv = (TextView) view.findViewById(R.id.txtInv);
+        this.txtAddress = (TextView) view.findViewById(R.id.txtAddress);
+        this.txtMslTel = (TextView) view.findViewById(R.id.txtMslTel);
+        this.txtDsmTel = (TextView) view.findViewById(R.id.txtDsmTel);
+
+        //this.mMonthPicture = (ImageView) view.findViewById(R.id.month_image);
         this.mItemDrag = (ImageView) view.findViewById(R.id.mont_drag);
 
         //this.mForegroundView = (View) view.findViewById(R.id.foreground);
@@ -74,14 +80,14 @@ public class OrderViewHolder extends GestureViewHolder {
         final int textColorTo = itemView.getContext().getResources().getColor(R.color.colorPrimary);
         final ValueAnimator textAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), textColorFrom, textColorTo);
         textAnimation.setDuration(SELECT_DURATION_IN_MS);
-        textAnimation.addUpdateListener(getTextAnimatorListener(mMonthText, textAnimation));
+        textAnimation.addUpdateListener(getTextAnimatorListener(mSeqText, textAnimation));
         textAnimation.start();
 
         final int backgroundColorFrom = itemView.getContext().getResources().getColor(R.color.colorPrimary);
         final int backgroundColorTo = itemView.getContext().getResources().getColor(android.R.color.white);
         final ValueAnimator backgroundAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), backgroundColorFrom, backgroundColorTo);
         backgroundAnimation.setDuration(SELECT_DURATION_IN_MS);
-        backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(mMonthText, backgroundAnimation));
+        backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(mSeqText, backgroundAnimation));
         backgroundAnimation.start();
     }
 
@@ -91,14 +97,14 @@ public class OrderViewHolder extends GestureViewHolder {
         final int textColorTo = itemView.getContext().getResources().getColor(android.R.color.white);
         final ValueAnimator textAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), textColorFrom, textColorTo);
         textAnimation.setDuration(SELECT_DURATION_IN_MS);
-        textAnimation.addUpdateListener(getTextAnimatorListener(mMonthText, textAnimation));
+        textAnimation.addUpdateListener(getTextAnimatorListener(mSeqText, textAnimation));
         textAnimation.start();
 
         final int backgroundColorFrom = itemView.getContext().getResources().getColor(android.R.color.white);
         final int backgroundColorTo = itemView.getContext().getResources().getColor(R.color.colorPrimary);
         final ValueAnimator backgroundAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), backgroundColorFrom, backgroundColorTo);
         backgroundAnimation.setDuration(SELECT_DURATION_IN_MS);
-        backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(mMonthText, backgroundAnimation));
+        backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(mSeqText, backgroundAnimation));
         backgroundAnimation.start();
     }
 

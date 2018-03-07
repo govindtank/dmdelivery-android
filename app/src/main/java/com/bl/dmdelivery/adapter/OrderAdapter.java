@@ -38,7 +38,13 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
 
         final OrderViewHolder orderViewHolder = (OrderViewHolder) holder;
         final Order order = (Order) orderItem;
-        orderViewHolder.mMonthText.setText(String.valueOf(order.getTransNo()));
+        orderViewHolder.mSeqText.setText(String.valueOf(order.getId()));
+        orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo()+" "+order.getDelivery_desc()+" "+order.getCont_desc()));
+        orderViewHolder.txtRepcode.setText(String.valueOf(order.getRep_code()+" - "+order.getRep_name()));
+        orderViewHolder.txtAddress.setText(String.valueOf(order.getAddress1()+" "+order.getAddress2()+" "+order.getPostal()));
+        orderViewHolder.txtMslTel.setText("Tel MSL : "+String.valueOf(order.getRep_telno()));
+        orderViewHolder.txtDsmTel.setText("Tel DSM : "+String.valueOf(order.getDsm_telno()));
+
     }
 
 //    @Override
