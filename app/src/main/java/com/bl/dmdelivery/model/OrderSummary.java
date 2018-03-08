@@ -10,7 +10,7 @@ import android.os.Parcelable;
 public class OrderSummary implements Parcelable {
     private String DeliveryDate;
     private String TruckNo;
-    private Integer Invoiceno;
+    private Integer InvoiceNo;
     private Integer CartonQty;
     private Integer Bags;
     private Integer Total;
@@ -32,11 +32,11 @@ public class OrderSummary implements Parcelable {
     }
 
     public Integer getInvoiceno() {
-        return Invoiceno;
+        return InvoiceNo;
     }
 
     public void setInvoiceno(Integer invoiceno) {
-        Invoiceno = invoiceno;
+        InvoiceNo = invoiceno;
     }
 
     public Integer getCartonQty() {
@@ -72,7 +72,7 @@ public class OrderSummary implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.DeliveryDate);
         dest.writeString(this.TruckNo);
-        dest.writeValue(this.Invoiceno);
+        dest.writeValue(this.InvoiceNo);
         dest.writeValue(this.CartonQty);
         dest.writeValue(this.Bags);
         dest.writeValue(this.Total);
@@ -84,7 +84,7 @@ public class OrderSummary implements Parcelable {
     protected OrderSummary(Parcel in) {
         this.DeliveryDate = in.readString();
         this.TruckNo = in.readString();
-        this.Invoiceno = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.InvoiceNo = (Integer) in.readValue(Integer.class.getClassLoader());
         this.CartonQty = (Integer) in.readValue(Integer.class.getClassLoader());
         this.Bags = (Integer) in.readValue(Integer.class.getClassLoader());
         this.Total = (Integer) in.readValue(Integer.class.getClassLoader());

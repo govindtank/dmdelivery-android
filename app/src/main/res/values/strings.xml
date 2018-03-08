@@ -136,6 +136,8 @@
     <string name="menu_text_notsave">ส่งไม่ได้</string>
     <string name="menu_text_lat">พิกัด</string>
     <string name="menu_text_unpack">นอกกล่อง</string>
+    <string name="txt_text_scan_yes">สแกนสำเร็จ</string>
+    <string name="txt_text_scan_no">ไม่สำเร็จ!!โปรดตรวจสินค้าที่สแกน</string>
 
 
     <string-array name="others_menu">

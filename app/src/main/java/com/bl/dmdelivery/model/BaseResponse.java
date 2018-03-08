@@ -1,23 +1,12 @@
 package com.bl.dmdelivery.model;
 
-import java.util.ArrayList;
-
 /**
- * Created by thundorn_j on 4/3/2561.
+ * Created by thundorn_j on 8/3/2561.
  */
 
-public class BookingResponse {
-    private ArrayList<OrderSummary> OrderSummary;
+public class BaseResponse {
     private String ResponseCode;
     private String ResponseMessage;
-
-    public ArrayList<com.bl.dmdelivery.model.OrderSummary> getOrderSummary() {
-        return OrderSummary;
-    }
-
-    public void setOrderSummary(ArrayList<com.bl.dmdelivery.model.OrderSummary> orderSummary) {
-        OrderSummary = orderSummary;
-    }
 
     public String getResponseCode() {
         return ResponseCode;

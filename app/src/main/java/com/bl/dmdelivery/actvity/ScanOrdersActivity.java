@@ -28,20 +28,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.OrderScanViewAdapter;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.WebServiceHelper;
+import com.bl.dmdelivery.model.BaseResponse;
 import com.bl.dmdelivery.model.BookingReq;
 import com.bl.dmdelivery.model.BookingResponse;
+import com.bl.dmdelivery.model.ConfirmReq;
 import com.bl.dmdelivery.model.OrderScan;
 import com.bl.dmdelivery.model.OrderScanReq;
 import com.bl.dmdelivery.model.OrderScanResponse;
+import com.bl.dmdelivery.model.OrderSummary;
 import com.bl.dmdelivery.model.Unpack;
 import com.bl.dmdelivery.utility.TagUtils;
 import com.google.gson.Gson;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.BeepManager;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
@@ -59,12 +68,13 @@ import okhttp3.Response;
 public class ScanOrdersActivity extends AppCompatActivity {
 
     private ACProgressFlower mProgressDialog;
-    private TextView mTxtMsg,mTxtHeader,mTxtResult,mTxtOrderSum;
+    private TextView mTxtMsg,mTxtHeader,mTxtResult,mTxtOrderSum,mTxtBoxBagSum,mTxtBoxSum,mTxtBagSum;
     private Button mBtnBack,mBtnCheckScan,mBtnOk,mBtnClose,mBtnConfirm;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
     private ArrayList<OrderScan> mListOrderScan = new ArrayList<OrderScan>();
+    private ArrayList<OrderSummary> mListOrderSum = new ArrayList<OrderSummary>();
     private Response resResponse;
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -72,21 +82,24 @@ public class ScanOrdersActivity extends AppCompatActivity {
     private String deliveryDate = "";
     private OrderScanReq mOrderScanReq;
     private BookingReq mBookingReq;
+    private ConfirmReq mConfirmReq;
     private String serverUrl;
     private Integer i = 0;
     private CheckNetwork chkNetwork = new CheckNetwork();
 
-    private Camera mCamera;
-    private CameraPreview mPreview;
-    private boolean barcodeScanned = false;
-    private boolean previewing = true ;
-    ImageScanner scanner;
-    private Handler autoFocusHandler;
-    private FrameLayout preview;
+    private DecoratedBarcodeView barcodeScannerView;
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            handleDecode(result);
+        }
 
-    static {
-        System.loadLibrary("iconv");
-    }
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +114,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
         }
 
         try {
-//            sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
+           sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
 
             bindWidget();
 //
@@ -116,40 +129,56 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
     }
 
+    public void handleDecode(BarcodeResult rawResult) {
+        barcodeScannerView.pause();//Pause preview
+        String result = rawResult.getText();
+
+        if (result != null) {
+            mTxtResult.setText(result);
+            BeepManager bm = new BeepManager(this);
+            bm.playBeepSoundAndVibrate();
+            getInsertData(result);
+            barcodeScannerView.resume();
+        }else {
+            mTxtResult.setText("Error");
+            barcodeScannerView.resume();
+        }
+
+
+    }
+
     private void bindWidget()
     {
         try{
-//           mOrderScanReq = new OrderScanReq();
-//           mOrderScanReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
-//           mOrderScanReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
-//
-//            mBookingReq = new BookingReq();
-//            mBookingReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
-//            mBookingReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
-//
-//            //button
-//            mBtnBack = (Button) findViewById(R.id.btnBack);
-//            mBtnCheckScan = (Button)findViewById(R.id.btnCheckScan);
-//            mBtnConfirm = (Button)findViewById(R.id.btnConfirm);
-//
-//            //textbox
-//            mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-//            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_scanorders_list));
-//            mTxtResult = (TextView)findViewById(R.id.txtResult);
-//            mTxtOrderSum = (TextView)findViewById(R.id.txtOrdersSum);
-//
-//            //scan
-//            autoFocusHandler = new Handler();
-//            mCamera = getCameraInstance();
-//
-//            scanner = new ImageScanner();
-//            scanner.setConfig(0, Config.X_DENSITY, 3);
-//            scanner.setConfig(0, Config.Y_DENSITY, 3);
-//
-//            mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCB);
-//             preview = (FrameLayout)findViewById(R.id.cameraPreview);
-//            preview.addView(mPreview);
+           mOrderScanReq = new OrderScanReq();
+           mOrderScanReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
+           mOrderScanReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
 
+            mBookingReq = new BookingReq();
+            mBookingReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
+            mBookingReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
+
+            mConfirmReq = new ConfirmReq();
+            mConfirmReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
+            mConfirmReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
+
+            //button
+            mBtnBack = (Button) findViewById(R.id.btnBack);
+            mBtnCheckScan = (Button)findViewById(R.id.btnCheckScan);
+            mBtnConfirm = (Button)findViewById(R.id.btnConfirm);
+
+            //textbox
+            mTxtHeader = (TextView) findViewById(R.id.txtHeader);
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_scanorders_list));
+            mTxtResult = (TextView)findViewById(R.id.txtResult);
+            mTxtOrderSum = (TextView)findViewById(R.id.txtOrdersSum);
+            mTxtBoxSum = (TextView)findViewById(R.id.txtBoxSum);
+            mTxtBagSum = (TextView)findViewById(R.id.txtBagSum);
+            mTxtBoxBagSum = (TextView)findViewById(R.id.txtBoxBagSum);
+
+            //Camara
+            barcodeScannerView = (DecoratedBarcodeView)findViewById(R.id.zxing_barcode_scanner);
+            barcodeScannerView.decodeContinuous(callback);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -170,12 +199,9 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+            getInsertData("");
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-
-                    //previewing = false;
-                    //mCamera.setPreviewCallback(null);
-                    //mCamera.stopPreview();
 
                     finish();
 
@@ -197,21 +223,6 @@ public class ScanOrdersActivity extends AppCompatActivity {
                 }
             });
 
-
-
-//           preview.setOnClickListener(new View.OnClickListener() {
-//               @Override
-//               public void onClick(View view) {
-//                   if (barcodeScanned) {
-//                       barcodeScanned = false;
-//                       mTxtResult.setText("Scanning...");
-//                       mCamera.setPreviewCallback(previewCb);
-//                       mCamera.startPreview();
-//                       previewing = true;
-//                       mCamera.autoFocus(autoFocusCB);
-//                   }
-//               }
-//           });
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -266,6 +277,15 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
         mBtnClose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        mBtnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                barcodeScannerView.pause();
+                getConfirmData();
                 DialogBuilder.dismiss();
             }
         });
@@ -440,13 +460,14 @@ public class ScanOrdersActivity extends AppCompatActivity {
         private Exception exception;
     }
 
-    private void getInsertData(){
+
+    private void getInsertData(String oCarton){
         try {
 
             // TODO Call Webservice
             if(chkNetwork.isConnectionAvailable(getApplicationContext())){
                 serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CreateBooking";
-                new getInsertDataInAsync().execute(serverUrl);
+                new getInsertDataInAsync().execute(serverUrl,oCarton);
             }
 
             else {
@@ -483,6 +504,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
             try
             {
                 //use call api
+                mBookingReq.setCartonNo(params[1]);
                 Gson gson = new Gson();
                 String json = gson.toJson(mBookingReq);
                 String result = new WebServiceHelper().postServiceAPI(params[0],json);
@@ -490,20 +512,135 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
                 //convert json to obj
                 BookingResponse obj = gson.fromJson(result,BookingResponse.class);
-                mListOrderScan.clear();
-                for(int i=0; i<obj.getCheckOrderScan().size();i++){
+                mListOrderSum.clear();
+                if(obj.getOrderSummary() != null){
+                    for(int i=0; i<obj.getOrderSummary().size();i++){
 
-                    OrderScan f = new OrderScan();
-                    f.setItem(i+1);
-                    f.setInvoiceNo(obj.getCheckOrderScan().get(i).getInvoiceNo().toString());
-                    f.setDeliveryDate(obj.getCheckOrderScan().get(i).getDeliveryDate().toString());
-                    f.setTruckNo(obj.getCheckOrderScan().get(i).getTruckNo().toString());
-                    f.setTotalCanton(obj.getCheckOrderScan().get(i).getTotalCanton());
-                    f.setTotalScan(obj.getCheckOrderScan().get(i).getTotalScan());
-                    f.setTotalNotScan(obj.getCheckOrderScan().get(i).getTotalNotScan());
-                    mListOrderScan.add(f);
+                        OrderSummary f = new OrderSummary();
+                        f.setInvoiceno(obj.getOrderSummary().get(i).getInvoiceno());
+                        f.setDeliveryDate(obj.getOrderSummary().get(i).getDeliveryDate().toString());
+                        f.setTruckNo(obj.getOrderSummary().get(i).getTruckNo().toString());
+                        f.setCartonQty(obj.getOrderSummary().get(i).getCartonQty());
+                        f.setBags(obj.getOrderSummary().get(i).getBags());
+                        f.setTotal(obj.getOrderSummary().get(i).getTotal());
+                        mListOrderSum.add(f);
+
+                    }
+                }
+
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : CheckOrderData";
+                pageResultHolder.exception = e;
+                //return null;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            try {
+
+                if (result.exception != null) {
+                    //mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+
+                            //mProgressDialog.dismiss();
+                            if(mListOrderSum.size() != 0){
+                                if(mListOrderSum.get(0).getInvoiceno()>0)
+                                {
+
+                                    mTxtOrderSum.setText(String.valueOf(mListOrderSum.get(0).getInvoiceno()));
+                                    mTxtBoxSum.setText(String.valueOf(mListOrderSum.get(0).getCartonQty()));
+                                    mTxtBagSum.setText(String.valueOf(mListOrderSum.get(0).getBags()));
+                                    mTxtBoxBagSum.setText(String.valueOf(mListOrderSum.get(0).getTotal()));
+                                    //callToast(getResources().getString(R.string.txt_text_scan_yes));
+
+                                }else
+                                {
+                                    callToast(getResources().getString(R.string.txt_text_scan_no));
+
+                                }
+                            }
+
+
+                        }
+                    }, 200);
+
+
 
                 }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    private void getConfirmData(){
+        try {
+
+            // TODO Call Webservice
+            if(chkNetwork.isConnectionAvailable(getApplicationContext())){
+                serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/ConfirmOrder";
+                new getConfirmDataInAsync().execute(serverUrl);
+            }
+
+            else {
+                showMsgDialog("Can't Connect Network");
+            }
+
+        } catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    private class getConfirmDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mProgressDialog = new ACProgressFlower.Builder(ScanOrdersActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+                //use call api
+                Gson gson = new Gson();
+                String json = gson.toJson(mConfirmReq);
+                String result = new WebServiceHelper().postServiceAPI(params[0],json);
+                Log.i("Confirm", result.toString());
+
+                //convert json to obj
+                BaseResponse obj = gson.fromJson(result,BaseResponse.class);
+                pageResultHolder.content = obj.getResponseCode();
 
             } catch (Exception e) {
                 pageResultHolder.content = "Exception : CheckOrderData";
@@ -526,38 +663,28 @@ public class ScanOrdersActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    if (result.content.equals("1"))
+                    {
+
+                        result.content = getResources().getString(R.string.txt_text_update_success);
+                    }
+                    else
+                    {
+                        result.content = "Error";
+                    }
+
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             //Do something after 100ms
-
-                            //mProgressDialog.dismiss();
-
-                            if(mListOrderScan.size()>0)
-                            {
-
-                                mAdapter = new OrderScanViewAdapter(getApplicationContext(),mListOrderScan);
-                                lv.setAdapter(mAdapter);
-
-
-                            }else
-                            {
-                                //finish();
-                                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
-
-                            }
+                            mProgressDialog.dismiss();
+                            showMsgDialog(result.content.toString());
 
                         }
                     }, 200);
 
-                    /*runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
 
-                        }
-                    });*/
 
                 }
 
@@ -568,146 +695,66 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
     }
 
+    private void callToast (String msg)
+    {
+        Toast toast = Toast.makeText(this, msg,Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
 
 
-    public void onPause() {
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//            int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
+//
+//            List<String> permissions = new ArrayList<String>();
+//
+//            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+//                permissions.add(Manifest.permission.CAMERA);
+//
+//            }
+//            if (!permissions.isEmpty()) {
+//                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        switch (requestCode) {
+//            case 111: {
+//                for (int i = 0; i < permissions.length; i++) {
+//                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+//                        System.out.println("Permissions --> " + "Permission Granted: " + permissions[i]);
+//
+//
+//                    } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+//                        System.out.println("Permissions --> " + "Permission Denied: " + permissions[i]);
+//
+//                    }
+//                }
+//            }
+//            break;
+//            default: {
+//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//            }
+//        }
+//    }
+//
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        barcodeScannerView.resume();
+    }
+
+    @Override
+    protected void onPause() {
         super.onPause();
-        releaseCamera();
+        barcodeScannerView.pauseAndWait();
     }
-
-    /** A safe way to get an instance of the Camera object. */
-    public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open();
-        } catch (Exception e){
-            //e.getMessage();
-        }
-        return c;
-    }
-
-    private void releaseCamera() {
-        if (mCamera != null) {
-            previewing = false;
-            mCamera.setPreviewCallback(null);
-            mCamera.release();
-            mCamera = null;
-        }
-    }
-
-    private Runnable doAutoFocus = new Runnable() {
-        public void run() {
-            if (previewing)
-                mCamera.autoFocus(autoFocusCB);
-        }
-    };
-
-    Camera.PreviewCallback previewCb = new Camera.PreviewCallback() {
-        public void onPreviewFrame(byte[] data, Camera camera) {
-            Camera.Parameters parameters = camera.getParameters();
-            Camera.Size size = parameters.getPreviewSize();
-
-            Image barcode = new Image(size.width, size.height, "Y800");
-            barcode.setData(data);
-
-            int result = scanner.scanImage(barcode);
-
-            if (result != 0) {
-
-                previewing = false;
-                mCamera.setPreviewCallback(null);
-                mCamera.stopPreview();
-
-                SymbolSet syms = scanner.getResults();
-
-
-                if(syms.size()>1)
-                {
-                    for(int i=1; i<syms.size();i++){
-
-                        syms.remove(1);
-                    }
-                }
-
-                for (Symbol sym : syms) {
-                    //showMsgDialog("barcode result " + sym.getData());
-                    //mTxtBarcode.setText("barcode result " + sym.getData());
-
-                    mTxtResult.setText(sym.getData().toString());
-                    i = i+1;
-                    mTxtOrderSum.setText(i.toString());
-
-                    //use call api
-                    mBookingReq.setCartonNo(sym.getData().toString());
-                    getInsertData();
-
-
-                    barcodeScanned = true;
-                }
-            }
-        }
-    };
-
-    // Mimic continuous auto-focusing
-    Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
-        public void onAutoFocus(boolean success, Camera camera) {
-            autoFocusHandler.postDelayed(doAutoFocus, 1000);
-        }
-    };
-
-    public void onBackPressed() {
-
-        previewing = false;
-        mCamera.setPreviewCallback(null);
-        mCamera.stopPreview();
-
-        finish();
-        overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
-
-            List<String> permissions = new ArrayList<String>();
-
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.CAMERA);
-
-            }
-            if (!permissions.isEmpty()) {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 111: {
-                for (int i = 0; i < permissions.length; i++) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        System.out.println("Permissions --> " + "Permission Granted: " + permissions[i]);
-
-
-                    } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                        System.out.println("Permissions --> " + "Permission Denied: " + permissions[i]);
-
-                    }
-                }
-            }
-            break;
-            default: {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
-    }
-
-
-
-
 }
