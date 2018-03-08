@@ -24,12 +24,20 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/lv"
+            <!--<ListView-->
+                <!--android:id="@+id/lv"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@color/colorBG"/>-->
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/lvOrderList"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/colorBG"/>
+                android:background="@color/colorBackground" />
         </LinearLayout>
 
     </LinearLayout>

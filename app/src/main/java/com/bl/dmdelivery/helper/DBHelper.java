@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
+import com.bl.dmdelivery.model.OrdersChangeList;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.model.Unpack;
 
@@ -164,6 +165,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         onCreate(db);
     }
+
 
     public void addOrders(Order order) {
         sqLiteDatabase = this.getWritableDatabase();
@@ -442,6 +444,57 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return orders;
     }
+
+
+    public ArrayList<OrdersChangeList> getOrderChangeList(String Invlist) {
+
+        ArrayList<OrdersChangeList> mOrdersChangeLists = new ArrayList<OrdersChangeList>();
+
+
+        sqLiteDatabase = this.getReadableDatabase();
+
+
+
+        Cursor cursor = sqLiteDatabase.query(TableOrder,
+                null,
+                "TransNo IN (" + Invlist + ") ",
+                null,
+                null,
+                null,
+                null,
+                null);
+
+//
+//        Cursor cursor = sqLiteDatabase.query(TableOrder,
+//                null,
+//                "TransNo IN (?) ",
+//                new String[] { Invlist },
+//                null,
+//                null,
+//                null,
+//                null);
+//        String selectQuery = "SELECT * FROM " + TableOrder + " WHERE TransNo IN (" + Invlist + ")";
+//        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+
+            OrdersChangeList mOrdersChangeList=new OrdersChangeList();
+            mOrdersChangeList.setTransNo(cursor.getString(4));
+            mOrdersChangeList.setRep_code(cursor.getString(7) + ' ' + cursor.getString(8));
+            mOrdersChangeList.setRep_name("นำส่ง: 0, นอกกล่อง: 0, รวมทั้งหมด: 0");
+            mOrdersChangeLists.add(mOrdersChangeList);
+
+            cursor.moveToNext();
+        }
+
+        return mOrdersChangeLists;
+    }
+
 
     public ArrayList<Unpack> getUnpackList() {
 

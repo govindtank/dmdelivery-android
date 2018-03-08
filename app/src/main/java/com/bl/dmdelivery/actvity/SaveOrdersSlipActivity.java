@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -25,8 +26,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.OrdersChangeListViewAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
+import com.bl.dmdelivery.helper.CheckNetwork;
+import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.OrdersChangeList;
 import com.bl.dmdelivery.model.Unpack;
 
 import java.util.ArrayList;
@@ -41,16 +46,27 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             mTxtLat,mTxtLog,mTxtCode,mTxtDesc,mTxtH,mTxtL,mTxtW,mTxtSum;
     private Button mBtnBack,mBtnUnpack,mBtnGPS,mBtnApprove,mBtnReject,mmBtnOk,mmBtnClose,mBtnMenu,mBtnSave,mBtnLoc,mBtnNotsave,mBtnclose;
     private ACProgressFlower mProgressDialog;
+
     private RecyclerView lv;
+    private RecyclerView lvOrderList;
+
     private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter mAdapterOrdersList;
+
     private ArrayList<Unpack> mListOrderData = new ArrayList<Unpack>();
+    private ArrayList<OrdersChangeList> mOrdersChangeList = new ArrayList<OrdersChangeList>();
+
+    private CheckNetwork chkNetwork = new CheckNetwork();
+    DBHelper mHelper;
+    SQLiteDatabase mDb;
+
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
 
     private ListView lv2;
-    private ListView lvinv;
+//    private ListView lvinv;
     private String[] sigReturncancellist;
-    private String[] sigInvlist;
+//    private String[] sigInvlist;
 
     private Intent myIntent=null;
 
@@ -96,7 +112,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
-//            mBtnUnpack = (Button) findViewById(R.id.btnUnpack);
+            mBtnUnpack = (Button) findViewById(R.id.btnUnpack);
 //            mBtnGPS= (Button) findViewById(R.id.btnGPS);
             mBtnApprove = (Button) findViewById(R.id.btnApprove);
             mBtnReject = (Button) findViewById(R.id.btnReject);
@@ -124,14 +140,19 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_slip_details));
             mTxtSum = (TextView) findViewById(R.id.txtsum);
-            mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 2 รายการ");
+            mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 0 รายการ");
 
-            // Create the arrays
-            sigInvlist = getResources().getStringArray(R.array.invList);
 
-            lvinv = (ListView) findViewById(R.id.lv);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigInvlist);
-            lvinv.setAdapter(adapter);
+            lvOrderList = (RecyclerView)findViewById(R.id.lvOrderList);
+            lvOrderList.setLayoutManager(new LinearLayoutManager(this));
+            lvOrderList.setHasFixedSize(true);
+
+//            // Create the arrays
+//            sigInvlist = getResources().getStringArray(R.array.invList);
+//
+//            lvinv = (ListView) findViewById(R.id.lv);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigInvlist);
+//            lvinv.setAdapter(adapter);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -152,6 +173,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+            getInit();
 
 //            mTxtRepcode.setText("0096061405");
 //            mTxtName.setText("คุุณชุฑาทรัพย์ อ่อนสี");
@@ -172,13 +194,13 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                 }
             });
 
-//            mBtnUnpack.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    showUnpacklistDialog("");
-//                }
-//            });
-//
+            mBtnUnpack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showUnpacklistDialog("");
+                }
+            });
+
 //            mBtnGPS.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -370,18 +392,22 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
 
     private void getInit() {
-
         try {
 
-            new getInitDataInAsync().execute();
+//            new getInitDataInAsync().execute();
 
-           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
             {
 
                 if(chkNetwork.isWebserviceConnected(getApplicationContext()))
                 {
 
-                    new getOrderDataInAsync().execute();
+//                    new getOrderDataInAsync().execute();
+
+
+                    //get user selected Order List
+                    new getOrdersDataInAsync().execute();
+
                 }
                 else
                 {
@@ -394,14 +420,135 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             {
 
                 showMsgDialog(getResources().getString(R.string.error_network));
-            }*/
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
+
+
+    //load user selected Order List
+    private class getOrdersDataInAsync extends AsyncTask<String, Void, PageResultHolder> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mProgressDialog = new ACProgressFlower.Builder(SaveOrdersSlipActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
+
+        }
+
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+
+                mOrdersChangeList.clear();
+                mHelper = new DBHelper(getApplicationContext());
+                mOrdersChangeList = mHelper.getOrderChangeList("'1101050017','1101074352'");
+
+
+//                mOrdersChangeList.clear();
+//                OrdersChangeList mmmOrdersChangeList=new OrdersChangeList();
+//                mmmOrdersChangeList.setTransNo("1101055086");
+//                mmmOrdersChangeList.setRep_code("test1");
+//                mmmOrdersChangeList.setRep_name("นำส่ง: 0,นอกกล่อง: 0, รวมทั้งหมด: 0");
+//                mOrdersChangeList.add(mmmOrdersChangeList);
+//
+//                mmmOrdersChangeList=new OrdersChangeList();
+//                mmmOrdersChangeList.setTransNo("1101054237");
+//                mmmOrdersChangeList.setRep_code("test2");
+//                mmmOrdersChangeList.setRep_name("นำส่ง: 0,นอกกล่อง: 0, รวมทั้งหมด: 0");
+//                mOrdersChangeList.add(mmmOrdersChangeList);
+
+
+
+//                Unpack f = new Unpack();
+//                f.setUnpack_code("11111");
+//                f.setUnpack_desc("ชื่อสินค้ารายการที่ 1");
+//                f.setUnpack_qty("1");
+//                mListOrderData.add(f);
+//
+//                f = new Unpack();
+//                f.setUnpack_code("22222");
+//                f.setUnpack_desc("ชื่อสินค้ารายการที่ 2");
+//                f.setUnpack_qty("151");
+//                mListOrderData.add(f);
+
+
+//                mHelper = new DBHelper(getApplicationContext());
+//                mListOrderData.clear();
+//                mListOrderData = mHelper.getUnpackList();
+
+
+
+
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : CheckOrderData";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            try {
+
+                if (result.exception != null) {
+                    mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 0 รายการ");
+                    mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+                            mProgressDialog.dismiss();
+                            if(mOrdersChangeList.size()>0)
+                            {
+                                mAdapterOrdersList = new OrdersChangeListViewAdapter(getApplicationContext(),mOrdersChangeList);
+                                lvOrderList.setAdapter(mAdapterOrdersList);
+
+                                mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: " + mOrdersChangeList.size() + " รายการ");
+                            }else
+                            {
+                                mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 0 รายการ");
+                                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
+                            }
+                        }
+                    }, 200);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
+
+
+    //load user selected unpack List
     private class getInitDataInAsync extends AsyncTask<String, Void, PageResultHolder>
     {
 
@@ -409,12 +556,12 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-           /* mProgressDialog = new ACProgressFlower.Builder(SaveOrdersSlipActivity.this)
+           mProgressDialog = new ACProgressFlower.Builder(SaveOrdersSlipActivity.this)
                     .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                     .themeColor(getResources().getColor(R.color.colorBackground))
                     //.text(getResources().getString(R.string.progress_loading))
                     .fadeColor(Color.DKGRAY).build();
-            mProgressDialog.show();*/
+            mProgressDialog.show();
 
         }
 

@@ -28,7 +28,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
     private ListView lv;
-    private String[] sigDeliverylist;
+    private String[] sigReturnAcceptList;
     private Intent myIntent=null;
 
     @Override
@@ -128,7 +128,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     public void showMsgReasonApproveSelectedSingleDialog()
     {
         // Create the arrays
-        sigDeliverylist = getResources().getStringArray(R.array.deliverylist);
+        sigReturnAcceptList = getResources().getStringArray(R.array.returnaccept);
 
         final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersReturnSlipActivity.this).create();
         LayoutInflater inflater = getLayoutInflater();
@@ -142,7 +142,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
 
         lv = (ListView) v.findViewById(R.id.lv);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigDeliverylist);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigReturnAcceptList);
         lv.setAdapter(adapter);
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +166,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = sigDeliverylist[position];
+                String description = sigReturnAcceptList[position];
                 Toast.makeText(SaveOrdersReturnSlipActivity.this, description, Toast.LENGTH_SHORT).show();
             }
         });

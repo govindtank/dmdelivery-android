@@ -9,38 +9,38 @@ import android.os.Parcelable;
 
 public class OrdersChangeList implements Parcelable {
 
-    private  String inv;
-    private  String mslidname;
-    private  String itemsqty;
+    private  String TransNo;
+    private  String rep_code;
+    private  String rep_name;
 
     public class Column{
-        public static final String inv = "inv";
-        public static final String mslidname = "mslidname";
-        public static final String itemsqty ="itemsqty";
+        public static final String TransNo = "TransNo";
+        public static final String rep_code = "rep_code";
+        public static final String rep_name ="rep_name";
     }
 
-    public String getInv() {
-        return inv;
+    public String getTransNo() {
+        return TransNo;
     }
 
-    public void setInv(String inv) {
-        this.inv = inv;
+    public void setTransNo(String TransNo) {
+        this.TransNo = TransNo;
     }
 
-    public String getMslidname() {
-        return mslidname;
+    public String getRep_code() {
+        return rep_code;
     }
 
-    public void setMslidname(String mslidname) {
-        this.mslidname = mslidname;
+    public void setRep_code(String rep_code) {
+        this.rep_code = rep_code;
     }
 
-    public String getItemsqty() {
-        return itemsqty;
+    public String getRep_name() {
+        return rep_name;
     }
 
-    public void setItemsqty(String itemsqty) {
-        this.itemsqty = itemsqty;
+    public void setRep_name(String rep_name) {
+        this.rep_name = rep_name;
     }
 
 
@@ -53,15 +53,15 @@ public class OrdersChangeList implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.inv);
-        dest.writeString(this.mslidname);
-        dest.writeString(this.itemsqty);
+        dest.writeString(this.TransNo);
+        dest.writeString(this.rep_code);
+        dest.writeString(this.rep_name);
     }
 
     protected OrdersChangeList(Parcel in) {
-        this.inv = in.readString();
-        this.mslidname = in.readString();
-        this.itemsqty = in.readString();
+        this.TransNo = in.readString();
+        this.rep_code = in.readString();
+        this.rep_name = in.readString();
     }
 
     public static final Creator<OrdersChangeList> CREATOR = new Creator<OrdersChangeList>() {

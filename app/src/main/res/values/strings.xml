@@ -190,6 +190,18 @@
         <item>301 อื่นๆ.....................</item>
     </string-array>
 
+    <string-array name="returnaccept">
+        <item>101 กล่อง/ถุง ถูกเปิด</item>
+        <item>102 กล่อง/ถุง ปรกติ ปิดเทปเรียบร้อย</item>
+        <item>201 สมาชิกส่งคืนทางไปรษณีย์</item>
+        <item>202 สมาชิกไม่ได้เตรียมสินค้าคืนไว้</item>
+        <item>204 สินค้าฝากส่ง ไม่พบสมาชิก</item>
+    </string-array>
+
+    <string-array name="returnreject">
+        <item>205 สถานที่ส่งปิด</item>
+    </string-array>
+
     <string-array name="deliverylist">
         <item>100 อยู่ระหว่างการจัดส่ง</item>
         <item>101 จัดส่งผลิตภัณฑ์ตามระบุ</item>
