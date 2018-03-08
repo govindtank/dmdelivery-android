@@ -30,6 +30,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
     private Intent myIntent=null;
 
+    private CanvasView customCanvas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_slip));
+
+            customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());

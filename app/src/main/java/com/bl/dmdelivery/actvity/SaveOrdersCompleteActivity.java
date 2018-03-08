@@ -9,12 +9,25 @@ import android.graphics.Typeface;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.OrderCompleteAdapter;
+import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.Order;
+import com.thesurix.gesturerecycler.DefaultItemClickListener;
+import com.thesurix.gesturerecycler.GestureAdapter;
+import com.thesurix.gesturerecycler.GestureManager;
+import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
+
+import java.util.ArrayList;
 
 public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
@@ -24,6 +37,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
     private Intent myIntent=null;
+
+    private ArrayList<Order> mListOrderData = new ArrayList<Order>();
+
+    private RecyclerView lv;
+    private RecyclerView.Adapter mAdapter;
+    private GestureManager mGestureManager;
+    DBHelper mHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +100,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_complete_list));
 
+            lv = (RecyclerView) findViewById(R.id.lv);
+
 
 
 //            lv = (RecyclerView) findViewById(R.id.lv);
@@ -107,11 +129,85 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     private void setWidgetControl() {
         try{
 
-            mBtnSaveOrders.setText("รอส่งข้อมูล\n(8/8)");
+            getInit();
 
-            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/8)");
 
-            mBtnReturnList.setText("ใบรับคืน\n(0/2)");
+            final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+            lv.setHasFixedSize(true);
+            lv.setLayoutManager(manager);
+
+            final OrderCompleteAdapter adapter = new OrderCompleteAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
+            adapter.setData(mListOrderData);
+
+            lv.setAdapter(adapter);
+            lv.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<Order>() {
+
+                @Override
+                public boolean onItemClick(final Order item, final int position) {
+                    //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
+                    toast.show();
+
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+//                    startActivity(myIntent);
+//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+                    return true;
+                }
+
+                @Override
+                public void onItemLongPress(final Order item, final int position) {
+                    //Snackbar.make(view, "Long press event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Long press event on the " + position + " position", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                @Override
+                public boolean onDoubleTap(final Order item, final int position) {
+                    //Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
+                    toast.show();
+                    return true;
+                }
+
+
+            }));
+
+            mGestureManager = new GestureManager.Builder(lv)
+                    .setSwipeEnabled(false)
+                    .setLongPressDragEnabled(false)
+                    .setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+                    .setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN)
+                    .setManualDragEnabled(false)
+                    .build();
+
+            adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<Order>() {
+                @Override
+                public void onItemRemoved(final Order item, final int position) {
+                    //Snackbar.make(view, "Month removed from position " + position, Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Month removed from position " + position, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                @Override
+                public void onItemReorder(final Order item, final int fromPos, final int toPos) {
+                    //Snackbar.make(view, "Month moved from position " + fromPos + " to " + toPos, Snackbar.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Month moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+//            mBtnSaveOrders.setText("รอส่งข้อมูล\n(8/8)");
+//
+//            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/8)");
+//
+//            mBtnReturnList.setText("ใบรับคืน\n(0/2)");
+
+            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderData.size()+"/"+mListOrderData.size()+")");
+
+            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/"+mListOrderData.size()+")");
+
+            mBtnReturnList.setText("ใบรับคืน\n(0/0)");
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -153,6 +249,80 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    private void getInit() {
+
+        try {
+
+            mListOrderData.clear();
+
+            mHelper = new DBHelper(getApplicationContext());
+            mListOrderData.clear();
+            mListOrderData = mHelper.getOrderWaitList();
+
+
+
+//            Order f = new Order();
+//            f.setTransNo("1");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("2");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("3");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("4");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("5");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("6");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("7");
+//            mListOrderData.add(f);
+//
+//            f = new Order();
+//            f.setTransNo("8");
+//            mListOrderData.add(f);
+
+
+            //new getInitDataInAsync().execute();
+
+           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+            {
+
+                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+                {
+
+                    new getOrderDataInAsync().execute();
+                }
+                else
+                {
+
+                    showMsgDialog(getResources().getString(R.string.error_webservice));
+
+                }
+
+            }else
+            {
+
+                showMsgDialog(getResources().getString(R.string.error_network));
+            }*/
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

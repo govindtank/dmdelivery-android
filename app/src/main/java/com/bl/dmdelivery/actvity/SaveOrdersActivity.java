@@ -273,11 +273,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                }
 //            });
 
-            mBtnSaveOrders.setText("รอส่งข้อมูล\n(8/8)");
+            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderData.size()+"/"+mListOrderData.size()+")");
 
-            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/8)");
+            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/"+mListOrderData.size()+")");
 
-            mBtnReturnList.setText("ใบรับคืน\n(0/2)");
+            mBtnReturnList.setText("ใบรับคืน\n(0/0)");
 
 
             mBtnSaveOrdersComplete.setOnClickListener(new View.OnClickListener() {
