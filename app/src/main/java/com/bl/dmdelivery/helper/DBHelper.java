@@ -446,18 +446,16 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<OrdersChangeList> getOrderChangeList(String Invlist) {
+    public ArrayList<OrdersChangeList> getOrderChangeList(String sigInvlist) {
 
         ArrayList<OrdersChangeList> mOrdersChangeLists = new ArrayList<OrdersChangeList>();
 
 
         sqLiteDatabase = this.getReadableDatabase();
 
-
-
         Cursor cursor = sqLiteDatabase.query(TableOrder,
                 null,
-                "TransNo IN (" + Invlist + ") ",
+                "TransNo IN (" + sigInvlist + ") ",
                 null,
                 null,
                 null,
@@ -493,6 +491,42 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return mOrdersChangeLists;
+    }
+
+    public ArrayList<Unpack> getUnpackListForInvCustom(String sigInvlist) {
+
+        ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
+
+
+        sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(TableUnpack,
+                null,
+                "transno IN (" + sigInvlist + ") ",
+                null,
+                null,
+                null,
+                null,
+                null);
+
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+
+            Unpack order = new Unpack();
+            order.setTransno(cursor.getString(0));
+            order.setUnpack_code(cursor.getString(1));
+            order.setUnpack_desc(cursor.getString(2));
+            order.setUnpack_qty(cursor.getString(3));
+            order.setUnpack_image(cursor.getString(4));
+            unpacks.add(order);
+
+            cursor.moveToNext();
+        }
+        return unpacks;
     }
 
 

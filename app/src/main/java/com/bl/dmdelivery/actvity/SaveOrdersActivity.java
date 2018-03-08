@@ -202,6 +202,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     toast.show();
 
                     myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+                    myIntent.putExtra("inv", "'" + mListOrderData.get(position).getTransNo() + "'");
                     startActivity(myIntent);
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 

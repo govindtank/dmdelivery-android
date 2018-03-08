@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -15,12 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,13 +45,14 @@ import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class SaveOrdersSlipActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtRepcode,mTxtName,mTxtInv,mTxtAddress,
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mtxtDescSzie,mTxtRepcode,mTxtName,mTxtInv,mTxtAddress,
             mTxtMobilemsl,mTxtType,mTxtReturn,mTxtMobiledsm,
             mTxtLat,mTxtLog,mTxtCode,mTxtDesc,mTxtH,mTxtL,mTxtW,mTxtSum;
     private Button mBtnBack,mBtnUnpack,mBtnGPS,mBtnApprove,mBtnReject,mmBtnOk,mmBtnClose,mBtnMenu,mBtnSave,mBtnLoc,mBtnNotsave,mBtnclose;
+    private ImageView mImageView;
     private ACProgressFlower mProgressDialog;
 
-    private RecyclerView lv;
+    private RecyclerView lvUnpack;
     private RecyclerView lvOrderList;
 
     private RecyclerView.Adapter mAdapter;
@@ -61,7 +66,8 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
     SQLiteDatabase mDb;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
-
+    private String sigInvMulti="";
+    private String sigInvSingle="";
 
     private ListView lv2;
 //    private ListView lvinv;
@@ -142,7 +148,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             mTxtSum = (TextView) findViewById(R.id.txtsum);
             mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 0 รายการ");
 
-
+            //listview orders list
             lvOrderList = (RecyclerView)findViewById(R.id.lvOrderList);
             lvOrderList.setLayoutManager(new LinearLayoutManager(this));
             lvOrderList.setHasFixedSize(true);
@@ -187,6 +193,14 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 //            mTxtLog.setText("Log=10.364450");
 
 
+            Intent intInv= getIntent();
+            Bundle bdlInv = intInv.getExtras();
+
+            if(bdlInv != null)
+            {
+                sigInvMulti =(String)bdlInv.get("inv");
+            }
+
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
@@ -197,7 +211,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             mBtnUnpack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showUnpacklistDialog("");
+//                    showUnpacklistDialog("");
                 }
             });
 
@@ -225,6 +239,22 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                     showMsgCancelSelectedSingleDialog();
                 }
             });
+
+
+            lvOrderList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    if(mOrdersChangeList.get(position).getTransNo().isEmpty()){
+                        return;
+                    }
+
+                    //save val to variable
+                    sigInvSingle="'" + mOrdersChangeList.get(position).getTransNo() + "'";
+
+                    //get user selected Unpack List
+                    new getUnpackDataInAsync().execute();
+                }
+            }));
 
         } catch (Exception e) {
             showMsgDialog(e.toString());
@@ -254,7 +284,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         DialogBuilder.show();
     }
 
-    public void showUnpackDialog(String msg)
+    public void showUnpackDialog(int position)
     {
         //final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
@@ -265,23 +295,26 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
         mTxtCode = (TextView) v.findViewById(R.id.txtCode);
         mTxtDesc = (TextView) v.findViewById(R.id.txtDesc);
+        mImageView = (ImageView)v.findViewById(R.id.imageView3);
+        mtxtDescSzie = (TextView)v.findViewById(R.id.txtDescSzie);
         mTxtH = (TextView)v.findViewById(R.id.txtHeight);
         mTxtL = (TextView)v.findViewById(R.id.txtLength);
         mTxtW = (TextView)v.findViewById(R.id.txtWidth);
 
+        mTxtCode.setText(mListOrderData.get(position).getUnpack_code());
+        mTxtDesc.setText(mListOrderData.get(position).getUnpack_desc());
+        byte[] decodedByteArray = Base64.decode(mListOrderData.get(position).getUnpack_image().toString(), Base64.NO_WRAP);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+        mImageView.setImageBitmap(decodedBitmap);
 
-        mTxtCode.setText("66666");
-        mTxtDesc.setText("หม้อหุงข้าวขนาดใหญ่ 1 ลิตร SMARTHOME");
-        mTxtH.setText("ความสูง 19 เซนติเมตร");
-        mTxtW.setText("ความกว้าง 24 เซนติเมตร");
-        mTxtL.setText("ความยาว 24 เซนติเมตร");
-
+        mtxtDescSzie.setVisibility(View.INVISIBLE);
+        mTxtH.setVisibility(View.INVISIBLE);
+        mTxtW.setVisibility(View.INVISIBLE);
+        mTxtL.setVisibility(View.INVISIBLE);
 
         DialogBuilder.setView(v);
-
         DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
                 dialog.dismiss();
             }
         });
@@ -360,7 +393,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
     }
 
 
-    public void showUnpacklistDialog(String msg)
+    public void showUnpacklistDialog()
     {
         //final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
@@ -368,19 +401,19 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_list_unpack, null, false);
 
-        lv = (RecyclerView)v.findViewById(R.id.lv);
-        lv.setLayoutManager(new LinearLayoutManager(this));
-        lv.setHasFixedSize(true);
-        lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+        lvUnpack = (RecyclerView)v.findViewById(R.id.lv);
+        lvUnpack.setLayoutManager(new LinearLayoutManager(this));
+        lvUnpack.setHasFixedSize(true);
+        lvUnpack.setAdapter(mAdapter);
+
+        lvUnpack.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                showUnpackDialog("");
+                showUnpackDialog(position);
             }
         }));
-        getInit();
 
         DialogBuilder.setView(v);
-
         DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
@@ -393,41 +426,25 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
     private void getInit() {
         try {
-
-//            new getInitDataInAsync().execute();
-
             if(chkNetwork.isConnectionAvailable(getApplicationContext()))
             {
-
                 if(chkNetwork.isWebserviceConnected(getApplicationContext()))
                 {
-
-//                    new getOrderDataInAsync().execute();
-
-
                     //get user selected Order List
                     new getOrdersDataInAsync().execute();
-
                 }
                 else
                 {
-
                     showMsgDialog(getResources().getString(R.string.error_webservice));
-
                 }
-
             }else
             {
-
                 showMsgDialog(getResources().getString(R.string.error_network));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 
     //load user selected Order List
     private class getOrdersDataInAsync extends AsyncTask<String, Void, PageResultHolder> {
@@ -444,7 +461,6 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
         }
 
-
         @Override
         protected PageResultHolder doInBackground(String... params) {
             // TODO Auto-generated method stub
@@ -454,13 +470,12 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             {
                 mOrdersChangeList.clear();
                 mHelper = new DBHelper(getApplicationContext());
-                mOrdersChangeList = mHelper.getOrderChangeList("'1101050017','1101074352'");
+                mOrdersChangeList = mHelper.getOrderChangeList(sigInvMulti);
 
             } catch (Exception e) {
                 pageResultHolder.content = "Exception : CheckOrderData";
                 pageResultHolder.exception = e;
             }
-
             return pageResultHolder;
         }
 
@@ -474,7 +489,9 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                 if (result.exception != null) {
                     mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 0 รายการ");
                     mProgressDialog.dismiss();
-                    showMsgDialog(result.exception.toString());
+                    Toast.makeText(SaveOrdersSlipActivity.this,result.exception.toString(), Toast.LENGTH_SHORT).show();
+
+//                    showMsgDialog(result.exception.toString());
                 }
                 else
                 {
@@ -493,7 +510,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                             }else
                             {
                                 mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 0 รายการ");
-                                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
+                                Toast.makeText(SaveOrdersSlipActivity.this, getResources().getString(R.string.error_data_not_in_system), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, 200);
@@ -504,16 +521,9 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
     //load user selected unpack List
-    private class getInitDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    private class getUnpackDataInAsync extends AsyncTask<String, Void, PageResultHolder>
     {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -524,7 +534,6 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                     //.text(getResources().getString(R.string.progress_loading))
                     .fadeColor(Color.DKGRAY).build();
             mProgressDialog.show();
-
         }
 
         @Override
@@ -534,39 +543,27 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             //String xmlInput = params[0];
             try
             {
+
                 mListOrderData.clear();
-
-                Unpack f = new Unpack();
-                f.setUnpack_code("11111");
-                f.setUnpack_desc("ชื่อสินค้ารายการที่ 1");
-                f.setUnpack_qty("1");
-                mListOrderData.add(f);
-
-                f = new Unpack();
-                f.setUnpack_code("22222");
-                f.setUnpack_desc("ชื่อสินค้ารายการที่ 2");
-                f.setUnpack_qty("151");
-                mListOrderData.add(f);
-
-
+                mHelper = new DBHelper(getApplicationContext());
+                mListOrderData = mHelper.getUnpackListForInvCustom(sigInvSingle);
 
             } catch (Exception e) {
                 pageResultHolder.content = "Exception : CheckOrderData";
                 pageResultHolder.exception = e;
             }
-
             return pageResultHolder;
         }
 
         @Override
         protected void onPostExecute(final PageResultHolder result) {
             // TODO Auto-generated method stub
-
             try {
-
                 if (result.exception != null) {
-                    //mProgressDialog.dismiss();
-                    showMsgDialog(result.exception.toString());
+                    mProgressDialog.dismiss();
+                    Toast.makeText(SaveOrdersSlipActivity.this,result.exception.toString(), Toast.LENGTH_SHORT).show();
+
+//                    showMsgDialog(result.exception.toString());
                 }
                 else
                 {
@@ -575,37 +572,24 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             //Do something after 100ms
-
-                            //mProgressDialog.dismiss();
-
+                            mProgressDialog.dismiss();
                             if(mListOrderData.size()>0)
                             {
-
                                 mAdapter = new UnpackViewAdapter(getApplicationContext(),mListOrderData);
-                                lv.setAdapter(mAdapter);
+//                                lvUnpack.setAdapter(mAdapter);
 
-
-
-
+                                showUnpacklistDialog();
                             }else
                             {
-
-                                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
-
+                                Toast.makeText(SaveOrdersSlipActivity.this,getResources().getString(R.string.error_data_not_in_system), Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     }, 200);
-
-
-
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     private class PageResultHolder {
