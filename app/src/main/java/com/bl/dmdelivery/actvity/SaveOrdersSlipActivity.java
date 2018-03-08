@@ -452,47 +452,9 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             //String xmlInput = params[0];
             try
             {
-
                 mOrdersChangeList.clear();
                 mHelper = new DBHelper(getApplicationContext());
                 mOrdersChangeList = mHelper.getOrderChangeList("'1101050017','1101074352'");
-
-
-//                mOrdersChangeList.clear();
-//                OrdersChangeList mmmOrdersChangeList=new OrdersChangeList();
-//                mmmOrdersChangeList.setTransNo("1101055086");
-//                mmmOrdersChangeList.setRep_code("test1");
-//                mmmOrdersChangeList.setRep_name("นำส่ง: 0,นอกกล่อง: 0, รวมทั้งหมด: 0");
-//                mOrdersChangeList.add(mmmOrdersChangeList);
-//
-//                mmmOrdersChangeList=new OrdersChangeList();
-//                mmmOrdersChangeList.setTransNo("1101054237");
-//                mmmOrdersChangeList.setRep_code("test2");
-//                mmmOrdersChangeList.setRep_name("นำส่ง: 0,นอกกล่อง: 0, รวมทั้งหมด: 0");
-//                mOrdersChangeList.add(mmmOrdersChangeList);
-
-
-
-//                Unpack f = new Unpack();
-//                f.setUnpack_code("11111");
-//                f.setUnpack_desc("ชื่อสินค้ารายการที่ 1");
-//                f.setUnpack_qty("1");
-//                mListOrderData.add(f);
-//
-//                f = new Unpack();
-//                f.setUnpack_code("22222");
-//                f.setUnpack_desc("ชื่อสินค้ารายการที่ 2");
-//                f.setUnpack_qty("151");
-//                mListOrderData.add(f);
-
-
-//                mHelper = new DBHelper(getApplicationContext());
-//                mListOrderData.clear();
-//                mListOrderData = mHelper.getUnpackList();
-
-
-
-
 
             } catch (Exception e) {
                 pageResultHolder.content = "Exception : CheckOrderData";

@@ -101,14 +101,6 @@
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="@dimen/textbtnMenuSize16" />
 
-                        <!--<Button-->
-                        <!--android:id="@+id/btnUnpack"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:background="@drawable/btnlogin"-->
-                        <!--android:text="ดูของนอกกล่อง" />-->
-
                         <TextView
                             android:id="@+id/txtQty"
                             android:layout_width="match_parent"
@@ -117,7 +109,6 @@
                             android:text="deliver: 0, unpack: 0, total: 0"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="@dimen/textbtnMenuSize16" />
-
 
                     </LinearLayout>
 
