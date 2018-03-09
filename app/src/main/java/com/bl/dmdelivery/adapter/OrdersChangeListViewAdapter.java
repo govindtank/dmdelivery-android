@@ -45,12 +45,24 @@ public class OrdersChangeListViewAdapter extends RecyclerView.Adapter<OrdersChan
 
         try
         {
-
             OrdersChangeList f = mData.get(position);
 
             holder.mTxtInv.setText(isEmptyString(f.getTransNo()));
-            holder.mTxtIdName.setText(isEmptyString(f.getRep_code()));
-            holder.mTxtQty.setText(isEmptyString(f.getRep_name()));
+            holder.mTxtIdName.setText(isEmptyString(f.getRep_code()) + " " + isEmptyString(f.getRep_name()));
+            holder.mTxtQty.setText(isEmptyString(f.getQty()));
+
+            if(!isEmptyString(f.getUnpack_items()).isEmpty()){
+                double dblUnpack_items = Double.valueOf(f.getUnpack_items());
+                //ถ่ามี unpack แสดงข้อความ "มีสินค้านอกกล่อง"
+                if(dblUnpack_items >= 1){
+                    holder.mTxtUnpackStatus.setText("มีสินค้านอกกล่อง");
+                }
+            }
+            else
+            {
+                //ถ่ามีไม่ unpack ไม่แสดงข้อความ
+                holder.mTxtUnpackStatus.setText("");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,7 +88,7 @@ public class OrdersChangeListViewAdapter extends RecyclerView.Adapter<OrdersChan
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTxtInv,mTxtIdName,mTxtQty;
+        public TextView mTxtInv,mTxtIdName,mTxtQty,mTxtUnpackStatus;
 
         public ViewHolder(View v) {
             super(v);
@@ -84,6 +96,7 @@ public class OrdersChangeListViewAdapter extends RecyclerView.Adapter<OrdersChan
             this.mTxtInv= (TextView) v.findViewById(R.id.txtInv);
             this.mTxtIdName = (TextView) v.findViewById(R.id.txtIdName);
             this.mTxtQty = (TextView) v.findViewById(R.id.txtQty);
+            this.mTxtUnpackStatus = (TextView) v.findViewById(R.id.txtUnpackStatus);
         }
     }
 

@@ -517,7 +517,8 @@ public class DBHelper extends SQLiteOpenHelper {
             OrdersChangeList mOrdersChangeList=new OrdersChangeList();
             mOrdersChangeList.setTransNo(cursor.getString(4));
             mOrdersChangeList.setRep_code(cursor.getString(7) + ' ' + cursor.getString(8));
-            mOrdersChangeList.setRep_name("นำส่ง: 0, นอกกล่อง: 0, รวมทั้งหมด: 0");
+            mOrdersChangeList.setQty("สินค้า: 0, นอกกล่อง: 0, รวมทั้งหมด: 0");
+            mOrdersChangeList.setUnpack_items(cursor.getString(26));
             mOrdersChangeLists.add(mOrdersChangeList);
 
             cursor.moveToNext();

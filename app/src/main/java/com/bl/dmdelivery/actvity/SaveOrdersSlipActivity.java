@@ -212,6 +212,13 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 //                    showUnpacklistDialog("");
+
+
+                    //save val to variable
+                    sigInvSingle = sigInvMulti;
+
+                    //get user selected Unpack List
+                    new getUnpackDataInAsync().execute();
                 }
             });
 
@@ -490,8 +497,6 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                     mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 0 รายการ");
                     mProgressDialog.dismiss();
                     Toast.makeText(SaveOrdersSlipActivity.this,result.exception.toString(), Toast.LENGTH_SHORT).show();
-
-//                    showMsgDialog(result.exception.toString());
                 }
                 else
                 {
@@ -562,8 +567,6 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                 if (result.exception != null) {
                     mProgressDialog.dismiss();
                     Toast.makeText(SaveOrdersSlipActivity.this,result.exception.toString(), Toast.LENGTH_SHORT).show();
-
-//                    showMsgDialog(result.exception.toString());
                 }
                 else
                 {
@@ -596,7 +599,4 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         private String content;
         private Exception exception;
     }
-
-
-
 }

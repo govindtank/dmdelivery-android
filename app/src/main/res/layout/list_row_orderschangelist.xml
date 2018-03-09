@@ -66,49 +66,94 @@
                 <!--</LinearLayout>-->
 
 
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:weightSum="1">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:weightSum="3">
 
-                        <TextView
-                            android:id="@+id/txtInv"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="inv"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/textRowSize" />
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <TextView
-                            android:id="@+id/txtIdName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:lines="1"
-                            android:text="id - name"
-                            android:textColor="@color/colorPrimaryText"
-                            android:textSize="@dimen/textbtnMenuSize16" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/txtQty"
+                                <TextView
+                                    android:id="@+id/txtInv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="inv"
+                                    android:textColor="@color/colorBlack"
+                                    android:textSize="@dimen/textRowSize" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/txtUnpackStatus"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:lines="1"
+                                    android:text=""
+                                    android:textAlignment="textEnd"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/textbtnMenuSize16" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="deliver: 0, unpack: 0, total: 0"
-                            android:textColor="@color/colorPrimaryText"
-                            android:textSize="@dimen/textbtnMenuSize16" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txtIdName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:lines="1"
+                                android:text="id - name"
+                                android:textColor="@color/colorPrimaryText"
+                                android:textSize="@dimen/textbtnMenuSize16" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txtQty"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="deliver: 0, unpack: 0, total: 0"
+                                android:textColor="@color/colorPrimaryText"
+                                android:textSize="@dimen/textbtnMenuSize16" />
+                        </LinearLayout>
 
                     </LinearLayout>
 

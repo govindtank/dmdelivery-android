@@ -12,11 +12,14 @@ public class OrdersChangeList implements Parcelable {
     private  String TransNo;
     private  String rep_code;
     private  String rep_name;
+    private  String qty;
+    private  String unpack_items;
 
     public class Column{
         public static final String TransNo = "TransNo";
         public static final String rep_code = "rep_code";
         public static final String rep_name ="rep_name";
+        public static final String unpack_items = "unpack_items";
     }
 
     public String getTransNo() {
@@ -43,6 +46,20 @@ public class OrdersChangeList implements Parcelable {
         this.rep_name = rep_name;
     }
 
+    public String getQty() { return qty; }
+
+    public void setQty(String qty) {
+        this.qty = qty;
+    }
+
+    public String getUnpack_items() {
+        return unpack_items;
+    }
+
+    public void setUnpack_items(String unpack_items) {
+        this.unpack_items = unpack_items;
+    }
+
 
     public  OrdersChangeList(){}
 
@@ -56,12 +73,16 @@ public class OrdersChangeList implements Parcelable {
         dest.writeString(this.TransNo);
         dest.writeString(this.rep_code);
         dest.writeString(this.rep_name);
+        dest.writeString(this.qty);
+        dest.writeString(this.unpack_items);
     }
 
     protected OrdersChangeList(Parcel in) {
         this.TransNo = in.readString();
         this.rep_code = in.readString();
         this.rep_name = in.readString();
+        this.qty = in.readString();
+        this.unpack_items = in.readString();
     }
 
     public static final Creator<OrdersChangeList> CREATOR = new Creator<OrdersChangeList>() {
