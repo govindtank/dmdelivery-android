@@ -36,6 +36,7 @@ import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.OrdersChangeList;
+import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.model.Unpack;
 
 import java.util.ArrayList;
@@ -57,9 +58,11 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.Adapter mAdapterOrdersList;
+    private RecyclerView.Adapter mAdapterDeliveryRejectList;
 
     private ArrayList<Unpack> mListOrderData = new ArrayList<Unpack>();
     private ArrayList<OrdersChangeList> mOrdersChangeList = new ArrayList<OrdersChangeList>();
+    private ArrayList<Reason> mDeliveryRejectList = new ArrayList<Reason>();
 
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
@@ -69,10 +72,9 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
     private String sigInvMulti="";
     private String sigInvSingle="";
 
-    private ListView lv2;
-//    private ListView lvinv;
-    private String[] sigReturncancellist;
-//    private String[] sigInvlist;
+    private ListView lvDeliveryReject;
+//    private String[] sigDeliveryRejectList;
+
 
     private Intent myIntent=null;
 
@@ -353,7 +355,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
     public void showMsgCancelSelectedSingleDialog()
     {
         // Create the arrays
-        sigReturncancellist = getResources().getStringArray(R.array.returncancellist);
+//        sigDeliveryRejectList = getResources().getStringArray(R.array.returncancellist);
 
         final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersSlipActivity.this).create();
         LayoutInflater inflater = getLayoutInflater();
@@ -365,10 +367,25 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
         mmTxtTitle.setText("เหตุผล/หมายเหตุ");
 
+        lvDeliveryReject = (ListView) v.findViewById(R.id.lv);
 
-        lv2 = (ListView) v.findViewById(R.id.lv);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigReturncancellist);
-        lv2.setAdapter(adapter);
+
+        mDeliveryRejectList.clear();
+        mHelper = new DBHelper(getApplicationContext());
+        mDeliveryRejectList = mHelper.getReasonListForCondition("'DELIVERY_REJECT'");
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+        for(int i = 0; i < mDeliveryRejectList.size();i++)
+        {
+            arrayList.add(mDeliveryRejectList.get(i).getReason_code() + " " + mDeliveryRejectList.get(i).getReason_desc());
+        }
+
+
+        if(arrayList.size() > 0)
+        {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayList);
+            lvDeliveryReject.setAdapter(adapter);
+        }
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -387,14 +404,14 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
             }
         });
 
-        // Set item click listener
-        lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = sigReturncancellist[position];
-                Toast.makeText(SaveOrdersSlipActivity.this, description, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        // Set item click listener
+//        lvDeliveryReject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String description = sigDeliveryRejectList[position];
+//                Toast.makeText(SaveOrdersSlipActivity.this, description, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         DialogBuilder.show();
     }

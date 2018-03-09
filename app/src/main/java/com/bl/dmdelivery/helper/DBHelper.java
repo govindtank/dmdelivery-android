@@ -707,7 +707,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Reason.Column.reason_desc, order.getReason_desc());
         values.put(Reason.Column.reason_type, order.getReason_type());
 
-        sqLiteDatabase.insert(TableUnpack, null, values);
+//        sqLiteDatabase.insert(TableUnpack, null, values);
+
+        sqLiteDatabase.insert(TableReason, null, values);
 
         sqLiteDatabase.close();
     }
@@ -736,6 +738,35 @@ public class DBHelper extends SQLiteOpenHelper {
         order.setReason_type(cursor.getString(2));
 
         return order;
+    }
+
+
+    public ArrayList<Reason> getReasonListForCondition(String sigReason_type) {
+        ArrayList<Reason> Reasons = new ArrayList<Reason>();
+        sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(TableReason,
+                null,
+                "reason_type = " + sigReason_type,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+            Reason mReason = new Reason();
+            mReason.setReason_code(cursor.getString(0));
+            mReason.setReason_desc(cursor.getString(1));
+            mReason.setReason_type(cursor.getString(2));
+            Reasons.add(mReason);
+            cursor.moveToNext();
+        }
+        return Reasons;
     }
 
 }
