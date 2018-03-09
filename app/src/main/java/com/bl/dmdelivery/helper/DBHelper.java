@@ -166,6 +166,39 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void onUpgradeUnpack(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        String DROP_UNPACK_TABLE = "DROP TABLE IF EXISTS " + TableUnpack;
+        db.execSQL(DROP_UNPACK_TABLE);
+
+        Log.i(TAG, "Upgrade Database unpack from " + oldVersion + " to " + newVersion);
+
+        onCreateUnpack(db);
+    }
+
+    public void onCreateUnpack(SQLiteDatabase db) {
+
+
+        //Unpack
+        String CREATE_UNPACK_TABLE = String.format("CREATE TABLE %s " +
+                        "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT)",
+                TableUnpack,
+                Unpack.Column.transno,
+                Unpack.Column.unpack_code,
+                Unpack.Column.unpack_desc,
+                Unpack.Column.unpack_qty,
+                Unpack.Column.unpack_image
+        );
+
+        Log.i(TAG, CREATE_UNPACK_TABLE);
+
+        // create friend table
+        db.execSQL(CREATE_UNPACK_TABLE);
+
+
+    }
+
+
 
     public void addOrders(Order order) {
         sqLiteDatabase = this.getWritableDatabase();

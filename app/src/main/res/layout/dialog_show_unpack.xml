@@ -77,7 +77,8 @@
                     android:layout_weight="1"
                     android:text="@string/txt_text_unpack_size"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textRowHeadSize" />
+                    android:textSize="@dimen/textRowHeadSize"
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 
@@ -99,7 +100,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/txt_text_unpack_weigth"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/textbtnMenuSize16" />
+                        android:textSize="@dimen/textbtnMenuSize16"
+                        android:visibility="invisible"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -114,7 +116,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/txt_text_unpack_length"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/textbtnMenuSize16" />
+                        android:textSize="@dimen/textbtnMenuSize16"
+                        android:visibility="invisible"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -129,7 +132,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/txt_text_unpack_heigth"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/textbtnMenuSize16" />
+                        android:textSize="@dimen/textbtnMenuSize16"
+                        android:visibility="invisible"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
