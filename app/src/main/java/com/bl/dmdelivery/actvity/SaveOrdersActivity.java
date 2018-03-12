@@ -15,10 +15,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.AndroidException;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,8 +54,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //    private Button mBtnBack;
 
 //    private ImageView mImvHeader;
-    private TextView mTxtMsg,mTxtHeader;
-    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
+    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList,mBtnClose;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -65,6 +69,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
+    private ListView lvGetMenu=null;
     private Integer PositionSelect = 0,mDelCount = 0,selectCount = 0;
 
     private Intent myIntent=null;
@@ -146,6 +151,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
+            mBtnClose = (Button) findViewById(R.id.btnClose);
 
             mBtnSaveOrders = (Button) findViewById(R.id.btnOrdersWait);
             mBtnSaveOrdersComplete = (Button) findViewById(R.id.btnOrdersComptete);
@@ -197,17 +203,21 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onItemClick(final Order item, final int position) {
-                    //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
-                    toast.show();
+//                    //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+//                    myIntent.putExtra("inv", "'" + mListOrderData.get(position).getTransNo() + "'");
+//                    startActivity(myIntent);
+//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
-                    myIntent.putExtra("inv", "'" + mListOrderData.get(position).getTransNo() + "'");
-                    startActivity(myIntent);
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+                    showMsgUserSelectedMenuDialog();
 
                     return true;
                 }
+
+
 
                 @Override
                 public void onItemLongPress(final Order item, final int position) {
@@ -223,9 +233,10 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     toast.show();
                     return true;
                 }
-
-
             }));
+
+
+
 
             mGestureManager = new GestureManager.Builder(lv)
                     .setSwipeEnabled(false)
@@ -265,6 +276,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
+
 
 //            mBtnSaveOrders.setOnClickListener(new View.OnClickListener() {
 //                public void onClick(View view) {
@@ -590,6 +602,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //        }
 //    }
 
+
     public void showMsgDialog(String msg)
     {
         final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
@@ -612,6 +625,77 @@ public class SaveOrdersActivity extends AppCompatActivity {
         });
         DialogBuilder.show();
     }
+
+
+    public void showMsgUserSelectedMenuDialog()
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersActivity.this).create();
+        LayoutInflater inflater = getLayoutInflater();
+        View v = (View) inflater.inflate(R.layout.dialog_call_telandact, null);
+        DialogBuilder.setView(v);
+
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmTxtTitle.setText("เลือกเมนู");
+        mBtnClose = (Button) v.findViewById(R.id.btnClose);
+        lvGetMenu = (ListView) v.findViewById(R.id.lv);
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+        arrayList.add("จัดส่งสินค้า");
+        arrayList.add("กิจกรรรมอื่นๆ");
+        arrayList.add("โทรหา MSL 1: 0800000000");
+        arrayList.add("โทรหา MSL 2: 0800000000");
+        arrayList.add("โทรหา DSM 1: 0800000000");
+        arrayList.add("โทรหา DSM 2: 0800000000");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
+        lvGetMenu.setAdapter(adapter);
+
+
+        mBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+
+        // Set item click listener
+        lvGetMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String  description    = (String) lvGetMenu.getItemAtPosition(position);
+
+                switch (position){
+                    case 0:
+                        //จัดส่งสินค้า
+                        DialogBuilder.dismiss();
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+                        startActivity(myIntent);
+                        break;
+                    case 1:
+                        //กิจกรรมอื่นๆ
+
+                        break;
+                }
+            }
+        });
+
+
+//        lvGetMenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                DialogBuilder.dismiss();
+//
+////                myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+////                startActivity(myIntent);
+////                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//            }
+//        });
+
+        DialogBuilder.show();
+    }
+
+
+
 
 
     private void getInit() {

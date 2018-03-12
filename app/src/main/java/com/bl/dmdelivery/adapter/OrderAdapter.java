@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.model.Order;
@@ -28,7 +29,6 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
     public GestureViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_save_order_item, parent, false);
         return new OrderViewHolder(itemView);
-
     }
 
     @Override
@@ -44,6 +44,7 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
         orderViewHolder.txtAddress.setText(String.valueOf(order.getAddress1()+" "+order.getAddress2()+" "+order.getPostal()));
         orderViewHolder.txtMslTel.setText("Tel MSL : "+String.valueOf(order.getRep_telno()));
         orderViewHolder.txtDsmTel.setText("Tel DSM : "+String.valueOf(order.getDsm_telno()));
+
 
     }
 

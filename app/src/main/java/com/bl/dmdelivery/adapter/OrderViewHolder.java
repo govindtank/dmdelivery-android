@@ -3,10 +3,13 @@ package com.bl.dmdelivery.adapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.thesurix.gesturerecycler.GestureViewHolder;
@@ -34,6 +37,7 @@ public class OrderViewHolder extends GestureViewHolder {
 //    ViewStub mBackgroundView;
 
     public TextView mSeqText,txtRepcode,txtInv,txtAddress,txtMslTel,txtDsmTel;
+    public Button btnTelActivity;
     public ImageView mMonthPicture,mItemDrag;
     public View mForegroundView;
     public ViewStub mBackgroundView;
@@ -47,6 +51,7 @@ public class OrderViewHolder extends GestureViewHolder {
         this.txtAddress = (TextView) view.findViewById(R.id.txtAddress);
         this.txtMslTel = (TextView) view.findViewById(R.id.txtMslTel);
         this.txtDsmTel = (TextView) view.findViewById(R.id.txtDsmTel);
+//        this.btnTelActivity = (Button) view.findViewById(R.id.btnTelActivity);
 
         //this.mMonthPicture = (ImageView) view.findViewById(R.id.month_image);
         this.mItemDrag = (ImageView) view.findViewById(R.id.mont_drag);
@@ -55,6 +60,15 @@ public class OrderViewHolder extends GestureViewHolder {
         //this.mBackgroundView = (ViewStub) view.findViewById(R.id.month_background_stub);
 
         //ButterKnife.bind(this, view);
+
+//        btnTelActivity.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//
+//                    Toast toast = Toast.makeText(view.getContext(), "btnTelActivity Onclick ", Toast.LENGTH_SHORT);
+//                    toast.show();
+//
+//                }
+//            });
     }
 
     @Nullable

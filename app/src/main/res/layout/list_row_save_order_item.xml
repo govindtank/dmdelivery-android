@@ -59,6 +59,7 @@
                 android:text="0000000000"
                 android:textColor="@color/colorText" />
 
+
             <ImageView
                 android:id="@+id/mont_drag"
                 android:layout_width="wrap_content"
