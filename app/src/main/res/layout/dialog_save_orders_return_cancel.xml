@@ -144,7 +144,8 @@
 
                         <Button
                             android:id="@+id/btnOk"
-                            style="@style/btnclose"
+                            android:background="@drawable/btngreen"
+                            android:textColor="@color/colorBackgroundWhite"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginBottom="5dp"
@@ -169,7 +170,8 @@
 
                         <Button
                             android:id="@+id/btnClose"
-                            style="@style/btnclose"
+                            android:background="@drawable/btngray"
+                            android:textColor="@color/colorBackgroundWhite"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginBottom="5dp"

@@ -73,9 +73,6 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
     private String sigInvSingle="";
 
     private ListView lvDeliveryReject;
-//    private String[] sigDeliveryRejectList;
-
-
     private Intent myIntent=null;
 
     @Override
@@ -368,7 +365,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         mmTxtTitle.setText("เหตุผล/หมายเหตุ");
 
         lvDeliveryReject = (ListView) v.findViewById(R.id.lv);
-
+        lvDeliveryReject.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         mDeliveryRejectList.clear();
         mHelper = new DBHelper(getApplicationContext());
@@ -385,6 +382,9 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayList);
             lvDeliveryReject.setAdapter(adapter);
+
+            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
+            lvDeliveryReject.setItemChecked(0,true);
         }
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
@@ -532,7 +532,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                             }else
                             {
                                 mTxtSum.setText("จำนวนรายการที่เลือกจัดส่ง: 0 รายการ");
-                                Toast.makeText(SaveOrdersSlipActivity.this, getResources().getString(R.string.error_data_not_in_system), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(SaveOrdersSlipActivity.this, getResources().getString(R.string.error_data_not_in_system), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, 200);
@@ -601,7 +601,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
                                 showUnpacklistDialog();
                             }else
                             {
-                                Toast.makeText(SaveOrdersSlipActivity.this,getResources().getString(R.string.error_data_not_in_system), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(SaveOrdersSlipActivity.this,getResources().getString(R.string.error_data_not_in_system), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, 200);

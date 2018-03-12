@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.helper.CheckNetwork;
+import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.Reason;
+
+import java.util.ArrayList;
 
 public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
@@ -25,9 +31,15 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
-    private ListView lv;
-    private String[] sigDeliverylist;
+    private ArrayList<Reason> mDeliveryAcceptList = new ArrayList<Reason>();
 
+    private CheckNetwork chkNetwork = new CheckNetwork();
+    DBHelper mHelper;
+
+    private ListView lv;
+//    private String[] sigDeliverylist;
+
+    private ListView lvDeliveryAcceptList;
     private Intent myIntent=null;
 
     private CanvasView customCanvas;
@@ -124,9 +136,6 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
     public void showMsgReasonApproveSelectedSingleDialog()
     {
-        // Create the arrays
-        sigDeliverylist = getResources().getStringArray(R.array.deliverylist);
-
         final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersApproveSlipActivity.this).create();
         LayoutInflater inflater = getLayoutInflater();
         View v = (View) inflater.inflate(R.layout.dialog_save_orders_return_cancel, null);
@@ -137,10 +146,28 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
         mmTxtTitle.setText("เหตุผล/หมายเหตุ");
 
+        lvDeliveryAcceptList = (ListView) v.findViewById(R.id.lv);
+        lvDeliveryAcceptList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        lv = (ListView) v.findViewById(R.id.lv);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigDeliverylist);
-        lv.setAdapter(adapter);
+
+        mDeliveryAcceptList.clear();
+        mHelper = new DBHelper(getApplicationContext());
+        mDeliveryAcceptList = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT'");
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+        for(int i = 0; i < mDeliveryAcceptList.size();i++)
+        {
+            arrayList.add(mDeliveryAcceptList.get(i).getReason_code() + " " + mDeliveryAcceptList.get(i).getReason_desc());
+        }
+
+        if(arrayList.size() > 0)
+        {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayList);
+            lvDeliveryAcceptList.setAdapter(adapter);
+
+            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
+            lvDeliveryAcceptList.setItemChecked(0,true);
+        }
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -159,14 +186,14 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
             }
         });
 
-        // Set item click listener
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = sigDeliverylist[position];
-                Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        // Set item click listener
+//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String description = sigDeliverylist[position];
+//                Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         DialogBuilder.show();
     }
