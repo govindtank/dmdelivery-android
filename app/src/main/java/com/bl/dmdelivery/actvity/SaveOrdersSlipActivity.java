@@ -302,10 +302,10 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         mTxtCode = (TextView) v.findViewById(R.id.txtCode);
         mTxtDesc = (TextView) v.findViewById(R.id.txtDesc);
         mImageView = (ImageView)v.findViewById(R.id.imageView3);
-        mtxtDescSzie = (TextView)v.findViewById(R.id.txtDescSzie);
-        mTxtH = (TextView)v.findViewById(R.id.txtHeight);
-        mTxtL = (TextView)v.findViewById(R.id.txtLength);
-        mTxtW = (TextView)v.findViewById(R.id.txtWidth);
+//        mtxtDescSzie = (TextView)v.findViewById(R.id.txtDescSzie);
+//        mTxtH = (TextView)v.findViewById(R.id.txtHeight);
+//        mTxtL = (TextView)v.findViewById(R.id.txtLength);
+//        mTxtW = (TextView)v.findViewById(R.id.txtWidth);
 
         mTxtCode.setText(mListOrderData.get(position).getUnpack_code());
         mTxtDesc.setText(mListOrderData.get(position).getUnpack_desc());
@@ -313,10 +313,10 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
         mImageView.setImageBitmap(decodedBitmap);
 
-        mtxtDescSzie.setVisibility(View.INVISIBLE);
-        mTxtH.setVisibility(View.INVISIBLE);
-        mTxtW.setVisibility(View.INVISIBLE);
-        mTxtL.setVisibility(View.INVISIBLE);
+//        mtxtDescSzie.setVisibility(View.INVISIBLE);
+//        mTxtH.setVisibility(View.INVISIBLE);
+//        mTxtW.setVisibility(View.INVISIBLE);
+//        mTxtL.setVisibility(View.INVISIBLE);
 
         DialogBuilder.setView(v);
         DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {

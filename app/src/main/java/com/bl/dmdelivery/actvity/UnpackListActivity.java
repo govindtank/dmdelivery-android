@@ -50,7 +50,7 @@ public class UnpackListActivity extends AppCompatActivity {
 
     private ACProgressFlower mProgressDialog;
     private TextView mTxtMsg,mTxtHeader,mTxtCode,mTxtDesc,mTxtW,mTxtL,mTxtH,mmTxtMsg,mmTxtTitle;
-    private ImageView mImageView;
+    private ImageView mImageView,mmImvTitle;
     private Button mBtnBack,mBtnClose,mBtnLoad,mmBtnOk,mmBtnClose;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
     private RecyclerView lv;
@@ -382,24 +382,69 @@ public class UnpackListActivity extends AppCompatActivity {
 
     public void showMsgDialog(String msg)
     {
-        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog alert = DialogBuilder.create();
+//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+//        final AlertDialog alert = DialogBuilder.create();
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_message, null, false);
+//
+//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+//
+//        mmTxtTitle.setText("ยืนยัน");
+//        mmTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//
+//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                loadData();
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mTxtMsg.setTypeface(tf);
+//        mTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+////        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+////            public void onClick(DialogInterface dialog, int which) {
+////
+////                dialog.dismiss();
+////            }
+////        });
+//        DialogBuilder.show();
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_message, null, false);
 
-        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
 
         Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-        mTxtMsg.setTypeface(tf);
-        mTxtMsg.setText(msg);
+        mmTxtMsg.setTypeface(tf);
+        mmTxtTitle.setTypeface(tf);
+        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText("DM Delivery");
+        mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
-        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
+
         DialogBuilder.show();
     }
 
@@ -543,17 +588,17 @@ public class UnpackListActivity extends AppCompatActivity {
 
         mTxtCode = (TextView) v.findViewById(R.id.txtCode);
         mTxtDesc = (TextView) v.findViewById(R.id.txtDesc);
-        mTxtH = (TextView)v.findViewById(R.id.txtHeight);
-        mTxtL = (TextView)v.findViewById(R.id.txtLength);
-        mTxtW = (TextView)v.findViewById(R.id.txtWidth);
+//        mTxtH = (TextView)v.findViewById(R.id.txtHeight);
+//        mTxtL = (TextView)v.findViewById(R.id.txtLength);
+//        mTxtW = (TextView)v.findViewById(R.id.txtWidth);
         mImageView = (ImageView)v.findViewById(R.id.imageView3);
 
 
         mTxtCode.setText(obj.getUnpack_code());
         mTxtDesc.setText(obj.getUnpack_desc());
-        mTxtH.setText("ความสูง 19 เซนติเมตร");
-        mTxtW.setText("ความกว้าง 24 เซนติเมตร");
-        mTxtL.setText("ความยาว 24 เซนติเมตร");
+//        mTxtH.setText("ความสูง 19 เซนติเมตร");
+//        mTxtW.setText("ความกว้าง 24 เซนติเมตร");
+//        mTxtL.setText("ความยาว 24 เซนติเมตร");
 
         byte[] decodedByteArray = Base64.decode(obj.getUnpack_image().toString(), Base64.NO_WRAP);
         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
