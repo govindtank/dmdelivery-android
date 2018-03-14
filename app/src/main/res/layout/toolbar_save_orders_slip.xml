@@ -48,7 +48,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/textView21"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="0096061405" />
@@ -95,7 +95,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/textView23"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="16/69 เทียนทะเล 26 แยก 2 แขวงแสมดำ" />
@@ -117,7 +117,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/txtBankok"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="กรุงเทพมหานคร" />
@@ -139,7 +139,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/txtMSL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="MSL: 028973435" />
@@ -161,7 +161,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/txtDSM"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="DSM: 0818159347" />

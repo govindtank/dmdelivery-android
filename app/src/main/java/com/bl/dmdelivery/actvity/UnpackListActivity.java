@@ -452,28 +452,28 @@ public class UnpackListActivity extends AppCompatActivity {
 
         try {
 
+            new getInitDataInAsync().execute();
 
-
-           if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-            {
-
-                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-                {
-
-                    new getInitDataInAsync().execute();
-                }
-                else
-                {
-
-                    showMsgDialog(getResources().getString(R.string.error_webservice));
-
-                }
-
-            }else
-            {
-
-                showMsgDialog(getResources().getString(R.string.error_network));
-            }
+//           if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+//            {
+//
+//                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+//                {
+//
+//                    new getInitDataInAsync().execute();
+//                }
+//                else
+//                {
+//
+//                    showMsgDialog(getResources().getString(R.string.error_webservice));
+//
+//                }
+//
+//            }else
+//            {
+//
+//                showMsgDialog(getResources().getString(R.string.error_network));
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

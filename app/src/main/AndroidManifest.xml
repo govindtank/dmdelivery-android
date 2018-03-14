@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -48,6 +49,7 @@
         <activity android:name=".actvity.DialogConfirmQtyActivity" />
         <activity android:name=".actvity.SaveOrdersReturnDocActivity" />
         <activity android:name=".actvity.SaveOrdersReasonApproveActivity" />
+        <activity android:name=".actvity.WebViewActivity" />
     </application>
 
 </manifest>

@@ -642,7 +642,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
         ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add("จัดส่งสินค้า");
-        arrayList.add("กิจกรรรมอื่นๆ");
+        arrayList.add("กิจกรรรม");
         arrayList.add("โทรหา MSL 1: 0800000000");
         arrayList.add("โทรหา MSL 2: 0800000000");
         arrayList.add("โทรหา DSM 1: 0800000000");
@@ -678,7 +678,10 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         break;
                     case 1:
                         //กิจกรรมอื่นๆ
-
+                        DialogBuilder.dismiss();
+                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
+                        myIntent.putExtra("data", "repcode" + "|" +  "inv" + "|" + "deliverydate" + "|" + "truck");
+                        startActivity(myIntent);
                         break;
                 }
             }

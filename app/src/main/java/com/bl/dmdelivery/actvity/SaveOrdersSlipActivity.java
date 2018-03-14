@@ -450,21 +450,25 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
     private void getInit() {
         try {
-            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-            {
-                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-                {
-                    //get user selected Order List
+
+                   //get user selected Order List
                     new getOrdersDataInAsync().execute();
-                }
-                else
-                {
-                    showMsgDialog(getResources().getString(R.string.error_webservice));
-                }
-            }else
-            {
-                showMsgDialog(getResources().getString(R.string.error_network));
-            }
+
+//            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+//            {
+//                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+//                {
+//                    //get user selected Order List
+//                    new getOrdersDataInAsync().execute();
+//                }
+//                else
+//                {
+//                    showMsgDialog(getResources().getString(R.string.error_webservice));
+//                }
+//            }else
+//            {
+//                showMsgDialog(getResources().getString(R.string.error_network));
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -386,27 +386,31 @@ public class MainMenuActivity extends AppCompatActivity {
 
         try {
 
-            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-            {
-                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-                {
-
-                    serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/LoadOrder";
-                    new loadDataDataInAsync().execute(serverUrl);
+            serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/LoadOrder";
+            new loadDataDataInAsync().execute(serverUrl);
 
 
-                }
-                else
-                {
-                    showMsgDialog(getResources().getString(R.string.error_webservice));
-
-                }
-
-            }else
-            {
-                //showDialog("ไม่สามารถเชื่อมต่อ Internet ได้ กรุณากรุณาตรวจสอบ!!!");
-                showMsgDialog(getResources().getString(R.string.error_network));
-            }
+//            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+//            {
+//                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+//                {
+//
+//                    serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/LoadOrder";
+//                    new loadDataDataInAsync().execute(serverUrl);
+//
+//
+//                }
+//                else
+//                {
+//                    showMsgDialog(getResources().getString(R.string.error_webservice));
+//
+//                }
+//
+//            }else
+//            {
+//                //showDialog("ไม่สามารถเชื่อมต่อ Internet ได้ กรุณากรุณาตรวจสอบ!!!");
+//                showMsgDialog(getResources().getString(R.string.error_network));
+//            }
 
         } catch (Exception e) {
             //e.printStackTrace();
