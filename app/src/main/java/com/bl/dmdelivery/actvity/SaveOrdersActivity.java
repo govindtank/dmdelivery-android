@@ -212,7 +212,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
 
-                    showMsgUserSelectedMenuDialog();
+                    showMsgUserSelectedMenuDialog(mListOrderData.get(position).getTransNo());
 
                     return true;
                 }
@@ -627,8 +627,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
     }
 
 
-    public void showMsgUserSelectedMenuDialog()
+    public void showMsgUserSelectedMenuDialog(String sigGetTransNo)
     {
+        final String sigTransNo=sigGetTransNo;
         final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersActivity.this).create();
         LayoutInflater inflater = getLayoutInflater();
         View v = (View) inflater.inflate(R.layout.dialog_call_telandact, null);
@@ -668,7 +669,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     case 0:
                         //จัดส่งสินค้า
                         DialogBuilder.dismiss();
+//                        myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+//                        startActivity(myIntent);
+
                         myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
+                        myIntent.putExtra("inv", "'" + sigTransNo + "'");
                         startActivity(myIntent);
                         break;
                     case 1:

@@ -27,8 +27,10 @@
     <dimen name="list_Padding_above">4dp</dimen>
 
     <!-- Linear item -->
-    <dimen name="linear_item_height">140dp</dimen>
-    <dimen name="linear_text_width">40dp</dimen>
+    <!--<dimen name="linear_item_height">140dp</dimen>-->
+    <dimen name="linear_item_height">160dp</dimen>
+    <!--<dimen name="linear_text_width">40dp</dimen>-->
+    <dimen name="linear_text_width">30dp</dimen>
     <dimen name="linear_text_padding">20dp</dimen>
 
     <!-- Drag view -->
