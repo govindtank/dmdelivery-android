@@ -22,7 +22,7 @@
 
     <dimen name="grid_pading_all">4dp</dimen>
     <dimen name="left_pading">72dp</dimen>
-    <dimen name="height_grid_threelinem">84dp</dimen>
+    <dimen name="height_grid_threelinem">100dp</dimen>
     <dimen name="list_pading_head">8dp</dimen>
     <dimen name="list_Padding_above">4dp</dimen>
 

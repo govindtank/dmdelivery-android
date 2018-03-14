@@ -28,16 +28,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_grid_threelinem"
-                android:layout_marginLeft="@dimen/activity_vertical_margin"
-                android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:orientation="horizontal"
-                android:weightSum="3">
+                android:weightSum="2">
 
                 <LinearLayout
-                    android:layout_width="@dimen/left_pading"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1.5"
                     android:gravity="center"
                     android:orientation="horizontal"
+                    android:padding="2dp"
                     android:weightSum="2">
 
                     <LinearLayout
@@ -56,8 +56,6 @@
                                 android:id="@+id/imageView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingBottom="@dimen/grid_pading_all"
-                                android:paddingTop="@dimen/grid_pading_all"
                                 android:src="@mipmap/ic_menu_unpack128" />
 
                         </LinearLayout>
@@ -68,15 +66,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.58"
+                    android:layout_weight="0.5"
                     android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/list_pading_head"
+                    android:orientation="horizontal"
+                    android:padding="2dp"
                     android:weightSum="2">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
                         android:weightSum="2">
@@ -87,27 +86,40 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Code"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/textRowSize" />
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/textRowSize"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtFsname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:lines="1"
+                            android:gravity="top"
+                            android:lines="2"
                             android:text="00001 - Fsname"
-                            android:textColor="@color/colorPrimaryText"
+                            android:textColor="@color/colorText"
                             android:textSize="@dimen/textbtnMenuSize16" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.7"
+                        android:gravity="right|center_vertical"
+                        android:orientation="vertical"
+                        android:paddingRight="6dp">
 
                         <TextView
                             android:id="@+id/txtQty"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:gravity="right"
                             android:text="Qty"
-                            android:textColor="@color/colorPrimaryText"
-                            android:textSize="@dimen/textbtnMenuSize16" />
+                            android:textColor="@color/colorText"
+                            android:textSize="@dimen/textbtnMenuSize16"
+                            android:textStyle="normal|bold" />
                     </LinearLayout>
 
 

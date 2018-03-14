@@ -71,7 +71,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@null"
-                    android:drawableLeft="@android:drawable/ic_menu_upload"
+                    android:drawableLeft="@mipmap/ic_restart55"
                     android:paddingLeft="3dp" />
             </LinearLayout>
 
