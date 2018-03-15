@@ -30,16 +30,13 @@ import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Unpack;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtsum;
     private Button mBtnBack;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
-
-
-    private ListView lvinv;
-    private String[] sigInvlist;
 
     private Intent myIntent=null;
     private RecyclerView lv;
@@ -49,6 +46,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
 
+    private String sigMultiInv="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +74,12 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        finish();
-
-        myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
-        startActivity(myIntent);
-        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//        finish();
+//
+//        myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
+//        startActivity(myIntent);
+//        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
-
 
     private void bindWidget()
     {
@@ -90,39 +87,18 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnBack.setVisibility(View.INVISIBLE);
-
             mTxtsum = (TextView) findViewById(R.id.txtsum);
-
-
-
-//            mBtnReason = (Button) findViewById(R.id.btnNote);
-//            mBtnReason.setVisibility(View.INVISIBLE);
-//
-//            mBtnApprove = (Button) findViewById(R.id.btnApprove);
-//            mBtnApprove.setText("รีเฟรช");
-//
-//            mBtnReject = (Button) findViewById(R.id.btnReject);
-
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
-
-
-            // Create the arrays
-            sigInvlist = getResources().getStringArray(R.array.invList);
 
             lv = (RecyclerView) findViewById(R.id.lv);
             lv.setLayoutManager(new LinearLayoutManager(this));
             lv.setHasFixedSize(true);
-
-//            lvinv = (ListView) findViewById(R.id.lv);
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigInvlist);
-//            lvinv.setAdapter(adapter);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
         }
     }
-
 
 //    private void setDefaultFonts() {
 //        try {
@@ -137,54 +113,41 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+            //get val Intent
+            Intent ineGetVals= getIntent();
+            Bundle bdlGetVals = ineGetVals.getExtras();
+
+            sigMultiInv="";
+            if(bdlGetVals != null)
+            {
+
+                ArrayList<String> list = new ArrayList<String>();
+//                list.add("1100499936");
+//                list.add("1100499691");
+
+                list =(ArrayList<String>)bdlGetVals.get("REF_TRANS_NO");
+                if(list.size() > 0){
+                    for(int i=0;i<list.size();i++){
+                        String sigInv = list.get(i);
+                        if(!sigInv.isEmpty()){
+                            if(i==0)
+                            {
+                                sigMultiInv= "'" + sigInv + "'";
+                            }
+                            else
+                            {
+                                sigMultiInv = sigMultiInv + ",'" + sigInv + "'";
+                            }
+                        }
+                    }
+                }
+            }
+
 
             getInit();
 
 
             mTxtsum.setText("จำนวนใบรับคืน : "+String.valueOf( mListOrderReturn.size()));
-
-
-//            mBtnBack.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View view) {
-//                    finish();
-//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-//                }
-//            });
-
-
-
-//            mBtnApprove.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View view) {
-//
-//                }
-//            });
-//
-//
-//            mBtnReject.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View view) {
-//                    finish();
-//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-//
-//                    myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
-//                    startActivity(myIntent);
-//                }
-//            });
-
-
-            // Set item click listener
-//            lvinv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    String description = sigInvlist[position];
-//
-//                 if(!description.isEmpty())   {
-//                     finish();
-//
-//                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
-//                     startActivity(myIntent);
-//                 }
-//                }
-//            });
 
             lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
@@ -205,27 +168,21 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     private void getInit() {
 
         try {
-
             mListOrderReturn.clear();
-
             mHelper = new DBHelper(getApplicationContext());
             mListOrderReturn.clear();
-            mListOrderReturn = mHelper.getOrderReturn();
+            mListOrderReturn = mHelper.getOrderReturnCriteria(sigMultiInv);
+//            mListOrderReturn = mHelper.getOrderReturn();
 
             if(mListOrderReturn.size()>0)
             {
-
                 mAdapter = new OrderReturnViewAdapter(getApplicationContext(),mListOrderReturn);
                 lv.setAdapter(mAdapter);
-
-
-
             }else
             {
                 //finish();
                 //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
-
             }
 
 

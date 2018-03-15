@@ -104,16 +104,12 @@ public class UnpackListActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnLoad = (Button)findViewById(R.id.btnMenu);
 
-
-
             //textbox
             mmTxtsum = (TextView) findViewById(R.id.txtsum);
-            mmTxtsum.setText("จำนวนนอกกล่องรวม: 0");
+            mmTxtsum.setText("แสดงรายการ: 0, นอกกล่องรวม: 0");
 
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_unpack_list));
-
-
 
             //listview
             lv = (RecyclerView) findViewById(R.id.lv);
@@ -549,7 +545,7 @@ public class UnpackListActivity extends AppCompatActivity {
             try {
 
                 if (result.exception != null) {
-                    mmTxtsum.setText("จำนวนนอกกล่องรวม: 0");
+                    mmTxtsum.setText("แสดงรายการ: 0, นอกกล่องรวม: 0");
 
                     mProgressDialog.dismiss();
                     showMsgDialog(result.exception.toString());
@@ -565,13 +561,13 @@ public class UnpackListActivity extends AppCompatActivity {
                             mProgressDialog.dismiss();
                             if(mListOrderData.size()>0)
                             {
-                                mmTxtsum.setText("จำนวนนอกกล่องรวม: " + setSumItemQty());
+                                mmTxtsum.setText("แสดงรายการ: " + mListOrderData.size() + ", นอกกล่องรวม: " + setSumItemQty());
 
                                 mAdapter = new UnpackViewAdapter(getApplicationContext(),mListOrderData);
                                 lv.setAdapter(mAdapter);
                             }else
                             {
-                                mmTxtsum.setText("จำนวนนอกกล่องรวม: 0");
+                                mmTxtsum.setText("แสดงรายการ: 0, นอกกล่องรวม: 0");
 
                                 //finish();
                                 //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
