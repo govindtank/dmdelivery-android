@@ -24,23 +24,44 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<include-->
+                <!--android:id="@+id/includeHeaderSerach"-->
+                <!--layout="@layout/toolbar_search"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginLeft="10dp"-->
+
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_marginTop="10dp" />-->
+        <!--</LinearLayout>-->
+
+
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
 
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@color/colorBGMain">
 
             <include
                 android:id="@+id/includeHeaderSerach"
-                layout="@layout/toolbar_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                layout="@layout/toolbar_sum_items"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
 
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
 

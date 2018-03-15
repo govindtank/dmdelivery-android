@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -35,6 +36,7 @@ import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.helper.GlobalObject;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderData;
+import com.bl.dmdelivery.utility.TagUtils;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
@@ -67,6 +69,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
     //private List<Order> mListOrder = new List<Order>();
     private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="";
 
+    String sigTruckNo = "";
+    String sigDeliveryDate = "";
+
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
     private ListView lvGetMenu=null;
@@ -76,6 +81,10 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
     private GestureManager mGestureManager;
     DBHelper mHelper;
+
+
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +98,10 @@ public class SaveOrdersActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+
+        sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
+
 
         try {
 
@@ -137,18 +150,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private void bindWidget()
     {
         try{
-//            mImvHeader = (ImageView) findViewById(R.id.imvHeader);
-//            mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-//            mBtnBack = (Button) findViewById(R.id.btnBack);
-//            mBtnRefrach = (Button) findViewById(R.id.btnRefrach);
-//            mBtnSelectall = (Button) findViewById(R.id.btnSelectall);
-//            mBtnSign = (Button) findViewById(R.id.btnSign);
-//
-//            mTxtOrderCount = (TextView) findViewById(R.id.txtOrderCount);
-//            mTxtCount = (TextView) findViewById(R.id.txtCount);
+            sigTruckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
+            sigDeliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
 
 
-            //button
+          //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
             mBtnClose = (Button) findViewById(R.id.btnClose);
@@ -163,12 +169,6 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
             lv = (RecyclerView) findViewById(R.id.lv);
-//          lv.setLayoutManager(new LinearLayoutManager(this));
-//          lv.setHasFixedSize(true);
-
-
-
-
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -641,7 +641,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
         lvGetMenu = (ListView) v.findViewById(R.id.lv);
 
         ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add("จัดส่งสินค้า");
+        arrayList.add("หน้าจอเซ็นรับ");
         arrayList.add("กิจกรรรม");
         arrayList.add("โทรหา MSL 1: 0800000000");
         arrayList.add("โทรหา MSL 2: 0800000000");
@@ -669,18 +669,20 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     case 0:
                         //จัดส่งสินค้า
                         DialogBuilder.dismiss();
-//                        myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
-//                        startActivity(myIntent);
-
-                        myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
-                        myIntent.putExtra("inv", "'" + sigTransNo + "'");
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
+                        myIntent.putExtra("data", "'" + sigTransNo + "'");
                         startActivity(myIntent);
                         break;
                     case 1:
                         //กิจกรรมอื่นๆ
                         DialogBuilder.dismiss();
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
-                        myIntent.putExtra("data", "repcode" + "|" +  "inv" + "|" + "deliverydate" + "|" + "truck");
+                        myIntent.putExtra("data",
+                                mListOrderData.get(position).getRep_code() +
+                                "|" + mListOrderData.get(position).getRep_name() +
+                                "|" + mListOrderData.get(position).getTransNo() +
+                                "|" + sigDeliveryDate +
+                                "|" + sigTruckNo);
                         startActivity(myIntent);
                         break;
                 }

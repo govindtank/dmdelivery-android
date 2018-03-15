@@ -197,7 +197,7 @@ public class SaveOrdersSlipActivity extends AppCompatActivity {
 
             if(bdlInv != null)
             {
-                sigInvMulti =(String)bdlInv.get("inv");
+                sigInvMulti =(String)bdlInv.get("data");
             }
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {

@@ -49,7 +49,7 @@ public class UnpackListActivity extends AppCompatActivity {
 
 
     private ACProgressFlower mProgressDialog;
-    private TextView mTxtMsg,mTxtHeader,mTxtCode,mTxtDesc,mTxtW,mTxtL,mTxtH,mmTxtMsg,mmTxtTitle;
+    private TextView mTxtMsg,mTxtHeader,mTxtCode,mTxtDesc,mTxtW,mTxtL,mTxtH,mmTxtMsg,mmTxtTitle,mmTxtsum;
     private ImageView mImageView,mmImvTitle;
     private Button mBtnBack,mBtnClose,mBtnLoad,mmBtnOk,mmBtnClose;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
@@ -60,6 +60,9 @@ public class UnpackListActivity extends AppCompatActivity {
     private String serverUrl;
     private OrderScanReq mLoadOrderReq;
     private SharedPreferences sp;
+    private int itemsCount=0;
+    private int itemsSumQty=0;
+
     DBHelper mHelper;
     SQLiteDatabase mDb;
 
@@ -104,8 +107,13 @@ public class UnpackListActivity extends AppCompatActivity {
 
 
             //textbox
+            mmTxtsum = (TextView) findViewById(R.id.txtsum);
+            mmTxtsum.setText("จำนวนนอกกล่องรวม: 0");
+
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_unpack_list));
+
+
 
             //listview
             lv = (RecyclerView) findViewById(R.id.lv);
@@ -222,7 +230,6 @@ public class UnpackListActivity extends AppCompatActivity {
                     serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/LoadOrderUnpack";
                     new loadDataDataInAsync().execute(serverUrl);
 
-
                 }
                 else
                 {
@@ -240,7 +247,29 @@ public class UnpackListActivity extends AppCompatActivity {
             //e.printStackTrace();
             showMsgDialog(e.toString());
         }
+    }
 
+    private int setSumItemQty(){
+        try
+        {
+            itemsSumQty=0;
+
+            if(mListOrderData.size()==0){
+                return 0;
+            }
+
+            for(int i=0; i<mListOrderData.size();i++){
+                if(!mListOrderData.get(i).getUnpack_qty().isEmpty()){
+                    itemsSumQty = itemsSumQty + Integer.parseInt(mListOrderData.get(i).getUnpack_qty().toString());
+                }
+            }
+
+            return  itemsSumQty;
+        }catch (Exception e) {
+            //e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+        return  0;
     }
 
     private class loadDataDataInAsync extends AsyncTask<String, Void, PageResultHolder>
@@ -279,18 +308,18 @@ public class UnpackListActivity extends AppCompatActivity {
                 String result = new WebServiceHelper().postServiceAPI(params[0],json);
                 Log.i("LoginResult", result.toString());
 
-                //convert json to obj
+//                //convert json to obj
                 LoadUnpackResponse obj = gson.fromJson(result,LoadUnpackResponse.class);
+
 
                 ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
                 // mListLoadOrder. =new LoadOrderResponse();
 
+
                 if (obj.getResponseCode().equals("1"))
                 {
 
-
                     for(int i=0; i<obj.getUnpack().size();i++){
-
                         Unpack f = new Unpack();
                         f.setTransno(obj.getUnpack().get(i).getTransno().toString());
                         f.setUnpack_code(obj.getUnpack().get(i).getUnpack_code().toString());
@@ -300,11 +329,7 @@ public class UnpackListActivity extends AppCompatActivity {
                         unpacks.add(f);
 
                         mHelper.addUnpack(f);
-
                     }
-
-
-
                 }
 
                 pageResultHolder.content = obj.getResponseCode();
@@ -329,9 +354,6 @@ public class UnpackListActivity extends AppCompatActivity {
             //final String msg = "";
 
             try {
-
-
-
                 if (result.exception != null) {
                     mProgressDialog.dismiss();
                     showMsgDialog(result.exception.toString());
@@ -341,7 +363,6 @@ public class UnpackListActivity extends AppCompatActivity {
 
                     if (result.content.equals("1"))
                     {
-
                         result.content = getResources().getString(R.string.txt_text_update_success);
                     }
                     else
@@ -448,6 +469,8 @@ public class UnpackListActivity extends AppCompatActivity {
         DialogBuilder.show();
     }
 
+
+
     private void getInit() {
 
         try {
@@ -504,6 +527,8 @@ public class UnpackListActivity extends AppCompatActivity {
             try
             {
 
+                itemsCount=0;
+                itemsSumQty=0;
 
                 mHelper = new DBHelper(getApplicationContext());
                 mListOrderData.clear();
@@ -524,6 +549,8 @@ public class UnpackListActivity extends AppCompatActivity {
             try {
 
                 if (result.exception != null) {
+                    mmTxtsum.setText("จำนวนนอกกล่องรวม: 0");
+
                     mProgressDialog.dismiss();
                     showMsgDialog(result.exception.toString());
                 }
@@ -536,21 +563,19 @@ public class UnpackListActivity extends AppCompatActivity {
                             //Do something after 100ms
 
                             mProgressDialog.dismiss();
-
                             if(mListOrderData.size()>0)
                             {
+                                mmTxtsum.setText("จำนวนนอกกล่องรวม: " + setSumItemQty());
 
                                 mAdapter = new UnpackViewAdapter(getApplicationContext(),mListOrderData);
                                 lv.setAdapter(mAdapter);
-
-
-
                             }else
                             {
+                                mmTxtsum.setText("จำนวนนอกกล่องรวม: 0");
+
                                 //finish();
                                 //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                                 showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
-
                             }
 
                         }

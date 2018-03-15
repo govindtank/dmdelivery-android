@@ -3,6 +3,7 @@ package com.bl.dmdelivery.actvity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -26,6 +27,8 @@ import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.helper.WebServiceHelper;
+
+import java.util.StringTokenizer;
 
 public class WebViewActivity extends AppCompatActivity {
 
@@ -83,6 +86,15 @@ public class WebViewActivity extends AppCompatActivity {
     private void setWidgetControl() {
         try {
 
+            String sigData="";
+            Intent intInv= getIntent();
+            Bundle bdlInv = intInv.getExtras();
+
+            if(bdlInv != null)
+            {
+                sigData =(String)bdlInv.get("data");
+            }
+
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
@@ -90,79 +102,26 @@ public class WebViewActivity extends AppCompatActivity {
                 }
             });
 
-//            mWebViewDisplay.setWebViewClient(new MyWebViewClient());
-//            mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
-//
-//            // Other webview options
-//            mWebViewDisplay.getSettings().setLoadWithOverviewMode(true);
-//            mWebViewDisplay.getSettings().setUseWideViewPort(true);
-//            //webView.getSettings().setUseWideViewPort(true);
-//
-//            //Other webview settings
-//            mWebViewDisplay.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-//            mWebViewDisplay.setScrollbarFadingEnabled(false);
 
+            if(!sigData.isEmpty()) {
+                StringTokenizer sigDataSpilt = new StringTokenizer(sigData, "|");
+                      if(sigDataSpilt.countTokens() > 0) {
+                          mWebViewDisplay.setWebViewClient(new MyWebViewClient());
+                          mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
+                          mWebViewDisplay.getSettings().setDisplayZoomControls(true);
 
-//            getWindow().requestFeature(Window.FEATURE_PROGRESS);
-//
-//            mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
-//
-//
-//            final Activity activity = this;
-//            mWebViewDisplay.setWebChromeClient(new WebChromeClient() {
-//                public void onProgressChanged(WebView view, int progress) {
-//                    // Activities and WebViews measure progress with different scales.
-//                    // The progress meter will automatically disappear when we reach 100%
-//                    activity.setProgress(progress * 1000);
-//                }
-//            });
-//            mWebViewDisplay.setWebViewClient(new WebViewClient() {
-//                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-//                    Toast.makeText(activity, "Oh no! " + description, Toast.LENGTH_SHORT).show();
-//                }
-//            });
+                          //Other webview settings
+                          mWebViewDisplay.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+                          mWebViewDisplay.setScrollbarFadingEnabled(false);
+                          mWebViewDisplay.loadUrl("http://distributioncenter01.mistine.co.th:9090/dm_delivery_addin/index.php?" +
+                                  "rep_code=" + sigDataSpilt.nextToken() +
+                                  "&rep_name=" + sigDataSpilt.nextToken() +
+                                  "&inv=" + sigDataSpilt.nextToken() +
+                                  "&deliverydate=" + sigDataSpilt.nextToken() +
+                                  "&truck=" + sigDataSpilt.nextToken());
 
-
-//            mWebViewDisplay.setWebViewClient(new MyWebViewClient());
-//            mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
-//            mWebViewDisplay.getSettings().setAllowFileAccessFromFileURLs(true);
-//            mWebViewDisplay.getSettings().setAllowUniversalAccessFromFileURLs(true);
-//
-//            mWebViewDisplay.setWebViewClient(new WebViewClient());
-//            mWebViewDisplay.setWebChromeClient(new WebChromeClient() {
-//                // Grant permissions for cam
-//                @Override
-//                public void onPermissionRequest(final PermissionRequest request) {
-////                    Log.d(TAG, "onPermissionRequest");
-//                    WebViewActivity.this.runOnUiThread(new Runnable() {
-////                        @TargetApi(Build.VERSION_CODES.M)
-//                        @Override
-//                        public void run() {
-////                            Log.d(TAG, request.getOrigin().toString());
-//                            if(request.getOrigin().toString().equals("file:///")) {
-////                                Log.d(TAG, "GRANTED");
-//                                request.grant(request.getResources());
-//                            } else {
-////                                Log.d(TAG, "DENIED");
-//                                request.deny();
-//                            }
-//                        }
-//                    });
-//                }
-//
-//
-//            });
-
-
-            mWebViewDisplay.setWebViewClient(new MyWebViewClient());
-            mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
-            mWebViewDisplay.getSettings().setDisplayZoomControls(true);
-
-
-            //Other webview settings
-            mWebViewDisplay.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-            mWebViewDisplay.setScrollbarFadingEnabled(false);
-            mWebViewDisplay.loadUrl("http://distributioncenter01.mistine.co.th:9090/dm_delivery_addin/index.php?rep_code=0122189019&inv=1101170084&deliverydate=14/03/2018&truck=146");
+                      }
+            }
         }
         catch (Exception e)
         {
