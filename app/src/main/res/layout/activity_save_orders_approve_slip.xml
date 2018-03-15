@@ -28,26 +28,45 @@
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/lnlSlip"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/lnlSlip"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="5dp"
-            android:layout_below="@+id/linearLayout"
-            android:paddingTop="5dp">
+            android:orientation="vertical">
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:weightSum="2">
 
-                <com.bl.dmdelivery.actvity.CanvasView
-                    android:id="@+id/signature_canvas"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/background_layout" />
+                    android:layout_weight="0.2"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.bl.dmdelivery.actvity.CanvasView
+                        android:id="@+id/signature_canvas"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/background_layout" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.8"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/includeHeader"
+                        layout="@layout/footer_save_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 

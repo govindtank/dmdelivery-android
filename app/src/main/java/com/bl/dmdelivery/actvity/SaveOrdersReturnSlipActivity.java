@@ -59,9 +59,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         try{
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
-            mBtnNote = (Button) findViewById(R.id.btnNote);
-            mBtnSendGps = (Button) findViewById(R.id.btnSendGps);
-            mBtnSendGpsNo = (Button) findViewById(R.id.btnSendGpsNo);
+//            mBtnNote = (Button) findViewById(R.id.btnNote);
+//            mBtnSendGps = (Button) findViewById(R.id.btnSendGps);
+//            mBtnSendGpsNo = (Button) findViewById(R.id.btnSendGpsNo);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
@@ -94,31 +94,31 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                 }
             });
 
-            mBtnNote.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    showMsgReasonApproveSelectedSingleDialog();
-                }
-            });
-
-            mBtnSendGps.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    finish();
-                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                    startActivity(myIntent);
-                }
-            });
-
-            mBtnSendGpsNo.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    finish();
-                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                    startActivity(myIntent);
-                }
-            });
+//            mBtnNote.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    showMsgReasonApproveSelectedSingleDialog();
+//                }
+//            });
+//
+//            mBtnSendGps.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    finish();
+//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+//
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                    startActivity(myIntent);
+//                }
+//            });
+//
+//            mBtnSendGpsNo.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    finish();
+//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+//
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                    startActivity(myIntent);
+//                }
+//            });
 
         } catch (Exception e) {
             showMsgDialog(e.toString());

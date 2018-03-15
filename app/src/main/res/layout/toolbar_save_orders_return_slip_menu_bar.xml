@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,108 +11,145 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="false"
+        android:background="@color/colorBGMain"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:weightSum="2">
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="3">
 
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical"-->
-            <!--android:weightSum="2">-->
-
-            <!--<Button-->
-            <!--android:id="@+id/btnReason"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="25dp"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:layout_marginRight="5dp"-->
-            <!--android:layout_marginLeft="5dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@drawable/btnclose"-->
-            <!--android:textSize="@dimen/textHeadDtlSize16"-->
-            <!--android:text="เหตุผล" />-->
-            <!--</LinearLayout>-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
+                android:layout_weight="0.9"
+                android:orientation="horizontal"
                 android:weightSum="2">
 
-                <Button
-                    android:id="@+id/btnNote"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/btngray"
-                    android:textColor="@color/colorBackgroundWhite"
-                    android:text="เหตุผล/หมายเหตุ"
-                    android:textSize="@dimen/textHeadDtlSize16" />
+                    android:orientation="vertical"
+                    android:padding="3dp">
 
+                    <Button
+                        android:id="@+id/btnCancelGPS"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/btnnosend"
+                        android:padding="5dp"
+                        android:text="ส่งไม่ได้ (GPS)"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBackgroundWhite"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="3dp">
+
+                    <Button
+                        android:id="@+id/btnCancel"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/btnnosend"
+                        android:padding="5dp"
+                        android:text="ส่งไม่ได้"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBackgroundWhite"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
+                android:gravity="center"
                 android:orientation="vertical"
-                android:weightSum="2">
+                android:padding="3dp">
 
                 <Button
-                    android:id="@+id/btnSendGps"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginTop="2dp"
+                    android:id="@+id/btnGPS"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/btngreen"
-                    android:textColor="@color/colorBackgroundWhite"
-                    android:text="บันทึกเก็บพิกัด"
-                    android:textSize="@dimen/textHeadDtlSize16" />
+                    android:background="@drawable/btncheckgps"
+                    android:drawableTop="@mipmap/ic_marker50_r"
+                    android:paddingTop="15dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
+                android:layout_weight="0.9"
+                android:orientation="horizontal"
                 android:weightSum="2">
 
-                <Button
-                    android:id="@+id/btnSendGpsNo"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/btnred"
-                    android:textColor="@color/colorBackgroundWhite"
-                    android:text="บันทึกไม่เก็บพิกัด"
-                    android:textSize="@dimen/textHeadDtlSize16" />
+                    android:orientation="vertical"
+                    android:padding="3dp">
+
+                    <Button
+                        android:id="@+id/btnSaveGPS"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/btnsend"
+                        android:padding="5dp"
+                        android:text="ส่งได้ (GPS)"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="3dp">
+
+                    <Button
+                        android:id="@+id/btnSave"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/btnsend"
+                        android:padding="5dp"
+                        android:text="ส่งได้"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-</LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

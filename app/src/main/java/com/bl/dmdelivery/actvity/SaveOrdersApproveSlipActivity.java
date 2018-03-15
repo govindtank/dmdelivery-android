@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
-    private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnNote,mBtnSendGps,mBtnSendGpsNo;
+    private Button mBtnBack,mmBtnOk,mmBtnClose,btnCancelGPS,btnCancel,btnGPS,btnSaveGPS,btnSave,btnNew,btnNote;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -65,9 +65,18 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
         try{
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
-            mBtnNote = (Button) findViewById(R.id.btnNote);
-            mBtnSendGps = (Button) findViewById(R.id.btnSendGps);
-            mBtnSendGpsNo = (Button) findViewById(R.id.btnSendGpsNo);
+            btnCancelGPS = (Button) findViewById(R.id.btnCancelGPS);
+            btnCancel = (Button) findViewById(R.id.btnCancel);
+            btnGPS = (Button) findViewById(R.id.btnGPS);
+            btnSaveGPS = (Button) findViewById(R.id.btnSaveGPS);
+            btnSave = (Button) findViewById(R.id.btnSave);
+
+            btnNew = (Button) findViewById(R.id.btnNew);
+            btnNote = (Button) findViewById(R.id.btnNote);
+
+            //mBtnNote = (Button) findViewById(R.id.btnNote);
+            //mBtnSendGps = (Button) findViewById(R.id.btnSendGps);
+            //mBtnSendGpsNo = (Button) findViewById(R.id.btnSendGpsNo);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
@@ -101,37 +110,50 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                 }
             });
 
-            mBtnNote.setOnClickListener(new View.OnClickListener() {
+            btnNew.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    showMsgReasonApproveSelectedSingleDialog();
+
+
+                    clearCanvas(view);
+
                 }
             });
 
-            mBtnSendGps.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    //ตรวจสอบก่อนว่ามีสินค้ารับคือนหรือไม่ ถ้ามีไปที่ใบรับคืน ถ้าไม่มีไปที่ หน้ารายการจัดส่งหลัก
-                    finish();
-
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                    startActivity(myIntent);
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                }
-            });
-
-            mBtnSendGpsNo.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    //ตรวจสอบก่อนว่ามีสินค้ารับคือนหรือไม่ ถ้ามีไปที่ใบรับคืน ถ้าไม่มีไปที่ หน้ารายการจัดส่งหลัก
-                    finish();
-
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                    startActivity(myIntent);
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                }
-            });
+//            mBtnNote.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    showMsgReasonApproveSelectedSingleDialog();
+//                }
+//            });
+//
+//            mBtnSendGps.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    //ตรวจสอบก่อนว่ามีสินค้ารับคือนหรือไม่ ถ้ามีไปที่ใบรับคืน ถ้าไม่มีไปที่ หน้ารายการจัดส่งหลัก
+//                    finish();
+//
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                    startActivity(myIntent);
+//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                }
+//            });
+//
+//            mBtnSendGpsNo.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    //ตรวจสอบก่อนว่ามีสินค้ารับคือนหรือไม่ ถ้ามีไปที่ใบรับคืน ถ้าไม่มีไปที่ หน้ารายการจัดส่งหลัก
+//                    finish();
+//
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                    startActivity(myIntent);
+//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                }
+//            });
 
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    public void clearCanvas(View v) {
+        customCanvas.clearCanvas();
     }
 
     public void showMsgReasonApproveSelectedSingleDialog()

@@ -60,11 +60,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/txtRepcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="105 รับเอง" />
+                android:text="000-000-000-0 - Name" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,11 +88,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/txtAddress1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="พิกัด Lat=14.0304412,Log=100.376533" />
+                android:text="Address 1" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,11 +103,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/txtAddress2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="อำเภอลาดหลุมแก้ว จังหวัดปทุมธานี 12140" />
+                android:text="Address 2" />
         </LinearLayout>
     </LinearLayout>
 
