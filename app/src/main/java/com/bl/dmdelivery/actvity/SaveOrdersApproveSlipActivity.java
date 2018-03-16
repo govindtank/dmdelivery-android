@@ -75,6 +75,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
     //private final int REQUEST_PERMISSION_PHONE_STATE=1;
 
     Order mOrder;
+    ArrayList<Order> order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,23 +153,26 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
 
             Intent intInv= getIntent();
-            Bundle bdlInv = intInv.getExtras();
+            Bundle intent = intInv.getExtras();
 
-            if(bdlInv != null)
+            if(intent != null)
             {
-                mOrder = new Order();
-                mOrder =(Order)bdlInv.get("data");
 
-                if(mOrder !=null) {
+                order = (ArrayList<Order>) intent.get("data");
+                //mOrder = new Order();
+                //mOrder =(Order)intent.get("data");
 
-                    txtRepcode.setText(setRepcodeFormat(mOrder.getRep_code())+" "+mOrder.getRep_name());
-                    txtInvNo.setText(mOrder.getTransNo());
-                    txtAddress1.setText(mOrder.getAddress1());
-                    txtAddress2.setText(mOrder.getAddress2()+" "+mOrder.getPostal());
-                    txtMslTel.setText("โทร. "+mOrder.getRep_telno());
+
+                if(order.size() != 0) {
+
+                    txtRepcode.setText(setRepcodeFormat(order.get(0).getRep_code())+" "+order.get(0).getRep_name());
+                    txtInvNo.setText(order.get(0).getTransNo());
+                    txtAddress1.setText(order.get(0).getAddress1());
+                    txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
+                    txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
                     txtgps.setText("GPS : 0,0");
 
-                    returnflag = mOrder.getRep_telno();
+                    returnflag = order.get(0).getRep_telno();
 
                 }
 
@@ -218,7 +222,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
                         finish();
                         myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                        myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("data",order);
                         startActivity(myIntent);
 
                     }
@@ -240,7 +244,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
                         finish();
                         myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                        myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("data",order);
                         startActivity(myIntent);
 
                     }
@@ -270,7 +274,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
                         finish();
                         myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                        myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("data",order);
                         startActivity(myIntent);
 
                     }
@@ -291,7 +295,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
                         finish();
                         myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                        myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("data",order);
                         startActivity(myIntent);
 
                     }

@@ -684,9 +684,13 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         mOrder.setRep_telno(mListOrderData.get(intSelectedPosition).getRep_telno());
                         mOrder.setReturn_flag(mListOrderData.get(intSelectedPosition).getReturn_flag());
 
+                        ArrayList<Order> order = new ArrayList<Order>();
+
+                        order.add(mOrder);
+
 
                         myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
-                        myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("data",order);
                         startActivity(myIntent);
                         break;
                     case 1:
