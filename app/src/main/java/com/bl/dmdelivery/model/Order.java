@@ -40,6 +40,8 @@ public class Order implements Parcelable {
     private String delivery_desc;
     private String ordertype_desc;
     private String cont_desc;
+    private String delivery_date;
+    private String truckNo;
     private Integer id;
 
 
@@ -77,7 +79,8 @@ public class Order implements Parcelable {
         public static final String delivery_desc = "delivery_desc";
         public static final String ordertype_desc = "ordertype_desc";
         public static final String cont_desc = "cont_desc";
-
+        public static final String delivery_date = "delivery_date";
+        public static final String truckNo = "truckNo";
     }
 
     public Integer getId() {
@@ -336,7 +339,21 @@ public class Order implements Parcelable {
         this.cont_desc = cont_desc;
     }
 
+    public String getDelivery_date() {
+        return delivery_date;
+    }
 
+    public void setDelivery_date(String delivery_date) {
+        this.delivery_date = delivery_date;
+    }
+
+    public String getTruckNo() {
+        return truckNo;
+    }
+
+    public void setTruckNo(String truckNo) {
+        this.truckNo = truckNo;
+    }
     public Order() {
     }
 
@@ -379,6 +396,8 @@ public class Order implements Parcelable {
         dest.writeString(this.delivery_desc);
         dest.writeString(this.ordertype_desc);
         dest.writeString(this.cont_desc);
+        dest.writeString(this.delivery_date);
+        dest.writeString(this.truckNo);
     }
 
     protected Order(Parcel in) {
@@ -414,6 +433,8 @@ public class Order implements Parcelable {
         this.delivery_desc = in.readString();
         this.ordertype_desc = in.readString();
         this.cont_desc = in.readString();
+        this.delivery_date = in.readString();
+        this.truckNo = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {

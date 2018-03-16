@@ -212,7 +212,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
 
-                    showMsgUserSelectedMenuDialog(mListOrderData.get(position).getTransNo());
+                    showMsgUserSelectedMenuDialog(mListOrderData.get(position).getTransNo(),position);
 
                     return true;
                 }
@@ -627,9 +627,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
     }
 
 
-    public void showMsgUserSelectedMenuDialog(String sigGetTransNo)
+    public void showMsgUserSelectedMenuDialog(String sigGetTransNo,int selectedPosition)
     {
+
         final String sigTransNo=sigGetTransNo;
+        final int intSelectedPosition=selectedPosition;
         final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersActivity.this).create();
         LayoutInflater inflater = getLayoutInflater();
         View v = (View) inflater.inflate(R.layout.dialog_call_telandact, null);
@@ -676,13 +678,16 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     case 1:
                         //กิจกรรมอื่นๆ
                         DialogBuilder.dismiss();
+
+                        Order mOrder=new Order();
+                        mOrder.setRep_code(mListOrderData.get(intSelectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderData.get(intSelectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderData.get(intSelectedPosition).getTransNo());
+                        mOrder.setDelivery_date(sigDeliveryDate);
+                        mOrder.setTruckNo(sigTruckNo);
+
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
-                        myIntent.putExtra("data",
-                                mListOrderData.get(position).getRep_code() +
-                                "|" + mListOrderData.get(position).getRep_name() +
-                                "|" + mListOrderData.get(position).getTransNo() +
-                                "|" + sigDeliveryDate +
-                                "|" + sigTruckNo);
+                        myIntent.putExtra("data",mOrder);
                         startActivity(myIntent);
                         break;
                 }
