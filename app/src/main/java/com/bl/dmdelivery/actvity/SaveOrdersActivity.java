@@ -703,6 +703,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         mOrder.setTransNo(mListOrderData.get(intSelectedPosition).getTransNo());
                         mOrder.setDelivery_date(sigDeliveryDate);
                         mOrder.setTruckNo(sigTruckNo);
+                        mOrder.setRep_telno(mListOrderData.get(intSelectedPosition).getRep_telno());
+                        mOrder.setDsm_telno(mListOrderData.get(intSelectedPosition).getDsm_telno());
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
                         myIntent.putExtra("data",mOrder);

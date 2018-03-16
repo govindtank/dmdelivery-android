@@ -122,7 +122,9 @@ public class WebViewActivity extends AppCompatActivity {
                                   "&rep_name=" + mOrder.getRep_name() +
                                   "&inv=" + mOrder.getTransNo() +
                                   "&deliverydate=" + mOrder.getDelivery_date() +
-                                  "&truck=" + mOrder.getTruckNo());
+                                  "&truck=" + mOrder.getTruckNo() +
+                                  "&msltel=" + mOrder.getRep_telno() +
+                                  "&dsmtel=" + mOrder.getDsm_telno());
             }
         }
         catch (Exception e)

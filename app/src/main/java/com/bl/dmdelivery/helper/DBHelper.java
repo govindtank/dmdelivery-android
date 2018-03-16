@@ -308,6 +308,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void addOrdersReturn(OrderReturn order) {
+        String sigReftrans_no="";
+
         sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -326,9 +328,70 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(OrderReturn.Column.return_unit, order.getReturn_unit());
         values.put(OrderReturn.Column.return_remark, order.getReturn_remark());
 
+        sigReftrans_no=order.getReftrans_no();
+
         sqLiteDatabase.insert(TableOrderReturn, null, values);
 
         sqLiteDatabase.close();
+
+
+        //ถ้ามี return ต้องเข้าไป update flag
+        if(isReturnFlag(sigReftrans_no)==true)
+        {
+            //update flag
+            updateReturnFlag(sigReftrans_no);
+        }
+    }
+
+
+    public  boolean isReturnFlag(String sigTranNo)
+    {
+        if (sigTranNo == null || sigTranNo.isEmpty() || sigTranNo.equals("null")){return false;}
+        try{
+
+            //update return_flag
+            sqLiteDatabase = this.getReadableDatabase();
+
+            Cursor cursor = sqLiteDatabase.query(TableOrder,
+                    null,
+                    "TransNo='" + sigTranNo + "'",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
+
+            if (cursor != null  && cursor.getCount()>0) {
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+        return false;
+    }
+
+
+    public  void updateReturnFlag(String sigTranNo)
+    {
+        if (sigTranNo == null || sigTranNo.isEmpty() || sigTranNo.equals("null")){return;}
+        try{
+            sqLiteDatabase = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("return_flag", "'R'");
+
+            sqLiteDatabase.update(TableOrder,
+                    values,
+                    "TransNo='" + sigTranNo + "'",
+                    null);
+            sqLiteDatabase.close();
+
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
     public OrderReturn getOrdersReturn(String id) {
