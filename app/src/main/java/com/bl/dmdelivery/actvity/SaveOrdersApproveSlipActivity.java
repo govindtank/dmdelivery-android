@@ -251,6 +251,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 }
             });
 
+
+
             btnCancelGPS.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
@@ -368,11 +370,11 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 }
             });
 
-//            mBtnNote.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View view) {
-//                    showMsgReasonApproveSelectedSingleDialog();
-//                }
-//            });
+            btnNote.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    showMsgReasonApproveSelectedSingleDialog();
+                }
+            });
 //
 //            mBtnSendGps.setOnClickListener(new View.OnClickListener() {
 //                public void onClick(View view) {
