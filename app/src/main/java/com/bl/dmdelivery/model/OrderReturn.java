@@ -22,7 +22,7 @@ public class OrderReturn implements Parcelable {
     private String fs_desc;
     private String return_unit;
     private String return_remark;
-
+    private String return_status;
 
     public class Column{
 
@@ -40,6 +40,7 @@ public class OrderReturn implements Parcelable {
         public static final String fs_desc = "fs_desc";
         public static final String return_unit = "return_unit";
         public static final String return_remark = "return_remark";
+        public static final String return_status = "return_status";
 
     }
 
@@ -155,6 +156,15 @@ public class OrderReturn implements Parcelable {
         this.return_remark = return_remark;
     }
 
+    public String getReturn_status() {
+        return return_status;
+    }
+
+    public void setReturn_status(String return_status) {
+        this.return_status = return_status;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -176,6 +186,7 @@ public class OrderReturn implements Parcelable {
         dest.writeString(this.fs_desc);
         dest.writeValue(this.return_unit);
         dest.writeString(this.return_remark);
+        dest.writeString(this.return_status);
     }
 
     public OrderReturn() {
@@ -196,6 +207,7 @@ public class OrderReturn implements Parcelable {
         this.fs_desc = in.readString();
         this.return_unit = in.readString();
         this.return_remark = in.readString();
+        this.return_status = in.readString();
     }
 
     public static final Creator<OrderReturn> CREATOR = new Creator<OrderReturn>() {

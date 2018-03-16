@@ -91,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String CREATE_RETURN_TABLE = String.format("CREATE TABLE %s " +
                         "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
                 TableOrderReturn,
                 OrderReturn.Column.ou_code,
                 OrderReturn.Column.return_no,
@@ -106,8 +106,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 OrderReturn.Column.fs_code,
                 OrderReturn.Column.fs_desc,
                 OrderReturn.Column.return_unit,
-                OrderReturn.Column.return_remark
-
+                OrderReturn.Column.return_remark,
+                OrderReturn.Column.return_status
         );
 
         Log.i(TAG, CREATE_RETURN_TABLE);
@@ -641,6 +641,7 @@ public class DBHelper extends SQLiteOpenHelper {
             orderReturn.setFs_desc(cursor.getString(11));
             orderReturn.setReturn_unit(cursor.getString(12));
             orderReturn.setReturn_remark(cursor.getString(13));
+            orderReturn.setReturn_status(cursor.getString(14));
             orderReturns.add(orderReturn);
 
             cursor.moveToNext();
@@ -685,6 +686,7 @@ public class DBHelper extends SQLiteOpenHelper {
             orderReturn.setFs_desc(cursor.getString(11));
             orderReturn.setReturn_unit(cursor.getString(12));
             orderReturn.setReturn_remark(cursor.getString(13));
+            orderReturn.setReturn_status(cursor.getString(14));
             orderReturns.add(orderReturn);
 
             cursor.moveToNext();

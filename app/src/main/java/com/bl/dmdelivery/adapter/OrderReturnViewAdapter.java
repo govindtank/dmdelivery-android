@@ -48,10 +48,19 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
 
         try
         {
-
             OrderReturn f = mData.get(position);
 
-            String refNo = "Ref No : "+String.valueOf(f.getReturn_no());
+//            String refNo = "Ref No : "+String.valueOf(f.getReturn_no());
+//            holder.txtRefReturnNo.setText(refNo);
+//
+//            String refInv = "Inv No : "+String.valueOf(f.getReftrans_no());
+//            holder.txtInvNo.setText(refInv);
+//
+//            String refCode = "Ref Code :"+String.valueOf(f.getRep_code())+" - "+String.valueOf(f.getRep_name());
+//            holder.txtRefCode.setText(refCode);
+
+
+            String refNo = "เลขที่รับคืน : "+String.valueOf(f.getReturn_no());
             holder.txtRefReturnNo.setText(refNo);
 
             String refInv = "Inv No : "+String.valueOf(f.getReftrans_no());
@@ -59,6 +68,33 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
 
             String refCode = "Ref Code :"+String.valueOf(f.getRep_code())+" - "+String.valueOf(f.getRep_name());
             holder.txtRefCode.setText(refCode);
+
+            String sigReturn_status=String.valueOf(f.getReturn_status());
+            if(sigReturn_status.isEmpty()){
+                //ถ้าว่าง "ยังไม่รับคืน"
+                holder.txtRefCode.setText("สถานะ: ยังไม่รับคืน");
+            }
+            else if(!sigReturn_status.isEmpty())
+            {
+                if(sigReturn_status.equals("0")){
+                    //ถ้าเท่ากับ 0 "ยังไม่รับคืน"
+                    holder.txtReturnStatus.setText("สถานะ: ยังไม่รับคืน");
+                }
+                else if(sigReturn_status.equals("null")){
+                    //ถ้าเท่ากับ 0 "ยังไม่รับคืน"
+                    holder.txtReturnStatus.setText("สถานะ: ยังไม่รับคืน");
+                }
+                else if(sigReturn_status.equals("1"))
+                {
+                    //ถ้าเท่ากับ 1 "รับคืน"
+                    holder.txtReturnStatus.setText("สถานะ: รับคืน");
+                }
+                else if(sigReturn_status.equals("2"))
+                {
+                    //ถ้าเท่ากับ 2 "ไม่รับคืน"
+                    holder.txtReturnStatus.setText("สถานะ: ไม่รับคืน");
+                }
+            }
 
 
         } catch (Exception e) {
@@ -77,7 +113,7 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        public TextView txtRefReturnNo,txtInvNo,txtRefCode;
+        public TextView txtRefReturnNo,txtInvNo,txtRefCode,txtReturnStatus;
 
 
         public ViewHolder(View v) {
@@ -86,8 +122,7 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
             this.txtRefReturnNo = (TextView) v.findViewById(R.id.txtRefReturnNo);
             this.txtInvNo = (TextView) v.findViewById(R.id.txtInvNo);
             this.txtRefCode = (TextView) v.findViewById(R.id.txtRefCode);
-
-
+            this.txtReturnStatus = (TextView) v.findViewById(R.id.txtReturnStatus);
         }
     }
 

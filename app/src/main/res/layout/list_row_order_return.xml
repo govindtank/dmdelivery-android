@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:weightSum="3">
+                        android:weightSum="4">
 
                         <TextView
                             android:id="@+id/txtRefReturnNo"
@@ -78,6 +78,15 @@
                             android:text="Ref Code"
                             android:textColor="@color/colorText"
                             android:textSize="@dimen/textbtnMenuSize16" />
+
+                        <TextView
+                            android:id="@+id/txtReturnStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Status"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/textbtnMenuSize16"/>
 
                     </LinearLayout>
 

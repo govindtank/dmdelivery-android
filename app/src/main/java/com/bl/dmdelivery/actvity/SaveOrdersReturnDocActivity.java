@@ -121,26 +121,26 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             if(bdlGetVals != null)
             {
 
-                ArrayList<String> list = new ArrayList<String>();
+//                ArrayList<String> list = new ArrayList<String>();
 //                list.add("1100499936");
 //                list.add("1100499691");
-
-                list =(ArrayList<String>)bdlGetVals.get("REF_TRANS_NO");
-                if(list.size() > 0){
-                    for(int i=0;i<list.size();i++){
-                        String sigInv = list.get(i);
-                        if(!sigInv.isEmpty()){
-                            if(i==0)
-                            {
-                                sigMultiInv= "'" + sigInv + "'";
-                            }
-                            else
-                            {
-                                sigMultiInv = sigMultiInv + ",'" + sigInv + "'";
-                            }
-                        }
-                    }
-                }
+//
+////                list =(ArrayList<String>)bdlGetVals.get("REF_TRANS_NO");
+//                if(list.size() > 0){
+//                    for(int i=0;i<list.size();i++){
+//                        String sigInv = list.get(i);
+//                        if(!sigInv.isEmpty()){
+//                            if(i==0)
+//                            {
+//                                sigMultiInv= "'" + sigInv + "'";
+//                            }
+//                            else
+//                            {
+//                                sigMultiInv = sigMultiInv + ",'" + sigInv + "'";
+//                            }
+//                        }
+//                    }
+//                }
             }
 
 
@@ -171,8 +171,8 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             mListOrderReturn.clear();
             mHelper = new DBHelper(getApplicationContext());
             mListOrderReturn.clear();
-            mListOrderReturn = mHelper.getOrderReturnCriteria(sigMultiInv);
-//            mListOrderReturn = mHelper.getOrderReturn();
+//            mListOrderReturn = mHelper.getOrderReturnCriteria(sigMultiInv);
+            mListOrderReturn = mHelper.getOrderReturn();
 
             if(mListOrderReturn.size()>0)
             {
