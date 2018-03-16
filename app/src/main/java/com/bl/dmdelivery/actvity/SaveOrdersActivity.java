@@ -683,9 +683,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         mOrder.setPostal(mListOrderData.get(intSelectedPosition).getPostal());
                         mOrder.setRep_telno(mListOrderData.get(intSelectedPosition).getRep_telno());
                         mOrder.setReturn_flag(mListOrderData.get(intSelectedPosition).getReturn_flag());
+                        mOrder.setReturn_flag(mListOrderData.get(intSelectedPosition).getReturn_flag());
 
                         ArrayList<Order> order = new ArrayList<Order>();
-
                         order.add(mOrder);
 
 

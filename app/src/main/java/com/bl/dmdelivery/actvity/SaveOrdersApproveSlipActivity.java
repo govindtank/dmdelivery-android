@@ -1,24 +1,30 @@
 package com.bl.dmdelivery.actvity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +39,19 @@ import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.Reason;
+import com.bl.dmdelivery.utility.TagUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +61,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
+public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtgps;
     private Button mBtnBack,mmBtnOk,mmBtnClose,btnCancelGPS,btnCancel,btnGPS,btnSaveGPS,btnSave,btnNew,btnNote;
@@ -77,6 +97,15 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
     Order mOrder;
     ArrayList<Order> order;
 
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    LocationRequest mLocationRequest;
+
+    private String mLatitude = "0";
+    private String mLongitude = "0";
+
+    private SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +113,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
         try {
             bindWidget();
+
+            sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
 
 //            setDefaultFonts();
 
@@ -141,6 +172,18 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
             getData();
 
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+
+            if (mGoogleApiClient != null) {
+                mGoogleApiClient.connect();
+            } else {
+                Toast.makeText(this, "Not Connected!", Toast.LENGTH_SHORT).show();
+            }
+
 
         }
         catch (Exception e) {
@@ -170,7 +213,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                     txtAddress1.setText(order.get(0).getAddress1());
                     txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
                     txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
-                    txtgps.setText("GPS : 0,0");
+                    //txtgps.setText("GPS : 0,0");
 
                     returnflag = order.get(0).getRep_telno();
 
@@ -212,7 +255,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
 
-                    takeScreenshot();
+                    for(int i=0; i<=order.size()-1; i++){
+                        takeScreenshot(i);
+                    }
+
 
                     if(returnflag.equals(""))
                     {
@@ -235,7 +281,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
 
-                    takeScreenshot();
+                    for(int i=0; i<=order.size()-1; i++){
+                        takeScreenshot(i);
+                    }
+
                     if(returnflag.equals(""))
                     {
                         finish();
@@ -265,7 +314,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
 
-                    takeScreenshot();
+                    for(int i=0; i<=order.size()-1; i++){
+                        takeScreenshot(i);
+                    }
+
                     if(returnflag.equals(""))
                     {
                         finish();
@@ -286,7 +338,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
 
-                    takeScreenshot();
+                    for(int i=0; i<=order.size()-1; i++){
+                        takeScreenshot(i);
+                    }
+
                     if(returnflag.equals(""))
                     {
                         finish();
@@ -401,7 +456,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 //                new String[]{permissionName}, permissionRequestCode);
 //    }
 
-    private void takeScreenshot() {
+    private void takeScreenshot(int position) {
 
 
         //Date now = new Date();
@@ -429,10 +484,12 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
         Location lx = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         String latlng = nf.format(lx.getLatitude()) + "," + nf.format(lx.getLongitude());*/
 
-        String latlng = "0,0";
+        String latlng = mLatitude+","+mLongitude;
+
+        String truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
 
 
-        String fileName= "V" + getResources().getString(R.string.app_version_slip) + "_" + Build.SERIAL.trim() +  "-" + "TRUCK" + "-" + "INV" + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + "-" + sendResult + ".jpg";
+        String fileName= "V" + getResources().getString(R.string.app_version_slip) + "_" + Build.SERIAL.trim() +  "-" + truckNo + "-" + order.get(position).getTransNo() + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + "-" + sendResult + ".jpg";
 
         //String fileName= "V" + "0.3" + "_" + Build.SERIAL.trim() +  "-" + ogject.getTruck() + "-" + mTxtINV.getText().toString() + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + "-" + sendResult + ".jpg";
 
@@ -669,6 +726,159 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        settingRequest();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(this, "Connection Suspended!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this, "Connection Failed!", Toast.LENGTH_SHORT).show();
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(this, 90000);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i("Current Location", "Location services connection failed with code " + connectionResult.getErrorCode());
+        }
+    }
+
+    /*Method to get the enable location settings dialog*/
+    public void settingRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);    // 10 seconds, in milliseconds
+        mLocationRequest.setFastestInterval(1000);   // 1 second, in milliseconds
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
+                        builder.build());
+
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+
+            @Override
+            public void onResult(@NonNull LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                final LocationSettingsStates state = result.getLocationSettingsStates();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All location settings are satisfied. The client can
+                        // initialize location requests here.
+                        getLocation();
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        // Location settings are not satisfied, but this can be fixed
+                        // by showing the user a dialog.
+                        try {
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            status.startResolutionForResult(SaveOrdersApproveSlipActivity.this, 1000);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way
+                        // to fix the settings so we won't show the dialog.
+                        break;
+                }
+            }
+
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+        switch (requestCode) {
+            case 1000:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        // All required changes were successfully made
+                        getLocation();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        // The user was asked to change settings, but chose not to
+                        Toast.makeText(this, "Location Service not Enabled", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+
+    public void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        } else {
+            /*Getting the location after aquiring location service*/
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+
+            if (mLastLocation != null) {
+                //_progressBar.setVisibility(View.INVISIBLE);
+               // _latitude.setText("Latitude: " + String.valueOf(mLastLocation.getLatitude()));
+               // _longitude.setText("Longitude: " + String.valueOf(mLastLocation.getLongitude()));
+
+                mLatitude = String.valueOf(mLastLocation.getLatitude());
+                mLongitude = String.valueOf(mLastLocation.getLongitude());
+
+                txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
+            } else {
+                /*if there is no last known location. Which means the device has no data for the loction currently.
+                * So we will get the current location.
+                * For this we'll implement Location Listener and override onLocationChanged*/
+                Log.i("Current Location", "No data for location found");
+
+                txtgps.setText("No data for location found");
+
+                if (!mGoogleApiClient.isConnected())
+                    mGoogleApiClient.connect();
+
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, SaveOrdersApproveSlipActivity.this);
+            }
+        }
+    }
+
+    /*When Location changes, this method get called. */
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+        //_progressBar.setVisibility(View.INVISIBLE);
+        //_latitude.setText("Latitude: " + String.valueOf(mLastLocation.getLatitude()));
+        //_longitude.setText("Longitude: " + String.valueOf(mLastLocation.getLongitude()));
+
+        mLatitude = String.valueOf(mLastLocation.getLatitude());
+        mLongitude = String.valueOf(mLastLocation.getLongitude());
+
+        txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
+    }
 
 
 
