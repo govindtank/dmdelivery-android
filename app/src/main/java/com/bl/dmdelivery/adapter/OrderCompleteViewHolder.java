@@ -44,7 +44,7 @@ public class OrderCompleteViewHolder extends GestureViewHolder {
         this.mSeqText = (TextView) view.findViewById(R.id.seqTxt);
         this.txtRepcode = (TextView) view.findViewById(R.id.txtRepcode);
         this.txtInv = (TextView) view.findViewById(R.id.txtInv);
-        this.txtAddress = (TextView) view.findViewById(R.id.txtAddress);
+        this.txtAddress = (TextView) view.findViewById(R.id.txtAddress1);
         this.txtMslTel = (TextView) view.findViewById(R.id.txtMslTel);
         this.txtDsmTel = (TextView) view.findViewById(R.id.txtDsmTel);
 

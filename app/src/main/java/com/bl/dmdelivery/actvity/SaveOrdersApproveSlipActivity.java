@@ -1,13 +1,24 @@
 package com.bl.dmdelivery.actvity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.os.BatteryManager;
+import android.os.Build;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,13 +31,20 @@ import android.widget.Toast;
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.Reason;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
 public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtgps;
     private Button mBtnBack,mmBtnOk,mmBtnClose,btnCancelGPS,btnCancel,btnGPS,btnSaveGPS,btnSave,btnNew,btnNote;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
@@ -42,7 +60,21 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
     private ListView lvDeliveryAcceptList;
     private Intent myIntent=null;
 
+    String mInputPath = Environment.getExternalStorageDirectory().toString() + "/SLIP/";
+    String mOutputPath = Environment.getExternalStorageDirectory().toString() + "/PROCESSED/";
+
+    public String batteryPercent = "0";
+
+    private String returnflag = "";
+
+    private File mFile;
+    private String mFileName;
+
     private CanvasView customCanvas;
+
+    //private final int REQUEST_PERMISSION_PHONE_STATE=1;
+
+    Order mOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +106,14 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
             btnNew = (Button) findViewById(R.id.btnNew);
             btnNote = (Button) findViewById(R.id.btnNote);
 
+            txtRepcode = (TextView) findViewById(R.id.txtRepcode);
+            txtInvNo = (TextView) findViewById(R.id.txtInvNo);
+            txtAddress1 = (TextView) findViewById(R.id.txtAddress1);
+            txtAddress2 = (TextView) findViewById(R.id.txtAddress2);
+            txtMslTel = (TextView) findViewById(R.id.txtMslTel);
+            txtgps = (TextView) findViewById(R.id.txtgps);
+
+
             //mBtnNote = (Button) findViewById(R.id.btnNote);
             //mBtnSendGps = (Button) findViewById(R.id.btnSendGps);
             //mBtnSendGpsNo = (Button) findViewById(R.id.btnSendGpsNo);
@@ -83,8 +123,62 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_slip));
 
             customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+
+            //showPhoneStatePermission();
+
+            File dirInput = new File (mInputPath);
+            if (!dirInput.exists())
+            {
+                dirInput.mkdirs();
+            }
+
+            File dirOutput = new File (mOutputPath);
+            if (!dirOutput.exists())
+            {
+                dirOutput.mkdirs();
+            }
+
+            getData();
+
+
         }
         catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+    }
+
+    private void getData() {
+        try{
+
+
+            Intent intInv= getIntent();
+            Bundle bdlInv = intInv.getExtras();
+
+            if(bdlInv != null)
+            {
+                mOrder = new Order();
+                mOrder =(Order)bdlInv.get("data");
+
+                if(mOrder !=null) {
+
+                    txtRepcode.setText(setRepcodeFormat(mOrder.getRep_code())+" "+mOrder.getRep_name());
+                    txtInvNo.setText(mOrder.getTransNo());
+                    txtAddress1.setText(mOrder.getAddress1());
+                    txtAddress2.setText(mOrder.getAddress2()+" "+mOrder.getPostal());
+                    txtMslTel.setText("โทร. "+mOrder.getRep_telno());
+                    txtgps.setText("GPS : 0,0");
+
+                    returnflag = mOrder.getRep_telno();
+
+                }
+
+
+
+            }
+
+
+
+        } catch (Exception e) {
             showMsgDialog(e.toString());
         }
     }
@@ -107,6 +201,102 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                }
+            });
+
+            btnCancelGPS.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+
+
+                    takeScreenshot();
+
+                    if(returnflag.equals(""))
+                    {
+                        finish();
+                    }
+                    else {
+
+                        finish();
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                        myIntent.putExtra("data",mOrder);
+                        startActivity(myIntent);
+
+                    }
+
+
+                }
+            });
+
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+
+
+                    takeScreenshot();
+                    if(returnflag.equals(""))
+                    {
+                        finish();
+                    }
+                    else {
+
+                        finish();
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                        myIntent.putExtra("data",mOrder);
+                        startActivity(myIntent);
+
+                    }
+
+                }
+            });
+
+            btnGPS.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+
+
+
+
+                }
+            });
+
+            btnSaveGPS.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+
+
+                    takeScreenshot();
+                    if(returnflag.equals(""))
+                    {
+                        finish();
+                    }
+                    else {
+
+                        finish();
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                        myIntent.putExtra("data",mOrder);
+                        startActivity(myIntent);
+
+                    }
+
+                }
+            });
+
+            btnSave.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+
+
+                    takeScreenshot();
+                    if(returnflag.equals(""))
+                    {
+                        finish();
+                    }
+                    else {
+
+                        finish();
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                        myIntent.putExtra("data",mOrder);
+                        startActivity(myIntent);
+
+                    }
+                    //overridePendingTransition(0,0);
+
                 }
             });
 
@@ -154,6 +344,169 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
 
     public void clearCanvas(View v) {
         customCanvas.clearCanvas();
+    }
+
+//    private void showPhoneStatePermission() {
+//        int permissionCheck = ContextCompat.checkSelfPermission(
+//                this, Manifest.permission.READ_PHONE_STATE);
+//        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.READ_PHONE_STATE)) {
+//                showExplanation("Permission Needed", "Rationale", Manifest.permission.READ_PHONE_STATE, REQUEST_PERMISSION_PHONE_STATE);
+//            } else {
+//                requestPermission(Manifest.permission.READ_PHONE_STATE, REQUEST_PERMISSION_PHONE_STATE);
+//            }
+//        } else {
+//            Toast.makeText(SaveOrdersApproveSlipActivity.this, "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(
+//            int requestCode,
+//            String permissions[],
+//            int[] grantResults) {
+//        switch (requestCode) {
+//            case REQUEST_PERMISSION_PHONE_STATE:
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    Toast.makeText(SaveOrdersApproveSlipActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(SaveOrdersApproveSlipActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+//                }
+//        }
+//    }
+//
+//    private void showExplanation(String title,
+//                                 String message,
+//                                 final String permission,
+//                                 final int permissionRequestCode) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(title)
+//                .setMessage(message)
+//                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        requestPermission(permission, permissionRequestCode);
+//                    }
+//                });
+//        builder.create().show();
+//    }
+//
+//    private void requestPermission(String permissionName, int permissionRequestCode) {
+//        ActivityCompat.requestPermissions(this,
+//                new String[]{permissionName}, permissionRequestCode);
+//    }
+
+    private void takeScreenshot() {
+
+
+        //Date now = new Date();
+        //android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+
+
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+        java.util.Date currentLocalTime = cal.getTime();
+        SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+        date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+        String localTime = date.format(currentLocalTime);
+        localTime = localTime.replace(" ", "").replace("-", "");
+
+        getBatteryPercentage();
+
+        String sendResult = "3";
+
+
+
+
+      /*  NumberFormat nf = NumberFormat.getInstance();
+        lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location lx = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        String latlng = nf.format(lx.getLatitude()) + "," + nf.format(lx.getLongitude());*/
+
+        String latlng = "0,0";
+
+
+        String fileName= "V" + getResources().getString(R.string.app_version_slip) + "_" + Build.SERIAL.trim() +  "-" + "TRUCK" + "-" + "INV" + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + "-" + sendResult + ".jpg";
+
+        //String fileName= "V" + "0.3" + "_" + Build.SERIAL.trim() +  "-" + ogject.getTruck() + "-" + mTxtINV.getText().toString() + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + "-" + sendResult + ".jpg";
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/SLIP/" + fileName;
+
+
+            View v = (View) findViewById(R.id.lnlSlip);
+
+            // create bitmap screen capture
+            //View v1 = getWindow().getDecorView().getRootView();
+            v.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+            v.setDrawingCacheEnabled(false);
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            mFileName = fileName;
+            mFile =imageFile;
+
+            //processSlip(mPath);
+
+            //openScreenshot(imageFile);
+
+        } catch (Throwable e) {
+            // Several error may come out with file handling or OOM
+            e.printStackTrace();
+        }
+    }
+
+    public String getImeiNumber() {
+
+        String imeiNumber ="";
+
+        try {
+            TelephonyManager telephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            imeiNumber = telephony.getDeviceId();
+
+        } catch (SecurityException e)
+        {
+            showMsgDialog(e.toString());
+        }
+
+        return imeiNumber;
+    }
+
+    private void getBatteryPercentage() {
+
+
+        try {
+
+
+            Intent batteryIntent = getApplicationContext().registerReceiver(null,
+                    new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            int rawlevel = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            int level = -1;
+            if (rawlevel >= 0 && scale > 0) {
+                level = (rawlevel * 100) / scale;
+                batteryPercent = "P"+String.valueOf(level);
+            }else
+            {
+                batteryPercent = "P"+String.valueOf(0);
+            }
+
+
+        } catch (Exception e)
+        {
+            showMsgDialog(e.toString());
+        }
+
     }
 
     public void showMsgReasonApproveSelectedSingleDialog()
@@ -242,5 +595,77 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity {
         });
         DialogBuilder.show();
     }
+
+    private String setRepcodeFormat(String repcode) {
+
+
+        try {
+
+            String repcodeformat = "";
+
+            if(repcode.length() == 10)
+
+            {
+                repcodeformat = repcode.substring(0, 4)+"-"+repcode.substring(4, 9)+"-"+repcode.substring(9, 10);
+            }
+            else
+            {
+                repcodeformat = repcode;
+            }
+
+            return repcodeformat;
+
+
+        } catch (Exception e)
+        {
+            return repcode;
+            //showMsgDialog(e.toString());
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            int hasCameraPermission = checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
+
+            List<String> permissions = new ArrayList<String>();
+
+            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.READ_PHONE_STATE);
+
+            }
+            if (!permissions.isEmpty()) {
+                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 111: {
+                for (int i = 0; i < permissions.length; i++) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        System.out.println("Permissions --> " + "Permission Granted: " + permissions[i]);
+
+
+                    } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                        System.out.println("Permissions --> " + "Permission Denied: " + permissions[i]);
+
+                    }
+                }
+            }
+            break;
+            default: {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
+    }
+
+
+
 
 }

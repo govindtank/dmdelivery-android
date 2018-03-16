@@ -82,6 +82,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private GestureManager mGestureManager;
     DBHelper mHelper;
 
+    Order mOrder;
+
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -671,15 +673,27 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     case 0:
                         //จัดส่งสินค้า
                         DialogBuilder.dismiss();
+
+                        mOrder = new Order();
+                        mOrder.setRep_code(mListOrderData.get(intSelectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderData.get(intSelectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderData.get(intSelectedPosition).getTransNo());
+                        mOrder.setAddress1(mListOrderData.get(intSelectedPosition).getAddress1());
+                        mOrder.setAddress2(mListOrderData.get(intSelectedPosition).getAddress2());
+                        mOrder.setPostal(mListOrderData.get(intSelectedPosition).getPostal());
+                        mOrder.setRep_telno(mListOrderData.get(intSelectedPosition).getRep_telno());
+                        mOrder.setReturn_flag(mListOrderData.get(intSelectedPosition).getReturn_flag());
+
+
                         myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
-                        myIntent.putExtra("data", "'" + sigTransNo + "'");
+                        myIntent.putExtra("data",mOrder);
                         startActivity(myIntent);
                         break;
                     case 1:
                         //กิจกรรมอื่นๆ
                         DialogBuilder.dismiss();
 
-                        Order mOrder=new Order();
+                        mOrder = new Order();
                         mOrder.setRep_code(mListOrderData.get(intSelectedPosition).getRep_code());
                         mOrder.setRep_name(mListOrderData.get(intSelectedPosition).getRep_name());
                         mOrder.setTransNo(mListOrderData.get(intSelectedPosition).getTransNo());

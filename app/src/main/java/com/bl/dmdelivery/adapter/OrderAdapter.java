@@ -40,11 +40,40 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
         final Order order = (Order) orderItem;
         orderViewHolder.mSeqText.setText(String.valueOf(order.getId()));
         orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo()+" "+order.getDelivery_desc()+" "+order.getCont_desc()));
-        orderViewHolder.txtRepcode.setText(String.valueOf(order.getRep_code()+" - "+order.getRep_name()));
-        orderViewHolder.txtAddress.setText(String.valueOf(order.getAddress1()+" "+order.getAddress2()+" "+order.getPostal()));
+        orderViewHolder.txtRepcode.setText(setRepcodeFormat(String.valueOf(order.getRep_code()))+" - "+order.getRep_name());
+        orderViewHolder.txtAddress1.setText(String.valueOf(order.getAddress1()));
+        orderViewHolder.txtAddress2.setText(String.valueOf(order.getAddress2()+" "+order.getPostal()));
         orderViewHolder.txtMslTel.setText("MSL:"+String.valueOf(order.getRep_telno()));
         orderViewHolder.txtDsmTel.setText("DSM:"+String.valueOf(order.getDsm_telno()));
 
+
+    }
+
+    private String setRepcodeFormat(String repcode) {
+
+
+        try {
+
+            String repcodeformat = "";
+
+            if(repcode.length() == 10)
+
+            {
+                repcodeformat = repcode.substring(0, 4)+"-"+repcode.substring(4, 9)+"-"+repcode.substring(9, 10);
+            }
+            else
+            {
+                repcodeformat = repcode;
+            }
+
+            return repcodeformat;
+
+
+        } catch (Exception e)
+        {
+            return repcode;
+            //showMsgDialog(e.toString());
+        }
 
     }
 

@@ -3,13 +3,11 @@ package com.bl.dmdelivery.adapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.thesurix.gesturerecycler.GestureViewHolder;
@@ -36,7 +34,7 @@ public class OrderViewHolder extends GestureViewHolder {
 //    @BindView(R.id.month_background_stub)
 //    ViewStub mBackgroundView;
 
-    public TextView mSeqText,txtRepcode,txtInv,txtAddress,txtMslTel,txtDsmTel;
+    public TextView mSeqText,txtRepcode,txtInv,txtAddress1,txtAddress2,txtMslTel,txtDsmTel;
     public Button btnTelActivity;
     public ImageView mMonthPicture,mItemDrag;
     public View mForegroundView;
@@ -48,7 +46,8 @@ public class OrderViewHolder extends GestureViewHolder {
         this.mSeqText = (TextView) view.findViewById(R.id.seqTxt);
         this.txtRepcode = (TextView) view.findViewById(R.id.txtRepcode);
         this.txtInv = (TextView) view.findViewById(R.id.txtInv);
-        this.txtAddress = (TextView) view.findViewById(R.id.txtAddress);
+        this.txtAddress1 = (TextView) view.findViewById(R.id.txtAddress1);
+        this.txtAddress2 = (TextView) view.findViewById(R.id.txtAddress2);
         this.txtMslTel = (TextView) view.findViewById(R.id.txtMslTel);
         this.txtDsmTel = (TextView) view.findViewById(R.id.txtDsmTel);
 //        this.btnTelActivity = (Button) view.findViewById(R.id.btnTelActivity);

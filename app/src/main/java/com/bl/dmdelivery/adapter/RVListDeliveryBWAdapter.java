@@ -124,7 +124,7 @@ public class RVListDeliveryBWAdapter extends RecyclerView.Adapter<RVListDelivery
             this.mTxtInv = (TextView) v.findViewById(R.id.txtInv);
             this.mTxtRepcode = (TextView) v.findViewById(R.id.txtRepcode);
             this.mTxtRepname = (TextView) v.findViewById(R.id.txtRepname);
-            this.mTxtAddress = (TextView) v.findViewById(R.id.txtAddress);
+            this.mTxtAddress = (TextView) v.findViewById(R.id.txtAddress1);
             this.mTxtTel = (TextView) v.findViewById(R.id.txtTelMSL);
             this.mImbChecked = (ImageView) v.findViewById(R.id.imbChecked);
 

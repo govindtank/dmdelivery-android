@@ -60,25 +60,43 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtRepcode"
+                android:id="@+id/txtInvNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="000-000-000-0 - Name" />
+                android:text="0000000000"
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
-            <include
-                android:id="@+id/includeSeparatorBarWhite2"
-                layout="@layout/separator_bar_white"
+
+            <TextView
+                android:id="@+id/txtRepcode"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="000-000-000-0 - Name"
+                android:textStyle="bold" />
         </LinearLayout>
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="0dp"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<include-->
+                <!--android:id="@+id/includeSeparatorBarWhite2"-->
+                <!--layout="@layout/separator_bar_white"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,6 +126,35 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Address 2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtMslTel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0800000000" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtgps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0,0" />
         </LinearLayout>
     </LinearLayout>
 

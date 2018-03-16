@@ -3,6 +3,7 @@
     <!--<string name="server_url">http://172.16.105.160:9090/DMDelivery/api/</string>-->
     <string name="app_name">DM Delivery</string>
     <string name="app_version">100</string>
+    <string name="app_version_slip">1.0.0</string>
     <string name="app_version_text">โปรแกรมเป็นเวอร์ชั่นล่าสุด</string>
     <string name="app_update_version_text">Update Version</string>
     <string name="app_dev">-=@ Powered by IT @=-</string>

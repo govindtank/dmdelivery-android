@@ -86,7 +86,7 @@ public class OrderSlipViewAdapter  extends RecyclerView.Adapter<OrderSlipViewAda
             this.mCampaign = (TextView) v.findViewById(R.id.txtCamp);
             this.mRepcode = (TextView) v.findViewById(R.id.txtRepcode);
             this.mRepname = (TextView) v.findViewById(R.id.txtRepname);
-            this.mAddress = (TextView) v.findViewById(R.id.txtAddress);
+            this.mAddress = (TextView) v.findViewById(R.id.txtAddress1);
             this.mMobilemsl = (TextView) v.findViewById(R.id.txtMobilemsl);
             this.mMobiledsm = (TextView) v.findViewById(R.id.txtMobiledsm);
             this.mReturn = (TextView) v.findViewById(R.id.txtReturn);
