@@ -132,13 +132,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //Unpack
         String CREATE_UNPACK_TABLE = String.format("CREATE TABLE %s " +
-                        "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT)",
+                        "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT)",
                 TableUnpack,
                 Unpack.Column.transno,
                 Unpack.Column.unpack_code,
                 Unpack.Column.unpack_desc,
                 Unpack.Column.unpack_qty,
-                Unpack.Column.unpack_image
+                Unpack.Column.unpack_image,
+                Unpack.Column.rep_name
         );
 
         Log.i(TAG, CREATE_UNPACK_TABLE);
@@ -260,6 +261,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Order getOrders(String id) {
 
+
+        Cursor cursor = null;
+        Order order = new Order();
         sqLiteDatabase = this.getReadableDatabase();
 
         /*Cursor cursor = sqLiteDatabase.query(TableOrder,
@@ -271,53 +275,65 @@ public class DBHelper extends SQLiteOpenHelper {
                 null,
                 null);*/
 
-        Cursor cursor = sqLiteDatabase.query(TableOrder,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
+        try{
+
+            cursor = sqLiteDatabase.query(TableOrder,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
 
 
-        if (cursor != null  && cursor.getCount()>0) {
-            cursor.moveToFirst();
+            if (cursor != null  && cursor.getCount()>0) {
+                cursor.moveToFirst();
+            }
+
+            order = new Order();
+            order.setId(cursor.getInt(0));
+            order.setOucode(cursor.getString(1));
+            order.setYear(cursor.getString(2));
+            order.setGroup(cursor.getString(3));
+            order.setTransNo(cursor.getString(4));
+            order.setTransdate(cursor.getString(5));
+            order.setRep_seq(cursor.getString(6));
+            order.setRep_code(cursor.getString(7));
+            order.setRep_name(cursor.getString(8));
+            order.setRep_nickname(cursor.getString(9));
+            order.setAddress1(cursor.getString(10));
+            order.setAddress2(cursor.getString(11));
+            order.setTumbon(cursor.getString(12));
+            order.setAmphur(cursor.getString(13));
+            order.setProvince(cursor.getString(14));
+            order.setPostal(cursor.getString(15));
+            order.setRep_telno(cursor.getString(16));
+            order.setDsm_name(cursor.getString(17));
+            order.setDsm_telno(cursor.getString(18));
+            order.setLoc_code(cursor.getString(19));
+            order.setTrans_campaign(cursor.getString(20));
+            order.setOrd_campaign(cursor.getString(21));
+            order.setOrd_type(cursor.getString(22));
+            order.setDel_type(cursor.getString(23));
+            order.setOrd_flag_status(cursor.getString(24));
+            order.setReturn_flag(cursor.getString(25));
+            order.setUnpack_items(cursor.getString(26));
+            order.setOrder_flag_desc(cursor.getString(27));
+            order.setDelivery_desc(cursor.getString(28));
+            order.setOrdertype_desc(cursor.getString(29));
+            order.setCont_desc(cursor.getString(30));
+            order.setItemno(cursor.getInt(31));
+
+        }catch (Exception ex){
+
+        }finally {
+            if(cursor != null){
+                cursor.close();
+                sqLiteDatabase.close();
+            }
         }
 
-        Order order = new Order();
-        order.setId(cursor.getInt(0));
-        order.setOucode(cursor.getString(1));
-        order.setYear(cursor.getString(2));
-        order.setGroup(cursor.getString(3));
-        order.setTransNo(cursor.getString(4));
-        order.setTransdate(cursor.getString(5));
-        order.setRep_seq(cursor.getString(6));
-        order.setRep_code(cursor.getString(7));
-        order.setRep_name(cursor.getString(8));
-        order.setRep_nickname(cursor.getString(9));
-        order.setAddress1(cursor.getString(10));
-        order.setAddress2(cursor.getString(11));
-        order.setTumbon(cursor.getString(12));
-        order.setAmphur(cursor.getString(13));
-        order.setProvince(cursor.getString(14));
-        order.setPostal(cursor.getString(15));
-        order.setRep_telno(cursor.getString(16));
-        order.setDsm_name(cursor.getString(17));
-        order.setDsm_telno(cursor.getString(18));
-        order.setLoc_code(cursor.getString(19));
-        order.setTrans_campaign(cursor.getString(20));
-        order.setOrd_campaign(cursor.getString(21));
-        order.setOrd_type(cursor.getString(22));
-        order.setDel_type(cursor.getString(23));
-        order.setOrd_flag_status(cursor.getString(24));
-        order.setReturn_flag(cursor.getString(25));
-        order.setUnpack_items(cursor.getString(26));
-        order.setOrder_flag_desc(cursor.getString(27));
-        order.setDelivery_desc(cursor.getString(28));
-        order.setOrdertype_desc(cursor.getString(29));
-        order.setCont_desc(cursor.getString(30));
-        order.setItemno(cursor.getInt(31));
 
 
         return order;
@@ -524,6 +540,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Unpack.Column.unpack_desc, order.getUnpack_desc());
         values.put(Unpack.Column.unpack_qty, order.getUnpack_qty());
         values.put(Unpack.Column.unpack_image, order.getUnpack_image());
+        values.put(Unpack.Column.rep_name, order.getRep_name());
 
         sqLiteDatabase.insert(TableUnpack, null, values);
 
@@ -740,12 +757,106 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setUnpack_desc(cursor.getString(2));
             order.setUnpack_qty(cursor.getString(3));
             order.setUnpack_image(cursor.getString(4));
+            order.setRep_name(cursor.getString(5));
             unpacks.add(order);
 
             cursor.moveToNext();
         }
 
 
+
+        return unpacks;
+    }
+
+    public ArrayList<Unpack> getUnpackListItem(String fscode) {
+
+        ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
+        Cursor cursor = null;
+
+
+        sqLiteDatabase = this.getReadableDatabase();
+
+        try{
+
+             cursor = sqLiteDatabase.query(TableUnpack,
+                    null,
+                    "unpack_code = '"+ fscode +"'",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
+
+
+            if (cursor != null  && cursor.getCount()>0) {
+                cursor.moveToFirst();
+            }
+
+            while(!cursor.isAfterLast()) {
+
+                Unpack order = new Unpack();
+                order.setTransno(cursor.getString(0));
+                order.setUnpack_code(cursor.getString(1));
+                order.setUnpack_desc(cursor.getString(2));
+                order.setUnpack_qty(cursor.getString(3));
+                order.setUnpack_image(cursor.getString(4));
+                order.setRep_name(cursor.getString(5));
+                unpacks.add(order);
+
+                cursor.moveToNext();
+            }
+
+        }catch (Exception ex){
+
+        }finally {
+            if(cursor != null){
+                cursor.close();
+                sqLiteDatabase.close();
+            }
+        }
+
+
+
+
+
+        return unpacks;
+    }
+
+    public ArrayList<Unpack> getUnpackGroup() {
+
+        ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
+        Cursor cursor = null;
+
+        sqLiteDatabase = this.getReadableDatabase();
+        try{
+             cursor = sqLiteDatabase.rawQuery("select unpack_code,unpack_desc,Unpack_image,sum(unpack_qty) from Unpacks group by unpack_code,unpack_desc,Unpack_image order by unpack_code",null);
+
+
+            if (cursor != null  && cursor.getCount()>0) {
+                cursor.moveToFirst();
+            }
+
+            while(!cursor.isAfterLast()) {
+
+                Unpack order = new Unpack();
+                //order.setTransno(cursor.getString(0));
+                order.setUnpack_code(cursor.getString(0));
+                order.setUnpack_desc(cursor.getString(1));
+                order.setUnpack_qty(cursor.getString(3));
+                order.setUnpack_image(cursor.getString(2));
+                unpacks.add(order);
+
+                cursor.moveToNext();
+            }
+
+        }catch (Exception ex){
+
+        }finally {
+            if(cursor != null){
+                cursor.close();
+                sqLiteDatabase.close();
+            }
+        }
 
         return unpacks;
     }

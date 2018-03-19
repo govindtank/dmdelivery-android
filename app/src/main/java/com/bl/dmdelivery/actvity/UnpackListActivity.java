@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.adapter.UnpackDialogAdapter;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
@@ -53,8 +54,8 @@ public class UnpackListActivity extends AppCompatActivity {
     private ImageView mImageView,mmImvTitle;
     private Button mBtnBack,mBtnClose,mBtnLoad,mmBtnOk,mmBtnClose;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
-    private RecyclerView lv;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView lv,lv2;
+    private RecyclerView.Adapter mAdapter,mAdapter2;
     private ArrayList<Unpack> mListOrderData = new ArrayList<Unpack>();
     private CheckNetwork chkNetwork = new CheckNetwork();
     private String serverUrl;
@@ -528,7 +529,7 @@ public class UnpackListActivity extends AppCompatActivity {
 
                 mHelper = new DBHelper(getApplicationContext());
                 mListOrderData.clear();
-                mListOrderData = mHelper.getUnpackList();
+                mListOrderData = mHelper.getUnpackGroup();
 
             } catch (Exception e) {
                 pageResultHolder.content = "Exception : CheckOrderData";
@@ -609,21 +610,32 @@ public class UnpackListActivity extends AppCompatActivity {
 
         mTxtCode = (TextView) v.findViewById(R.id.txtCode);
         mTxtDesc = (TextView) v.findViewById(R.id.txtDesc);
-//        mTxtH = (TextView)v.findViewById(R.id.txtHeight);
-//        mTxtL = (TextView)v.findViewById(R.id.txtLength);
-//        mTxtW = (TextView)v.findViewById(R.id.txtWidth);
         mImageView = (ImageView)v.findViewById(R.id.imageView3);
+        lv2 = (RecyclerView)v.findViewById(R.id.lv);
+        lv2.setLayoutManager(new LinearLayoutManager(this));
+        lv2.setHasFixedSize(true);
+
 
 
         mTxtCode.setText(obj.getUnpack_code());
         mTxtDesc.setText(obj.getUnpack_desc());
-//        mTxtH.setText("ความสูง 19 เซนติเมตร");
-//        mTxtW.setText("ความกว้าง 24 เซนติเมตร");
-//        mTxtL.setText("ความยาว 24 เซนติเมตร");
 
-        byte[] decodedByteArray = Base64.decode(obj.getUnpack_image().toString(), Base64.NO_WRAP);
-        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
-        mImageView.setImageBitmap(decodedBitmap);
+
+        if(obj.getUnpack_image().equals("")){
+
+        }else{
+            byte[] decodedByteArray = Base64.decode(obj.getUnpack_image().toString(), Base64.NO_WRAP);
+            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+            mImageView.setImageBitmap(decodedBitmap);
+        }
+
+
+
+        mHelper = new DBHelper(getApplicationContext());
+        ArrayList<Unpack> _ListOrderData = mHelper.getUnpackListItem(obj.getUnpack_code());
+        mAdapter2 = new UnpackDialogAdapter(getApplicationContext(),_ListOrderData);
+        lv2.setAdapter(mAdapter2);
+
 
 
         DialogBuilder.setView(v);

@@ -414,8 +414,14 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
             // TODO Call Webservice
             if(chkNetwork.isConnectionAvailable(getApplicationContext())){
-                serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CheckOrderScan";
-                new getScanDataInAsync().execute(serverUrl);
+                if(chkNetwork.isWebserviceConnected(getApplicationContext())){
+                    serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CheckOrderScan";
+                    new getScanDataInAsync().execute(serverUrl);
+                } else
+                {
+                    showMsgDialog(getResources().getString(R.string.error_webservice));
+
+                }
             }
 
             else {
@@ -550,8 +556,11 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
             // TODO Call Webservice
             if(chkNetwork.isConnectionAvailable(getApplicationContext())){
-                serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CreateBooking";
-                new getInsertDataInAsync().execute(serverUrl,oCarton);
+                if(chkNetwork.isWebserviceConnected(getApplicationContext())){
+                    serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CreateBooking";
+                    new getInsertDataInAsync().execute(serverUrl,oCarton);
+                }
+
             }
 
             else {

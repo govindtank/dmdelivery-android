@@ -16,6 +16,7 @@ public class Unpack implements Parcelable{
     private String unpack_desc;
     private String unpack_qty;
     private String unpack_image;
+    private String rep_name;
 
     public class Column{
         public static final String transno = "transno";
@@ -23,6 +24,7 @@ public class Unpack implements Parcelable{
         public static final String unpack_desc ="unpack_desc";
         public static final String unpack_qty = "unpack_qty";
         public static final String unpack_image = "unpack_image";
+        public static final String rep_name = "rep_name";
     }
 
     public String getTransno() {
@@ -67,6 +69,13 @@ public class Unpack implements Parcelable{
         this.unpack_qty = unpack_qty;
     }
 
+    public String getRep_name() {
+        return rep_name;
+    }
+
+    public void setRep_name(String rep_name) {
+        this.rep_name = rep_name;
+    }
 
     public Unpack() {
     }
@@ -81,8 +90,9 @@ public class Unpack implements Parcelable{
         dest.writeString(this.transno);
         dest.writeString(this.unpack_code);
         dest.writeString(this.unpack_desc);
-        dest.writeValue(this.unpack_qty);
+        dest.writeString(this.unpack_qty);
         dest.writeString(this.unpack_image);
+        dest.writeString(this.rep_name);
     }
 
     protected Unpack(Parcel in) {
@@ -91,6 +101,7 @@ public class Unpack implements Parcelable{
         this.unpack_desc = in.readString();
         this.unpack_qty = in.readString();
         this.unpack_image = in.readString();
+        this.rep_name = in.readString();
     }
 
     public static final Creator<Unpack> CREATOR = new Creator<Unpack>() {
