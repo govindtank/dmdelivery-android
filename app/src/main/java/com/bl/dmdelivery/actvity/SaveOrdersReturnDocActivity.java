@@ -26,6 +26,7 @@ import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Unpack;
 
@@ -43,6 +44,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
 
     private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
+    private ArrayList<Order> mListOrder= new ArrayList<Order>();
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
 
@@ -113,34 +115,26 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
-            //get val Intent
-            Intent ineGetVals= getIntent();
-            Bundle bdlGetVals = ineGetVals.getExtras();
-
-            sigMultiInv="";
-            if(bdlGetVals != null)
-            {
-
-//                ArrayList<String> list = new ArrayList<String>();
-//                list.add("1100499936");
-//                list.add("1100499691");
+//            //get val Intent
+//            Intent ineGetVals= getIntent();
+//            Bundle bdlGetVals = ineGetVals.getExtras();
 //
-////                list =(ArrayList<String>)bdlGetVals.get("REF_TRANS_NO");
-//                if(list.size() > 0){
-//                    for(int i=0;i<list.size();i++){
-//                        String sigInv = list.get(i);
-//                        if(!sigInv.isEmpty()){
-//                            if(i==0)
-//                            {
-//                                sigMultiInv= "'" + sigInv + "'";
-//                            }
-//                            else
-//                            {
-//                                sigMultiInv = sigMultiInv + ",'" + sigInv + "'";
-//                            }
-//                        }
-//                    }
-//                }
+//            if(bdlGetVals != null)
+//            {
+//                mListOrder.clear();
+//                mListOrder =(ArrayList<Order>)bdlGetVals.get("data");
+//            }
+
+
+//            Bundle extras = getIntent().getExtras();
+            Intent ineGetIntent= getIntent();
+            Bundle bdlGetExtras= ineGetIntent.getExtras();
+
+            if(bdlGetExtras == null) {
+                mListOrder = new ArrayList<Order>();
+            } else {
+                mListOrder = new ArrayList<Order>();
+                mListOrder =(ArrayList<Order>)bdlGetExtras.get("data");
             }
 
 
@@ -153,9 +147,11 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(View view, int position) {
 
-                    String refno  =  mListOrderReturn.get(position).getReturn_no();
+                    String rep_code =  mListOrderReturn.get(position).getRep_code();
+                    String ref_return_no  =  mListOrderReturn.get(position).getReturn_no();
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
-                    myIntent.putExtra("REF_RETURN_NO", refno);
+                    myIntent.putExtra("REP_CODE", rep_code);
+                    myIntent.putExtra("REF_RETURN_NO", ref_return_no);
                     startActivity(myIntent);
                 }
             }));
@@ -170,14 +166,14 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
         try {
             mListOrderReturn.clear();
             mHelper = new DBHelper(getApplicationContext());
-            mListOrderReturn.clear();
-//            mListOrderReturn = mHelper.getOrderReturnCriteria(sigMultiInv);
-            mListOrderReturn = mHelper.getOrderReturn();
+            mListOrderReturn = mHelper.getOrdersReturnList(mListOrder);
 
-            if(mListOrderReturn.size()>0)
+            if(mListOrderReturn != null)
             {
-                mAdapter = new OrderReturnViewAdapter(getApplicationContext(),mListOrderReturn);
-                lv.setAdapter(mAdapter);
+                if(mListOrderReturn.size() > 0){
+                    mAdapter = new OrderReturnViewAdapter(getApplicationContext(),mListOrderReturn);
+                    lv.setAdapter(mAdapter);
+                }
             }else
             {
                 //finish();
@@ -185,68 +181,9 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                 showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
             }
 
-
-
-//            Order f = new Order();
-//            f.setTransNo("1");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("2");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("3");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("4");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("5");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("6");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("7");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("8");
-//            mListOrderData.add(f);
-
-
-            //new getInitDataInAsync().execute();
-
-           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-            {
-
-                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-                {
-
-                    new getOrderDataInAsync().execute();
-                }
-                else
-                {
-
-                    showMsgDialog(getResources().getString(R.string.error_webservice));
-
-                }
-
-            }else
-            {
-
-                showMsgDialog(getResources().getString(R.string.error_network));
-            }*/
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -266,7 +203,6 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
         DialogBuilder.setView(v);
         DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
                 dialog.dismiss();
             }
         });

@@ -356,7 +356,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(OrderReturn.Column.return_seq, order.getReturn_seq());
         values.put(OrderReturn.Column.fs_code, order.getFs_code());
         values.put(OrderReturn.Column.fs_desc, order.getFs_desc());
-        values.put(OrderReturn.Column.return_unit_real, order.geReturn_unit_real());
+        values.put(OrderReturn.Column.return_unit_real, order.getReturn_unit_real());
         values.put(OrderReturn.Column.return_unit, order.getReturn_unit());
         values.put(OrderReturn.Column.return_remark, order.getReturn_remark());
         values.put(OrderReturn.Column.return_status, order.getReturn_status());
@@ -474,14 +474,14 @@ public class DBHelper extends SQLiteOpenHelper {
         String sigGetData="";
         for(int i=0;i<mOrderCriteria.size();i++)
         {
-            sigGetData = mOrderCriteria.get(i).getTransNo();
+            sigGetData = mOrderCriteria.get(i).getRep_code();
             if(i==0)
             {
-                sigGetData = "'" + mOrderCriteria.get(i).getTransNo() + "'";
+                sigGetData = "'" + mOrderCriteria.get(i).getRep_code() + "'";
             }
             else
             {
-                sigGetData = sigGetData + "'" + mOrderCriteria.get(i).getTransNo() + "'";
+                sigGetData = sigGetData + "'" + mOrderCriteria.get(i).getRep_code() + "'";
             }
         }
 
@@ -491,7 +491,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor cursor = sqLiteDatabase.query(TableOrderReturn,
                 null,
-                "reftrans_no IN (" + sigGetData + ")",
+                "rep_code IN (" + sigGetData + ")",
                 null,
                 null,
                 null,
@@ -865,55 +865,70 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<OrderReturn> getOrderReturnCriteria(String sigReftrans_no) {
 
         ArrayList<OrderReturn> orderReturns = new ArrayList<OrderReturn>();
+        Cursor cursor = null;
 
         sqLiteDatabase = this.getReadableDatabase();
 
-        Cursor cursor = sqLiteDatabase.query(TableOrderReturn,
-                null,
-                "reftrans_no IN (" + sigReftrans_no + ") ",
-                null,
-                null,
-                null,
-                null,
-                null);
+        try{
+
+            cursor = sqLiteDatabase.query(TableOrderReturn,
+                    null,
+                    "reftrans_no IN (" + sigReftrans_no + ") ",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
 
 
-        if (cursor != null  && cursor.getCount()>0) {
-            cursor.moveToFirst();
+            if (cursor != null  && cursor.getCount()>0) {
+                cursor.moveToFirst();
+            }
+
+            while(!cursor.isAfterLast()) {
+
+                OrderReturn orderReturn = new OrderReturn();
+                orderReturn.setOu_code(cursor.getString(0));
+                orderReturn.setReturn_no(cursor.getString(1));
+                orderReturn.setReturn_code(cursor.getString(2));
+                orderReturn.setReturn_type(cursor.getString(3));
+                orderReturn.setReftrans_no(cursor.getString(4));
+                orderReturn.setReftrans_year(cursor.getString(5));
+                orderReturn.setRep_code(cursor.getString(6));
+                orderReturn.setRep_seq(cursor.getString(7));
+                orderReturn.setRep_name(cursor.getString(8));
+                orderReturn.setReturn_seq(cursor.getString(9));
+                orderReturn.setFs_code(cursor.getString(10));
+                orderReturn.setFs_desc(cursor.getString(11));
+                orderReturn.setReturn_unit(cursor.getString(12));
+                orderReturn.setReturn_remark(cursor.getString(13));
+                orderReturn.setReturn_status(cursor.getString(14));
+                orderReturns.add(orderReturn);
+
+                cursor.moveToNext();
+            }
+
+        }catch (Exception ex){
+
+        }finally {
+            if(cursor != null){
+                cursor.close();
+                sqLiteDatabase.close();
+            }
         }
 
-        while(!cursor.isAfterLast()) {
-
-            OrderReturn orderReturn = new OrderReturn();
-            orderReturn.setOu_code(cursor.getString(0));
-            orderReturn.setReturn_no(cursor.getString(1));
-            orderReturn.setReturn_code(cursor.getString(2));
-            orderReturn.setReturn_type(cursor.getString(3));
-            orderReturn.setReftrans_no(cursor.getString(4));
-            orderReturn.setReftrans_year(cursor.getString(5));
-            orderReturn.setRep_code(cursor.getString(6));
-            orderReturn.setRep_seq(cursor.getString(7));
-            orderReturn.setRep_name(cursor.getString(8));
-            orderReturn.setReturn_seq(cursor.getString(9));
-            orderReturn.setFs_code(cursor.getString(10));
-            orderReturn.setFs_desc(cursor.getString(11));
-            orderReturn.setReturn_unit(cursor.getString(12));
-            orderReturn.setReturn_remark(cursor.getString(13));
-            orderReturn.setReturn_status(cursor.getString(14));
-            orderReturns.add(orderReturn);
-
-            cursor.moveToNext();
-        }
         return orderReturns;
     }
 
     public ArrayList<OrderReturn> getOrderReturn() {
 
         ArrayList<OrderReturn> orderReturns = new ArrayList<OrderReturn>();
+        Cursor cursor = null;
 
         sqLiteDatabase = this.getReadableDatabase();
 
-        Cursor cursor = sqLiteDatabase.query(TableOrderReturn,
+        try{
+        cursor = sqLiteDatabase.query(TableOrderReturn,
                 null,
                 null,
                 null,
@@ -949,6 +964,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
             cursor.moveToNext();
         }
+
+        }catch (Exception ex){
+
+        }finally {
+            if(cursor != null){
+                cursor.close();
+                sqLiteDatabase.close();
+            }
+        }
+
         return orderReturns;
     }
 
@@ -988,8 +1013,9 @@ public class DBHelper extends SQLiteOpenHelper {
             orderReturn.setReturn_seq(cursor.getString(9));
             orderReturn.setFs_code(cursor.getString(10));
             orderReturn.setFs_desc(cursor.getString(11));
-            orderReturn.setReturn_unit(cursor.getString(12));
-            orderReturn.setReturn_remark(cursor.getString(13));
+            orderReturn.setReturn_unit_real(cursor.getString(12));
+            orderReturn.setReturn_unit(cursor.getString(13));
+            orderReturn.setReturn_remark(cursor.getString(14));
             orderReturns.add(orderReturn);
 
             cursor.moveToNext();

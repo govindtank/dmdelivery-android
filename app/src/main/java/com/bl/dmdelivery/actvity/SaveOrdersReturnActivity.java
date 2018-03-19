@@ -26,6 +26,7 @@ import com.bl.dmdelivery.adapter.OrderReturnViewAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.utility.TagUtils;
 
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtsum,mmTxtQty;
-    private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnApprove,mBtnReject;
+    private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnApprove,mBtnReject,mBtnPlus,mBtnDel;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -47,7 +48,12 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
 
-    String refno;
+    private String ref_rep_code;
+    private String ref_return_no;
+
+    private int intQTY_UINT_REAL= 0;
+    private int intQTY_UINT= 0;
+
 
     private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
     private CheckNetwork chkNetwork = new CheckNetwork();
@@ -84,9 +90,11 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                refno= null;
+                ref_return_no= null;
+                ref_rep_code= null;
             } else {
-                refno= extras.getString("REF_RETURN_NO");
+                ref_return_no= extras.getString("REF_RETURN_NO");
+                ref_rep_code= extras.getString("REP_CODE");
             }
 
 
@@ -141,12 +149,21 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
-                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 
+                    //set val transno on class order
+                    ArrayList<Order> mOrderList= new ArrayList<Order>();
+                    Order mOrders = new Order();
+                    mOrders.setRep_code(ref_rep_code);
+                    mOrderList.add(mOrders);
+
+                    //send val on putextra
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                    myIntent.putExtra("data",mOrderList);
                     startActivity(myIntent);
                 }
             });
+
 
             mBtnApprove.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -203,29 +220,22 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
             mHelper = new DBHelper(getApplicationContext());
             mListOrderReturn.clear();
-            mListOrderReturn = mHelper.getOrderReturnDtl(refno);
+            mListOrderReturn = mHelper.getOrderReturnDtl(ref_return_no);
 
             if(mListOrderReturn.size()>0)
             {
-
                 mAdapter = new OrderReturnDtlViewAdapter(getApplicationContext(),mListOrderReturn);
                 lv.setAdapter(mAdapter);
-
-
-
             }else
             {
                 //finish();
                 //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
-
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void showMsgCancelSelectedSingleDialog()
@@ -277,8 +287,22 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     }
 
 
-    public void showMsgQtyDialog(String retqty)
+    public void showMsgQtyDialog(String sigRetqty_uint)
     {
+        intQTY_UINT_REAL=0;
+        intQTY_UINT= 0;
+
+        final String sigRetqty_uint_final=sigRetqty_uint;
+
+        if(sigRetqty_uint_final.isEmpty() || sigRetqty_uint_final.equals("") || sigRetqty_uint_final==null){
+            intQTY_UINT=Integer.parseInt("0");
+        }
+        else
+        {
+            intQTY_UINT=Integer.parseInt(sigRetqty_uint_final);
+        }
+
+
         final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersReturnActivity.this).create();
         LayoutInflater inflater = getLayoutInflater();
         View v = (View) inflater.inflate(R.layout.dialog_confirm_qty, null);
@@ -288,8 +312,43 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnOk);
         mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+
+        mBtnPlus = (Button) v.findViewById(R.id.btnPlus);
+        mBtnDel = (Button) v.findViewById(R.id.btnDel);
+
         mmTxtTitle.setText("แก้ไขจำนวนรับจริง");
-        mmTxtQty.setText(retqty);
+        mmTxtQty.setText(String.valueOf(intQTY_UINT));
+
+
+        mBtnPlus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                if( intQTY_UINT_REAL > Integer.parseInt(mmTxtQty.getText().toString()) ){
+                    return;
+                }
+
+                intQTY_UINT_REAL++;
+
+                mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
+            }
+        });
+
+        mBtnDel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                if(intQTY_UINT_REAL < Integer.parseInt(mmTxtQty.getText().toString()) ){
+                    return;
+                }
+
+                if(intQTY_UINT_REAL <= 0){
+                    return;
+                }
+
+                intQTY_UINT_REAL--;
+
+                mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
+            }
+        });
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

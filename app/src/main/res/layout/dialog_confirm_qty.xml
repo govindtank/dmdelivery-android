@@ -108,7 +108,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btnAdd"
+                    android:id="@+id/btnPlus"
                     style="@style/btnclose"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -168,7 +168,8 @@
 
                         <Button
                             android:id="@+id/btnOk"
-                            style="@style/btnclose"
+                            style="@style/btnok"
+                            android:textColor="@color/colorWhite"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginBottom="5dp"
@@ -194,6 +195,7 @@
                         <Button
                             android:id="@+id/btnClose"
                             style="@style/btnclose"
+                            android:textColor="@color/colorWhite"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:textSize="@dimen/textRowSize"

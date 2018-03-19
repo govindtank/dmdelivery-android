@@ -142,13 +142,9 @@ public class OrderReturn implements Parcelable {
         this.fs_desc = fs_desc;
     }
 
-    public String geReturn_unit_real() {
-        return return_unit_real;
-    }
+    public String getReturn_unit_real() { return return_unit_real; }
 
-    public void setReturn_unit_real(String return_unit_real) {
-        this.return_unit_real = return_unit_real;
-    }
+    public void setReturn_unit_real(String return_unit_real) { this.return_unit_real = return_unit_real; }
 
     public String getReturn_unit() {
         return return_unit;
