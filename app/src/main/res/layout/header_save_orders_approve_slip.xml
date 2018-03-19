@@ -65,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="0000000000"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/textRowSize" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="000-000-000-0 - Name"
+                android:textSize="@dimen/textRowSize"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -110,7 +112,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Address 1" />
+                android:text="Address 1"
+                android:textSize="@dimen/textRowSize" />
         </LinearLayout>
 
         <LinearLayout
@@ -125,7 +128,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Address 2" />
+                android:text="Address 2"
+                android:textSize="@dimen/textRowSize" />
         </LinearLayout>
 
         <LinearLayout
@@ -140,7 +144,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0800000000" />
+                android:text="0800000000"
+                android:textSize="@dimen/textRowSize" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -154,7 +159,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0,0" />
+                android:text="0,0"
+                android:textSize="@dimen/textRowSize" />
         </LinearLayout>
     </LinearLayout>
 
