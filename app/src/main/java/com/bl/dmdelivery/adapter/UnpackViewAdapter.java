@@ -3,6 +3,7 @@ package com.bl.dmdelivery.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ public class UnpackViewAdapter  extends RecyclerView.Adapter<UnpackViewAdapter.V
     private Context mContext;
     private ArrayList<Unpack> mData;
     private int lastPosition = -1;
+
+    private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
     public UnpackViewAdapter(Context context, ArrayList<Unpack> Data) {
 
@@ -87,6 +90,12 @@ public class UnpackViewAdapter  extends RecyclerView.Adapter<UnpackViewAdapter.V
             this.mTxtFsName = (TextView) v.findViewById(R.id.txtFsname);
             this.mTxtQty = (TextView) v.findViewById(R.id.txtQty);
             this.mImage = (ImageView)v.findViewById(R.id.imageView);
+
+            Typeface tf = Typeface.createFromAsset(v.getContext().getAssets(), defaultFonts);
+
+            mTxtFscode.setTypeface(tf);
+            mTxtFsName.setTypeface(tf);
+            mTxtQty.setTypeface(tf);
 
         }
     }

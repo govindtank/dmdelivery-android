@@ -47,7 +47,7 @@
                         android:text="ส่งไม่ได้ (GPS)"
                         android:textAllCaps="false"
                         android:textColor="@color/colorBackgroundWhite"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/textRowSize" />
 
                 </LinearLayout>
 
@@ -68,7 +68,7 @@
                         android:text="ส่งไม่ได้"
                         android:textAllCaps="false"
                         android:textColor="@color/colorBackgroundWhite"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/textRowSize" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -117,7 +117,7 @@
                         android:text="ส่งได้ (GPS)"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/textRowSize" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -137,7 +137,7 @@
                         android:text="ส่งได้"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/textRowSize" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

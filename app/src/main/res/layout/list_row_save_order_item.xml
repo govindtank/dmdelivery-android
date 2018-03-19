@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/linear_item_height"
+        android:layout_height="wrap_content"
         android:background="@color/colorBGMain"
         android:orientation="horizontal">
 
@@ -23,7 +23,8 @@
             android:background="@color/colorPrimary"
             android:gravity="center_vertical|center"
             android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="@dimen/textbtnMenuSize"/>
 
 
         <RelativeLayout
@@ -44,10 +45,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/txtAddress1"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:paddingRight="30dp"
                 android:text="0000000000"
-                android:textColor="@color/colorText" />
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/textbtnMenuSize"/>
 
             <TextView
                 android:id="@+id/txtMslTel"
@@ -55,21 +57,23 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/txtAddress2"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:paddingRight="30dp"
                 android:text="0000000000"
-                android:textColor="@color/colorText" />
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/textbtnMenuSize"/>
 
             <TextView
                 android:id="@+id/txtDsmTel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:paddingRight="30dp"
                 android:text="0000000000"
                 android:textColor="@color/colorText"
-                android:layout_below="@+id/txtMslTel"/>
+                android:layout_below="@+id/txtMslTel"
+                android:textSize="@dimen/textbtnMenuSize"/>
 
 
             <ImageView
@@ -86,9 +90,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="1dp"
                 android:text="0000000000"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/textbtnMenuSize" />
 
             <TextView
                 android:id="@+id/txtAddress1"
@@ -96,10 +101,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/txtRepcode"
                 android:layout_below="@+id/txtRepcode"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:paddingRight="30dp"
                 android:text="0000000000"
-                android:textColor="@color/colorText" />
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/textbtnMenuSize"/>
 
             <TextView
                 android:id="@+id/txtRepcode"
@@ -107,10 +113,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/txtInv"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:text="0000000000"
                 android:textColor="@color/colorText"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="@dimen/textbtnMenuSize"/>
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

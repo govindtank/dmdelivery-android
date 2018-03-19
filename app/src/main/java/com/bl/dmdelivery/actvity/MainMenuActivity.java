@@ -193,7 +193,7 @@ public class MainMenuActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             break;
                         case "โหลดข้อมูล":
-                            showMsgConfirmDialog("ต้องการโหลดข้อมูล ใช่หรือไม่?");
+                            showMsgConfirmDialog("ยืนยันการโหลดข้อมูล ?",getResources().getString(R.string.btn_text_load_data));
                            /* mHelper = new DBHelper(getApplicationContext());
                             ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
                             unpacks = mHelper.getUnpackList();*/
@@ -212,7 +212,7 @@ public class MainMenuActivity extends AppCompatActivity {
                             showMsgConfirmSelectedSingleDialog();
                             break;
                         case "อัพเดทโปรแกรม":
-                            showMsgConfirmDialog("ต้องการอัพเดทโปรแกรม ใช่หรือไม่?");
+                            showMsgConfirmDialog("ยืนยันการอัพเดทโปรแกรม ?",getResources().getString(R.string.btn_text_update_program));
                             break;
                     }
 
@@ -260,22 +260,65 @@ public class MainMenuActivity extends AppCompatActivity {
         DialogBuilder.show();
     }
 
-    public void showMsgConfirmDialog(String msg)
+    public void showMsgConfirmDialog(String msg,String btntxt)
     {
+//        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+//        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_confirm, null, false);
+//
+//
+//        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+//        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+//
+//        mmTxtTitle.setText("ยืนยัน");
+//        mmTxtMsg.setText(msg);
+//        mmBtnOk.setText(btntxt);
+//
+//        DialogBuilder.setView(v);
+//
+//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                loadData();
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        DialogBuilder.show();
+
+
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = li.inflate(R.layout.dialog_confirm, null, false);
+        View v = li.inflate(R.layout.dialog_message_confirm, null, false);
 
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
-        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
 
-        mmTxtTitle.setText("ยืนยัน");
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
         mmTxtMsg.setText(msg);
+        mmBtnOk.setText(btntxt);
 
         DialogBuilder.setView(v);
 
@@ -597,7 +640,7 @@ public class MainMenuActivity extends AppCompatActivity {
                     if (result.content.equals("1"))
                     {
 
-                        result.content = getResources().getString(R.string.txt_text_update_success);
+                        result.content = getResources().getString(R.string.txt_text_load_data_success);
                     }
                     else
                     {

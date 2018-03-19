@@ -35,7 +35,7 @@
                     android:padding="10dp"
                     android:text="รอส่ง"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textHeadDtlSize16" />
+                    android:textSize="@dimen/textSize25" />
             </LinearLayout>
 
             <LinearLayout
@@ -54,7 +54,7 @@
                     android:padding="10dp"
                     android:text="ส่งแล้ว"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/textHeadDtlSize16" />
+                    android:textSize="@dimen/textSize25" />
             </LinearLayout>
 
             <LinearLayout
@@ -73,7 +73,7 @@
                     android:padding="10dp"
                     android:text="ใบรับคืน"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textHeadDtlSize16" />
+                    android:textSize="@dimen/textSize25" />
             </LinearLayout>
         </LinearLayout>
 

@@ -74,7 +74,7 @@
                 android:background="@drawable/background_edittext"
                 android:gravity="center_vertical"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/textSize25"
+                android:textSize="@dimen/textSize"
                 android:textStyle="normal" />
         </LinearLayout>
     </LinearLayout>
@@ -148,12 +148,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/background_edittext"
                 android:ems="10"
+                android:fontFamily="@font/pslpro"
                 android:hint="@string/txt_text_truck"
                 android:imeActionLabel="@string/action_sign_in"
-                android:inputType="textPersonName"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorHintText"
-                android:textSize="@dimen/textSize25"
+                android:textSize="@dimen/textSize"
                 android:textStyle="normal" />
         </LinearLayout>
     </LinearLayout>
@@ -169,7 +169,7 @@
         android:padding="10dp"
         android:text="@string/action_sign_in"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="@dimen/textSize25"
+        android:textSize="@dimen/textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

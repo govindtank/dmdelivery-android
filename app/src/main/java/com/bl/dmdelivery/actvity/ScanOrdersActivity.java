@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -27,6 +28,7 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,8 +70,9 @@ import okhttp3.Response;
 public class ScanOrdersActivity extends AppCompatActivity {
 
     private ACProgressFlower mProgressDialog;
-    private TextView mTxtMsg,mTxtHeader,mTxtResult,mTxtOrderSum,mTxtBoxBagSum,mTxtBoxSum,mTxtBagSum;
-    private Button mBtnBack,mBtnCheckScan,mBtnOk,mBtnClose,mBtnConfirm;
+    private TextView mTxtMsg,mTxtHeader,mTxtResult,mTxtOrderSum,mTxtBoxBagSum,mTxtBoxSum,mTxtBagSum,mmTxtMsg,mmTxtTitle;
+    private Button mBtnBack,mBtnCheckScan,mBtnOk,mBtnClose,mBtnConfirm,mmBtnOk,mmBtnClose;
+    private ImageView mmImvTitle;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
@@ -219,7 +222,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
             mBtnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showMsgConfirmDialog("ยืนยันการสแกนสินค้าขึ้นรถ");
+                    showMsgConfirmDialog("ยืนยันการสแกนสินค้าขึ้นรถ",getResources().getString(R.string.btn_text_confirm));
                 }
             });
 
@@ -253,39 +256,83 @@ public class ScanOrdersActivity extends AppCompatActivity {
         DialogBuilder.show();
     }
 
-    public void showMsgConfirmDialog(String msg)
+    public void showMsgConfirmDialog(String msg,String btntxt)
     {
+//        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+//        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_confirm, null, false);
+//
+//
+////        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//
+//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+////        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+//        mTxtHeader = (TextView) v.findViewById(R.id.txtTitle);
+//        mBtnClose = (Button) v.findViewById(R.id.btnClose);
+//        mBtnOk = (Button)v.findViewById(R.id.btnOk);
+//
+////        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+//        mTxtHeader.setText("ยืนยัน");
+//        mTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//
+//        mBtnClose.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        mBtnOk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                barcodeScannerView.pause();
+//                getConfirmData();
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        DialogBuilder.show();
+
+
+
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = li.inflate(R.layout.dialog_confirm, null, false);
+        View v = li.inflate(R.layout.dialog_message_confirm, null, false);
 
 
-//        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-//        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
-        mTxtHeader = (TextView) v.findViewById(R.id.txtTitle);
-        mBtnClose = (Button) v.findViewById(R.id.btnClose);
-        mBtnOk = (Button)v.findViewById(R.id.btnOk);
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
 
-//        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
-        mTxtHeader.setText("ยืนยัน");
-        mTxtMsg.setText(msg);
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
+        mmBtnOk.setText(btntxt);
 
         DialogBuilder.setView(v);
 
-        mBtnClose.setOnClickListener(new View.OnClickListener() {
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                barcodeScannerView.pause();
+                getConfirmData();
                 DialogBuilder.dismiss();
             }
         });
 
-        mBtnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                barcodeScannerView.pause();
-                getConfirmData();
                 DialogBuilder.dismiss();
             }
         });

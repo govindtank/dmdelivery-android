@@ -48,6 +48,7 @@
     <string name="txt_text_bdate">Booking Date</string>
     <string name="txt_text_ddate">วันที่จัดส่ง</string>
     <string name="txt_text_update_success">UPDATE SUCCESS !!</string>
+    <string name="txt_text_load_data_success">โหลดข้อมูลเรียบร้อยแล้ว !!</string>
     <string name="txt_text_close">ปิด</string>
     <string name="txt_text_save">จองออเดอร์</string>
     <string name="txt_text_cancel">ยกเลิกการจอง</string>
@@ -139,6 +140,9 @@
     <string name="menu_text_unpack">นอกกล่อง</string>
     <string name="txt_text_scan_yes">สแกนสำเร็จ</string>
     <string name="txt_text_scan_no">ไม่สำเร็จ!!โปรดตรวจสินค้าที่สแกน</string>
+
+    <string name="btn_text_load_data">โหลดข้อมูล</string>
+    <string name="btn_text_update_program">อัพเดท</string>
 
 
     <!-- header -->

@@ -8,6 +8,8 @@
     <dimen name="textHeadSize">34dp</dimen>
     <dimen name="textHeadDtlSize">20dp</dimen>
 
+    <dimen name="textHead">30dp</dimen>
+
     <dimen name="textHeadDtlSize16">16dp</dimen>
     <dimen name="textEdittextSize14">14dp</dimen>
 
@@ -28,7 +30,7 @@
 
     <!-- Linear item -->
     <!--<dimen name="linear_item_height">140dp</dimen>-->
-    <dimen name="linear_item_height">130dp</dimen>
+    <dimen name="linear_item_height">157dp</dimen>
     <!--<dimen name="linear_text_width">40dp</dimen>-->
     <dimen name="linear_text_width">30dp</dimen>
     <dimen name="linear_text_padding">20dp</dimen>

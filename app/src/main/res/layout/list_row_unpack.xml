@@ -89,7 +89,7 @@
                             android:gravity="center_vertical"
                             android:text="Code"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/textRowSize"
+                            android:textSize="@dimen/textSize"
                             android:textStyle="normal" />
 
                         <TextView
@@ -101,7 +101,7 @@
                             android:lines="2"
                             android:text="00001 - Fsname"
                             android:textColor="@color/colorText"
-                            android:textSize="@dimen/textbtnMenuSize16" />
+                            android:textSize="@dimen/textbtnMenuSize" />
 
                     </LinearLayout>
 
@@ -120,7 +120,7 @@
                             android:gravity="right"
                             android:text="Qty"
                             android:textColor="@color/colorText"
-                            android:textSize="@dimen/textbtnMenuSize16"
+                            android:textSize="@dimen/textbtnMenuSize"
                             android:textStyle="normal|bold" />
                     </LinearLayout>
 

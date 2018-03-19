@@ -1,6 +1,7 @@
 package com.bl.dmdelivery.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ public class CustomGridViewAdapter extends BaseAdapter {
     private Context mContext;
     private final String[] gridViewString;
     private final int[] gridViewImageId;
+
+    private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
     public CustomGridViewAdapter(Context context, String[] gridViewString, int[] gridViewImageId) {
         mContext = context;
@@ -49,6 +52,11 @@ public class CustomGridViewAdapter extends BaseAdapter {
             gridViewAndroid = inflater.inflate(R.layout.gridview_menu_item, null);
             TextView textViewAndroid = (TextView) gridViewAndroid.findViewById(R.id.menuText);
             ImageView imageViewAndroid = (ImageView) gridViewAndroid.findViewById(R.id.menuImage);
+
+            Typeface tf = Typeface.createFromAsset(gridViewAndroid.getContext().getAssets(), defaultFonts);
+
+            textViewAndroid.setTypeface(tf);
+
             textViewAndroid.setText(gridViewString[i]);
             imageViewAndroid.setImageResource(gridViewImageId[i]);
         } else {
