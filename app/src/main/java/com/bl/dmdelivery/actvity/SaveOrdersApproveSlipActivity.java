@@ -311,6 +311,17 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             btnGPS.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
+                    if(!mLatitude.equals("0") || !mLatitude.equals("0"))
+                    {
+                        myIntent = new Intent(getApplicationContext(), CheckMapActivity.class);
+                        //myIntent.putExtra("data",order);
+                        myIntent.putExtra("latlng", mLatitude+","+mLongitude);
+                        startActivity(myIntent);
+                    }else
+                    {
+                        showMsgDialog(getResources().getString(R.string.txt_text_no_gps));
+                    }
+
 
 
 

@@ -40,6 +40,18 @@
                 android:background="@color/colorBGMain" />
 
             <TextView
+                android:id="@+id/txtReturn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="7dp"
+                android:layout_toStartOf="@+id/mont_drag"
+                android:text="0"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/textRowSize"
+                android:textStyle="normal" />
+
+            <TextView
                 android:id="@+id/txtAddress2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,15 +97,16 @@
                 android:background="@mipmap/drag" />
 
             <TextView
-                android:id="@+id/txtReturn"
+                android:id="@+id/txtUnpack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/txtRepcode"
+                android:layout_marginEnd="27dp"
+                android:layout_toStartOf="@+id/txtReturn"
                 android:text="0"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/colorGreen"
                 android:textSize="@dimen/textRowSize"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/txtInv"
@@ -101,7 +114,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="1dp"
                 android:text="0000000000"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/textRowSize" />

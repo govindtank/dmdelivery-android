@@ -53,6 +53,14 @@
         <activity android:name=".actvity.SaveOrdersReturnDocActivity" />
         <activity android:name=".actvity.SaveOrdersReasonApproveActivity" />
         <activity android:name=".actvity.WebViewActivity" />
+        <activity android:name=".actvity.CheckMapActivity"/>
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyA0NCScC4CfdD0f40SochF7th4OfE4xhrk" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

@@ -39,7 +39,17 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
         final OrderViewHolder orderViewHolder = (OrderViewHolder) holder;
         final Order order = (Order) orderItem;
         orderViewHolder.mSeqText.setText(String.valueOf(order.getId()));
-        orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo()+" "+order.getDelivery_desc()+" "+order.getCont_desc()));
+        orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo()+" "+order.getCont_desc()));
+
+        if(order.getUnpack_items().equals("0"))
+        {
+            orderViewHolder.txtUnpack.setText("");
+        }else
+        {
+            orderViewHolder.txtUnpack.setText("(นอกกล่อง : "+String.valueOf(order.getUnpack_items())+" ชิ้น)");
+        }
+
+
         if(order.getReturn_flag().equals(""))
         {
             orderViewHolder.txtReturn.setText("");

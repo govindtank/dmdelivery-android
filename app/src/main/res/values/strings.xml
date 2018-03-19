@@ -78,6 +78,8 @@
     <string name="txt_text_headder_saveorders_return_slip">สลิปเซ็นต์รับคืน</string>
     <string name="txt_text_headder_saveorders_slip_details">รายละเอียด</string>
 
+    <string name="txt_text_headder_check_map">ตำแหน่งปัจจุบัน</string>
+
     <string name="txt_text_remark">หมายเหตุ</string>
 
 
@@ -143,6 +145,8 @@
 
     <string name="btn_text_load_data">โหลดข้อมูล</string>
     <string name="btn_text_update_program">อัพเดท</string>
+
+    <string name="txt_text_no_gps">ไม่สามารถดึงข้อมูลตำแหน่งปัจจุบัน</string>
 
 
     <!-- header -->
