@@ -31,7 +31,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/pslpro"
             android:textColor="@color/colorDark"
-            android:textSize="@dimen/textSize" />
+            android:textSize="@dimen/textSize25" />
 
 
     </LinearLayout>
