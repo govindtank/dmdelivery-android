@@ -40,6 +40,14 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
         final Order order = (Order) orderItem;
         orderViewHolder.mSeqText.setText(String.valueOf(order.getId()));
         orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo()+" "+order.getDelivery_desc()+" "+order.getCont_desc()));
+        if(order.getReturn_flag().equals(""))
+        {
+            orderViewHolder.txtReturn.setText("");
+        }else
+        {
+            orderViewHolder.txtReturn.setText("("+String.valueOf(order.getReturn_flag())+")");
+        }
+
         orderViewHolder.txtRepcode.setText(setRepcodeFormat(String.valueOf(order.getRep_code()))+" - "+order.getRep_name());
         orderViewHolder.txtAddress1.setText(String.valueOf(order.getAddress1()));
         orderViewHolder.txtAddress2.setText(String.valueOf(order.getAddress2()+" "+order.getPostal()));

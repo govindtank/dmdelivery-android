@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,8 +66,11 @@ import java.util.TimeZone;
 public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtgps;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtgps,mmTxtMsg;
     private Button mBtnBack,mmBtnOk,mmBtnClose,btnCancelGPS,btnCancel,btnGPS,btnSaveGPS,btnSave,btnNew,btnNote;
+
+    private ImageView mmImvTitle;
+
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -258,7 +263,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
 
                     for(int i=0; i<=order.size()-1; i++){
-                        takeScreenshot(i);
+                        takeScreenshot(i,"0");
                     }
 
 
@@ -284,7 +289,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
 
                     for(int i=0; i<=order.size()-1; i++){
-                        takeScreenshot(i);
+                        takeScreenshot(i,"2");
                     }
 
                     if(returnflag.equals(""))
@@ -316,22 +321,32 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 public void onClick(View view) {
 
 
-                    for(int i=0; i<=order.size()-1; i++){
-                        takeScreenshot(i);
-                    }
 
-                    if(returnflag.equals(""))
+                    if ( (customCanvas.totalDx > 100) || (customCanvas.totalDy > 100)) {
+
+                        for(int i=0; i<=order.size()-1; i++){
+                            takeScreenshot(i,"1");
+                        }
+
+                        if(returnflag.equals(""))
+                        {
+                            finish();
+                        }
+                        else {
+
+                            finish();
+                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                            myIntent.putExtra("data",order);
+                            startActivity(myIntent);
+
+                        }
+                    }
+                    else
                     {
-                        finish();
+                        showMsgDialog("ไม่มีลายเซ็น");
                     }
-                    else {
 
-                        finish();
-                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                        myIntent.putExtra("data",order);
-                        startActivity(myIntent);
 
-                    }
 
                 }
             });
@@ -340,22 +355,29 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 public void onClick(View view) {
 
 
-                    for(int i=0; i<=order.size()-1; i++){
-                        takeScreenshot(i);
-                    }
+                    if ( (customCanvas.totalDx > 100) || (customCanvas.totalDy > 100)) {
+                        for(int i=0; i<=order.size()-1; i++){
+                            takeScreenshot(i,"3");
+                        }
 
-                    if(returnflag.equals(""))
+                        if(returnflag.equals(""))
+                        {
+                            finish();
+                        }
+                        else {
+
+                            finish();
+                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                            myIntent.putExtra("data",order);
+                            startActivity(myIntent);
+
+                        }
+                    }
+                    else
                     {
-                        finish();
+                        showMsgDialog("ไม่มีลายเซ็น");
                     }
-                    else {
 
-                        finish();
-                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                        myIntent.putExtra("data",order);
-                        startActivity(myIntent);
-
-                    }
                     //overridePendingTransition(0,0);
 
                 }
@@ -404,6 +426,9 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
     }
 
     public void clearCanvas(View v) {
+
+        customCanvas.totalDx = 0;
+        customCanvas.totalDy  = 0;
         customCanvas.clearCanvas();
     }
 
@@ -458,7 +483,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 //                new String[]{permissionName}, permissionRequestCode);
 //    }
 
-    private void takeScreenshot(int position) {
+    private void takeScreenshot(int position,String sendResult) {
 
 
         //Date now = new Date();
@@ -476,7 +501,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
         getBatteryPercentage();
 
-        String sendResult = "3";
+        //String sendResult = "3";
 
 
 
@@ -636,26 +661,66 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         DialogBuilder.show();
     }
 
+//    public void showMsgDialog(String msg)
+//    {
+//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+//        final AlertDialog alert = DialogBuilder.create();
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_message, null, false);
+//
+//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mTxtMsg.setTypeface(tf);
+//        mTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                dialog.dismiss();
+//            }
+//        });
+//        DialogBuilder.show();
+//
+//
+//
+//
+//
+//    }
+
     public void showMsgDialog(String msg)
     {
-        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog alert = DialogBuilder.create();
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_message, null, false);
 
-        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-        mTxtMsg.setTypeface(tf);
-        mTxtMsg.setText(msg);
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
-        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
+
         DialogBuilder.show();
     }
 

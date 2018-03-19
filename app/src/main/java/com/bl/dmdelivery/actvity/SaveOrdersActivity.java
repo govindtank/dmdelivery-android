@@ -65,7 +65,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //    private Button mBtnBack;
 
 //    private ImageView mImvHeader;
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mmTxtMsg;
     private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList,mBtnClose,mmBtnClose;
     private ImageView mmImvTitle;
 
@@ -618,26 +618,61 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //    }
 
 
+//    public void showMsgDialog(String msg)
+//    {
+//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+//        final AlertDialog alert = DialogBuilder.create();
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_message, null, false);
+//
+//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mTxtMsg.setTypeface(tf);
+//        mTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                dialog.dismiss();
+//            }
+//        });
+//        DialogBuilder.show();
+//    }
+
     public void showMsgDialog(String msg)
     {
-        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog alert = DialogBuilder.create();
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_message, null, false);
 
-        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-        mTxtMsg.setTypeface(tf);
-        mTxtMsg.setText(msg);
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
-        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
+
         DialogBuilder.show();
     }
 

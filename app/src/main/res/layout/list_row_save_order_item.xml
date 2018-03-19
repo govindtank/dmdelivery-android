@@ -85,6 +85,17 @@
                 android:background="@mipmap/drag" />
 
             <TextView
+                android:id="@+id/txtReturn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/txtRepcode"
+                android:text="0"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/textRowSize"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/txtInv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

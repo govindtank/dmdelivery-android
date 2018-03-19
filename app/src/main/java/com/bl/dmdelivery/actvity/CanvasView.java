@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 public class CanvasView extends View {
 
+	public static int totalDx = 0;
+	public static int totalDy = 0;
 
 	public String invoice;
 	public String rep_code;
@@ -140,6 +142,10 @@ public class CanvasView extends View {
 		float dx = Math.abs(x - mX);
 		float dy = Math.abs(y - mY);
 		if (dx >= TOLERANCE || dy >= TOLERANCE) {
+
+			totalDx += dx;
+			totalDy += dy;
+
 			mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
 			mX = x;
 			mY = y;

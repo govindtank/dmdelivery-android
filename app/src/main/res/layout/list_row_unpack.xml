@@ -86,7 +86,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center_vertical"
+                            android:gravity="bottom|center_vertical"
                             android:text="Code"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/textSize"
@@ -101,7 +101,7 @@
                             android:lines="2"
                             android:text="00001 - Fsname"
                             android:textColor="@color/colorText"
-                            android:textSize="@dimen/textbtnMenuSize" />
+                            android:textSize="@dimen/textRowSize" />
 
                     </LinearLayout>
 
@@ -120,7 +120,7 @@
                             android:gravity="right"
                             android:text="Qty"
                             android:textColor="@color/colorText"
-                            android:textSize="@dimen/textbtnMenuSize"
+                            android:textSize="@dimen/textSize25"
                             android:textStyle="normal|bold" />
                     </LinearLayout>
 
