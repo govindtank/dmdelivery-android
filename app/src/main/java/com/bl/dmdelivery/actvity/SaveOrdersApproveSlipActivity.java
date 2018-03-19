@@ -328,6 +328,9 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                             takeScreenshot(i,"1");
                         }
 
+                        customCanvas.totalDx = 0;
+                        customCanvas.totalDy  = 0;
+
                         if(returnflag.equals(""))
                         {
                             finish();
@@ -359,6 +362,9 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                         for(int i=0; i<=order.size()-1; i++){
                             takeScreenshot(i,"3");
                         }
+
+                        customCanvas.totalDx = 0;
+                        customCanvas.totalDy  = 0;
 
                         if(returnflag.equals(""))
                         {
