@@ -20,6 +20,7 @@ public class OrderReturn implements Parcelable {
     private String return_seq;
     private String fs_code;
     private String fs_desc;
+    private String return_unit_real;
     private String return_unit;
     private String return_remark;
     private String return_status;
@@ -38,6 +39,7 @@ public class OrderReturn implements Parcelable {
         public static final String return_seq = "return_seq";
         public static final String fs_code = "fs_code";
         public static final String fs_desc = "fs_desc";
+        public static final String return_unit_real = "return_unit_real";
         public static final String return_unit = "return_unit";
         public static final String return_remark = "return_remark";
         public static final String return_status = "return_status";
@@ -140,6 +142,14 @@ public class OrderReturn implements Parcelable {
         this.fs_desc = fs_desc;
     }
 
+    public String geReturn_unit_real() {
+        return return_unit_real;
+    }
+
+    public void setReturn_unit_real(String return_unit_real) {
+        this.return_unit_real = return_unit_real;
+    }
+
     public String getReturn_unit() {
         return return_unit;
     }
@@ -184,7 +194,8 @@ public class OrderReturn implements Parcelable {
         dest.writeString(this.return_seq);
         dest.writeString(this.fs_code);
         dest.writeString(this.fs_desc);
-        dest.writeValue(this.return_unit);
+        dest.writeString(this.return_unit_real);
+        dest.writeString(this.return_unit);
         dest.writeString(this.return_remark);
         dest.writeString(this.return_status);
     }
@@ -205,6 +216,7 @@ public class OrderReturn implements Parcelable {
         this.return_seq = in.readString();
         this.fs_code = in.readString();
         this.fs_desc = in.readString();
+        this.return_unit_real = in.readString();
         this.return_unit = in.readString();
         this.return_remark = in.readString();
         this.return_status = in.readString();
