@@ -220,7 +220,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                     txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
                     //txtgps.setText("GPS : 0,0");
 
-                    returnflag = order.get(0).getRep_telno();
+                    returnflag = order.get(0).getReturn_flag();
 
                 }
 
