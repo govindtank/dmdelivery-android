@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 
@@ -14,6 +15,7 @@ import com.bl.dmdelivery.model.OrdersChangeList;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.model.Unpack;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -23,19 +25,32 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "DMDelivery";
+    private static final String DB_NAME = "DMDelivery.db";
     private static final int DB_VERSION = 1;
     private SQLiteDatabase sqLiteDatabase;
     private final String TAG = getClass().getSimpleName();
+    private static final String PATH = "/Android/data/";
 
     public static final String TableOrder = "Orders";
     public static final String TableUnpack = "Unpacks";
     public static final String TableOrderReturn = "OrderReturns";
     public static final String TableReason = "Reasons";
 
+    public static String getAppPackagePath(Context _context) {
+        final String SDCARD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+        final String PACKAGE_NAME = _context.getPackageName();
+        final String PACKAGE_PATH = PATH + PACKAGE_NAME;
+        final String APP_PATH = SDCARD_PATH + PACKAGE_PATH;
+
+        File directory = new File(APP_PATH);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        return APP_PATH;
+    }
 
     public DBHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, getAppPackagePath(context) + "/" + DB_NAME, null, DB_VERSION);
     }
 
     public void onCreate(SQLiteDatabase db) {
