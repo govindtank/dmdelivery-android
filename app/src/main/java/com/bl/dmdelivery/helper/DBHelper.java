@@ -815,9 +815,74 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
 
+        return unpacks;
+    }
+
+    public ArrayList<Unpack> getUnpackListWithMultiInv(ArrayList<Order> mOrder) {
+
+        ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
+        if(mOrder==null){return null ;}
+        if(mOrder.size()==0){return null ;}
+
+        Cursor cursor = null;
+
+        String sigGetData="";
+        for(int i=0;i<mOrder.size();i++)
+        {
+            sigGetData = mOrder.get(i).getTransNo();
+            if(i==0)
+            {
+                sigGetData = "'" + mOrder.get(i).getTransNo() + "'";
+            }
+            else
+            {
+                sigGetData = sigGetData + "'" + mOrder.get(i).getTransNo() + "'";
+            }
+        }
+
+        if(sigGetData.isEmpty() || sigGetData==null || sigGetData.equals("null") || sigGetData.equals("")){return null;}
 
 
+        sqLiteDatabase = this.getReadableDatabase();
 
+        try{
+
+            cursor = sqLiteDatabase.query(TableUnpack,
+                    null,
+                    "transno IN (" + sigGetData + ")",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
+
+
+            if (cursor != null  && cursor.getCount()>0) {
+                cursor.moveToFirst();
+            }
+
+            while(!cursor.isAfterLast()) {
+
+                Unpack order = new Unpack();
+                order.setTransno(cursor.getString(0));
+                order.setUnpack_code(cursor.getString(1));
+                order.setUnpack_desc(cursor.getString(2));
+                order.setUnpack_qty(cursor.getString(3));
+                order.setUnpack_image(cursor.getString(4));
+                order.setRep_name(cursor.getString(5));
+                unpacks.add(order);
+
+                cursor.moveToNext();
+            }
+
+        }catch (Exception ex){
+
+        }finally {
+            if(cursor != null){
+                cursor.close();
+                sqLiteDatabase.close();
+            }
+        }
 
         return unpacks;
     }
