@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -602,11 +603,57 @@ public class UnpackListActivity extends AppCompatActivity {
     public void showUnpackDialog(Unpack obj)
     {
         //final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
-        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog alert = DialogBuilder.create();
-        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = li.inflate(R.layout.dialog_show_unpack, null, false);
+//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+//        final AlertDialog alert = DialogBuilder.create();
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_show_unpack, null, false);
+//
+//
+//        mTxtCode = (TextView) v.findViewById(R.id.txtCode);
+//        mTxtDesc = (TextView) v.findViewById(R.id.txtDesc);
+//        mImageView = (ImageView)v.findViewById(R.id.imageView3);
+//        lv2 = (RecyclerView)v.findViewById(R.id.lv);
+//        lv2.setLayoutManager(new LinearLayoutManager(this));
+//        lv2.setHasFixedSize(true);
+//
+//
+//
+//        mTxtCode.setText(obj.getUnpack_code());
+//        mTxtDesc.setText(obj.getUnpack_desc());
+//
+//
+//        if(obj.getUnpack_image().equals("")){
+//
+//        }else{
+//            byte[] decodedByteArray = Base64.decode(obj.getUnpack_image().toString(), Base64.NO_WRAP);
+//            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+//            mImageView.setImageBitmap(decodedBitmap);
+//        }
+//
+//
+//
+//        mHelper = new DBHelper(getApplicationContext());
+//        ArrayList<Unpack> _ListOrderData = mHelper.getUnpackListItem(obj.getUnpack_code());
+//        mAdapter2 = new UnpackDialogAdapter(getApplicationContext(),_ListOrderData);
+//        lv2.setAdapter(mAdapter2);
+//
+//
+//
+//        DialogBuilder.setView(v);
+//
+//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                dialog.dismiss();
+//            }
+//        });
+//        DialogBuilder.show();
 
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_show_unpack_item, null, false);
 
         mTxtCode = (TextView) v.findViewById(R.id.txtCode);
         mTxtDesc = (TextView) v.findViewById(R.id.txtDesc);
@@ -637,16 +684,33 @@ public class UnpackListActivity extends AppCompatActivity {
         lv2.setAdapter(mAdapter2);
 
 
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        //mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        //mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        //mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        //mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        //mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
 
-        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
+
         DialogBuilder.show();
+
+
     }
 
 
