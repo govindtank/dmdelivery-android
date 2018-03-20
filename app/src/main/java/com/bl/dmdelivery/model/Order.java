@@ -43,6 +43,7 @@ public class Order implements Parcelable {
     private String delivery_date;
     private String truckNo;
     private Integer id;
+    private String delivery_status;
 
 
     public class Column{
@@ -81,6 +82,15 @@ public class Order implements Parcelable {
         public static final String cont_desc = "cont_desc";
         public static final String delivery_date = "delivery_date";
         public static final String truckNo = "truckNo";
+        public static final String delivery_status = "delivery_status";
+    }
+
+    public String getDelivery_status() {
+        return delivery_status;
+    }
+
+    public void setDelivery_status(String delivery_status) {
+        this.delivery_status = delivery_status;
     }
 
     public Integer getId() {
@@ -386,7 +396,6 @@ public class Order implements Parcelable {
         dest.writeString(this.loc_code);
         dest.writeString(this.trans_campaign);
         dest.writeString(this.ord_campaign);
-        dest.writeValue(this.id);
         dest.writeString(this.ord_type);
         dest.writeString(this.del_type);
         dest.writeString(this.ord_flag_status);
@@ -398,6 +407,8 @@ public class Order implements Parcelable {
         dest.writeString(this.cont_desc);
         dest.writeString(this.delivery_date);
         dest.writeString(this.truckNo);
+        dest.writeValue(this.id);
+        dest.writeString(this.delivery_status);
     }
 
     protected Order(Parcel in) {
@@ -423,7 +434,6 @@ public class Order implements Parcelable {
         this.loc_code = in.readString();
         this.trans_campaign = in.readString();
         this.ord_campaign = in.readString();
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.ord_type = in.readString();
         this.del_type = in.readString();
         this.ord_flag_status = in.readString();
@@ -435,6 +445,8 @@ public class Order implements Parcelable {
         this.cont_desc = in.readString();
         this.delivery_date = in.readString();
         this.truckNo = in.readString();
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.delivery_status = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
