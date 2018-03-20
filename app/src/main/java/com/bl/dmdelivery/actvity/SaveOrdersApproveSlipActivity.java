@@ -66,7 +66,7 @@ import java.util.TimeZone;
 public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtgps,mmTxtMsg;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtgps,mmTxtMsg,txtCarton;
     private Button mBtnBack,mmBtnOk,mmBtnClose,btnCancelGPS,btnCancel,btnGPS,btnSaveGPS,btnSave,btnNew,btnNote;
 
     private ImageView mmImvTitle;
@@ -148,8 +148,9 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             txtAddress1 = (TextView) findViewById(R.id.txtAddress1);
             txtAddress2 = (TextView) findViewById(R.id.txtAddress2);
             txtMslTel = (TextView) findViewById(R.id.txtMslTel);
-            txtgps = (TextView) findViewById(R.id.txtgps);
+            //txtgps = (TextView) findViewById(R.id.txtgps);
 
+            txtCarton = (TextView) findViewById(R.id.txtCarton);
 
             //mBtnNote = (Button) findViewById(R.id.btnNote);
             //mBtnSendGps = (Button) findViewById(R.id.btnSendGps);
@@ -218,9 +219,15 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                     txtAddress1.setText(order.get(0).getAddress1());
                     txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
                     txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
+                    txtCarton.setText(order.get(0).getCont_desc());
                     //txtgps.setText("GPS : 0,0");
 
                     returnflag = order.get(0).getReturn_flag();
+
+
+                    mHelper = new DBHelper(getApplicationContext());
+                    customCanvas.mListUnpackData.clear();
+                    customCanvas.mListUnpackData  = mHelper.getUnpackListWithMultiInv(order);
 
                 }
 
@@ -933,14 +940,20 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 mLatitude = String.valueOf(mLastLocation.getLatitude());
                 mLongitude = String.valueOf(mLastLocation.getLongitude());
 
-                txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
+                //txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
+
+                customCanvas.gpstext = "GPS : " + String.valueOf(mLastLocation.getLatitude())+"," + String.valueOf(mLastLocation.getLongitude());
+                customCanvas.invalidate();
             } else {
                 /*if there is no last known location. Which means the device has no data for the loction currently.
                 * So we will get the current location.
                 * For this we'll implement Location Listener and override onLocationChanged*/
                 Log.i("Current Location", "No data for location found");
 
-                txtgps.setText("No data for location found");
+                //txtgps.setText("No data for location found");
+
+                customCanvas.gpstext = "No data for location found";
+                customCanvas.invalidate();
 
                 if (!mGoogleApiClient.isConnected())
                     mGoogleApiClient.connect();
@@ -961,7 +974,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         mLatitude = String.valueOf(mLastLocation.getLatitude());
         mLongitude = String.valueOf(mLastLocation.getLongitude());
 
-        txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
+        //txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
+
+        customCanvas.gpstext = "GPS : " + String.valueOf(mLastLocation.getLatitude())+"," + String.valueOf(mLastLocation.getLongitude());
+        customCanvas.invalidate();
     }
 
 

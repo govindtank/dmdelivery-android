@@ -744,7 +744,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         mOrder.setPostal(mListOrderData.get(selectedPosition).getPostal());
                         mOrder.setRep_telno(mListOrderData.get(selectedPosition).getRep_telno());
                         mOrder.setReturn_flag(mListOrderData.get(selectedPosition).getReturn_flag());
-                        mOrder.setReturn_flag(mListOrderData.get(selectedPosition).getReturn_flag());
+                        mOrder.setCont_desc(mListOrderData.get(selectedPosition).getCont_desc());
 
                         ArrayList<Order> order = new ArrayList<Order>();
                         order.add(mOrder);
@@ -870,7 +870,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         mOrder.setPostal(mListOrderData.get(intSelectedPosition).getPostal());
                         mOrder.setRep_telno(mListOrderData.get(intSelectedPosition).getRep_telno());
                         mOrder.setReturn_flag(mListOrderData.get(intSelectedPosition).getReturn_flag());
-                        mOrder.setReturn_flag(mListOrderData.get(intSelectedPosition).getReturn_flag());
+                        mOrder.setCont_desc(mListOrderData.get(intSelectedPosition).getCont_desc());
 
                         ArrayList<Order> order = new ArrayList<Order>();
                         order.add(mOrder);

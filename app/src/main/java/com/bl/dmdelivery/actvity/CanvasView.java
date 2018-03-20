@@ -13,6 +13,7 @@ import android.view.View;
 
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.model.Unpack;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,10 @@ public class CanvasView extends View {
 	public String printmark = "";
 	public String latlng;
 	public String note="";
+	public String reason="";
+	public String gps="";
+	public String gpstext="";
+
 
 	public int width;
 	public int height;
@@ -45,11 +50,14 @@ public class CanvasView extends View {
 	private float mX, mY;
 	private static final float TOLERANCE = 5;
 	public int xUnpack,yUnpack;
+	public int xReason,yReason;
+	public int xGps,yGps;
+	public int xGpstext,yGpstext;
 	private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 	private Typeface tf;
 
 
-	//private ArrayList<UnpackData> mListUnpackData = new ArrayList<UnpackData>();
+	public ArrayList<Unpack> mListUnpackData = new ArrayList<Unpack>();
 
 	//GlobalObject ogject = GlobalObject.getInstance();
 
@@ -95,31 +103,74 @@ public class CanvasView extends View {
 		paint.setStyle(Paint.Style.FILL);
 		canvas.drawPaint(paint);*/
 
-		paint.setColor(context.getResources().getColor(R.color.colorPrimaryText));
-		paint.setTextSize(38);
+		paint.setColor(context.getResources().getColor(R.color.colorStroke));
+		paint.setTextSize(50);
 		paint.setTypeface(tf);
 
 		//canvas.drawText("Some Text", 10, 25, paint);
 
 //		mListUnpackData = ogject.getListUnpackData();
 //
-//		xUnpack = 20;
-//		yUnpack = 40;
+		xUnpack = 20;
+		yUnpack = 50;
+
+		if(mListUnpackData != null)
+		{
+			if(mListUnpackData.size()>0)
+			{
+				for(int i=0; i<mListUnpackData.size();i++){
+
+					String unpacktext = "";
+
+					if(mListUnpackData.get(i).getUnpack_desc().toString().length() < 50)
+					{
+						unpacktext = mListUnpackData.get(i).getUnpack_desc().toString();
+					}
+					else
+					{
+						unpacktext = mListUnpackData.get(i).getUnpack_desc().toString().substring(0,49)+"...";
+					}
+
+					canvas.drawText(unpacktext+" x "+mListUnpackData.get(i).getUnpack_qty().toString(), xUnpack, yUnpack, paint);
+					//canvas.drawText(mListUnpackData.get(i).getFsname().toString(), 10, 25, paint);
+					//canvas.drawText("ของนอกกล่อง"+yUnpack, xUnpack, yUnpack, paint);
+					yUnpack=yUnpack+45;
+				}
+			}
+		}
+
+
+
 //
-//		if(mListUnpackData != null)
+//		xGps = 20;
+//		yGps = 790;
+//
+//		if(gps.equals(""))
 //		{
-//			if(mListUnpackData.size()>0)
-//			{
-//				for(int i=0; i<mListUnpackData.size();i++){
-//
-//					canvas.drawText(mListUnpackData.get(i).getFsname().toString()+" x "+mListUnpackData.get(i).getFsunit().toString(), xUnpack, yUnpack, paint);
-//					//canvas.drawText(mListUnpackData.get(i).getFsname().toString(), 10, 25, paint);
-//					//canvas.drawText("ของนอกกล่อง"+yUnpack, xUnpack, yUnpack, paint);
-//					yUnpack=yUnpack+40;
-//				}
-//			}
+//			canvas.drawText("GPS : ....", xGps, yGps, paint);
 //		}
 
+
+
+
+		xGpstext = 20;
+		yGpstext = 890;
+
+		if(!gpstext.equals(""))
+		{
+			canvas.drawText(gpstext, xGpstext, yGpstext, paint);
+		}
+
+
+
+
+		xReason = 20;
+		yReason = 940;
+
+		if(reason.equals(""))
+		{
+			canvas.drawText("เหตุผล : ....", xReason, yReason, paint);
+		}
 
 
 

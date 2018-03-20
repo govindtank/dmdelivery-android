@@ -97,7 +97,7 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_menu_unpack128" />
+                app:srcCompat="@mipmap/ic_noimg" />
         </LinearLayout>
 
         <LinearLayout

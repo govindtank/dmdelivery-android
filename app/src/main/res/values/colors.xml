@@ -43,7 +43,7 @@
 
     <!--BUTTON-->
     <color name="colorBackgroundGreen">#009284</color>
-    <color name="colorBackgroundGreenDark">#00645A</color>
+    <color name="colorBackgroundGreenDark">#00645a</color>
     <color name="colorBackgroundGrayButton">#9b9b9b</color>
     <color name="colorBackgroundGrayDarkButton">#676666</color>
 
