@@ -548,6 +548,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setOrdertype_desc(obj.getOrder().get(i).getOrdertype_desc().toString());
                         f.setCont_desc(obj.getOrder().get(i).getCont_desc().toString());
                         f.setItemno(obj.getOrder().get(i).getItemno());
+                        f.setDelivery_status(obj.getOrder().get(i).getDelivery_status().toString());
                         orders.add(f);
 
                         mHelper.addOrders(f);

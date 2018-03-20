@@ -62,7 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT)",
+                        "%s TEXT,%s TEXT)",
                 TableOrder,
                 Order.Column.ID,
                 Order.Column.Oucode,
@@ -95,7 +95,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.delivery_desc,
                 Order.Column.ordertype_desc,
                 Order.Column.cont_desc,
-                Order.Column.Itemno
+                Order.Column.Itemno,
+                Order.Column.delivery_status
         );
 
         Log.i(TAG, CREATE_ORDER_TABLE);
@@ -198,13 +199,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //Unpack
         String CREATE_UNPACK_TABLE = String.format("CREATE TABLE %s " +
-                        "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT)",
+                        "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT)",
                 TableUnpack,
                 Unpack.Column.transno,
                 Unpack.Column.unpack_code,
                 Unpack.Column.unpack_desc,
                 Unpack.Column.unpack_qty,
-                Unpack.Column.unpack_image
+                Unpack.Column.unpack_image,
+                Unpack.Column.rep_name
         );
 
         Log.i(TAG, CREATE_UNPACK_TABLE);
@@ -252,6 +254,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.ordertype_desc, order.getOrdertype_desc());
         values.put(Order.Column.cont_desc, order.getCont_desc());
         values.put(Order.Column.Itemno, order.getItemno());
+        values.put(Order.Column.delivery_status,order.getDelivery_status());
 
 
         sqLiteDatabase.insert(TableOrder, null, values);
@@ -324,6 +327,7 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setOrdertype_desc(cursor.getString(29));
             order.setCont_desc(cursor.getString(30));
             order.setItemno(cursor.getInt(31));
+            order.setDelivery_status(cursor.getString(32));
 
         }catch (Exception ex){
 
