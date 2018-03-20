@@ -140,8 +140,11 @@ public class ScanOrdersActivity extends AppCompatActivity {
             mTxtResult.setText(result);
             BeepManager bm = new BeepManager(this);
             bm.playBeepSoundAndVibrate();
-            getInsertData(result);
-            barcodeScannerView.resume();
+            //getInsertData(result);
+            if(InsertData(result) == "0"){
+                barcodeScannerView.resume();
+            }
+
         }else {
             mTxtResult.setText("Error");
             barcodeScannerView.resume();
@@ -202,7 +205,8 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
-            getInsertData("");
+            //getInsertData("");
+            LoadData("");
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
@@ -550,6 +554,124 @@ public class ScanOrdersActivity extends AppCompatActivity {
         private Exception exception;
     }
 
+    private String LoadData(String oCarton){
+        String _result = "0";
+        try {
+
+            // TODO Call Webservice
+            if(chkNetwork.isConnectionAvailable(getApplicationContext())){
+
+                if(chkNetwork.isWebserviceConnected(getApplicationContext())){
+                    //use call api
+                    serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/OrderSummary";
+                    Gson gson = new Gson();
+                    String json = gson.toJson(mBookingReq);
+                    String result = new WebServiceHelper().postServiceAPI(serverUrl,json);
+                    Log.i("Booking", result.toString());
+
+                    //convert json to obj
+                    BookingResponse obj = gson.fromJson(result,BookingResponse.class);
+                    if(obj.getResponseCode().equals("0")){
+                        showMsgDialog("มีการสแกนซ้ำ !!!!! ");
+                    }else {
+                        mListOrderSum.clear();
+                        if(obj.getOrderSummary() != null){
+                            for(int i=0; i<obj.getOrderSummary().size();i++){
+
+                                OrderSummary f = new OrderSummary();
+                                f.setInvoiceno(obj.getOrderSummary().get(i).getInvoiceno());
+                                f.setDeliveryDate(obj.getOrderSummary().get(i).getDeliveryDate().toString());
+                                f.setTruckNo(obj.getOrderSummary().get(i).getTruckNo().toString());
+                                f.setCartonQty(obj.getOrderSummary().get(i).getCartonQty());
+                                f.setBags(obj.getOrderSummary().get(i).getBags());
+                                f.setTotal(obj.getOrderSummary().get(i).getTotal());
+                                mListOrderSum.add(f);
+
+                            }
+
+                            mTxtOrderSum.setText(String.valueOf(mListOrderSum.get(0).getInvoiceno()));
+                            mTxtBoxSum.setText(String.valueOf(mListOrderSum.get(0).getCartonQty()));
+                            mTxtBagSum.setText(String.valueOf(mListOrderSum.get(0).getBags()));
+                            mTxtBoxBagSum.setText(String.valueOf(mListOrderSum.get(0).getTotal()));
+
+                        }
+                    }
+                }
+            }
+
+            else {
+                showMsgDialog("Can't Connect Network");
+            }
+
+        } catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+
+
+        return _result;
+
+    }
+
+
+    private String InsertData(String oCarton){
+        String _result = "0";
+        try {
+
+            // TODO Call Webservice
+            if(chkNetwork.isConnectionAvailable(getApplicationContext())){
+
+                if(chkNetwork.isWebserviceConnected(getApplicationContext())){
+                    //use call api
+                    serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CreateBooking";
+                    mBookingReq.setCartonNo(oCarton);
+                    Gson gson = new Gson();
+                    String json = gson.toJson(mBookingReq);
+                    String result = new WebServiceHelper().postServiceAPI(serverUrl,json);
+                    Log.i("Booking", result.toString());
+
+                    //convert json to obj
+                    BookingResponse obj = gson.fromJson(result,BookingResponse.class);
+                    if(obj.getResponseCode().equals("0")){
+                        showMsgDialog("มีการสแกนซ้ำ !!!!! ");
+                    }else {
+                        mListOrderSum.clear();
+                        if(obj.getOrderSummary() != null){
+                            for(int i=0; i<obj.getOrderSummary().size();i++){
+
+                                OrderSummary f = new OrderSummary();
+                                f.setInvoiceno(obj.getOrderSummary().get(i).getInvoiceno());
+                                f.setDeliveryDate(obj.getOrderSummary().get(i).getDeliveryDate().toString());
+                                f.setTruckNo(obj.getOrderSummary().get(i).getTruckNo().toString());
+                                f.setCartonQty(obj.getOrderSummary().get(i).getCartonQty());
+                                f.setBags(obj.getOrderSummary().get(i).getBags());
+                                f.setTotal(obj.getOrderSummary().get(i).getTotal());
+                                mListOrderSum.add(f);
+
+                            }
+
+                            mTxtOrderSum.setText(String.valueOf(mListOrderSum.get(0).getInvoiceno()));
+                            mTxtBoxSum.setText(String.valueOf(mListOrderSum.get(0).getCartonQty()));
+                            mTxtBagSum.setText(String.valueOf(mListOrderSum.get(0).getBags()));
+                            mTxtBoxBagSum.setText(String.valueOf(mListOrderSum.get(0).getTotal()));
+
+                        }
+                    }
+                }
+            }
+
+            else {
+                showMsgDialog("Can't Connect Network");
+            }
+
+        } catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+
+
+        return _result;
+
+    }
+
 
     private void getInsertData(String oCarton){
         try {
@@ -559,6 +681,8 @@ public class ScanOrdersActivity extends AppCompatActivity {
                 if(chkNetwork.isWebserviceConnected(getApplicationContext())){
                     serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/CreateBooking";
                     new getInsertDataInAsync().execute(serverUrl,oCarton);
+
+
                 }
 
             }
@@ -605,21 +729,26 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
                 //convert json to obj
                 BookingResponse obj = gson.fromJson(result,BookingResponse.class);
-                mListOrderSum.clear();
-                if(obj.getOrderSummary() != null){
-                    for(int i=0; i<obj.getOrderSummary().size();i++){
+                if(obj.getResponseCode().equals("0")){
+                    pageResultHolder.content = "มีการสแกนซ้ำ !!!!! ";
+                }else {
+                    mListOrderSum.clear();
+                    if(obj.getOrderSummary() != null){
+                        for(int i=0; i<obj.getOrderSummary().size();i++){
 
-                        OrderSummary f = new OrderSummary();
-                        f.setInvoiceno(obj.getOrderSummary().get(i).getInvoiceno());
-                        f.setDeliveryDate(obj.getOrderSummary().get(i).getDeliveryDate().toString());
-                        f.setTruckNo(obj.getOrderSummary().get(i).getTruckNo().toString());
-                        f.setCartonQty(obj.getOrderSummary().get(i).getCartonQty());
-                        f.setBags(obj.getOrderSummary().get(i).getBags());
-                        f.setTotal(obj.getOrderSummary().get(i).getTotal());
-                        mListOrderSum.add(f);
+                            OrderSummary f = new OrderSummary();
+                            f.setInvoiceno(obj.getOrderSummary().get(i).getInvoiceno());
+                            f.setDeliveryDate(obj.getOrderSummary().get(i).getDeliveryDate().toString());
+                            f.setTruckNo(obj.getOrderSummary().get(i).getTruckNo().toString());
+                            f.setCartonQty(obj.getOrderSummary().get(i).getCartonQty());
+                            f.setBags(obj.getOrderSummary().get(i).getBags());
+                            f.setTotal(obj.getOrderSummary().get(i).getTotal());
+                            mListOrderSum.add(f);
 
+                        }
                     }
                 }
+
 
 
             } catch (Exception e) {
@@ -632,14 +761,14 @@ public class ScanOrdersActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(final PageResultHolder result) {
+        protected void onPostExecute(PageResultHolder result) {
             // TODO Auto-generated method stub
 
             try {
 
-                if (result.exception != null) {
+                if (result.content != null) {
                     //mProgressDialog.dismiss();
-                    showMsgDialog(result.exception.toString());
+                    showMsgDialog(result.content.toString());
                 }
                 else
                 {

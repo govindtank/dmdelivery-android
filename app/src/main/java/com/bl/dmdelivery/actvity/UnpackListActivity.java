@@ -324,6 +324,7 @@ public class UnpackListActivity extends AppCompatActivity {
                         f.setUnpack_desc(obj.getUnpack().get(i).getUnpack_desc().toString());
                         f.setUnpack_qty(obj.getUnpack().get(i).getUnpack_qty().toString());
                         f.setUnpack_image(obj.getUnpack().get(i).getUnpack_image().toString());
+                        f.setRep_name(obj.getUnpack().get(i).getRep_name().toString());
                         unpacks.add(f);
 
                         mHelper.addUnpack(f);
