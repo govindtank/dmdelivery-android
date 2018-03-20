@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtsum,mmTxtQty;
-    private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnApprove,mBtnReject,mBtnPlus,mBtnDel;
+    private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnPlus,mBtnDel,mBtnConfirm;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -73,8 +73,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
         try {
             bindWidget();
-//
-//            setDefaultFonts();
+
 
             setWidgetControl();
 
@@ -99,8 +98,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
 
             mBtnBack = (Button) findViewById(R.id.btnBack);
-            mBtnApprove = (Button) findViewById(R.id.btnApprove);
-            mBtnReject = (Button) findViewById(R.id.btnReject);
+            mBtnConfirm = (Button) findViewById(R.id.btnConfirm);
 
             mTxtsum = (TextView) findViewById(R.id.txtsum);
 
@@ -110,11 +108,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
             // Create the arrays
             sigReturnList = getResources().getStringArray(R.array.returnList);
-
-//            lv = (ListView) findViewById(R.id.lv);
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sigReturnList);
-//            lv.setAdapter(adapter);
-
 
             lv = (RecyclerView) findViewById(R.id.lv);
             lv.setLayoutManager(new LinearLayoutManager(this));
@@ -126,16 +119,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     }
 
 
-//    private void setDefaultFonts() {
-//        try {
-////            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-////            mTxtHeader.setTypeface(tf);
-////            mBtnBack.setTypeface(tf);
-//
-//        } catch (Exception e) {
-//            showMsgDialog(e.toString());
-//        }
-//    }
 
     private void setWidgetControl() {
         try{
@@ -149,35 +132,25 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
-//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 
-                    //set val transno on class order
-                    ArrayList<Order> mOrderList= new ArrayList<Order>();
-                    Order mOrders = new Order();
-                    mOrders.setRep_code(ref_rep_code);
-                    mOrderList.add(mOrders);
-
-                    //send val on putextra
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                    myIntent.putExtra("data",mOrderList);
-                    startActivity(myIntent);
+//                    //set val transno on class order
+//                    ArrayList<Order> mOrderList= new ArrayList<Order>();
+//                    Order mOrders = new Order();
+//                    mOrders.setRep_code(ref_rep_code);
+//                    mOrderList.add(mOrders);
+//
+//                    //send val on putextra
+//                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                    myIntent.putExtra("data",mOrderList);
+//                    startActivity(myIntent);
                 }
             });
 
 
-            mBtnApprove.setOnClickListener(new View.OnClickListener() {
+            mBtnConfirm.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-//                    finish();
-//                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnSlipActivity.class);
                     startActivity(myIntent);
-                }
-            });
-
-            mBtnReject.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    showMsgCancelSelectedSingleDialog();
                 }
             });
 
@@ -187,25 +160,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 public void onItemClick(View view, int position) {
 
                     String retqty  =  mListOrderReturn.get(position).getReturn_unit();
-                    showMsgQtyDialog(retqty);
+                    showMsgQtyDialog(retqty,position);
                 }
             }));
-
-
-
-
-            // Set item click listener
-//            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    String description = sigReturnList[position];
-////                    Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
-//
-//
-//                    showMsgQtyDialog();
-//
-//                }
-//            });
 
 
         } catch (Exception e) {
@@ -254,10 +211,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         mmTxtTitle.setText("ยืนยันการยกเลิกคืนสืนค้า");
 
 
-//        lv = (ListView) v.findViewById(R.id.lv);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigReturncancellist);
-//        lv.setAdapter(adapter);
-
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
@@ -274,32 +227,24 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             }
         });
 
-        // Set item click listener
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String description = sigReturncancellist[position];
-//                Toast.makeText(SaveOrdersReturnActivity.this, description, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         DialogBuilder.show();
     }
 
 
-    public void showMsgQtyDialog(String sigRetqty_uint)
+    public void showMsgQtyDialog(String sigRetqty_uint,int selectedPosition)
     {
         intQTY_UINT_REAL=0;
         intQTY_UINT= 0;
 
-        final String sigRetqty_uint_final=sigRetqty_uint;
+        final String sigRetqty_uint_final = sigRetqty_uint;
+        final int selectedPosition_Final = selectedPosition;
 
         if(sigRetqty_uint_final.isEmpty() || sigRetqty_uint_final.equals("") || sigRetqty_uint_final==null){
-            intQTY_UINT=Integer.parseInt("0");
+            intQTY_UINT = Integer.parseInt("0");
         }
         else
         {
-            intQTY_UINT=Integer.parseInt(sigRetqty_uint_final);
+            intQTY_UINT = Integer.parseInt(sigRetqty_uint_final);
         }
 
 
@@ -323,7 +268,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         mBtnPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-                if( intQTY_UINT_REAL > Integer.parseInt(mmTxtQty.getText().toString()) ){
+                if( intQTY_UINT_REAL >= intQTY_UINT){
                     return;
                 }
 
@@ -335,10 +280,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
         mBtnDel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
-                if(intQTY_UINT_REAL < Integer.parseInt(mmTxtQty.getText().toString()) ){
-                    return;
-                }
 
                 if(intQTY_UINT_REAL <= 0){
                     return;
@@ -353,6 +294,17 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
+
+                //update qty on row
+                mHelper = new DBHelper(getApplicationContext());
+                OrderReturn mOrderReturn = new OrderReturn();
+                mOrderReturn.setRep_code(ref_rep_code);
+                mOrderReturn.setReturn_no(ref_return_no);
+                mOrderReturn.setReturn_unit_real(mmTxtQty.getText().toString());
+                mHelper.updateOrderReturnDtl(mOrderReturn);
+
+                //call init
+                getInit();
             }
         });
 

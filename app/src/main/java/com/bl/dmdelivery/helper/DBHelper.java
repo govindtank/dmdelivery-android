@@ -993,14 +993,49 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean updateOrderReturn(OrderReturn mOrderReturn) {
+        sqLiteDatabase = this.getWritableDatabase();
+        try{
+            ContentValues cv = new ContentValues();
+            cv.put("return_status",mOrderReturn.getReturn_status());
+
+            int intResult = sqLiteDatabase.update("OrderReturns", cv,
+                    "return_no='" + mOrderReturn.getReturn_no()
+                            + "' AND rep_code='" + mOrderReturn.getRep_code() + "'",
+                    null);
+
+            if(intResult > 0){
+                return  true;
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
+    }
+
     public boolean updateOrderReturnDtl(OrderReturn mOrderReturn) {
         sqLiteDatabase = this.getWritableDatabase();
         try{
-            sqLiteDatabase.execSQL("UPDATE " + TableOrderReturn + " SET return_unit_real='"
-                    + mOrderReturn.getReturn_unit_real()
-                    + "' WHERE return_code='" + mOrderReturn.getReturn_no()
-                    + "' AND rep_code='" + mOrderReturn.getRep_code() + "'");
-            return  true;
+            ContentValues cv = new ContentValues();
+            cv.put("return_unit_real",mOrderReturn.getReturn_unit_real());
+
+            int intResult = sqLiteDatabase.update("OrderReturns", cv,
+                    "return_no='" + mOrderReturn.getReturn_no()
+                            + "' AND rep_code='" + mOrderReturn.getRep_code() + "'",
+                    null);
+
+            if(intResult > 0){
+                return  true;
+            }
         }
         catch (Exception ex)
         {
