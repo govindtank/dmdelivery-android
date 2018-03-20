@@ -861,13 +861,6 @@ public class DBHelper extends SQLiteOpenHelper {
 //                    null);
 
 
-//            cursor = sqLiteDatabase.rawQuery(" SELECT transno,unpack_code,unpack_desc,SUM(unpack_qty) AS unpack_qty,unpack_image,rep_name FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ")" ,null);
-
-
-//            cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, (SELECT  SUM(unpack_qty) FROM "  + TableUnpack  + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code) unpack_qty FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc,unpack_qty" ,null);
-
-
-
             cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, SUM(unpack_qty) AS unpack_qty FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc" ,null);
             if (cursor != null  && cursor.getCount()>0) {
                 cursor.moveToFirst();
@@ -881,9 +874,6 @@ public class DBHelper extends SQLiteOpenHelper {
 //                order.setUnpack_image(cursor.getString(3));
 //                order.setRep_name(cursor.getString(4));
 //                order.setUnpack_qty(cursor.getString(5));
-
-//                order.setTransno(cursor.getString(0));
-
 
                 order.setUnpack_code(cursor.getString(0));
                 order.setUnpack_desc(cursor.getString(1));
@@ -1000,6 +990,30 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return orderReturns;
+    }
+
+
+    public boolean updateOrderReturnDtl(OrderReturn mOrderReturn) {
+        sqLiteDatabase = this.getWritableDatabase();
+        try{
+            sqLiteDatabase.execSQL("UPDATE " + TableOrderReturn + " SET return_unit_real='"
+                    + mOrderReturn.getReturn_unit_real()
+                    + "' WHERE return_code='" + mOrderReturn.getReturn_no()
+                    + "' AND rep_code='" + mOrderReturn.getRep_code() + "'");
+            return  true;
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
     }
 
     public ArrayList<OrderReturn> getOrderReturn() {
@@ -1154,14 +1168,16 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Reason> Reasons = new ArrayList<Reason>();
         sqLiteDatabase = this.getReadableDatabase();
 
-        Cursor cursor = sqLiteDatabase.query(TableReason,
-                null,
-                "reason_type = " + sigReason_type,
-                null,
-                null,
-                null,
-                null,
-                null);
+//        Cursor cursor = sqLiteDatabase.query(TableReason,
+//                null,
+//                "reason_type = " + sigReason_type,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null);
+
+        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT reason_code,reason_desc,reason_type FROM " + TableReason + " WHERE reason_type IN (" + sigReason_type + ")",null);
 
         if (cursor != null  && cursor.getCount()>0) {
             cursor.moveToFirst();
