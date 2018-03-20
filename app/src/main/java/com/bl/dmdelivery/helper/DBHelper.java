@@ -864,7 +864,7 @@ public class DBHelper extends SQLiteOpenHelper {
 //            cursor = sqLiteDatabase.rawQuery(" SELECT transno,unpack_code,unpack_desc,SUM(unpack_qty) AS unpack_qty,unpack_image,rep_name FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ")" ,null);
 
 
-            cursor = sqLiteDatabase.rawQuery(" SELECT transno,unpack_code,unpack_desc,unpack_image,rep_name, (SELECT  SUM(unpack_qty) FROM "  + TableUnpack  + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code) unpack_qty FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ")" ,null);
+            cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, (SELECT  SUM(unpack_qty) FROM "  + TableUnpack  + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code) unpack_qty FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc" ,null);
 
             if (cursor != null  && cursor.getCount()>0) {
                 cursor.moveToFirst();
@@ -872,12 +872,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
             while(!cursor.isAfterLast()) {
                 Unpack order = new Unpack();
-                order.setTransno(cursor.getString(0));
-                order.setUnpack_code(cursor.getString(1));
-                order.setUnpack_desc(cursor.getString(2));
-                order.setUnpack_image(cursor.getString(3));
-                order.setRep_name(cursor.getString(4));
-                order.setUnpack_qty(cursor.getString(5));
+//                order.setTransno(cursor.getString(0));
+//                order.setUnpack_code(cursor.getString(1));
+//                order.setUnpack_desc(cursor.getString(2));
+//                order.setUnpack_image(cursor.getString(3));
+//                order.setRep_name(cursor.getString(4));
+//                order.setUnpack_qty(cursor.getString(5));
+
+//                order.setTransno(cursor.getString(0));
+
+
+                order.setUnpack_code(cursor.getString(0));
+                order.setUnpack_desc(cursor.getString(1));
+                order.setUnpack_qty(cursor.getString(2));
                 unpacks.add(order);
                 cursor.moveToNext();
             }
