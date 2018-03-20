@@ -161,7 +161,8 @@ public class UnpackListActivity extends AppCompatActivity {
             mBtnLoad.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showMsgConfirmDialog("โหลดข้อมูลสินค้านอกกล่อง");
+                    //showMsgConfirmDialog("โหลดข้อมูลสินค้านอกกล่อง");
+                    showMsgConfirmDialog("ยืนยันการโหลดข้อมูลสินค้านอกกล่อง ?",getResources().getString(R.string.btn_text_load_data));
                 }
             });
 
@@ -182,21 +183,62 @@ public class UnpackListActivity extends AppCompatActivity {
         }
     }
 
-    public void showMsgConfirmDialog(String msg)
+    public void showMsgConfirmDialog(String msg,String btntxt)
     {
+//        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+//        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_confirm, null, false);
+//
+//
+//        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+//        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
+//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+//
+//        mmTxtTitle.setText("ยืนยัน");
+//        mmTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//
+//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                loadData();
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        DialogBuilder.show();
+
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = li.inflate(R.layout.dialog_confirm, null, false);
+        View v = li.inflate(R.layout.dialog_message_confirm, null, false);
 
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
-        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
 
-        mmTxtTitle.setText("ยืนยัน");
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
         mmTxtMsg.setText(msg);
+        mmBtnOk.setText(btntxt);
 
         DialogBuilder.setView(v);
 
@@ -362,7 +404,8 @@ public class UnpackListActivity extends AppCompatActivity {
 
                     if (result.content.equals("1"))
                     {
-                        result.content = getResources().getString(R.string.txt_text_update_success);
+                        //result.content = getResources().getString(R.string.txt_text_update_success);
+                        result.content = getResources().getString(R.string.txt_text_load_data_success);
                     }
                     else
                     {
@@ -509,12 +552,12 @@ public class UnpackListActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            mProgressDialog = new ACProgressFlower.Builder(UnpackListActivity.this)
-                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                    .themeColor(getResources().getColor(R.color.colorBackground))
-                    //.text(getResources().getString(R.string.progress_loading))
-                    .fadeColor(Color.DKGRAY).build();
-            mProgressDialog.show();
+//            mProgressDialog = new ACProgressFlower.Builder(UnpackListActivity.this)
+//                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+//                    .themeColor(getResources().getColor(R.color.colorBackground))
+//                    //.text(getResources().getString(R.string.progress_loading))
+//                    .fadeColor(Color.DKGRAY).build();
+//            mProgressDialog.show();
 
         }
 
@@ -550,7 +593,7 @@ public class UnpackListActivity extends AppCompatActivity {
                 if (result.exception != null) {
                     mmTxtsum.setText("แสดงรายการ: 0, นอกกล่องรวม: 0");
 
-                    mProgressDialog.dismiss();
+                    //mProgressDialog.dismiss();
                     showMsgDialog(result.exception.toString());
                 }
                 else
@@ -561,7 +604,7 @@ public class UnpackListActivity extends AppCompatActivity {
                         public void run() {
                             //Do something after 100ms
 
-                            mProgressDialog.dismiss();
+                            //mProgressDialog.dismiss();
                             if(mListOrderData.size()>0)
                             {
                                 mmTxtsum.setText("แสดงรายการ: " + mListOrderData.size() + ", นอกกล่องรวม: " + setSumItemQty());

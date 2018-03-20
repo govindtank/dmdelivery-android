@@ -243,7 +243,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
             mDeliveryAcceptList.clear();
             mHelper = new DBHelper(getApplicationContext());
-            mDeliveryAcceptList = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT'");
+            mDeliveryAcceptList = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT','DELIVERY_REJECT'");
 
 
             for(int i = 0; i < mDeliveryAcceptList.size();i++)
