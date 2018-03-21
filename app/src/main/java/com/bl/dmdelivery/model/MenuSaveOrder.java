@@ -12,11 +12,13 @@ public class MenuSaveOrder implements Parcelable{
     private String menuname;
     private String menuname_image;
     private String menuname_type;
+    private String menuname_mode;
 
     public class Column{
         public static final String menuname = "menuname";
         public static final String menuname_image = "image";
         public static final String menuname_type = "type";
+        public static final String menuname_mode = "mode";
     }
 
     public String getMenuname() {
@@ -45,6 +47,14 @@ public class MenuSaveOrder implements Parcelable{
     }
 
 
+    public String getMenuname_mode() {
+        return menuname_mode;
+    }
+
+    public void setMenuname_mode(String menuname_mode) {
+        this.menuname_mode = menuname_mode;
+    }
+
 
 
     public MenuSaveOrder() {
@@ -59,11 +69,13 @@ public class MenuSaveOrder implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.menuname);
         dest.writeString(this.menuname_image);
+        dest.writeString(this.menuname_mode);
     }
 
     protected MenuSaveOrder(Parcel in) {
         this.menuname = in.readString();
         this.menuname_image = in.readString();
+        this.menuname_mode = in.readString();
     }
 
     public static final Creator<MenuSaveOrder> CREATOR = new Creator<MenuSaveOrder>() {

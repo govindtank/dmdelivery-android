@@ -33,11 +33,17 @@
             android:background="@color/colorBGMain"
             android:paddingLeft="5dp">
 
-            <ImageView
-                android:id="@+id/month_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorBGMain" />
+            <TextView
+                android:id="@+id/txtReturn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="40dp"
+                android:text="0"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/textRowSize"
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/txtAddress2"
@@ -76,13 +82,37 @@
                 android:textSize="@dimen/textbtnDialogSize" />
 
 
-            <ImageView
-                android:id="@+id/mont_drag"
+            <TextView
+                android:id="@+id/txtUnpack"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:background="@mipmap/drag" />
+                android:layout_marginEnd="26dp"
+                android:layout_toStartOf="@+id/txtReturn"
+                android:text="0"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/textRowSize"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/txtcartonb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/txtcarton"
+                android:text="1B"
+                android:textColor="@android:color/holo_purple"
+                android:textSize="@dimen/textRowSize" />
+
+            <TextView
+                android:id="@+id/txtcarton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/txtInv"
+                android:text="1C"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="@dimen/textRowSize" />
 
             <TextView
                 android:id="@+id/txtInv"
@@ -90,7 +120,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="1dp"
                 android:text="0000000000"
                 android:textColor="@color/colorBackgroundGreen"
                 android:textSize="@dimen/textRowSize" />

@@ -33,12 +33,6 @@
             android:background="@color/colorBGMain"
             android:paddingLeft="5dp">
 
-            <ImageView
-                android:id="@+id/month_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorBGMain" />
-
             <TextView
                 android:id="@+id/txtReturn"
                 android:layout_width="wrap_content"
@@ -107,6 +101,26 @@
                 android:textColor="@color/colorGreen"
                 android:textSize="@dimen/textRowSize"
                 android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/txtcartonb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/txtcarton"
+                android:text="1B"
+                android:textColor="@android:color/holo_purple"
+                android:textSize="@dimen/textRowSize" />
+
+            <TextView
+                android:id="@+id/txtcarton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/txtInv"
+                android:text="1C"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="@dimen/textRowSize" />
 
             <TextView
                 android:id="@+id/txtInv"

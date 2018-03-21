@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,12 +16,16 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.MenuSaveOrderViewAdapter;
 import com.bl.dmdelivery.adapter.OrderCompleteAdapter;
+import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.MenuSaveOrder;
 import com.bl.dmdelivery.model.Order;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
@@ -31,19 +36,26 @@ import java.util.ArrayList;
 
 public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader;
-    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mmTxtMsg;
+    private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList,mBtnClose,mmBtnClose;
+    private ImageView mmImvTitle;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
+
+    String sigTruckNo = "";
+    String sigDeliveryDate = "";
 
     private Intent myIntent=null;
 
     private ArrayList<Order> mListOrderData = new ArrayList<Order>();
-
-    private RecyclerView lv;
-    private RecyclerView.Adapter mAdapter;
+    private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
+    private RecyclerView lv,lvmenu;
+    private RecyclerView.Adapter mAdapter,mMenuAdapter;
     private GestureManager mGestureManager;
     DBHelper mHelper;
+
+
+    Order mOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +157,10 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                 @Override
                 public boolean onItemClick(final Order item, final int position) {
                     //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
+
+                    showMsgDialogSelectedMenu(position);
 
 //                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
 //                    startActivity(myIntent);
@@ -251,6 +265,149 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
         }
     }
 
+    public void showMsgDialogSelectedMenu(final int selectedPosition)
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_menu_order_save, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+        lvmenu = (RecyclerView) v.findViewById(R.id.lvmenu);
+        lvmenu.setLayoutManager(new LinearLayoutManager(this));
+        lvmenu.setHasFixedSize(true);
+
+        //mListMenuData
+
+        mListMenuData.clear();
+
+        MenuSaveOrder f1 = new MenuSaveOrder();
+        f1.setMenuname("ดูสลิปเซ็นรับสินค้า");
+        f1.setMenuname_type("0");
+        f1.setMenuname_mode("1");
+        mListMenuData.add(f1);
+
+
+        MenuSaveOrder f2 = new MenuSaveOrder();
+        f2.setMenuname("กิจกรรม");
+        f2.setMenuname_type("1");
+        f2.setMenuname_mode("1");
+        mListMenuData.add(f2);
+
+        MenuSaveOrder f3 = new MenuSaveOrder();
+        f3.setMenuname("โทร MSL : 0983939393");
+        f3.setMenuname_type("2");
+        f3.setMenuname_mode("1");
+        mListMenuData.add(f3);
+
+        MenuSaveOrder f4 = new MenuSaveOrder();
+        f4.setMenuname("โทร DSM : 0874848949");
+        f4.setMenuname_type("2");
+        f4.setMenuname_mode("1");
+        mListMenuData.add(f4);
+
+
+        mMenuAdapter = new MenuSaveOrderViewAdapter(getApplicationContext(),mListMenuData);
+        lvmenu.setAdapter(mMenuAdapter);
+
+
+        lvmenu.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+                switch (mListMenuData.get(position).getMenuname_type()){
+                    case "0":
+                        //จัดส่งสินค้า
+                        DialogBuilder.dismiss();
+
+                        mOrder = new Order();
+                        mOrder.setRep_code(mListOrderData.get(selectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderData.get(selectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderData.get(selectedPosition).getTransNo());
+                        mOrder.setAddress1(mListOrderData.get(selectedPosition).getAddress1());
+                        mOrder.setAddress2(mListOrderData.get(selectedPosition).getAddress2());
+                        mOrder.setPostal(mListOrderData.get(selectedPosition).getPostal());
+                        mOrder.setRep_telno(mListOrderData.get(selectedPosition).getRep_telno());
+                        mOrder.setReturn_flag(mListOrderData.get(selectedPosition).getReturn_flag());
+                        mOrder.setCont_desc(mListOrderData.get(selectedPosition).getCont_desc());
+
+                        ArrayList<Order> order = new ArrayList<Order>();
+                        order.add(mOrder);
+
+                        //TinyDB tinydb = new TinyDB(getApplicationContext());
+
+
+
+
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
+                        myIntent.putExtra("data",order);
+                        startActivity(myIntent);
+                        break;
+                    case "1":
+                        //กิจกรรมอื่นๆ
+                        DialogBuilder.dismiss();
+
+                        mOrder = new Order();
+                        mOrder.setRep_code(mListOrderData.get(selectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderData.get(selectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderData.get(selectedPosition).getTransNo());
+                        mOrder.setDelivery_date(sigDeliveryDate);
+                        mOrder.setTruckNo(sigTruckNo);
+                        mOrder.setRep_telno(mListOrderData.get(selectedPosition).getRep_telno());
+                        mOrder.setDsm_telno(mListOrderData.get(selectedPosition).getDsm_telno());
+
+                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
+                        myIntent.putExtra("data",mOrder);
+                        startActivity(myIntent);
+                        break;
+
+                    case "2":
+                        //โทร
+                        DialogBuilder.dismiss();
+
+                        showMsgDialog(mListMenuData.get(position).getMenuname());
+
+                        break;
+
+                    default:
+
+                        DialogBuilder.dismiss();
+                        showMsgDialog("default");
+
+
+                }
+
+            }
+        }));
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText("ออเดอร์ : "+mListOrderData.get(selectedPosition).getTransNo());
+        //mmTxtMsg.setText(msg);
+
+        DialogBuilder.setView(v);
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+    }
+
     private void getInit() {
 
         try {
@@ -259,7 +416,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             mHelper = new DBHelper(getApplicationContext());
             mListOrderData.clear();
-            mListOrderData = mHelper.getOrderWaitList("ALL");
+            mListOrderData = mHelper.getOrderWaitList("Y");
 
 
 
@@ -324,6 +481,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 
 

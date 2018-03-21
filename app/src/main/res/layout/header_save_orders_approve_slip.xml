@@ -94,6 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:lines="1"
                 android:text="000-000-000-0 - Name"
                 android:textSize="@dimen/textRowSize"
                 android:textStyle="bold" />
@@ -124,8 +125,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:lines="1"
                 android:text="Address 1"
-                android:textSize="@dimen/textRowSize" />
+                android:textSize="@dimen/textbtnDialogSize" />
         </LinearLayout>
 
         <LinearLayout
@@ -140,8 +142,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:lines="1"
                 android:text="Address 2"
-                android:textSize="@dimen/textRowSize" />
+                android:textSize="@dimen/textbtnDialogSize" />
         </LinearLayout>
 
         <LinearLayout
@@ -156,8 +159,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:lines="1"
                 android:text="0800000000"
-                android:textSize="@dimen/textRowSize" />
+                android:textSize="@dimen/textbtnDialogSize" />
         </LinearLayout>
         <!--<LinearLayout-->
             <!--android:layout_width="match_parent"-->

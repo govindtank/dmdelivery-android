@@ -702,22 +702,26 @@ public class SaveOrdersActivity extends AppCompatActivity {
         MenuSaveOrder f1 = new MenuSaveOrder();
         f1.setMenuname("เซ็นรับสินค้า");
         f1.setMenuname_type("0");
+        f1.setMenuname_mode("0");
         mListMenuData.add(f1);
 
 
         MenuSaveOrder f2 = new MenuSaveOrder();
         f2.setMenuname("กิจกรรม");
         f2.setMenuname_type("1");
+        f2.setMenuname_mode("0");
         mListMenuData.add(f2);
 
         MenuSaveOrder f3 = new MenuSaveOrder();
         f3.setMenuname("โทร MSL : 0983939393");
         f3.setMenuname_type("2");
+        f3.setMenuname_mode("0");
         mListMenuData.add(f3);
 
         MenuSaveOrder f4 = new MenuSaveOrder();
         f4.setMenuname("โทร DSM : 0874848949");
         f4.setMenuname_type("2");
+        f4.setMenuname_mode("0");
         mListMenuData.add(f4);
 
 

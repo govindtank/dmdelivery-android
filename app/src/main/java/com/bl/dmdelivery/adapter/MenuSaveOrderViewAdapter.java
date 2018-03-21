@@ -58,7 +58,15 @@ public class MenuSaveOrderViewAdapter extends RecyclerView.Adapter<MenuSaveOrder
 
             switch(f.getMenuname_type().toString()) {
                 case "0":
-                    holder.mImage.setImageResource(R.mipmap.ic_signup48);
+                    if(f.getMenuname_mode().toString().equals("0"))
+                    {
+                        holder.mImage.setImageResource(R.mipmap.ic_signup48);
+                    }
+                    else
+                    {
+                        holder.mImage.setImageResource(R.mipmap.ic_word50);
+                    }
+
                     break;
                 case "1":
                     holder.mImage.setImageResource(R.mipmap.ic_special48);
