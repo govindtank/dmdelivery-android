@@ -498,7 +498,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 null,
                 "rep_code IN (" + sigGetData + ")",
                 null,
-                null,
+                "return_no",
                 null,
                 null,
                 null);
@@ -1058,7 +1058,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
             int intResult = sqLiteDatabase.update("OrderReturns", cv,
                     "return_no='" + mOrderReturn.getReturn_no()
-                            + "' AND rep_code='" + mOrderReturn.getRep_code() + "'",
+                            + "' AND rep_code='" + mOrderReturn.getRep_code()
+                            + "' AND fs_code='" + mOrderReturn.getFs_code() + "'",
                     null);
 
             if(intResult > 0){

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtsum,mmTxtQty;
     private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnPlus,mBtnDel,mBtnConfirm;
+    private ImageView mmImvTitle;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -159,8 +161,12 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(View view, int position) {
 
-                    String retqty  =  mListOrderReturn.get(position).getReturn_unit();
-                    showMsgQtyDialog(retqty,position);
+                    String sigFs_code  =  mListOrderReturn.get(position).getFs_code();
+                    String sigReturn_unit_real  =  mListOrderReturn.get(position).getReturn_unit_real();
+                    String sigReturn_unit  =  mListOrderReturn.get(position).getReturn_unit();
+
+
+                    showMsgQtyDialog(sigFs_code,sigReturn_unit_real,sigReturn_unit,position);
                 }
             }));
 
@@ -231,20 +237,30 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     }
 
 
-    public void showMsgQtyDialog(String sigRetqty_uint,int selectedPosition)
+    public void showMsgQtyDialog(String sigFs_code,String sigQty_uint_real,String sigQty_uint,int selectedPosition)
     {
         intQTY_UINT_REAL=0;
         intQTY_UINT= 0;
 
-        final String sigRetqty_uint_final = sigRetqty_uint;
+        final String sigFs_code_final = sigFs_code;
+        final String sigQty_uint_real_final = sigQty_uint_real;
+        final String sigQty_uint_final = sigQty_uint;
         final int selectedPosition_Final = selectedPosition;
 
-        if(sigRetqty_uint_final.isEmpty() || sigRetqty_uint_final.equals("") || sigRetqty_uint_final==null){
+        if(sigQty_uint_real_final.isEmpty() || sigQty_uint_real_final.equals("") || sigQty_uint_real_final==null){
+            intQTY_UINT_REAL = Integer.parseInt("0");
+        }
+        else
+        {
+            intQTY_UINT_REAL = Integer.parseInt(sigQty_uint_real_final);
+        }
+
+        if(sigQty_uint_final.isEmpty() || sigQty_uint_final.equals("") || sigQty_uint_final==null){
             intQTY_UINT = Integer.parseInt("0");
         }
         else
         {
-            intQTY_UINT = Integer.parseInt(sigRetqty_uint_final);
+            intQTY_UINT = Integer.parseInt(sigQty_uint_final);
         }
 
 
@@ -252,6 +268,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View v = (View) inflater.inflate(R.layout.dialog_confirm_qty, null);
         DialogBuilder.setView(v);
+
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
 
         mmTxtQty = (TextView) v.findViewById(R.id.txtQty);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
@@ -262,7 +281,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         mBtnDel = (Button) v.findViewById(R.id.btnDel);
 
         mmTxtTitle.setText("แก้ไขจำนวนรับจริง");
-        mmTxtQty.setText(String.valueOf(intQTY_UINT));
+        mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
 
 
         mBtnPlus.setOnClickListener(new View.OnClickListener() {
@@ -271,10 +290,14 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 if( intQTY_UINT_REAL >= intQTY_UINT){
                     return;
                 }
+                else
+                {
+                    intQTY_UINT_REAL++;
 
-                intQTY_UINT_REAL++;
+                    mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
+                }
 
-                mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
+//                Toast.makeText(SaveOrdersReturnActivity.this, "intQTY_UINT_REAL : " + String.valueOf(intQTY_UINT_REAL) + " intQTY_UINT : " + String.valueOf(intQTY_UINT), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -284,10 +307,14 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 if(intQTY_UINT_REAL <= 0){
                     return;
                 }
+                else
+                {
+                    intQTY_UINT_REAL--;
 
-                intQTY_UINT_REAL--;
+                    mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
+                }
 
-                mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
+//                Toast.makeText(SaveOrdersReturnActivity.this, "intQTY_UINT_REAL : " + String.valueOf(intQTY_UINT_REAL) + " intQTY_UINT : " + String.valueOf(intQTY_UINT), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -300,6 +327,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 OrderReturn mOrderReturn = new OrderReturn();
                 mOrderReturn.setRep_code(ref_rep_code);
                 mOrderReturn.setReturn_no(ref_return_no);
+                mOrderReturn.setFs_code(sigFs_code_final);
                 mOrderReturn.setReturn_unit_real(mmTxtQty.getText().toString());
                 mHelper.updateOrderReturnDtl(mOrderReturn);
 

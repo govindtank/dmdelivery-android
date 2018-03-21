@@ -3,49 +3,88 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/layout_root"
-    android:weightSum="1">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <!--<LinearLayout-->
+    <!--android:orientation="horizontal"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:paddingLeft="10dp"-->
+    <!--android:paddingRight="10dp"-->
+    <!--android:gravity="center_vertical" >-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginRight="10dp"-->
+    <!--android:text=""-->
+    <!--android:id="@+id/txtTitle"-->
+    <!--android:textStyle="bold"-->
+    <!--android:textColor="@color/colorPrimaryDark"-->
+    <!--android:textSize="@dimen/textSize"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:layout_marginLeft="5dp" />-->
+
+    <!--</LinearLayout>-->
 
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:gravity="center_vertical" >
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imvTitle"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
 
         <TextView
+            android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text=""
-            android:id="@+id/txtTitle"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textHeadDtlSize16"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="5dp" />
+            android:layout_marginLeft="8dp"
+            android:text="Title"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/textSize25" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:textColor="@color/colorBackgroundGray"
-        android:gravity="center_vertical" >
-    </LinearLayout>
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:textColor="@color/colorBackgroundGray"></LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" >
+        android:orientation="vertical"
+        android:layout_marginTop="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textAlignment="center"
-                    android:textSize="@dimen/textEdittextSize14"
+                    android:textSize="@dimen/textHeadDtlSize"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -131,34 +170,34 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingBottom="2dp"
+        android:layout_marginBottom="7dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="7dp" >
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="2dp">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center" >
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2" >
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -169,40 +208,40 @@
                         <Button
                             android:id="@+id/btnOk"
                             style="@style/btnok"
-                            android:textColor="@color/colorWhite"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginBottom="5dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:text="@string/btn_text_ok"
+                            android:textColor="@color/colorWhite"
                             android:textSize="@dimen/textRowSize" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:gravity="center" >
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <Button
                             android:id="@+id/btnClose"
                             style="@style/btnclose"
-                            android:textColor="@color/colorWhite"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
-                            android:textSize="@dimen/textRowSize"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginLeft="5dp"
                             android:layout_marginBottom="5dp"
-                            android:text="@string/btn_text_ordercancel" />
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:text="@string/btn_text_ordercancel"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/textRowSize" />
 
                     </LinearLayout>
                 </LinearLayout>
