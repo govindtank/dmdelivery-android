@@ -86,7 +86,17 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     private void bindWidget()
     {
         try{
-            //button
+            Intent ineGetIntent= getIntent();
+            Bundle bdlGetExtras= ineGetIntent.getExtras();
+
+            if(bdlGetExtras == null) {
+                mListOrder = new ArrayList<Order>();
+            } else {
+                mListOrder = new ArrayList<Order>();
+                mListOrder =(ArrayList<Order>)bdlGetExtras.get("data");
+            }
+
+
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnBack.setVisibility(View.INVISIBLE);
             mTxtsum = (TextView) findViewById(R.id.txtsum);
@@ -102,44 +112,10 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
         }
     }
 
-//    private void setDefaultFonts() {
-//        try {
-////            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-////            mTxtHeader.setTypeface(tf);
-////            mBtnBack.setTypeface(tf);
-//
-//        } catch (Exception e) {
-//            showMsgDialog(e.toString());
-//        }
-//    }
-
     private void setWidgetControl() {
         try{
-//            //get val Intent
-//            Intent ineGetVals= getIntent();
-//            Bundle bdlGetVals = ineGetVals.getExtras();
-//
-//            if(bdlGetVals != null)
-//            {
-//                mListOrder.clear();
-//                mListOrder =(ArrayList<Order>)bdlGetVals.get("data");
-//            }
-
-
-//            Bundle extras = getIntent().getExtras();
-            Intent ineGetIntent= getIntent();
-            Bundle bdlGetExtras= ineGetIntent.getExtras();
-
-            if(bdlGetExtras == null) {
-                mListOrder = new ArrayList<Order>();
-            } else {
-                mListOrder = new ArrayList<Order>();
-                mListOrder =(ArrayList<Order>)bdlGetExtras.get("data");
-            }
-
 
             getInit();
-
 
             mTxtsum.setText("จำนวนใบรับคืน : "+String.valueOf( mListOrderReturn.size()));
 
@@ -147,11 +123,14 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(View view, int position) {
 
-                    String rep_code =  mListOrderReturn.get(position).getRep_code();
-                    String ref_return_no  =  mListOrderReturn.get(position).getReturn_no();
+                    OrderReturn mOrderReturn = new OrderReturn();
+                    mOrderReturn.setReftrans_no( mListOrderReturn.get(position).getReftrans_no());
+                    mOrderReturn.setReturn_no( mListOrderReturn.get(position).getReturn_no());
+                    mOrderReturn.setRep_code( mListOrderReturn.get(position).getRep_code());
+                    mOrderReturn.setRep_name( mListOrderReturn.get(position).getRep_name());
+
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
-                    myIntent.putExtra("REP_CODE", rep_code);
-                    myIntent.putExtra("REF_RETURN_NO", ref_return_no);
+                    myIntent.putExtra("data", mOrderReturn);
                     startActivity(myIntent);
                 }
             }));

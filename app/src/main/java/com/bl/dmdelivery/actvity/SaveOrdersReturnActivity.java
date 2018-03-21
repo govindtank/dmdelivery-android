@@ -58,6 +58,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
 
     private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
+    private OrderReturn mOrderReturnSaveData = null;
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
 
@@ -87,15 +88,22 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     private void bindWidget()
     {
         try{
-            //button
 
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
+            Intent ineGetIntent= getIntent();
+            Bundle bdlGetExtras= ineGetIntent.getExtras();
+
+            if(bdlGetExtras == null) {
+                mOrderReturnSaveData = new OrderReturn();
+
                 ref_return_no= null;
                 ref_rep_code= null;
             } else {
-                ref_return_no= extras.getString("REF_RETURN_NO");
-                ref_rep_code= extras.getString("REP_CODE");
+                mOrderReturnSaveData = new OrderReturn();
+                mOrderReturnSaveData =(OrderReturn)bdlGetExtras.get("data");
+
+
+                ref_return_no= mOrderReturnSaveData.getReturn_no();
+                ref_rep_code= mOrderReturnSaveData.getRep_code();
             }
 
 
@@ -125,26 +133,13 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     private void setWidgetControl() {
         try{
 
-
             getInit();
-
 
             mTxtsum.setText("จำนวนรายการสินค้า : "+String.valueOf( mListOrderReturn.size()));
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     finish();
-
-//                    //set val transno on class order
-//                    ArrayList<Order> mOrderList= new ArrayList<Order>();
-//                    Order mOrders = new Order();
-//                    mOrders.setRep_code(ref_rep_code);
-//                    mOrderList.add(mOrders);
-//
-//                    //send val on putextra
-//                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-//                    myIntent.putExtra("data",mOrderList);
-//                    startActivity(myIntent);
                 }
             });
 
@@ -152,6 +147,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             mBtnConfirm.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnSlipActivity.class);
+                    myIntent.putExtra("datareturn", mOrderReturnSaveData);
                     startActivity(myIntent);
                 }
             });
@@ -180,7 +176,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
         try {
 
-
             mHelper = new DBHelper(getApplicationContext());
             mListOrderReturn.clear();
             mListOrderReturn = mHelper.getOrderReturnDtl(ref_return_no);
@@ -200,42 +195,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    public void showMsgCancelSelectedSingleDialog()
-    {
-        // Create the arrays
-        sigReturncancellist = getResources().getStringArray(R.array.returncancellist);
-
-        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersReturnActivity.this).create();
-        LayoutInflater inflater = getLayoutInflater();
-        View v = (View) inflater.inflate(R.layout.dialog_save_orders_return_cancel, null);
-        DialogBuilder.setView(v);
-
-        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
-        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-        mmTxtTitle.setText("ยืนยันการยกเลิกคืนสืนค้า");
-
-
-        mmBtnOk.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                DialogBuilder.dismiss();
-
-                finish();
-                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                startActivity(myIntent);
-            }
-        });
-
-        mmBtnClose.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                DialogBuilder.dismiss();
-            }
-        });
-
-        DialogBuilder.show();
-    }
-
 
     public void showMsgQtyDialog(String sigFs_code,String sigQty_uint_real,String sigQty_uint,int selectedPosition)
     {
