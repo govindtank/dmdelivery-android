@@ -932,7 +932,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             mHelper = new DBHelper(getApplicationContext());
             mListOrderData.clear();
-            mListOrderData = mHelper.getOrderWaitList();
+            mListOrderData = mHelper.getOrderWaitList("ALL");
 
 
 
