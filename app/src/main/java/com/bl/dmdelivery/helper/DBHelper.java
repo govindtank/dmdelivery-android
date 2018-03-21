@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Switch;
 
 
 import com.bl.dmdelivery.model.Order;
@@ -579,16 +580,42 @@ public class DBHelper extends SQLiteOpenHelper {
         return order;
     }
 
-    public ArrayList<Order> getOrderWaitList() {
+//    delivery_status N=ยังไม่ส่ง, Y=ส่งแล้ว, ALL=แสดงทั้งหมด
+    public ArrayList<Order> getOrderWaitList(String sigCriteria) {
+
+        if(sigCriteria.isEmpty() || sigCriteria.equals("") || sigCriteria==null){ return null;}
 
         ArrayList<Order> orders = new ArrayList<Order>();
 
-
         sqLiteDatabase = this.getReadableDatabase();
+
+//        Cursor cursor = sqLiteDatabase.query(TableOrder,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null);
+
+        String sigCriteriaSql="";
+
+        switch(sigCriteria.toUpperCase().toString()){
+            case "N":
+                sigCriteriaSql="delivery_status='N'";
+                break;
+            case "Y":
+                sigCriteriaSql="delivery_status='Y'";
+                break;
+            case "ALL":
+                sigCriteriaSql="delivery_status IS NOT NULL";
+                break;
+        }
+
 
         Cursor cursor = sqLiteDatabase.query(TableOrder,
                 null,
-                null,
+                sigCriteriaSql,
                 null,
                 null,
                 null,
@@ -636,6 +663,7 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setOrdertype_desc(cursor.getString(29));
             order.setCont_desc(cursor.getString(30));
             order.setItemno(cursor.getInt(31));
+            order.setDelivery_status(cursor.getString(32));
             orders.add(order);
 
             cursor.moveToNext();
