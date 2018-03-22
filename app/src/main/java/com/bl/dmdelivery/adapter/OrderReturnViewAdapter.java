@@ -91,12 +91,12 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
                 else if(sigReturn_status.equals("1"))
                 {
                     //ถ้าเท่ากับ 1 "รับคืน"
-                    holder.txtReturnStatus.setText("สถานะ: รับคืน");
+                    holder.txtReturnStatus.setText("สถานะ: รับคืนได้");
                 }
                 else if(sigReturn_status.equals("2"))
                 {
                     //ถ้าเท่ากับ 2 "ไม่รับคืน"
-                    holder.txtReturnStatus.setText("สถานะ: ไม่รับคืน");
+                    holder.txtReturnStatus.setText("สถานะ: รับคืนไม่ได้");
                 }
             }
 

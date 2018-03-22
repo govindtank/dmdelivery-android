@@ -63,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT)",
                 TableOrder,
                 Order.Column.ID,
                 Order.Column.Oucode,
@@ -97,7 +97,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.ordertype_desc,
                 Order.Column.cont_desc,
                 Order.Column.Itemno,
-                Order.Column.delivery_status
+                Order.Column.delivery_status,
+                Order.Column.isselect
         );
 
         Log.i(TAG, CREATE_ORDER_TABLE);
@@ -258,7 +259,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.cont_desc, order.getCont_desc());
         values.put(Order.Column.Itemno, order.getItemno());
         values.put(Order.Column.delivery_status,order.getDelivery_status());
-
+        values.put(Order.Column.isselect,order.getIsselect());
 
         sqLiteDatabase.insert(TableOrder, null, values);
 
@@ -585,11 +586,11 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             else if(cursor.getString(3).equals("1"))
             {
-                mOrderReturn.setReturn_status("รับคืน");
+                mOrderReturn.setReturn_status("รับคืนได้");
             }
             else if(cursor.getString(3).equals("2"))
             {
-                mOrderReturn.setReturn_status("ไม่รับคืน");
+                mOrderReturn.setReturn_status("รับคืนไม่ได้");
             }
 
             mOrderReturn.setReturn_unit_real(cursor.getString(4));
@@ -722,6 +723,7 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setCont_desc(cursor.getString(30));
             order.setItemno(cursor.getInt(31));
             order.setDelivery_status(cursor.getString(32));
+            order.setisselect(cursor.getString(33));
             orders.add(order);
 
             cursor.moveToNext();
