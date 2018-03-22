@@ -44,6 +44,8 @@ public class Order implements Parcelable {
     private String truckNo;
     private Integer id;
     private String delivery_status;
+    private String isselect;
+
 
 
     public class Column{
@@ -83,6 +85,7 @@ public class Order implements Parcelable {
         public static final String delivery_date = "delivery_date";
         public static final String truckNo = "truckNo";
         public static final String delivery_status = "delivery_status";
+        public static final String isselect = "isselect";
     }
 
     public String getDelivery_status() {
@@ -364,8 +367,20 @@ public class Order implements Parcelable {
     public void setTruckNo(String truckNo) {
         this.truckNo = truckNo;
     }
+
+
+    public String getIsselect() {
+        return isselect;
+    }
+
+    public void setisselect(String isselect) {
+        this.isselect = isselect;
+    }
+
+
     public Order() {
     }
+
 
     @Override
     public int describeContents() {
@@ -409,6 +424,7 @@ public class Order implements Parcelable {
         dest.writeString(this.truckNo);
         dest.writeValue(this.id);
         dest.writeString(this.delivery_status);
+        dest.writeString(this.isselect);
     }
 
     protected Order(Parcel in) {
@@ -447,6 +463,7 @@ public class Order implements Parcelable {
         this.truckNo = in.readString();
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.delivery_status = in.readString();
+        this.isselect = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {

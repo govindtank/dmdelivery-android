@@ -36,7 +36,7 @@ public class OrderViewHolder extends GestureViewHolder {
 
     public TextView mSeqText,txtRepcode,txtInv,txtAddress1,txtAddress2,txtMslTel,txtDsmTel,txtReturn,txtUnpack,txtcarton,txtcartonb;
     public Button btnTelActivity;
-    public ImageView mMonthPicture,mItemDrag;
+    public ImageView mMonthPicture,mItemDrag,imgCheck;
     public View mForegroundView;
     public ViewStub mBackgroundView;
 
@@ -60,7 +60,7 @@ public class OrderViewHolder extends GestureViewHolder {
 
         //this.mMonthPicture = (ImageView) view.findViewById(R.id.month_image);
         this.mItemDrag = (ImageView) view.findViewById(R.id.mont_drag);
-
+        this.imgCheck = (ImageView) view.findViewById(R.id.imgCheck);
         //this.mForegroundView = (View) view.findViewById(R.id.foreground);
         //this.mBackgroundView = (ViewStub) view.findViewById(R.id.month_background_stub);
 
