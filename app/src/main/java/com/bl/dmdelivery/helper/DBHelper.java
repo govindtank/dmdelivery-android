@@ -573,7 +573,23 @@ public class DBHelper extends SQLiteOpenHelper {
             mOrderReturn.setReturn_no(cursor.getString(0));
             mOrderReturn.setRep_code(cursor.getString(1));
             mOrderReturn.setRep_name(cursor.getString(2));
-            mOrderReturn.setReturn_status(cursor.getString(3));
+
+            if(cursor.getString(3).equals("")){
+                mOrderReturn.setReturn_status("ยังไม่รับคืน");
+            }
+            else if(cursor.getString(3).equals("0"))
+            {
+                mOrderReturn.setReturn_status("ยังไม่รับคืน");
+            }
+            else if(cursor.getString(3).equals("1"))
+            {
+                mOrderReturn.setReturn_status("รับคืน");
+            }
+            else if(cursor.getString(3).equals("2"))
+            {
+                mOrderReturn.setReturn_status("ไม่รับคืน");
+            }
+
             mOrderReturn.setReturn_unit_real(cursor.getString(4));
             mOrderReturn.setReturn_unit(cursor.getString(5));
             mOrderReturnlist.add(mOrderReturn);
