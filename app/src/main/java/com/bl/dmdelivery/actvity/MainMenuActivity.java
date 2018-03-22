@@ -574,6 +574,8 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setReturn_unit(obj.getOrderReturn().get(i).getReturn_unit().toString());
                         f.setReturn_remark(obj.getOrderReturn().get(i).getReturn_remark().toString());
                         f.setReturn_status("0");
+                        f.setReason_code("");
+                        f.setReturn_note("");
                         orderReturns.add(f);
 
                         mHelper.addOrdersReturn(f);
