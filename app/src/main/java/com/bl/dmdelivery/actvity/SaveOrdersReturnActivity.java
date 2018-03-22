@@ -58,6 +58,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
 
     private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
+    private ArrayList<OrderReturn> mListOrderReturnSavDate = new ArrayList<OrderReturn>();
     private OrderReturn mOrderReturnSaveData = null;
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
@@ -94,12 +95,16 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
             if(bdlGetExtras == null) {
                 mOrderReturnSaveData = new OrderReturn();
+                mListOrderReturnSavDate.clear();
 
                 ref_return_no= null;
                 ref_rep_code= null;
             } else {
                 mOrderReturnSaveData = new OrderReturn();
                 mOrderReturnSaveData =(OrderReturn)bdlGetExtras.get("data");
+
+                mListOrderReturnSavDate.clear();
+                mListOrderReturnSavDate = (ArrayList<OrderReturn>)bdlGetExtras.get("dataAll");
 
 
                 ref_return_no= mOrderReturnSaveData.getReturn_no();
@@ -148,6 +153,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnSlipActivity.class);
                     myIntent.putExtra("datareturn", mOrderReturnSaveData);
+                    myIntent.putExtra("datareturnAll", mListOrderReturnSavDate);
                     startActivity(myIntent);
                 }
             });

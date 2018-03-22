@@ -122,7 +122,6 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             lv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-
                     OrderReturn mOrderReturn = new OrderReturn();
                     mOrderReturn.setReftrans_no( mListOrderReturn.get(position).getReftrans_no());
                     mOrderReturn.setReturn_no( mListOrderReturn.get(position).getReturn_no());
@@ -131,6 +130,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
                     myIntent.putExtra("data", mOrderReturn);
+                    myIntent.putExtra("dataAll", mListOrderReturn);
                     startActivity(myIntent);
                 }
             }));
