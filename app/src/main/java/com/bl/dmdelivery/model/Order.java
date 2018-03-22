@@ -373,7 +373,7 @@ public class Order implements Parcelable {
         return isselect;
     }
 
-    public void setisselect(String isselect) {
+    public void setIsselect(String isselect) {
         this.isselect = isselect;
     }
 

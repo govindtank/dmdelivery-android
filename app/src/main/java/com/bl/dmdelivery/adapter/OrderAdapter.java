@@ -42,18 +42,20 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
         final Order order = (Order) orderItem;
 
 
-        if(order.getTransNo().equals("0"))
+        if(order.getIsselect().equals("0"))
         {
             orderViewHolder.imgCheck.setVisibility(View.GONE);
+            orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo())+" ");
         }else
         {
             orderViewHolder.imgCheck.setVisibility(View.VISIBLE);
+            orderViewHolder.txtInv.setText(" "+String.valueOf(order.getTransNo())+" ");
         }
 
-        orderViewHolder.imgCheck.setVisibility(View.GONE);
+
 
         orderViewHolder.mSeqText.setText(String.valueOf(position+1));
-        orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo())+" ");
+        //orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo())+" ");
 
         if(order.getCont_desc().contains("+"))
         {

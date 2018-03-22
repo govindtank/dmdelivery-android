@@ -234,6 +234,14 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                     customCanvas.mListUnpackData.clear();
                     customCanvas.mListUnpackData  = mHelper.getUnpackListWithMultiInv(order);
 
+
+                    if(order.size() > 1)
+                    {
+                        customCanvas.mListOrderData.clear();
+                        customCanvas.mListOrderData  = order;
+                    }
+
+
                 }
 
 

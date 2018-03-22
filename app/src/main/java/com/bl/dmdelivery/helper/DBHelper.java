@@ -723,7 +723,7 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setCont_desc(cursor.getString(30));
             order.setItemno(cursor.getInt(31));
             order.setDelivery_status(cursor.getString(32));
-            order.setisselect(cursor.getString(33));
+            order.setIsselect(cursor.getString(33));
             orders.add(order);
 
             cursor.moveToNext();

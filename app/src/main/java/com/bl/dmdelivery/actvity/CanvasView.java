@@ -13,6 +13,7 @@ import android.view.View;
 
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.Unpack;
 
 import java.util.ArrayList;
@@ -53,11 +54,13 @@ public class CanvasView extends View {
 	public int xReason,yReason;
 	public int xGps,yGps;
 	public int xGpstext,yGpstext;
+	public int xOrder,yOrder;
 	private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 	private Typeface tf;
 
 
 	public ArrayList<Unpack> mListUnpackData = new ArrayList<Unpack>();
+	public ArrayList<Order> mListOrderData = new ArrayList<Order>();
 
 	//GlobalObject ogject = GlobalObject.getInstance();
 
@@ -135,6 +138,32 @@ public class CanvasView extends View {
 					//canvas.drawText(mListUnpackData.get(i).getFsname().toString(), 10, 25, paint);
 					//canvas.drawText("ของนอกกล่อง"+yUnpack, xUnpack, yUnpack, paint);
 					yUnpack=yUnpack+45;
+				}
+			}
+		}
+
+
+
+		xOrder = 780;
+		yOrder = 940;
+
+
+		if(mListOrderData != null)
+		{
+			if(mListOrderData.size()>0)
+			{
+				for(int i=0; i<mListOrderData.size();i++){
+
+					String inv = "";
+					String carton = "";
+
+					inv = mListOrderData.get(i).getTransNo().toString();
+					carton = mListOrderData.get(i).getCont_desc().toString();
+
+					canvas.drawText(inv+" "+carton, xOrder, yOrder, paint);
+					//canvas.drawText(mListUnpackData.get(i).getFsname().toString(), 10, 25, paint);
+					//canvas.drawText("ของนอกกล่อง"+yUnpack, xUnpack, yUnpack, paint);
+					yOrder=yOrder-50;
 				}
 			}
 		}

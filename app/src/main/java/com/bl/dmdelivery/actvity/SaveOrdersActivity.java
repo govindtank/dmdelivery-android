@@ -251,6 +251,27 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     //Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
                     Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
                     toast.show();
+
+
+                    mSelect = mListOrderDataN.get(position).getIsselect();
+
+                    if(mSelect.equals("0"))
+                    {
+                        mListOrderDataN.get(position).setIsselect("1");
+                        //selectCount = selectCount+1;
+                    }else
+                    {
+                        mListOrderDataN.get(position).setIsselect("0");
+
+//                        if(!selectCount.equals(0))
+//                        {
+//                            selectCount = selectCount-1;
+//                        }
+                    }
+
+                    adapter.notifyDataSetChanged();
+
+
                     return true;
                 }
             }));
@@ -270,15 +291,15 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 @Override
                 public void onItemRemoved(final Order item, final int position) {
                     //Snackbar.make(view, "Month removed from position " + position, Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Month removed from position " + position, Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Month removed from position " + position, Toast.LENGTH_SHORT);
+//                    toast.show();
                 }
 
                 @Override
                 public void onItemReorder(final Order item, final int fromPos, final int toPos) {
                     //Snackbar.make(view, "Month moved from position " + fromPos + " to " + toPos, Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Month moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Month moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
+//                    toast.show();
                 }
             });
 
@@ -291,9 +312,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             mBtnMenu.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    myIntent = new Intent(getApplicationContext(), OthersMenuActivity.class);
-                    startActivity(myIntent);
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                    myIntent = new Intent(getApplicationContext(), OthersMenuActivity.class);
+//                    startActivity(myIntent);
+//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+                    showMsgDialogMenu();
                 }
             });
 
@@ -824,6 +847,154 @@ public class SaveOrdersActivity extends AppCompatActivity {
         DialogBuilder.show();
     }
 
+    public void showMsgDialogMenu()
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_menu_order_save, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+        lvmenu = (RecyclerView) v.findViewById(R.id.lvmenu);
+        lvmenu.setLayoutManager(new LinearLayoutManager(this));
+        lvmenu.setHasFixedSize(true);
+
+        //mListMenuData
+
+        mListMenuData.clear();
+
+        MenuSaveOrder f1 = new MenuSaveOrder();
+        f1.setMenuname("เซ็นรับสินค้า");
+        f1.setMenuname_type("0");
+        f1.setMenuname_mode("0");
+        mListMenuData.add(f1);
+
+
+        MenuSaveOrder f2 = new MenuSaveOrder();
+        f2.setMenuname("กิจกรรม");
+        f2.setMenuname_type("1");
+        f2.setMenuname_mode("0");
+        mListMenuData.add(f2);
+
+
+
+        mMenuAdapter = new MenuSaveOrderViewAdapter(getApplicationContext(),mListMenuData);
+        lvmenu.setAdapter(mMenuAdapter);
+
+
+        lvmenu.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+                switch (mListMenuData.get(position).getMenuname_type()){
+                    case "0":
+                        //จัดส่งสินค้า
+                        DialogBuilder.dismiss();
+
+                        ArrayList<Order> order = new ArrayList<Order>();
+
+                        for(int i=0; i<mListOrderDataN.size();i++){
+
+                            if(mListOrderDataN.get(i).getIsselect().equals("1"))
+                            {
+                                mOrder = new Order();
+                                mOrder.setRep_code(mListOrderDataN.get(i).getRep_code());
+                                mOrder.setRep_name(mListOrderDataN.get(i).getRep_name());
+                                mOrder.setTransNo(mListOrderDataN.get(i).getTransNo());
+                                mOrder.setAddress1(mListOrderDataN.get(i).getAddress1());
+                                mOrder.setAddress2(mListOrderDataN.get(i).getAddress2());
+                                mOrder.setPostal(mListOrderDataN.get(i).getPostal());
+                                mOrder.setRep_telno(mListOrderDataN.get(i).getRep_telno());
+                                mOrder.setReturn_flag(mListOrderDataN.get(i).getReturn_flag());
+                                mOrder.setCont_desc(mListOrderDataN.get(i).getCont_desc());
+
+                                order.add(mOrder);
+                            }
+
+
+                        }
+
+                        //TinyDB tinydb = new TinyDB(getApplicationContext());
+
+
+                        if(order.size() > 0)
+                        {
+                            myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
+                            myIntent.putExtra("data",order);
+                            startActivity(myIntent);
+                        }
+                        else
+                        {
+                            showMsgDialog("กรุณาเลือกออเดอร์");
+                        }
+
+
+                        break;
+                    case "1":
+                        //กิจกรรมอื่นๆ
+                        DialogBuilder.dismiss();
+
+                        mOrder = new Order();
+                        mOrder.setRep_code(mListOrderDataN.get(0).getRep_code());
+                        mOrder.setRep_name(mListOrderDataN.get(0).getRep_name());
+                        mOrder.setTransNo(mListOrderDataN.get(0).getTransNo());
+                        mOrder.setDelivery_date(sigDeliveryDate);
+                        mOrder.setTruckNo(sigTruckNo);
+                        mOrder.setRep_telno(mListOrderDataN.get(0).getRep_telno());
+                        mOrder.setDsm_telno(mListOrderDataN.get(0).getDsm_telno());
+
+                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
+                        myIntent.putExtra("data",mOrder);
+                        startActivity(myIntent);
+                        break;
+
+                    case "2":
+                        //โทร
+                        DialogBuilder.dismiss();
+
+                        showMsgDialog(mListMenuData.get(position).getMenuname());
+
+                        break;
+
+                    default:
+
+                        DialogBuilder.dismiss();
+                        showMsgDialog("default");
+
+
+                }
+
+            }
+        }));
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText("เมนู");
+        //mmTxtMsg.setText(msg);
+
+        DialogBuilder.setView(v);
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+    }
+
 
     public void showMsgUserSelectedMenuDialog(String sigGetTransNo,int selectedPosition)
     {
@@ -1020,7 +1191,49 @@ public class SaveOrdersActivity extends AppCompatActivity {
     }
 
 
+    private void removeData() {
 
+        try {
+
+            for(int i = mListOrderDataN.size()-1 ; i >= 0; i--)
+            {
+
+                mSelect = mListOrderDataN.get(i).getIsselect().toString();
+
+                if(mSelect.equals("0"))
+                {
+                    //mListSearchConfirmOrder.remove(mListConfirmOrder.get(i));
+                    mListOrderDataN.remove(mListOrderDataN.get(i));
+                }
+
+            }
+
+            /*for(int i=0; i<mListConfirmOrder.size();i++){
+
+                mOucode = mListConfirmOrder.get(i).getOucode().toString();
+                mYear = mListConfirmOrder.get(i).getYear().toString();
+                mGroup = mListConfirmOrder.get(i).getGroup().toString();
+                mInv = mListConfirmOrder.get(i).getInv().toString();
+                mMailgroup = mListConfirmOrder.get(i).getMailgroup().toString();
+                mRepcode = mListConfirmOrder.get(i).getRepcode().toString();
+                mRepname = mListConfirmOrder.get(i).getRepname().toString();
+                mTel = mListConfirmOrder.get(i).getTel().toString();
+                mSelect = mListConfirmOrder.get(i).getSelect().toString();
+
+
+                if(mSelect.equals("1"))
+                {
+                    mListConfirmOrder.remove(this);
+                }
+
+            }*/
+
+            mAdapter.notifyDataSetChanged();
+
+        } catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+    }
 
 
 
