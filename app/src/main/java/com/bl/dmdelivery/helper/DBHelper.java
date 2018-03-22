@@ -535,6 +535,56 @@ public class DBHelper extends SQLiteOpenHelper {
         return mOrderReturnlist;
     }
 
+    // return_status 0= ยังไม่รับคืน,1=รับคืน,2=ไม่รับคืน
+    public ArrayList<OrderReturn> getOrdersReturnListSummary(String sigCriteria) {
+
+        if(sigCriteria.isEmpty() || sigCriteria.equals("") || sigCriteria==null){ return null;}
+        ArrayList<OrderReturn>  mOrderReturnlist = new ArrayList<OrderReturn>();
+
+        String sigCriteriaSql="";
+        switch(sigCriteria.toUpperCase().toString()){
+            case "N":
+                sigCriteriaSql="return_status='0'";
+                break;
+            case "Y":
+                sigCriteriaSql="return_status='1'";
+                break;
+            case "C":
+                sigCriteriaSql="return_status='2'";
+                break;
+            case "ALL":
+                sigCriteriaSql="return_status IN ('0','1','2')";
+                break;
+        }
+
+        if(sigCriteriaSql.isEmpty() || sigCriteriaSql==null || sigCriteriaSql.equals("null") || sigCriteriaSql.equals("")){return null;}
+
+        Cursor cursor=null;
+        sqLiteDatabase = this.getReadableDatabase();
+
+        cursor = sqLiteDatabase.rawQuery(" SELECT return_no,rep_code,rep_name,return_status, SUM(return_unit_real) AS return_unit_real,SUM(return_unit) AS return_unit FROM " + TableOrderReturn + " WHERE " + sigCriteriaSql + " GROUP BY return_no" ,null);
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+            OrderReturn mOrderReturn = new OrderReturn();
+
+            mOrderReturn.setReturn_no(cursor.getString(0));
+            mOrderReturn.setRep_code(cursor.getString(1));
+            mOrderReturn.setRep_name(cursor.getString(2));
+            mOrderReturn.setReturn_status(cursor.getString(3));
+            mOrderReturn.setReturn_unit_real(cursor.getString(4));
+            mOrderReturn.setReturn_unit(cursor.getString(5));
+            mOrderReturnlist.add(mOrderReturn);
+
+            cursor.moveToNext();
+        }
+
+        return mOrderReturnlist;
+    }
+
+
 
     public void addUnpack(Unpack order) {
         sqLiteDatabase = this.getWritableDatabase();
@@ -589,17 +639,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase = this.getReadableDatabase();
 
-//        Cursor cursor = sqLiteDatabase.query(TableOrder,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null);
-
         String sigCriteriaSql="";
-
         switch(sigCriteria.toUpperCase().toString()){
             case "N":
                 sigCriteriaSql="delivery_status='N'";
