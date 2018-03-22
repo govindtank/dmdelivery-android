@@ -45,6 +45,7 @@ import com.bl.dmdelivery.helper.TinyDB;
 import com.bl.dmdelivery.model.MenuSaveOrder;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderData;
+import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.utility.TagUtils;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
@@ -75,7 +76,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //    private CheckNetwork chkNetwork = new CheckNetwork();
     GlobalObject ogject = GlobalObject.getInstance();
 
-    private ArrayList<Order> mListOrderData = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataALL = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataY = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataN = new ArrayList<Order>();
+    private ArrayList<OrderReturn> mListReturnDataALL = new ArrayList<OrderReturn>();
+    private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
     private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
     //private List<Order> mListOrder = new List<Order>();
     private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="";
@@ -209,7 +214,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
             lv.setLayoutManager(manager);
 
             final OrderAdapter adapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
-            adapter.setData(mListOrderData);
+            adapter.setData(mListOrderDataN);
 
             lv.setAdapter(adapter);
             lv.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<Order>() {
@@ -301,11 +306,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                }
 //            });
 
-            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderData.size()+"/"+mListOrderData.size()+")");
+            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
 
-            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/"+mListOrderData.size()+")");
+            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
 
-            mBtnReturnList.setText("ใบรับคืน\n(0/0)");
+            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 
 
             mBtnSaveOrdersComplete.setOnClickListener(new View.OnClickListener() {
@@ -740,15 +745,15 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         DialogBuilder.dismiss();
 
                         mOrder = new Order();
-                        mOrder.setRep_code(mListOrderData.get(selectedPosition).getRep_code());
-                        mOrder.setRep_name(mListOrderData.get(selectedPosition).getRep_name());
-                        mOrder.setTransNo(mListOrderData.get(selectedPosition).getTransNo());
-                        mOrder.setAddress1(mListOrderData.get(selectedPosition).getAddress1());
-                        mOrder.setAddress2(mListOrderData.get(selectedPosition).getAddress2());
-                        mOrder.setPostal(mListOrderData.get(selectedPosition).getPostal());
-                        mOrder.setRep_telno(mListOrderData.get(selectedPosition).getRep_telno());
-                        mOrder.setReturn_flag(mListOrderData.get(selectedPosition).getReturn_flag());
-                        mOrder.setCont_desc(mListOrderData.get(selectedPosition).getCont_desc());
+                        mOrder.setRep_code(mListOrderDataN.get(selectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderDataN.get(selectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderDataN.get(selectedPosition).getTransNo());
+                        mOrder.setAddress1(mListOrderDataN.get(selectedPosition).getAddress1());
+                        mOrder.setAddress2(mListOrderDataN.get(selectedPosition).getAddress2());
+                        mOrder.setPostal(mListOrderDataN.get(selectedPosition).getPostal());
+                        mOrder.setRep_telno(mListOrderDataN.get(selectedPosition).getRep_telno());
+                        mOrder.setReturn_flag(mListOrderDataN.get(selectedPosition).getReturn_flag());
+                        mOrder.setCont_desc(mListOrderDataN.get(selectedPosition).getCont_desc());
 
                         ArrayList<Order> order = new ArrayList<Order>();
                         order.add(mOrder);
@@ -767,13 +772,13 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         DialogBuilder.dismiss();
 
                         mOrder = new Order();
-                        mOrder.setRep_code(mListOrderData.get(selectedPosition).getRep_code());
-                        mOrder.setRep_name(mListOrderData.get(selectedPosition).getRep_name());
-                        mOrder.setTransNo(mListOrderData.get(selectedPosition).getTransNo());
+                        mOrder.setRep_code(mListOrderDataN.get(selectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderDataN.get(selectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderDataN.get(selectedPosition).getTransNo());
                         mOrder.setDelivery_date(sigDeliveryDate);
                         mOrder.setTruckNo(sigTruckNo);
-                        mOrder.setRep_telno(mListOrderData.get(selectedPosition).getRep_telno());
-                        mOrder.setDsm_telno(mListOrderData.get(selectedPosition).getDsm_telno());
+                        mOrder.setRep_telno(mListOrderDataN.get(selectedPosition).getRep_telno());
+                        mOrder.setDsm_telno(mListOrderDataN.get(selectedPosition).getDsm_telno());
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
                         myIntent.putExtra("data",mOrder);
@@ -805,7 +810,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //        mmBtnClose.setTypeface(tf);
 
         mmImvTitle.setImageResource(R.mipmap.ic_launcher);
-        mmTxtTitle.setText("ออเดอร์ : "+mListOrderData.get(selectedPosition).getTransNo());
+        mmTxtTitle.setText("ออเดอร์ : "+mListOrderDataN.get(selectedPosition).getTransNo());
         //mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
@@ -866,15 +871,15 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         DialogBuilder.dismiss();
 
                         mOrder = new Order();
-                        mOrder.setRep_code(mListOrderData.get(intSelectedPosition).getRep_code());
-                        mOrder.setRep_name(mListOrderData.get(intSelectedPosition).getRep_name());
-                        mOrder.setTransNo(mListOrderData.get(intSelectedPosition).getTransNo());
-                        mOrder.setAddress1(mListOrderData.get(intSelectedPosition).getAddress1());
-                        mOrder.setAddress2(mListOrderData.get(intSelectedPosition).getAddress2());
-                        mOrder.setPostal(mListOrderData.get(intSelectedPosition).getPostal());
-                        mOrder.setRep_telno(mListOrderData.get(intSelectedPosition).getRep_telno());
-                        mOrder.setReturn_flag(mListOrderData.get(intSelectedPosition).getReturn_flag());
-                        mOrder.setCont_desc(mListOrderData.get(intSelectedPosition).getCont_desc());
+                        mOrder.setRep_code(mListOrderDataN.get(intSelectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderDataN.get(intSelectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderDataN.get(intSelectedPosition).getTransNo());
+                        mOrder.setAddress1(mListOrderDataN.get(intSelectedPosition).getAddress1());
+                        mOrder.setAddress2(mListOrderDataN.get(intSelectedPosition).getAddress2());
+                        mOrder.setPostal(mListOrderDataN.get(intSelectedPosition).getPostal());
+                        mOrder.setRep_telno(mListOrderDataN.get(intSelectedPosition).getRep_telno());
+                        mOrder.setReturn_flag(mListOrderDataN.get(intSelectedPosition).getReturn_flag());
+                        mOrder.setCont_desc(mListOrderDataN.get(intSelectedPosition).getCont_desc());
 
                         ArrayList<Order> order = new ArrayList<Order>();
                         order.add(mOrder);
@@ -893,13 +898,13 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         DialogBuilder.dismiss();
 
                         mOrder = new Order();
-                        mOrder.setRep_code(mListOrderData.get(intSelectedPosition).getRep_code());
-                        mOrder.setRep_name(mListOrderData.get(intSelectedPosition).getRep_name());
-                        mOrder.setTransNo(mListOrderData.get(intSelectedPosition).getTransNo());
+                        mOrder.setRep_code(mListOrderDataN.get(intSelectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderDataN.get(intSelectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderDataN.get(intSelectedPosition).getTransNo());
                         mOrder.setDelivery_date(sigDeliveryDate);
                         mOrder.setTruckNo(sigTruckNo);
-                        mOrder.setRep_telno(mListOrderData.get(intSelectedPosition).getRep_telno());
-                        mOrder.setDsm_telno(mListOrderData.get(intSelectedPosition).getDsm_telno());
+                        mOrder.setRep_telno(mListOrderDataN.get(intSelectedPosition).getRep_telno());
+                        mOrder.setDsm_telno(mListOrderDataN.get(intSelectedPosition).getDsm_telno());
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
                         myIntent.putExtra("data",mOrder);
@@ -932,11 +937,23 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
         try {
 
-            mListOrderData.clear();
 
             mHelper = new DBHelper(getApplicationContext());
-            mListOrderData.clear();
-            mListOrderData = mHelper.getOrderWaitList("ALL");
+
+            mListOrderDataALL.clear();
+            mListOrderDataALL = mHelper.getOrderWaitList("ALL");
+
+            mListOrderDataY.clear();
+            mListOrderDataY = mHelper.getOrderWaitList("Y");
+
+            mListOrderDataN.clear();
+            mListOrderDataN = mHelper.getOrderWaitList("N");
+
+            mListReturnDataALL.clear();
+            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
+
+            mListReturnDataY.clear();
+            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
 
 
 
@@ -1002,143 +1019,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
     }
 
-    private class getInitDataInAsync extends AsyncTask<String, Void, PageResultHolder>
-    {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            mProgressDialog = new ACProgressFlower.Builder(SaveOrdersActivity.this)
-                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                    .themeColor(getResources().getColor(R.color.colorBackground))
-                    //.text(getResources().getString(R.string.progress_loading))
-                    .fadeColor(Color.DKGRAY).build();
-            mProgressDialog.show();
-
-        }
-
-        @Override
-        protected PageResultHolder doInBackground(String... params) {
-            // TODO Auto-generated method stub
-            PageResultHolder pageResultHolder = new PageResultHolder();
-            //String xmlInput = params[0];
-            try
-            {
-                mListOrderData.clear();
-
-                Order f = new Order();
-                f.setTransNo("1");
-                mListOrderData.add(f);
-
-                f = new Order();
-                f.setTransNo("2");
-                mListOrderData.add(f);
-
-                f = new Order();
-                f.setTransNo("3");
-                mListOrderData.add(f);
-
-                f = new Order();
-                f.setTransNo("4");
-                mListOrderData.add(f);
-
-                f = new Order();
-                f.setTransNo("5");
-                mListOrderData.add(f);
-
-                f = new Order();
-                f.setTransNo("6");
-                mListOrderData.add(f);
-
-                f = new Order();
-                f.setTransNo("7");
-                mListOrderData.add(f);
-
-                f = new Order();
-                f.setTransNo("8");
-                mListOrderData.add(f);
 
 
 
-            } catch (Exception e) {
-                pageResultHolder.content = "Exception : CheckOrderData";
-                pageResultHolder.exception = e;
-            }
-
-            return pageResultHolder;
-        }
-
-        @Override
-        protected void onPostExecute(final PageResultHolder result) {
-            // TODO Auto-generated method stub
-
-            try {
-
-                if (result.exception != null) {
-                    mProgressDialog.dismiss();
-                    showMsgDialog(result.exception.toString());
-                }
-                else
-                {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Do something after 100ms
-
-                            mProgressDialog.dismiss();
-
-                            if(mListOrderData.size()>0)
-                            {
-
-                                //mAdapter = new OrderSlipViewAdapter(getApplicationContext(),mListOrderData);
-                                //lv.setAdapter(mAdapter);
-
-
-                                //ogject.setListCheckOrderData(mListOrderData);
-
-                                //bindData();
-
-                               /* mAdapter = new RVGetOrderAdapter(getApplicationContext(),mListOrderData);
-                                lv.setAdapter(mAdapter);
-
-
-                                mTxtCount.setText(mDelCount+"/"+String.valueOf(mListOrderData.size()));*/
-
-
-
-                            }else
-                            {
-                                //finish();
-                                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                                showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
-
-                            }
-
-                        }
-                    }, 200);
-
-                    /*runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    });*/
-
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    private class PageResultHolder {
-        private String content;
-        private Exception exception;
-    }
 
 
     @Override

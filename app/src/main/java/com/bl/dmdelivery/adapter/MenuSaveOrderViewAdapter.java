@@ -64,7 +64,7 @@ public class MenuSaveOrderViewAdapter extends RecyclerView.Adapter<MenuSaveOrder
                     }
                     else
                     {
-                        holder.mImage.setImageResource(R.mipmap.ic_word50);
+                        holder.mImage.setImageResource(R.mipmap.ic_word48);
                     }
 
                     break;

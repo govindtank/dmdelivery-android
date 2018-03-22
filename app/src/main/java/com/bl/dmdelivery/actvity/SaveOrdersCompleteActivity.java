@@ -27,6 +27,7 @@ import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.MenuSaveOrder;
 import com.bl.dmdelivery.model.Order;
+import com.bl.dmdelivery.model.OrderReturn;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
@@ -47,7 +48,15 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
     private Intent myIntent=null;
 
-    private ArrayList<Order> mListOrderData = new ArrayList<Order>();
+    //private ArrayList<Order> mListOrderData = new ArrayList<Order>();
+
+    private ArrayList<Order> mListOrderDataALL = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataY = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataN = new ArrayList<Order>();
+    private ArrayList<OrderReturn> mListReturnDataALL = new ArrayList<OrderReturn>();
+    private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
+
+
     private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
     private RecyclerView lv,lvmenu;
     private RecyclerView.Adapter mAdapter,mMenuAdapter;
@@ -149,7 +158,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             lv.setLayoutManager(manager);
 
             final OrderCompleteAdapter adapter = new OrderCompleteAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
-            adapter.setData(mListOrderData);
+            adapter.setData(mListOrderDataY);
 
             lv.setAdapter(adapter);
             lv.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<Order>() {
@@ -217,11 +226,18 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 //
 //            mBtnReturnList.setText("ใบรับคืน\n(0/2)");
 
-            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderData.size()+"/"+mListOrderData.size()+")");
+//            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataY.size()+"/"+mListOrderDataY.size()+")");
+//
+//            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/"+mListOrderDataY.size()+")");
+//
+//            mBtnReturnList.setText("ใบรับคืน\n(0/0)");
 
-            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n(0/"+mListOrderData.size()+")");
 
-            mBtnReturnList.setText("ใบรับคืน\n(0/0)");
+            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -329,15 +345,15 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                         DialogBuilder.dismiss();
 
                         mOrder = new Order();
-                        mOrder.setRep_code(mListOrderData.get(selectedPosition).getRep_code());
-                        mOrder.setRep_name(mListOrderData.get(selectedPosition).getRep_name());
-                        mOrder.setTransNo(mListOrderData.get(selectedPosition).getTransNo());
-                        mOrder.setAddress1(mListOrderData.get(selectedPosition).getAddress1());
-                        mOrder.setAddress2(mListOrderData.get(selectedPosition).getAddress2());
-                        mOrder.setPostal(mListOrderData.get(selectedPosition).getPostal());
-                        mOrder.setRep_telno(mListOrderData.get(selectedPosition).getRep_telno());
-                        mOrder.setReturn_flag(mListOrderData.get(selectedPosition).getReturn_flag());
-                        mOrder.setCont_desc(mListOrderData.get(selectedPosition).getCont_desc());
+                        mOrder.setRep_code(mListOrderDataY.get(selectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderDataY.get(selectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderDataY.get(selectedPosition).getTransNo());
+                        mOrder.setAddress1(mListOrderDataY.get(selectedPosition).getAddress1());
+                        mOrder.setAddress2(mListOrderDataY.get(selectedPosition).getAddress2());
+                        mOrder.setPostal(mListOrderDataY.get(selectedPosition).getPostal());
+                        mOrder.setRep_telno(mListOrderDataY.get(selectedPosition).getRep_telno());
+                        mOrder.setReturn_flag(mListOrderDataY.get(selectedPosition).getReturn_flag());
+                        mOrder.setCont_desc(mListOrderDataY.get(selectedPosition).getCont_desc());
 
                         ArrayList<Order> order = new ArrayList<Order>();
                         order.add(mOrder);
@@ -356,13 +372,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                         DialogBuilder.dismiss();
 
                         mOrder = new Order();
-                        mOrder.setRep_code(mListOrderData.get(selectedPosition).getRep_code());
-                        mOrder.setRep_name(mListOrderData.get(selectedPosition).getRep_name());
-                        mOrder.setTransNo(mListOrderData.get(selectedPosition).getTransNo());
+                        mOrder.setRep_code(mListOrderDataY.get(selectedPosition).getRep_code());
+                        mOrder.setRep_name(mListOrderDataY.get(selectedPosition).getRep_name());
+                        mOrder.setTransNo(mListOrderDataY.get(selectedPosition).getTransNo());
                         mOrder.setDelivery_date(sigDeliveryDate);
                         mOrder.setTruckNo(sigTruckNo);
-                        mOrder.setRep_telno(mListOrderData.get(selectedPosition).getRep_telno());
-                        mOrder.setDsm_telno(mListOrderData.get(selectedPosition).getDsm_telno());
+                        mOrder.setRep_telno(mListOrderDataY.get(selectedPosition).getRep_telno());
+                        mOrder.setDsm_telno(mListOrderDataY.get(selectedPosition).getDsm_telno());
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
                         myIntent.putExtra("data",mOrder);
@@ -394,7 +410,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 //        mmBtnClose.setTypeface(tf);
 
         mmImvTitle.setImageResource(R.mipmap.ic_launcher);
-        mmTxtTitle.setText("ออเดอร์ : "+mListOrderData.get(selectedPosition).getTransNo());
+        mmTxtTitle.setText("ออเดอร์ : "+mListOrderDataY.get(selectedPosition).getTransNo());
         //mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
@@ -412,11 +428,30 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
         try {
 
-            mListOrderData.clear();
+//            mListOrderDataY.clear();
+//
+//            mHelper = new DBHelper(getApplicationContext());
+//            mListOrderDataY.clear();
+//            mListOrderDataY = mHelper.getOrderWaitList("Y");
+
+
 
             mHelper = new DBHelper(getApplicationContext());
-            mListOrderData.clear();
-            mListOrderData = mHelper.getOrderWaitList("Y");
+
+            mListOrderDataALL.clear();
+            mListOrderDataALL = mHelper.getOrderWaitList("ALL");
+
+            mListOrderDataY.clear();
+            mListOrderDataY = mHelper.getOrderWaitList("Y");
+
+            mListOrderDataN.clear();
+            mListOrderDataN = mHelper.getOrderWaitList("N");
+
+            mListReturnDataALL.clear();
+            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
+
+            mListReturnDataY.clear();
+            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
 
 
 

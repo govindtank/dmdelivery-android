@@ -35,7 +35,7 @@ public class OrderCompleteAdapter extends GestureAdapter<Order, GestureViewHolde
 
         final OrderCompleteViewHolder orderViewHolder = (OrderCompleteViewHolder) holder;
         final Order order = (Order) orderItem;
-        orderViewHolder.mSeqText.setText(String.valueOf(order.getId()));
+        orderViewHolder.mSeqText.setText(String.valueOf(position+1));
         orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo())+" ");
 
         if(order.getCont_desc().contains("+"))
