@@ -108,7 +108,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String CREATE_RETURN_TABLE = String.format("CREATE TABLE %s " +
                         "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
                 TableOrderReturn,
                 OrderReturn.Column.ou_code,
                 OrderReturn.Column.return_no,
@@ -125,7 +125,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 OrderReturn.Column.return_unit_real,
                 OrderReturn.Column.return_unit,
                 OrderReturn.Column.return_remark,
-                OrderReturn.Column.return_status
+                OrderReturn.Column.return_status,
+                OrderReturn.Column.reason_code,
+                OrderReturn.Column.return_note
         );
 
         Log.i(TAG, CREATE_RETURN_TABLE);
@@ -1105,6 +1107,39 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return false;
     }
+
+    public boolean updateOrderReturnSlip(OrderReturn mOrderReturn) {
+        sqLiteDatabase = this.getWritableDatabase();
+        try{
+            ContentValues cv = new ContentValues();
+            cv.put("reason_code",mOrderReturn.getReason_code());
+            cv.put("return_status",mOrderReturn.getReturn_status());
+            cv.put("return_note",mOrderReturn.getReturn_note());
+
+
+            int intResult = sqLiteDatabase.update("OrderReturns", cv,
+                    "return_no='" + mOrderReturn.getReturn_no()
+                            + "' AND rep_code='" + mOrderReturn.getRep_code() + "'",
+                    null);
+
+            if(intResult > 0){
+                return  true;
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
+    }
+
 
     public boolean updateOrderReturnDtl(OrderReturn mOrderReturn) {
         sqLiteDatabase = this.getWritableDatabase();

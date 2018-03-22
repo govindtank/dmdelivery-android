@@ -24,6 +24,8 @@ public class OrderReturn implements Parcelable {
     private String return_unit;
     private String return_remark;
     private String return_status;
+    private String reason_code;
+    private String return_note;
 
     public class Column{
 
@@ -43,7 +45,8 @@ public class OrderReturn implements Parcelable {
         public static final String return_unit = "return_unit";
         public static final String return_remark = "return_remark";
         public static final String return_status = "return_status";
-
+        public static final String reason_code = "reason_code";
+        public static final String return_note = "return_note";
     }
 
     public String getOu_code() {
@@ -170,6 +173,23 @@ public class OrderReturn implements Parcelable {
         this.return_status = return_status;
     }
 
+    public String getReason_code() {
+        return reason_code;
+    }
+
+    public void setReason_code(String reason_code) {
+        this.reason_code = reason_code;
+    }
+
+
+    public String getReturn_note() {
+        return return_note;
+    }
+
+    public void setReturn_note(String return_note) {
+        this.return_note = return_note;
+    }
+
 
     @Override
     public int describeContents() {
@@ -194,6 +214,8 @@ public class OrderReturn implements Parcelable {
         dest.writeString(this.return_unit);
         dest.writeString(this.return_remark);
         dest.writeString(this.return_status);
+        dest.writeString(this.reason_code);
+        dest.writeString(this.return_note);
     }
 
     public OrderReturn() {
@@ -216,6 +238,8 @@ public class OrderReturn implements Parcelable {
         this.return_unit = in.readString();
         this.return_remark = in.readString();
         this.return_status = in.readString();
+        this.reason_code = in.readString();
+        this.return_note = in.readString();
     }
 
     public static final Creator<OrderReturn> CREATOR = new Creator<OrderReturn>() {

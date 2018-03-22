@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Reason;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
@@ -34,12 +37,14 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtInvNo,mTxtCarton,mTxtRepcode,mTxtAddress1,mTxtAddress2,mTxtMslTel;
     private Button mBtnBack,mBtnCancelGPS,mBtnCancel,mBtnGPS,mBtnSaveGPS,mBtnSave,mBtnNew,mBtnNote,mmBtnOk,mmBtnClose;
     private ImageView mmImvTitle;
+    private EditText medtNote;
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
     private ArrayList<Reason> mReturnAcceptRejectList = new ArrayList<Reason>();
     ArrayList<String> arrayListReason = new ArrayList<String>();
     private OrderReturn mOrderReturnGetData = null;
+    private OrderReturn mOrderReturnSaveData = null;
 
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
@@ -52,6 +57,14 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private CanvasView customCanvas;
     private String mSelectReson = "";
     private Integer mSelectResonIndex = 0;
+
+    String mInputPath = Environment.getExternalStorageDirectory().toString() + "/SLIPRETURN/";
+
+
+    private String sigInvNo="";
+    private String sigReturn_no="";
+    private String sigRepcode="";
+    private String sigRep_name="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +92,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private void bindWidget()
     {
         try{
-            String sigInvNo="";
-            String sigReturn_no="";
-            String sigRepcode="";
-            String sigRep_name="";
-
 
             Intent ineGetIntent= getIntent();
             Bundle bdlGetExtras= ineGetIntent.getExtras();
@@ -135,6 +143,8 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             mTxtAddress1 = (TextView) findViewById(R.id.txtAddress1);
             mTxtAddress2 = (TextView) findViewById(R.id.txtAddress2);
             mTxtMslTel= (TextView) findViewById(R.id.txtMslTel);
+            medtNote= (EditText) findViewById(R.id.edtNote);
+
 
             mTxtInvNo.setText("Inv No : " + sigInvNo);
 
@@ -145,7 +155,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             mTxtCarton.setVisibility(View.INVISIBLE);
 
             mTxtAddress1.setText("รหัส-ชื่อสมาชิก : " + sigRepcode + " - " + sigRep_name);
-//            mTxtAddress1.setTypeface(Typeface.DEFAULT);
 
             mTxtAddress2.setText("");
             mTxtAddress2.setVisibility(View.INVISIBLE);
@@ -155,6 +164,13 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
 
             customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+
+
+            File dirInput = new File (mInputPath);
+            if (!dirInput.exists())
+            {
+                dirInput.mkdirs();
+            }
 
 
             getData();
@@ -228,13 +244,55 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             });
 
 
+            mBtnCancelGPS.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    //รับไม่ได้
+                    //ตรวจสอบว่า update status ครบหรือยัง ถ้าครบให้ไปที่ หน้าจัดส่ง.....ถ้าไม่ครบให้ไปที่หน้าใบรับคืน
+
+
+
+
+
+
+
+//                    //บันทึกข้อมูล รับไม่ได้
+//                    mHelper = new DBHelper(getApplicationContext());
+//                    mOrderReturnSaveData = new OrderReturn();
+//
+//                    mOrderReturnSaveData.setReturn_no(sigReturn_no);
+//                    mOrderReturnSaveData.setRep_code(sigRepcode);
+//                    mOrderReturnSaveData.setReturn_status("2");
+//                    mOrderReturnSaveData.setReason_code(mSelectResonIndex.toString());
+//                    mOrderReturnSaveData.setReturn_note(medtNote.getText().toString());
+//                    mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
+
+
+                    //บันทึกข้อมูล รับไม่ได้
+                    mHelper = new DBHelper(getApplicationContext());
+                    mOrderReturnSaveData = new OrderReturn();
+
+                    mOrderReturnSaveData.setReturn_no("");
+                    mOrderReturnSaveData.setRep_code("");
+                    mOrderReturnSaveData.setReturn_status("2");
+                    mOrderReturnSaveData.setReason_code("");
+                    mOrderReturnSaveData.setReturn_note("");
+                    mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
+                }
+            });
+
+            mBtnSave.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                   //รับได้
+
+                }
+            });
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
     }
 
     public void clearCanvas(View v) {
-
         customCanvas.totalDx = 0;
         customCanvas.totalDy  = 0;
         customCanvas.clearCanvas();
