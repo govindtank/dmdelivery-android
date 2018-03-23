@@ -88,7 +88,7 @@ public class MainMenuActivity extends AppCompatActivity {
 //    } ;
 
     private String[] gridViewString = {
-            "แสกนสินค้าขึ้นรถ", "โหลดข้อมูล", "สินค้านอกกล่อง", "บันทึกผลการจัดส่ง", "โหลดเบอร์ติดต่อ", "อัพเดทโปรแกรม",
+            "แสกนสินค้าขึ้นรถ", "โหลดข้อมูล", "สินค้านอกกล่อง", "บันทึกผลการจัดส่ง", "โหลดเบอร์ติดต่อ", "กิจกรรมอื่นๆ","อัพเดทโปรแกรม","อออกจากระบบ"
     } ;
 
 //    private int[] gridViewImageId = {
@@ -98,7 +98,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     private int[] gridViewImageId = {
-            R.mipmap.ic_menu_barcode128, R.mipmap.ic_menu_downloaddata128, R.mipmap.ic_menu_unpack128, R.mipmap.ic_menu_saveorders128, R.mipmap.ic_menu_downloadtel128, R.mipmap.ic_menu_undateprogram128,
+            R.mipmap.ic_menu_barcode128, R.mipmap.ic_menu_downloaddata128, R.mipmap.ic_menu_unpack128, R.mipmap.ic_menu_saveorders128, R.mipmap.ic_menu_downloadtel128, R.mipmap.ic_menu_undateprogram128,R.mipmap.ic_menu_undateprogram128,R.mipmap.ic_menu_undateprogram128
 
     };
 
