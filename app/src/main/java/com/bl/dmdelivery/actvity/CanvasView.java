@@ -35,10 +35,10 @@ public class CanvasView extends View {
 	public String bag = "";
 	public String printmark = "";
 	public String latlng;
-	public String note="";
 	public String reason="";
 	public String gps="";
 	public String gpstext="";
+	public String note="";
 
 
 	public int width;
@@ -55,6 +55,7 @@ public class CanvasView extends View {
 	public int xGps,yGps;
 	public int xGpstext,yGpstext;
 	public int xOrder,yOrder;
+	public int xNote,yNote;
 	private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 	private Typeface tf;
 
@@ -145,7 +146,7 @@ public class CanvasView extends View {
 
 
 		xOrder = 780;
-		yOrder = 940;
+		yOrder = 1115;
 
 
 		if(mListOrderData != null)
@@ -170,20 +171,21 @@ public class CanvasView extends View {
 
 
 
-//
-//		xGps = 20;
-//		yGps = 790;
-//
-//		if(gps.equals(""))
-//		{
-//			canvas.drawText("GPS : ....", xGps, yGps, paint);
-//		}
+
+		xGps = 20;
+		yGps = 970;
+
+		if(!gps.equals(""))
+		{
+			canvas.drawText(gps, xGps, yGps, paint);
+		}
 
 
 
 
 		xGpstext = 20;
-		yGpstext = 890;
+		//yGpstext = 890;
+		yGpstext = 1020;
 
 		if(!gpstext.equals(""))
 		{
@@ -194,11 +196,27 @@ public class CanvasView extends View {
 
 
 		xReason = 20;
-		yReason = 940;
+		//yReason = 940;
+		yReason = 1070;
 
 		if(!reason.equals(""))
 		{
 			canvas.drawText("เหตุผล : "+reason, xReason, yReason, paint);
+		}
+
+
+
+
+		xNote = 20;
+		//yReason = 940;
+		yNote = 1115;
+
+		if(!note.equals(""))
+		{
+			canvas.drawText("หมายเหตุ : "+note, xNote, yNote, paint);
+		}else
+		{
+			canvas.drawText("หมายเหตุ : ", xNote, yNote, paint);
 		}
 
 

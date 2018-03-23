@@ -248,9 +248,11 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             mBtnMenu.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    myIntent = new Intent(getApplicationContext(), OthersMenuActivity.class);
-                    startActivity(myIntent);
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                    myIntent = new Intent(getApplicationContext(), OthersMenuActivity.class);
+//                    startActivity(myIntent);
+//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+                    showMsgDialogMenu();
                 }
             });
 
@@ -279,6 +281,130 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    public void showMsgDialogMenu()
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_menu_order_save, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+        lvmenu = (RecyclerView) v.findViewById(R.id.lvmenu);
+        lvmenu.setLayoutManager(new LinearLayoutManager(this));
+        lvmenu.setHasFixedSize(true);
+
+        //mListMenuData
+
+        mListMenuData.clear();
+
+//        MenuSaveOrder f1 = new MenuSaveOrder();
+//        f1.setMenuname("เซ็นรับสินค้า");
+//        f1.setMenuname_type("0");
+//        f1.setMenuname_mode("0");
+//        mListMenuData.add(f1);
+
+
+        MenuSaveOrder f2 = new MenuSaveOrder();
+        f2.setMenuname("กิจกรรม");
+        f2.setMenuname_type("1");
+        f2.setMenuname_mode("0");
+        mListMenuData.add(f2);
+
+
+
+        mMenuAdapter = new MenuSaveOrderViewAdapter(getApplicationContext(),mListMenuData);
+        lvmenu.setAdapter(mMenuAdapter);
+
+
+        lvmenu.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+                switch (mListMenuData.get(position).getMenuname_type()){
+                    case "0":
+                        //กิจกรรมอื่นๆ
+                        DialogBuilder.dismiss();
+
+                        mOrder = new Order();
+                        mOrder.setRep_code(mListOrderDataN.get(0).getRep_code());
+                        mOrder.setRep_name(mListOrderDataN.get(0).getRep_name());
+                        mOrder.setTransNo(mListOrderDataN.get(0).getTransNo());
+                        mOrder.setDelivery_date(sigDeliveryDate);
+                        mOrder.setTruckNo(sigTruckNo);
+                        mOrder.setRep_telno(mListOrderDataN.get(0).getRep_telno());
+                        mOrder.setDsm_telno(mListOrderDataN.get(0).getDsm_telno());
+
+                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
+                        //myIntent.putExtra("data",mOrder);
+                        startActivity(myIntent);
+                        break;
+
+
+                    case "1":
+                        //กิจกรรมอื่นๆ
+                        DialogBuilder.dismiss();
+
+//                        mOrder = new Order();
+//                        mOrder.setRep_code(mListOrderDataN.get(0).getRep_code());
+//                        mOrder.setRep_name(mListOrderDataN.get(0).getRep_name());
+//                        mOrder.setTransNo(mListOrderDataN.get(0).getTransNo());
+//                        mOrder.setDelivery_date(sigDeliveryDate);
+//                        mOrder.setTruckNo(sigTruckNo);
+//                        mOrder.setRep_telno(mListOrderDataN.get(0).getRep_telno());
+//                        mOrder.setDsm_telno(mListOrderDataN.get(0).getDsm_telno());
+//
+//                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
+//                        myIntent.putExtra("data",mOrder);
+//                        startActivity(myIntent);
+                        break;
+
+                    case "2":
+                        //โทร
+                        DialogBuilder.dismiss();
+
+                        //showMsgDialog(mListMenuData.get(position).getMenuname());
+
+                        break;
+
+                    default:
+
+                        DialogBuilder.dismiss();
+                        showMsgDialog("default");
+
+
+                }
+
+            }
+        }));
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText("เมนู");
+        //mmTxtMsg.setText(msg);
+
+        DialogBuilder.setView(v);
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
     }
 
     public void showMsgDialogSelectedMenu(final int selectedPosition)

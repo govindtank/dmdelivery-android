@@ -150,9 +150,9 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
             txtRepcode = (TextView) findViewById(R.id.txtRepcode);
             txtInvNo = (TextView) findViewById(R.id.txtInvNo);
-            txtAddress1 = (TextView) findViewById(R.id.txtAddress1);
-            txtAddress2 = (TextView) findViewById(R.id.txtAddress2);
-            txtMslTel = (TextView) findViewById(R.id.txtMslTel);
+            //txtAddress1 = (TextView) findViewById(R.id.txtAddress1);
+            //txtAddress2 = (TextView) findViewById(R.id.txtAddress2);
+            //txtMslTel = (TextView) findViewById(R.id.txtMslTel);
             //txtgps = (TextView) findViewById(R.id.txtgps);
 
             txtCarton = (TextView) findViewById(R.id.txtCarton);
@@ -221,9 +221,9 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                     txtRepcode.setText(setRepcodeFormat(order.get(0).getRep_code())+" "+order.get(0).getRep_name());
                     txtInvNo.setText(order.get(0).getTransNo());
-                    txtAddress1.setText(order.get(0).getAddress1());
-                    txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
-                    txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
+                    //txtAddress1.setText(order.get(0).getAddress1());
+                    //txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
+                    //txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
                     txtCarton.setText(order.get(0).getCont_desc());
                     //txtgps.setText("GPS : 0,0");
 
@@ -1134,7 +1134,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                 //txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
 
-                customCanvas.gpstext = "GPS : " + String.valueOf(mLastLocation.getLatitude())+"," + String.valueOf(mLastLocation.getLongitude());
+                customCanvas.gps = "GPS : " + String.valueOf(mLastLocation.getLatitude())+"," + String.valueOf(mLastLocation.getLongitude());
+                customCanvas.gpstext = "Location : ";
                 customCanvas.invalidate();
             } else {
                 /*if there is no last known location. Which means the device has no data for the loction currently.
@@ -1143,7 +1144,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 Log.i("Current Location", "No data for location found");
 
                 //txtgps.setText("No data for location found");
-
+                customCanvas.gps = "";
                 customCanvas.gpstext = "No data for location found";
                 customCanvas.invalidate();
 
@@ -1167,8 +1168,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         mLongitude = String.valueOf(mLastLocation.getLongitude());
 
         //txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
-
-        customCanvas.gpstext = "GPS : " + String.valueOf(mLastLocation.getLatitude())+"," + String.valueOf(mLastLocation.getLongitude());
+        customCanvas.gps = "GPS : " + String.valueOf(mLastLocation.getLatitude())+"," + String.valueOf(mLastLocation.getLongitude());
+        customCanvas.gpstext = "Location : ";
         customCanvas.invalidate();
     }
 
