@@ -33,7 +33,7 @@ public class OrderReturnListViewHolder extends GestureViewHolder {
 //    @BindView(R.id.month_background_stub)
 //    ViewStub mBackgroundView;
 
-    public TextView mSeqText,txtRepcode,txtReturnNo,txtReturnList,txtStatus;
+    public TextView mSeqText,txtRepcode,txtReturnNo,txtReturnList,txtReturnListRes,txtStatus;
     public ImageView mMonthPicture,mItemDrag;
     public View mForegroundView;
     public ViewStub mBackgroundView;
@@ -45,6 +45,8 @@ public class OrderReturnListViewHolder extends GestureViewHolder {
         this.txtRepcode = (TextView) view.findViewById(R.id.txtRepcode);
         this.txtReturnNo = (TextView) view.findViewById(R.id.txtReturnNo);
         this.txtReturnList = (TextView) view.findViewById(R.id.txtReturnList);
+        this.txtReturnListRes = (TextView) view.findViewById(R.id.txtReturnListRes);
+
         this.txtStatus = (TextView) view.findViewById(R.id.txtStatus);
 
 

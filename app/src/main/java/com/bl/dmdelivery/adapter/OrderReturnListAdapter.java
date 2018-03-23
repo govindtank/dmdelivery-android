@@ -39,7 +39,8 @@ public class OrderReturnListAdapter extends GestureAdapter<OrderReturn, GestureV
         orderViewHolder.mSeqText.setText(String.valueOf(position+1));
         orderViewHolder.txtReturnNo.setText(String.valueOf(order.getReturn_no()));
         orderViewHolder.txtRepcode.setText(setRepcodeFormat(String.valueOf(order.getRep_code()))+" - "+order.getRep_name());
-        orderViewHolder.txtReturnList.setText("จำนวนสินค้ารับคืน "+String.valueOf(order.getReturn_unit())+" ชิ้น");
+        orderViewHolder.txtReturnList.setText("จำนวนสินค้าที่ต้องรับคืน "+String.valueOf(order.getReturn_unit())+" ชิ้น");
+        orderViewHolder.txtReturnListRes.setText("จำนวนสินค้าที่รับคืนจริง "+String.valueOf(order.getReturn_unit_real())+" ชิ้น");
         orderViewHolder.txtStatus.setText(String.valueOf(order.getReturn_status()));
 
 

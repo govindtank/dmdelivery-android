@@ -363,7 +363,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
 
 
-                        myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
+                        myIntent = new Intent(getApplicationContext(), ViewSlipActivity.class);
                         myIntent.putExtra("data",order);
                         startActivity(myIntent);
                         break;

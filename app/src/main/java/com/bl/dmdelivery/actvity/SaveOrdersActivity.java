@@ -269,7 +269,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                        }
                     }
 
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
 
 
                     return true;
