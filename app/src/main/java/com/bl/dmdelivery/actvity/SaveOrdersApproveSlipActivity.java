@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -66,6 +68,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
@@ -1166,7 +1169,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 //txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
 
                 customCanvas.gps = "GPS : " + String.valueOf(mLastLocation.getLatitude())+"," + String.valueOf(mLastLocation.getLongitude());
-                customCanvas.gpstext = "Location : ";
+                //customCanvas.gpstext = "Location : ";
+                customCanvas.gpstext = "Location : "+getCompleteAddressString(mLastLocation.getLatitude(),mLastLocation.getLongitude());
                 customCanvas.invalidate();
             } else {
                 /*if there is no last known location. Which means the device has no data for the loction currently.
@@ -1200,8 +1204,44 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
         //txtgps.setText("Lat: " + String.valueOf(mLastLocation.getLatitude())+" "+"Long: " + String.valueOf(mLastLocation.getLongitude()));
         customCanvas.gps = "GPS : " + String.valueOf(mLastLocation.getLatitude())+"," + String.valueOf(mLastLocation.getLongitude());
-        customCanvas.gpstext = "Location : ";
+        customCanvas.gpstext = "Location : "+getCompleteAddressString(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+
+
         customCanvas.invalidate();
+    }
+
+
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+
+        Locale th = new Locale("th");
+
+        Geocoder geocoder = new Geocoder(this, th);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                //Address returnedAddress = addresses.get(0);
+                //StringBuilder strReturnedAddress = new StringBuilder("");
+
+//                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+//                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+//                }
+
+                strAdd = addresses.get(0).getLocality()+" "+addresses.get(0).getSubAdminArea()+" "+addresses.get(0).getAdminArea();
+
+
+                //strAdd = strReturnedAddress.toString();
+                //Log.w("My Current loction address", strReturnedAddress.toString());
+            } else {
+
+                strAdd = "";
+                //Log.w("My Current loction address", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            //Log.w("My Current loction address", "Canont get Address!");
+        }
+        return strAdd;
     }
 
 
