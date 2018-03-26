@@ -44,6 +44,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
 
     private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
+    private ArrayList<OrderReturn> mListOrderReturnGeOnResume = new ArrayList<OrderReturn>();
     private ArrayList<Order> mListOrder= new ArrayList<Order>();
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
@@ -86,10 +87,16 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - OK", Toast.LENGTH_SHORT);
             toast.show();
 
-            //เช็คว่ารับคืนหมดหรือยัง
-            getInit();
 
-//            finish();
+            if(isSaveOrderReturnAllComplete()){
+                //ถ้าบันทึกใบรับคืนครบให้ไปที่ หน้าจัดส่ง
+                finish();
+            }
+            else
+            {
+                //ถ้าบันทึกใบคืนไม่ครบให้ refresh ข้อมูล
+                getInit();
+            }
         }
         else
         {
@@ -107,6 +114,33 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 //        startActivity(myIntent);
 //        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
+
+
+    private boolean isSaveOrderReturnAllComplete(){
+        try{
+            mListOrderReturnGeOnResume.clear();
+            mHelper = new DBHelper(getApplicationContext());
+            mListOrderReturnGeOnResume = mHelper.getOrdersReturnList(mListOrder);
+
+            for(int i=0;i < mListOrderReturnGeOnResume.size(); i++)
+            {
+                if (mListOrderReturnGeOnResume.get(i).getReturn_status() == "0")
+                {
+                    return false;
+                }
+            }
+
+            if(mListOrderReturnGeOnResume == null){ return  false;}
+            if(mListOrderReturnGeOnResume.size() == 0){ return  false;}
+
+            return true;
+        }
+        catch (Exception e)
+        {
+        }
+        return  false;
+    }
+
 
     private void bindWidget()
     {

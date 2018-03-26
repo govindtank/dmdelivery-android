@@ -489,7 +489,7 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             else
             {
-                sigGetData = sigGetData + "'" + mOrderCriteria.get(i).getRep_code() + "'";
+                sigGetData = sigGetData + ",'" + mOrderCriteria.get(i).getRep_code() + "'";
             }
         }
 
@@ -928,7 +928,7 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             else
             {
-                sigGetData = sigGetData + "'" + mOrder.get(i).getTransNo() + "'";
+                sigGetData = sigGetData + ",'" + mOrder.get(i).getTransNo() + "'";
             }
         }
 
