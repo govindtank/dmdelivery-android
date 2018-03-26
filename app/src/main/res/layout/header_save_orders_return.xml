@@ -63,28 +63,28 @@
                 android:weightSum="2">
 
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:weightSum="2">-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="2">
 
-                    <!--<Button-->
-                        <!--android:id="@+id/btnCheckScan"-->
-                        <!--android:layout_width="140dp"-->
-                        <!--android:layout_height="35dp"-->
-                        <!--android:layout_marginLeft="5dp"-->
-                        <!--android:layout_marginRight="5dp"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:background="@drawable/btnnosend"-->
-                        <!--android:text="ตรวจสอบออเดอร์"-->
-                        <!--android:textColor="@color/colorWhite"-->
-                        <!--android:textSize="@dimen/textbtnMenuSize" />-->
+                    <Button
+                        android:id="@+id/btnCheckScan"
+                        android:layout_width="140dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btnnosend"
+                        android:text="บันทึกรับคืนไม่ได้"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/textbtnMenuSize" />
 
-                <!--</LinearLayout>-->
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/btnok"
-                        android:text="บันทึกรับคืนสินค้า"
+                        android:text="บันทึกรับคืนได้"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/textbtnMenuSize" />
                 </LinearLayout>
