@@ -632,7 +632,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
                     //convert json to obj
                     BookingResponse obj = gson.fromJson(result,BookingResponse.class);
                     if(obj.getResponseCode().equals("0")){
-                        showMsgDialog("มีการสแกนซ้ำ !!!!! ");
+                        showMsgDialog("Error !! "+obj.getResponseMessage());
                     }else {
                         mListOrderSum.clear();
                         if(obj.getOrderSummary() != null){
