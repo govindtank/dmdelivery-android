@@ -147,6 +147,7 @@
 
     <string name="btn_text_load_data">โหลดข้อมูล</string>
     <string name="btn_text_update_program">อัพเดท</string>
+    <string name="btn_text_logout">ออกจากระบบ</string>
 
     <string name="txt_text_no_gps">ไม่สามารถดึงข้อมูลตำแหน่งปัจจุบัน</string>
 

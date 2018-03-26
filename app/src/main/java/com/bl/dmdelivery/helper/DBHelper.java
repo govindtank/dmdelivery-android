@@ -678,7 +678,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                null,
+                Order.Column.Itemno,
                 null);
 
 

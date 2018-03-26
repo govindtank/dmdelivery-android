@@ -211,8 +211,16 @@ public class MainMenuActivity extends AppCompatActivity {
                         case "โหลดเบอร์ติดต่อ":
                             showMsgConfirmSelectedSingleDialog();
                             break;
+                        case "กิจกรรมอื่นๆ":
+                            showMsgDialog("กิจกรรมอื่นๆ");
+                            break;
                         case "อัพเดทโปรแกรม":
-                            showMsgConfirmDialog("ยืนยันการอัพเดทโปรแกรม ?",getResources().getString(R.string.btn_text_update_program));
+                            showMsgUpdateConfirmDialog("ยืนยันการอัพเดทโปรแกรม ?",getResources().getString(R.string.btn_text_update_program));
+                            break;
+                        case "ออกจากระบบ":
+
+                            showMsgLogoutConfirmDialog("ยืนยันการออกจากระบบ ?",getResources().getString(R.string.btn_text_logout));
+
                             break;
                     }
 
@@ -326,6 +334,167 @@ public class MainMenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 loadData();
                 DialogBuilder.dismiss();
+            }
+        });
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+    }
+
+
+    public void showMsgUpdateConfirmDialog(String msg,String btntxt)
+    {
+//        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+//        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_confirm, null, false);
+//
+//
+//        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+//        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+//
+//        mmTxtTitle.setText("ยืนยัน");
+//        mmTxtMsg.setText(msg);
+//        mmBtnOk.setText(btntxt);
+//
+//        DialogBuilder.setView(v);
+//
+//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                loadData();
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        DialogBuilder.show();
+
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_message_confirm, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
+        mmBtnOk.setText(btntxt);
+
+        DialogBuilder.setView(v);
+
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //loadData();
+                DialogBuilder.dismiss();
+            }
+        });
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+    }
+
+
+    public void showMsgLogoutConfirmDialog(String msg,String btntxt)
+    {
+//        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+//        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_confirm, null, false);
+//
+//
+//        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+//        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+//
+//        mmTxtTitle.setText("ยืนยัน");
+//        mmTxtMsg.setText(msg);
+//        mmBtnOk.setText(btntxt);
+//
+//        DialogBuilder.setView(v);
+//
+//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                loadData();
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        DialogBuilder.show();
+
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_message_confirm, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
+        mmBtnOk.setText(btntxt);
+
+        DialogBuilder.setView(v);
+
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                DialogBuilder.dismiss();
+                finish();
+                myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(myIntent);
             }
         });
 
