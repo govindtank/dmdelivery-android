@@ -10,5 +10,6 @@ public class TagUtils {
     public static final String DMDELIVERY_PREF = "dmdeliveryPrefs";
     public static final String PREF_DELIVERY_DATE = "deliveryDate";
     public static final String PREF_LOGIN_TRUCK_NO = "loginTruckno";
+    public static final String PREF_BACK_TO_PAGE = "backToPage";
 
 }

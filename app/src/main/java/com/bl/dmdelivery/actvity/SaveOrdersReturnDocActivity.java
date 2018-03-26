@@ -49,6 +49,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     DBHelper mHelper;
 
     private String sigMultiInv="";
+    private boolean isResumeState = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,30 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        if(!isResumeState)
+        {
+            //มาจากหน้า slip
+            Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - OK", Toast.LENGTH_SHORT);
+            toast.show();
+
+            //เช็คว่ารับคืนหมดหรือยัง
+            getInit();
+
+//            finish();
+        }
+        else
+        {
+            //มาจากหน้าใบคืน
+            Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - Slip1", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+
     public void onBackPressed() {
 //        finish();
 //
@@ -96,6 +121,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                 mListOrder =(ArrayList<Order>)bdlGetExtras.get("data");
             }
 
+            isResumeState = true;
 
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnBack.setVisibility(View.INVISIBLE);
@@ -127,6 +153,8 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                     mOrderReturn.setReturn_no( mListOrderReturn.get(position).getReturn_no());
                     mOrderReturn.setRep_code( mListOrderReturn.get(position).getRep_code());
                     mOrderReturn.setRep_name( mListOrderReturn.get(position).getRep_name());
+
+                    isResumeState = false;
 
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
                     myIntent.putExtra("data", mOrderReturn);

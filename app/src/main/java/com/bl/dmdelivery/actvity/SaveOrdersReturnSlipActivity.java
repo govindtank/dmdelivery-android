@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -28,13 +29,14 @@ import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Reason;
+import com.bl.dmdelivery.utility.TagUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtInvNo,mTxtCarton,mTxtRepcode,mTxtAddress1,mTxtAddress2,mTxtMslTel;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtInvNo,mTxtRepcode;
     private Button mBtnBack,mBtnCancelGPS,mBtnCancel,mBtnGPS,mBtnSaveGPS,mBtnSave,mBtnNew,mBtnNote,mmBtnOk,mmBtnClose;
     private ImageView mmImvTitle;
     private EditText medtNote;
@@ -67,7 +69,10 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private String sigRep_name="";
     private String sigReson_code="";
     private String sigNote="";
+    private String backToPage="";
 
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +87,10 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         }
 
         try {
-            bindWidget();
 
-//            setDefaultFonts();
+            sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
+
+            bindWidget();
 
             setWidgetControl();
         } catch (Exception e) {
@@ -130,38 +136,19 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             mBtnNew= (Button) findViewById(R.id.btnNew);
             mBtnNote = (Button) findViewById(R.id.btnNote);
 
-            mBtnCancelGPS.setText("รับไม่ได้");
+            mBtnCancelGPS.setVisibility(View.INVISIBLE);
             mBtnCancel.setVisibility(View.INVISIBLE);
             mBtnGPS.setVisibility(View.INVISIBLE);
             mBtnSaveGPS.setVisibility(View.INVISIBLE);
-            mBtnSave.setText("รับได้");
+            mBtnSave.setText("บันทึก");
 
-            //textbox
+
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_slip));
 
             mTxtInvNo = (TextView) findViewById(R.id.txtInvNo);
-            mTxtCarton = (TextView) findViewById(R.id.txtCarton);
             mTxtRepcode = (TextView) findViewById(R.id.txtRepcode);
-            mTxtAddress1 = (TextView) findViewById(R.id.txtAddress1);
-            mTxtAddress2 = (TextView) findViewById(R.id.txtAddress2);
-            mTxtMslTel= (TextView) findViewById(R.id.txtMslTel);
 
-            mTxtInvNo.setText("Inv No : " + sigInvNo);
-
-            mTxtRepcode.setText("เลขที่ใบรับคืน : " + sigReturn_no);
-
-
-            mTxtCarton.setText("");
-            mTxtCarton.setVisibility(View.INVISIBLE);
-
-            mTxtAddress1.setText("รหัส-ชื่อสมาชิก : " + sigRepcode + " - " + sigRep_name);
-
-            mTxtAddress2.setText("");
-            mTxtAddress2.setVisibility(View.INVISIBLE);
-
-            mTxtMslTel.setText("");
-            mTxtMslTel.setVisibility(View.INVISIBLE);
 
 
             customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
@@ -185,7 +172,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         try{
             mReturnAcceptRejectList.clear();
             mHelper = new DBHelper(getApplicationContext());
-            mReturnAcceptRejectList = mHelper.getReasonListForCondition("'RETURN_ACCEPT','RETURN_REJECT'");
+            mReturnAcceptRejectList = mHelper.getReasonListForCondition("'RETURN_ACCEPT'");
 
 
             for(int i = 0; i < mReturnAcceptRejectList.size();i++)
@@ -208,43 +195,22 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     }
 
 
-//    private void setDefaultFonts() {
-//        try {
-////            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-////            mTxtHeader.setTypeface(tf);
-////            mBtnBack.setTypeface(tf);
-//
-//        } catch (Exception e) {
-//            showMsgDialog(e.toString());
-//        }
-//    }
-
-
-    private boolean isSaveOrderReturnAllComplete(){
-        try{
-            for(int i=0;i < mListOrderReturnSavDate.size(); i++)
-            {
-                if (mListOrderReturnSavDate.get(i).getReturn_status() == "0")
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        catch (Exception e)
-        {
-        }
-        return  false;
-    }
-
-
     private void setWidgetControl() {
         try{
 
+            mTxtInvNo.setText("เลขที่ใบรับคืน : " + sigReturn_no);
+            mTxtRepcode.setText("รหัส-ชื่อสมาชิก : " + sigRepcode + " - " + sigRep_name);
+
+
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
+                    backToPage = "BACK_TO_PAGE";
+
+                    editor = sp.edit();
+                    editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+                    editor.apply();
+
                     finish();
-                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 }
             });
 
@@ -262,74 +228,38 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             });
 
 
-            mBtnCancelGPS.setOnClickListener(new View.OnClickListener() {
+            mBtnSave.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    //รับไม่ได้
-                    //ตรวจสอบว่า update status ครบหรือยัง ถ้าครบให้ไปที่ หน้าจัดส่ง.....ถ้าไม่ครบให้ไปที่หน้าใบรับคืน
 
-                    if(isSaveOrderReturnAllComplete() == true){
-                        //ถ้าบันทึก ใบคืนครบหมดแล้ว ไปหน้าหลัก
-                        if(medtNote != null){
-                            sigNote = medtNote.getText().toString();
-                        }
-                        else
-                        {
-                            sigNote = "";
-                        }
+                    backToPage = "SAVE_TO_PAGE";
 
-                        //บันทึกข้อมูล รับไม่ได้
-                        mHelper = new DBHelper(getApplicationContext());
-                        mOrderReturnSaveData = new OrderReturn();
+                    editor = sp.edit();
+                    editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+                    editor.apply();
 
-                        mOrderReturnSaveData.setReturn_no(sigReturn_no);
-                        mOrderReturnSaveData.setRep_code(sigRepcode);
-                        mOrderReturnSaveData.setReturn_status("2");
-                        mOrderReturnSaveData.setReason_code(sigReson_code);
-                        mOrderReturnSaveData.setReturn_note(sigNote);
-                        mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
-
-
-                        //call page activity
-                        finish();
+                    //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
+                    if(medtNote != null){
+                        sigNote = medtNote.getText().toString();
                     }
                     else
                     {
-                        //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
-                        if(medtNote != null){
-                            sigNote = medtNote.getText().toString();
-                        }
-                        else
-                        {
-                            sigNote = "";
-                        }
-
-                        //บันทึกข้อมูล รับไม่ได้
-                        mHelper = new DBHelper(getApplicationContext());
-                        mOrderReturnSaveData = new OrderReturn();
-
-                        mOrderReturnSaveData.setReturn_no(sigReturn_no);
-                        mOrderReturnSaveData.setRep_code(sigRepcode);
-                        mOrderReturnSaveData.setReturn_status("2");
-                        mOrderReturnSaveData.setReason_code(sigReson_code);
-                        mOrderReturnSaveData.setReturn_note(sigNote);
-                        mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
-
-
-                        //call page activity
-                        finish();
+                        sigNote = "";
                     }
 
+                    //บันทึกข้อมูล รับได้
+                    mHelper = new DBHelper(getApplicationContext());
+                    mOrderReturnSaveData = new OrderReturn();
 
-//                    Toast toast = Toast.makeText(SaveOrdersReturnSlipActivity.this, sigReson_code, Toast.LENGTH_SHORT);
-//                    toast.show();
+                    mOrderReturnSaveData.setReturn_no(sigReturn_no);
+                    mOrderReturnSaveData.setRep_code(sigRepcode);
+                    mOrderReturnSaveData.setReturn_status("1");
+                    mOrderReturnSaveData.setReason_code(sigReson_code);
+                    mOrderReturnSaveData.setReturn_note(sigNote);
+                    mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
 
-                }
-            });
 
-            mBtnSave.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
                    //รับได้
-
+                    finish();
                 }
             });
 
@@ -355,7 +285,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
         DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
         mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnok);
@@ -365,7 +294,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
         mmImvTitle.setImageResource(R.mipmap.ic_launcher);
         mmTxtTitle.setText(getResources().getString(R.string.txt_text_reason_remark));
-        //mmTxtMsg.setText(msg);
         mmBtnOk.setText(getResources().getString(R.string.btn_text_ok));
 
         lvReturnAcceptRejectList = (ListView) v.findViewById(R.id.lv);
