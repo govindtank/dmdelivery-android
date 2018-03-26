@@ -83,9 +83,9 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
         if(!isResumeState)
         {
-            //มาจากหน้า slip
-            Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - OK", Toast.LENGTH_SHORT);
-            toast.show();
+//            //มาจากหน้า slip
+//            Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - OK", Toast.LENGTH_SHORT);
+//            toast.show();
 
 
             if(isSaveOrderReturnAllComplete()){
@@ -98,12 +98,12 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                 getInit();
             }
         }
-        else
-        {
-            //มาจากหน้าใบคืน
-            Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - Slip1", Toast.LENGTH_SHORT);
-            toast.show();
-        }
+//        else
+//        {
+//            //มาจากหน้าใบคืน
+//            Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - Slip1", Toast.LENGTH_SHORT);
+//            toast.show();
+//        }
     }
 
 
@@ -217,8 +217,6 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                 }
             }else
             {
-                //finish();
-                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
             }
 

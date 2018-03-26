@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_dialog"
     android:orientation="vertical"
-    android:weightSum="4">
-
+    android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imvTitle"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
 
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:text=""
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/textDialogSize20"
-            android:textStyle="bold" />
+            android:layout_marginLeft="8dp"
+            android:text="Title"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/textSize25" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
         android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBG"
+            android:background="@color/colorBackground"
             android:orientation="vertical">
 
             <include
@@ -52,28 +70,46 @@
     </LinearLayout>
 
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:orientation="horizontal">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="horizontal">-->
 
-        <!--<TextView-->
-            <!--android:id="@+id/textView10"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:text="TextView" />-->
+    <!--<TextView-->
+    <!--android:id="@+id/textView10"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="TextView" />-->
     <!--</LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_dialog"
+        android:orientation="vertical"
+        android:paddingLeft="12dp">
+
+
+        <TextView
+            android:id="@+id/txtremark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_text_remark"
+            android:textColor="@color/colorDark"
+            android:textSize="@dimen/textRowSize" />
+    </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/linearLayoutTruck"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:background="@drawable/shape_no_stroke"
         android:orientation="horizontal">
@@ -81,36 +117,38 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <EditText
                 android:id="@+id/edtNote"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/background_edittext"
-                android:ems="10"
-                android:imeActionLabel="@string/action_sign_in"
+                android:imeActionLabel="@string/action_ok"
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
-                android:lines="6"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorHintText"
-                android:textSize="@dimen/textEdittextSize14"
-                android:textStyle="normal"
-                android:hint="@string/txt_text_remark"/>
+                android:textSize="@dimen/textbtnDialogSize"
+                android:textStyle="normal" />
         </LinearLayout>
 
     </LinearLayout>
 
+
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
@@ -120,72 +158,281 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:gravity="center"
+                        android:gravity="right"
                         android:orientation="vertical">
 
                         <Button
-                            android:id="@+id/btnOk"
-                            android:background="@drawable/btngreen"
-                            android:textColor="@color/colorBackgroundWhite"
-                            android:layout_width="match_parent"
+                            android:id="@+id/btnok"
+                            style="@style/btnok"
+                            android:layout_width="120dp"
                             android:layout_height="35dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginRight="10dp"
                             android:text="@string/btn_text_ok"
-                            android:textSize="@dimen/textRowSize" />
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/textDialogSize" />
+
+
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:gravity="center"
+                        android:gravity="right"
                         android:orientation="vertical">
 
+                        <!-- <Button
+                             style="@style/btnmenuinactive"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:drawableTop="@mipmap/ic_save64"
+                             android:text="@string/btn_text_confirm"
+                             android:id="@+id/btnConfirm"
+                             android:padding="8dp" />-->
+
+
                         <Button
-                            android:id="@+id/btnClose"
-                            android:background="@drawable/btngray"
-                            android:textColor="@color/colorBackgroundWhite"
-                            android:layout_width="match_parent"
+                            android:id="@+id/btClose"
+                            style="@style/btnclose"
+                            android:layout_width="120dp"
                             android:layout_height="35dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="@string/btn_text_ordercancel"
-                            android:textSize="@dimen/textRowSize" />
+                            android:text="@string/txt_text_close"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/textDialogSize" />
 
                     </LinearLayout>
                 </LinearLayout>
-
-
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
+
 </LinearLayout>
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/layout_root"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--android:weightSum="4">-->
+
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="10dp">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/txtTitle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:text=""-->
+            <!--android:textColor="@color/colorPrimaryDark"-->
+            <!--android:textSize="@dimen/textDialogSize20"-->
+            <!--android:textStyle="bold" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="250dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/colorBG"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<include-->
+                <!--android:id="@+id/includeHeaderMenu"-->
+                <!--layout="@layout/toolbar_menu"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:orientation="horizontal">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/textView10"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="TextView" />&ndash;&gt;-->
+    <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/linearLayoutTruck"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_marginRight="5dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@drawable/shape_no_stroke"-->
+        <!--android:orientation="horizontal">-->
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/edtNote"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/background_edittext"-->
+                <!--android:ems="10"-->
+                <!--android:imeActionLabel="@string/action_sign_in"-->
+                <!--android:imeOptions="actionDone"-->
+                <!--android:inputType="textMultiLine"-->
+                <!--android:lines="6"-->
+                <!--android:textAlignment="textStart"-->
+                <!--android:textColor="@color/colorText"-->
+                <!--android:textColorHint="@color/colorHintText"-->
+                <!--android:textSize="@dimen/textEdittextSize14"-->
+                <!--android:textStyle="normal"-->
+                <!--android:hint="@string/txt_text_remark"/>-->
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginBottom="7dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="vertical"-->
+        <!--android:paddingBottom="2dp">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="2">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="fill_parent"-->
+                        <!--android:gravity="center"-->
+                        <!--android:orientation="vertical">-->
+
+                        <!--<Button-->
+                            <!--android:id="@+id/btnOk"-->
+                            <!--android:background="@drawable/btngreen"-->
+                            <!--android:textColor="@color/colorBackgroundWhite"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="35dp"-->
+                            <!--android:layout_marginBottom="5dp"-->
+                            <!--android:layout_marginLeft="5dp"-->
+                            <!--android:layout_marginRight="5dp"-->
+                            <!--android:text="@string/btn_text_ok"-->
+                            <!--android:textSize="@dimen/textRowSize" />-->
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="fill_parent"-->
+                        <!--android:gravity="center"-->
+                        <!--android:orientation="vertical">-->
+
+                        <!--<Button-->
+                            <!--android:id="@+id/btnClose"-->
+                            <!--android:background="@drawable/btngray"-->
+                            <!--android:textColor="@color/colorBackgroundWhite"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="35dp"-->
+                            <!--android:layout_marginBottom="5dp"-->
+                            <!--android:layout_marginLeft="5dp"-->
+                            <!--android:layout_marginRight="5dp"-->
+                            <!--android:text="@string/btn_text_ordercancel"-->
+                            <!--android:textSize="@dimen/textRowSize" />-->
+
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+<!--</LinearLayout>-->
+
+

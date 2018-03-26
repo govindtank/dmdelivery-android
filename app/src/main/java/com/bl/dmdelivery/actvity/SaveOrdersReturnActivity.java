@@ -15,12 +15,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +25,9 @@ import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.OrderReturnDtlViewAdapter;
 import com.bl.dmdelivery.adapter.OrderReturnViewAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
-import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.utility.TagUtils;
@@ -46,18 +43,14 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
-    private ArrayList<Reason> mReturnAcceptRejectList = new ArrayList<Reason>();
-    private ArrayList<String> arrayListReason = new ArrayList<String>();
+    private ArrayList<Reason> arrayListReason = new ArrayList<Reason>();
 
-    private String[] sigReturnList;
-    private String[] sigReturncancellist;
-
+    private String  mSelect="0";
     private String mSelectReson = "";
     private Integer mSelectResonIndex = 0;
     private Intent myIntent=null;
 
-    private RecyclerView lv;
-    private RecyclerView.Adapter mAdapter;
+
 
     private String ref_rep_code;
     private String ref_return_no;
@@ -66,16 +59,21 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     private int intQTY_UINT= 0;
     private String sigNote="";
 
-
-
     private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
     private ArrayList<OrderReturn> mListOrderReturnSaveData = new ArrayList<OrderReturn>();
-    private ArrayList<OrderReturn> mListOrderReturnGeOnResume = new ArrayList<OrderReturn>();
     private OrderReturn mOrderReturnSaveData = null;
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
 
-    private ListView lvReturnAcceptRejectList;
+
+    private RecyclerView lv;
+    private RecyclerView.Adapter mAdapter;
+
+    private RecyclerView lvReturnAcceptRejectList;
+    private RecyclerView.Adapter mReturnAcceptRejectListAdapter;
+
+
+
     private String sigReson_code="";
     private boolean isResumeState = false;
 
@@ -112,28 +110,23 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
         if(!isResumeState)
         {
-            //มาจากหน้า slip
-            Toast toast = Toast.makeText(SaveOrdersReturnActivity.this, "onResume - Slip2", Toast.LENGTH_SHORT);
-            toast.show();
+//            //มาจากหน้า slip
+//            Toast toast = Toast.makeText(SaveOrdersReturnActivity.this, "onResume - Slip2", Toast.LENGTH_SHORT);
+//            toast.show();
 
 
             String sigBackToPage = sp.getString(TagUtils.PREF_BACK_TO_PAGE, "");
-
-            if (sigBackToPage.toUpperCase()=="SAVE_TO_PAGE")
+            if (sigBackToPage.toUpperCase().equals("SAVE_TO_PAGE"))
             {
                 finish();
             }
-            else
-            {
-
-            }
         }
-        else
-        {
-            //มาจากหน้าใบคืน
-            Toast toast = Toast.makeText(SaveOrdersReturnActivity.this, "onResume - returnDoc", Toast.LENGTH_SHORT);
-            toast.show();
-        }
+//        else
+//        {
+//            //มาจากหน้าใบคืน
+//            Toast toast = Toast.makeText(SaveOrdersReturnActivity.this, "onResume - returnDoc", Toast.LENGTH_SHORT);
+//            toast.show();
+//        }
     }
 
     private void bindWidget()
@@ -173,9 +166,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
 
 
-            // Create the arrays
-            sigReturnList = getResources().getStringArray(R.array.returnList);
-
             lv = (RecyclerView) findViewById(R.id.lv);
             lv.setLayoutManager(new LinearLayoutManager(this));
             lv.setHasFixedSize(true);
@@ -192,21 +182,17 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     private void getData() {
         try{
-            mReturnAcceptRejectList.clear();
+            arrayListReason.clear();
             mHelper = new DBHelper(getApplicationContext());
-            mReturnAcceptRejectList = mHelper.getReasonListForCondition("'RETURN_REJECT'");
+            arrayListReason = mHelper.getReasonListForCondition("'RETURN_REJECT'");
 
-
-            for(int i = 0; i < mReturnAcceptRejectList.size();i++)
-            {
-                arrayListReason.add(mReturnAcceptRejectList.get(i).getReason_code() + " " + mReturnAcceptRejectList.get(i).getReason_desc());
-            }
 
             if(arrayListReason.size() > 0)
             {
-                mSelectReson =  mReturnAcceptRejectList.get(0).getReason_desc();
+                mSelectReson =  arrayListReason.get(0).getReason_desc();
                 mSelectResonIndex = 0;
             }
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -291,28 +277,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     }
 
 
-//    private boolean isSaveOrderReturnAllComplete(){
-//        try{
-//            mHelper = new DBHelper(getApplicationContext());
-//            mListOrderReturnGeOnResume.clear();
-//            mListOrderReturnGeOnResume = mHelper.getOrderReturnCriteria("'" + ref_return_no + "'");
-//
-//            for(int i=0;i < mListOrderReturnGeOnResume.size(); i++)
-//            {
-//                if (mListOrderReturnGeOnResume.get(i).getReturn_status() == "0")
-//                {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-//        catch (Exception e)
-//        {
-//        }
-//        return  false;
-//    }
-
-
     public void showMsgQtyDialog(String sigFs_code,String sigQty_uint_real,String sigQty_uint,int selectedPosition)
     {
         intQTY_UINT_REAL=0;
@@ -387,8 +351,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
                     mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
                 }
-
-//                Toast.makeText(SaveOrdersReturnActivity.this, "intQTY_UINT_REAL : " + String.valueOf(intQTY_UINT_REAL) + " intQTY_UINT : " + String.valueOf(intQTY_UINT), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -404,8 +366,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
                     mmTxtQty.setText(String.valueOf(intQTY_UINT_REAL));
                 }
-
-//                Toast.makeText(SaveOrdersReturnActivity.this, "intQTY_UINT_REAL : " + String.valueOf(intQTY_UINT_REAL) + " intQTY_UINT : " + String.valueOf(intQTY_UINT), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -443,12 +403,11 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = li.inflate(R.layout.dialog_reason_save_order, null, false);
+        View v = li.inflate(R.layout.dialog_save_orders_return_cancel, null, false);
 
 
         DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
         mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnOk = (Button) v.findViewById(R.id.btnok);
@@ -458,40 +417,60 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
         mmImvTitle.setImageResource(R.mipmap.ic_launcher);
         mmTxtTitle.setText(getResources().getString(R.string.txt_text_reason_remark));
-        //mmTxtMsg.setText(msg);
         mmBtnOk.setText(getResources().getString(R.string.btn_text_ok));
 
-        lvReturnAcceptRejectList = (ListView) v.findViewById(R.id.lv);
-        lvReturnAcceptRejectList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        if(arrayListReason.size() > 0)
+        lvReturnAcceptRejectList = (RecyclerView) v.findViewById(R.id.lvacceptList);
+        lvReturnAcceptRejectList.setLayoutManager(new LinearLayoutManager(this));
+        lvReturnAcceptRejectList.setHasFixedSize(true);
+
+        if(mSelectResonIndex > 0)
         {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayListReason);
-            lvReturnAcceptRejectList.setAdapter(adapter);
 
-            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
-            if(mSelectResonIndex > 0)
-            {
-                lvReturnAcceptRejectList.setItemChecked(mSelectResonIndex,true);
-            }
-            else
-            {
-                lvReturnAcceptRejectList.setItemChecked(0,true);
-            }
+            arrayListReason.get(mSelectResonIndex).setIsselect("1");
+        }
+        else
+        {
+            arrayListReason.get(0).setIsselect("1");
         }
 
-        lvReturnAcceptRejectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = mReturnAcceptRejectList.get(position).getReason_desc();
+        mReturnAcceptRejectListAdapter = new SaveOrderReasonViewAdapter(getApplicationContext(),arrayListReason);
+        lvReturnAcceptRejectList.setAdapter(mReturnAcceptRejectListAdapter);
 
-                sigReson_code = mReturnAcceptRejectList.get(position).getReason_code();
+
+        lvReturnAcceptRejectList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+                for(int i = arrayListReason.size()-1 ; i >= 0; i--)
+                {
+
+                    mSelect = arrayListReason.get(i).getIsselect().toString();
+
+                    if(mSelect.equals("1"))
+                    {
+                        arrayListReason.get(i).setIsselect("0");
+                    }
+
+                }
+
+
+                mSelect = arrayListReason.get(position).getIsselect();
+
+                arrayListReason.get(position).setIsselect("1");
+
+                String description = arrayListReason.get(position).getReason_desc();
+
                 mSelectReson = description;
+
                 mSelectResonIndex = position;
 
-                //Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
+
+                mReturnAcceptRejectListAdapter.notifyDataSetChanged();
+
             }
-        });
+        }));
 
 
         DialogBuilder.setView(v);

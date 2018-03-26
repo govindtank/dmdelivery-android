@@ -12,21 +12,21 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
-import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.utility.TagUtils;
@@ -45,20 +45,20 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
     private ArrayList<Reason> mReturnAcceptRejectList = new ArrayList<Reason>();
     private ArrayList<OrderReturn> mListOrderReturnSavDate = new ArrayList<OrderReturn>();
-    ArrayList<String> arrayListReason = new ArrayList<String>();
     private OrderReturn mOrderReturnGetData = null;
     private OrderReturn mOrderReturnSaveData = null;
-
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
 
-    private ListView lvReturnAcceptRejectList;
-//    private String[] sigReturnAcceptRejectList;
-//    private Intent myIntent=null;
+    private CanvasViewSlipReturn mCanvasViewSlipReturn;
 
-    private CanvasView customCanvas;
+
+    private ArrayList<Reason> arrayListReason = new ArrayList<Reason>();
+    private RecyclerView lvReturnAcceptRejectList;
+    private RecyclerView.Adapter mReturnAcceptRejectListAdapter;
     private String mSelectReson = "";
     private Integer mSelectResonIndex = 0;
+    private String  mSelect="0";
 
     String mInputPath = Environment.getExternalStorageDirectory().toString() + "/SLIPRETURN/";
 
@@ -151,7 +151,8 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
 
 
-            customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+            mCanvasViewSlipReturn = (CanvasViewSlipReturn) findViewById(R.id.signature_canvas);
+
 
 
             File dirInput = new File (mInputPath);
@@ -170,25 +171,21 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
     private void getData() {
         try{
-            mReturnAcceptRejectList.clear();
+
+            arrayListReason.clear();
             mHelper = new DBHelper(getApplicationContext());
-            mReturnAcceptRejectList = mHelper.getReasonListForCondition("'RETURN_ACCEPT'");
+            arrayListReason = mHelper.getReasonListForCondition("'RETURN_ACCEPT'");
 
-
-            for(int i = 0; i < mReturnAcceptRejectList.size();i++)
-            {
-                arrayListReason.add(mReturnAcceptRejectList.get(i).getReason_code() + " " + mReturnAcceptRejectList.get(i).getReason_desc());
-            }
 
             if(arrayListReason.size() > 0)
             {
-                mSelectReson =  mReturnAcceptRejectList.get(0).getReason_desc();
+                mSelectReson =  arrayListReason.get(0).getReason_desc();
                 mSelectResonIndex = 0;
 
-                customCanvas.gpstext="GPS : ";
-                customCanvas.reason = mSelectReson;
-                customCanvas.invalidate();
+                mCanvasViewSlipReturn.reason = mSelectReson;
+                mCanvasViewSlipReturn.invalidate();
             }
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -269,9 +266,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     }
 
     public void clearCanvas(View v) {
-        customCanvas.totalDx = 0;
-        customCanvas.totalDy  = 0;
-        customCanvas.clearCanvas();
+        mCanvasViewSlipReturn.totalDx = 0;
+        mCanvasViewSlipReturn.totalDy  = 0;
+        mCanvasViewSlipReturn.clearCanvas();
     }
 
     public void showMsgReasonApproveSelectedSingleDialog()
@@ -280,7 +277,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = li.inflate(R.layout.dialog_reason_save_order, null, false);
+        View v = li.inflate(R.layout.dialog_save_orders_return_cancel, null, false);
 
 
         DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -291,42 +288,64 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         mmBtnClose = (Button) v.findViewById(R.id.btClose);
         medtNote = (EditText) v.findViewById(R.id.edtNote);
 
+        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+        medtNote.setTypeface(tf);
+        medtNote.setText(sigNote);
 
         mmImvTitle.setImageResource(R.mipmap.ic_launcher);
         mmTxtTitle.setText(getResources().getString(R.string.txt_text_reason_remark));
         mmBtnOk.setText(getResources().getString(R.string.btn_text_ok));
 
-        lvReturnAcceptRejectList = (ListView) v.findViewById(R.id.lv);
-        lvReturnAcceptRejectList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        if(arrayListReason.size() > 0)
+        lvReturnAcceptRejectList = (RecyclerView) v.findViewById(R.id.lvacceptList);
+        lvReturnAcceptRejectList.setLayoutManager(new LinearLayoutManager(this));
+        lvReturnAcceptRejectList.setHasFixedSize(true);
+
+
+        if(mSelectResonIndex > 0)
         {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayListReason);
-            lvReturnAcceptRejectList.setAdapter(adapter);
 
-            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
-            if(mSelectResonIndex > 0)
-            {
-                lvReturnAcceptRejectList.setItemChecked(mSelectResonIndex,true);
-            }
-            else
-            {
-                lvReturnAcceptRejectList.setItemChecked(0,true);
-            }
+            arrayListReason.get(mSelectResonIndex).setIsselect("1");
+        }
+        else
+        {
+            arrayListReason.get(0).setIsselect("1");
         }
 
-        lvReturnAcceptRejectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = mReturnAcceptRejectList.get(position).getReason_desc();
+        mReturnAcceptRejectListAdapter = new SaveOrderReasonViewAdapter(getApplicationContext(),arrayListReason);
+        lvReturnAcceptRejectList.setAdapter(mReturnAcceptRejectListAdapter);
 
-                sigReson_code = mReturnAcceptRejectList.get(position).getReason_code();
+
+
+        lvReturnAcceptRejectList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                for(int i = arrayListReason.size()-1 ; i >= 0; i--)
+                {
+                    mSelect = arrayListReason.get(i).getIsselect().toString();
+
+                    if(mSelect.equals("1"))
+                    {
+                        arrayListReason.get(i).setIsselect("0");
+                    }
+                }
+
+
+                mSelect = arrayListReason.get(position).getIsselect();
+
+                arrayListReason.get(position).setIsselect("1");
+
+                String description = arrayListReason.get(position).getReason_desc();
+
                 mSelectReson = description;
+
                 mSelectResonIndex = position;
 
-                //Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
+                mReturnAcceptRejectListAdapter.notifyDataSetChanged();
+
             }
-        });
+        }));
 
 
         DialogBuilder.setView(v);
@@ -336,8 +355,10 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                 //loadData();
                 DialogBuilder.dismiss();
 
-                customCanvas.reason = mSelectReson;
-                customCanvas.invalidate();
+                sigNote = medtNote.getText().toString();
+                mCanvasViewSlipReturn.reason = mSelectReson;
+                mCanvasViewSlipReturn.note = sigNote;
+                mCanvasViewSlipReturn.invalidate();
             }
         });
 
