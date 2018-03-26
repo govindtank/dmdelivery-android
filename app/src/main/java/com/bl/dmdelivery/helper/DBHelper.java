@@ -1345,6 +1345,7 @@ public class DBHelper extends SQLiteOpenHelper {
             mReason.setReason_code(cursor.getString(0));
             mReason.setReason_desc(cursor.getString(1));
             mReason.setReason_type(cursor.getString(2));
+            mReason.setIsselect("0");
             Reasons.add(mReason);
             cursor.moveToNext();
         }

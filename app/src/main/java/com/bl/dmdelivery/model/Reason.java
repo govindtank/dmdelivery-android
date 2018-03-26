@@ -11,12 +11,14 @@ public class Reason implements Parcelable {
     private String reason_code;
     private String reason_desc;
     private String reason_type;
+    private String isselect;
 
     public class Column{
 
         public static final String reason_code = "reason_code";
         public static final String reason_desc = "reason_desc";
         public static final String reason_type ="reason_type";
+        public static final String isselect ="isselect";
 
     }
 
@@ -44,6 +46,14 @@ public class Reason implements Parcelable {
         this.reason_type = reason_type;
     }
 
+    public String getIsselect() {
+        return isselect;
+    }
+
+    public void setIsselect(String isselect) {
+        this.isselect = isselect;
+    }
+
 
     @Override
     public int describeContents() {
@@ -55,6 +65,7 @@ public class Reason implements Parcelable {
         dest.writeString(this.reason_code);
         dest.writeString(this.reason_desc);
         dest.writeString(this.reason_type);
+        dest.writeString(this.isselect);
     }
 
     public Reason() {
@@ -64,6 +75,7 @@ public class Reason implements Parcelable {
         this.reason_code = in.readString();
         this.reason_desc = in.readString();
         this.reason_type = in.readString();
+        this.isselect = in.readString();
     }
 
     public static final Creator<Reason> CREATOR = new Creator<Reason>() {

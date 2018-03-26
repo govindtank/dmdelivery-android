@@ -83,7 +83,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
     private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
     //private List<Order> mListOrder = new List<Order>();
-    private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="";
+    private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="0";
 
     String sigTruckNo = "";
     String sigDeliveryDate = "";
@@ -232,7 +232,22 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                     //showMsgUserSelectedMenuDialog(mListOrderData.get(position).getTransNo(),position);
 
-                    showMsgDialogSelectedMenu(position);
+                    //showMsgDialogSelectedMenu(position);
+
+                    mSelect = mListOrderDataN.get(position).getIsselect();
+
+                    if(mSelect.equals("0"))
+                    {
+                        mListOrderDataN.get(position).setIsselect("1");
+
+                    }else
+                    {
+                        mListOrderDataN.get(position).setIsselect("0");
+
+
+                    }
+
+                    adapter.notifyDataSetChanged();
 
                     return true;
                 }
@@ -244,6 +259,12 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     //Snackbar.make(view, "Long press event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
                     Toast toast = Toast.makeText(SaveOrdersActivity.this, "Long press event on the " + position + " position", Toast.LENGTH_SHORT);
                     toast.show();
+
+                    //adapter.notifyDataSetChanged();
+
+                    //showMsgDialogSelectedMenu(position);
+
+
                 }
 
                 @Override
@@ -252,23 +273,22 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
                     toast.show();
 
+                    showMsgDialogSelectedMenu(position);
 
-                    mSelect = mListOrderDataN.get(position).getIsselect();
+//                    mSelect = mListOrderDataN.get(position).getIsselect();
+//
+//                    if(mSelect.equals("0"))
+//                    {
+//                        mListOrderDataN.get(position).setIsselect("1");
+//
+//                    }else
+//                    {
+//                        mListOrderDataN.get(position).setIsselect("0");
+//
+//
+//                    }
 
-                    if(mSelect.equals("0"))
-                    {
-                        mListOrderDataN.get(position).setIsselect("1");
-                        //selectCount = selectCount+1;
-                    }else
-                    {
-                        mListOrderDataN.get(position).setIsselect("0");
-
-//                        if(!selectCount.equals(0))
-//                        {
-//                            selectCount = selectCount-1;
-//                        }
-                    }
-
+                    //adapter.setData(mListOrderDataN);
                     //adapter.notifyDataSetChanged();
 
 
@@ -300,6 +320,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     //Snackbar.make(view, "Month moved from position " + fromPos + " to " + toPos, Snackbar.LENGTH_SHORT).show();
 //                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Month moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
 //                    toast.show();
+
+                    adapter.notifyDataSetChanged();
                 }
             });
 

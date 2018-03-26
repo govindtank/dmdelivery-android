@@ -437,6 +437,12 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
         mListMenuData.add(f1);
 
 
+        MenuSaveOrder f11 = new MenuSaveOrder();
+        f11.setMenuname("แก้ไขการเซ็นรับสินค้า");
+        f11.setMenuname_type("0");
+        f11.setMenuname_mode("0");
+        mListMenuData.add(f11);
+
         MenuSaveOrder f2 = new MenuSaveOrder();
         f2.setMenuname("กิจกรรม");
         f2.setMenuname_type("1");
@@ -487,11 +493,21 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                         //TinyDB tinydb = new TinyDB(getApplicationContext());
 
 
+                        if(mListMenuData.get(position).getMenuname_mode().equals("0"))
+                        {
+                            myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
+                            myIntent.putExtra("data",order);
+                            startActivity(myIntent);
+                        }else
+                        {
+                            myIntent = new Intent(getApplicationContext(), ViewSlipActivity.class);
+                            myIntent.putExtra("data",order);
+                            startActivity(myIntent);
+                        }
 
 
-                        myIntent = new Intent(getApplicationContext(), ViewSlipActivity.class);
-                        myIntent.putExtra("data",order);
-                        startActivity(myIntent);
+
+
                         break;
                     case "1":
                         //กิจกรรมอื่นๆ

@@ -23,6 +23,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -31,12 +32,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.adapter.MenuSaveOrderViewAdapter;
+import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.Order;
@@ -68,15 +73,18 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtgps,mmTxtMsg,txtCarton;
     private Button mBtnBack,mmBtnOk,mmBtnClose,btnCancelGPS,btnCancel,btnGPS,btnSaveGPS,btnSave,btnNew,btnNote;
+    private EditText mmedtNote;
 
     private ImageView mmImvTitle;
 
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
-    private ArrayList<Reason> mDeliveryAcceptList = new ArrayList<Reason>();
+    //private ArrayList<Reason> mDeliveryAcceptList = new ArrayList<Reason>();
 
-    ArrayList<String> arrayListReason = new ArrayList<String>();
+    //ArrayList<String> arrayListReason = new ArrayList<String>();
+
+    private ArrayList<Reason> arrayListReason = new ArrayList<Reason>();
 
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
@@ -84,7 +92,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
     private ListView lv;
 //    private String[] sigDeliverylist;
 
-    private ListView lvDeliveryAcceptList;
+    private RecyclerView lvDeliveryAcceptList;
+    private RecyclerView.Adapter mDeliveryAcceptListAdapter;
+
+    //private ListView lvDeliveryAcceptList;
     private Intent myIntent=null;
 
     String mInputPath = Environment.getExternalStorageDirectory().toString() + "/SLIP/";
@@ -97,7 +108,11 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
     private File mFile;
     private String mFileName;
 
+    private String textnote = "";
+
     private CanvasView customCanvas;
+
+    private String  mSelect="0";
 
     //private final int REQUEST_PERMISSION_PHONE_STATE=1;
 
@@ -249,19 +264,19 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             }
 
 
-            mDeliveryAcceptList.clear();
+            arrayListReason.clear();
             mHelper = new DBHelper(getApplicationContext());
-            mDeliveryAcceptList = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT','DELIVERY_REJECT'");
+            arrayListReason = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT','DELIVERY_REJECT'");
 
 
-            for(int i = 0; i < mDeliveryAcceptList.size();i++)
-            {
-                arrayListReason.add(mDeliveryAcceptList.get(i).getReason_code() + " " + mDeliveryAcceptList.get(i).getReason_desc());
-            }
+//            for(int i = 0; i < mDeliveryAcceptList.size();i++)
+//            {
+//                arrayListReason.add(mDeliveryAcceptList.get(i).getReason_code() + " " + mDeliveryAcceptList.get(i).getReason_desc());
+//            }
 
             if(arrayListReason.size() > 0)
             {
-                mSelectReson =  mDeliveryAcceptList.get(0).getReason_desc();
+                mSelectReson =  arrayListReason.get(0).getReason_desc();
                 mSelectResonIndex = 0;
                 customCanvas.reason = mSelectReson;
                 customCanvas.invalidate();
@@ -720,67 +735,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
     public void showMsgReasonApproveSelectedSingleDialog()
     {
-//        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersApproveSlipActivity.this).create();
-//        LayoutInflater inflater = getLayoutInflater();
-//        View v = (View) inflater.inflate(R.layout.dialog_reason_save_order, null);
-//        DialogBuilder.setView(v);
 //
-//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-//        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
-//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-//        mmTxtTitle.setText("เหตุผล/หมายเหตุ");
-//
-//        lvDeliveryAcceptList = (ListView) v.findViewById(R.id.lv);
-//        lvDeliveryAcceptList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//
-//
-//        mDeliveryAcceptList.clear();
-//        mHelper = new DBHelper(getApplicationContext());
-//        mDeliveryAcceptList = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT'");
-//
-//        ArrayList<String> arrayList = new ArrayList<String>();
-//        for(int i = 0; i < mDeliveryAcceptList.size();i++)
-//        {
-//            arrayList.add(mDeliveryAcceptList.get(i).getReason_code() + " " + mDeliveryAcceptList.get(i).getReason_desc());
-//        }
-//
-//        if(arrayList.size() > 0)
-//        {
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayList);
-//            lvDeliveryAcceptList.setAdapter(adapter);
-//
-//            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
-//            lvDeliveryAcceptList.setItemChecked(0,true);
-//        }
-//
-//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                DialogBuilder.dismiss();
-//
-////                finish();
-////
-////                myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
-////                startActivity(myIntent);
-//            }
-//        });
-//
-//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                DialogBuilder.dismiss();
-//            }
-//        });
-//
-////        // Set item click listener
-////        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-////            @Override
-////            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                String description = sigDeliverylist[position];
-////                Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
-////            }
-////        });
-//
-//        DialogBuilder.show();
-
 
 
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
@@ -797,8 +752,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         mmBtnOk = (Button) v.findViewById(R.id.btnok);
         mmBtnClose = (Button) v.findViewById(R.id.btClose);
 
-//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-//        mmTxtMsg.setTypeface(tf);
+        mmedtNote = (EditText) v.findViewById(R.id.edtNote);
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+        mmedtNote.setTypeface(tf);
 //        mmTxtTitle.setTypeface(tf);
 //        mmBtnClose.setTypeface(tf);
 
@@ -806,10 +763,80 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         mmTxtTitle.setText(getResources().getString(R.string.txt_text_reason_remark));
         //mmTxtMsg.setText(msg);
         mmBtnOk.setText(getResources().getString(R.string.btn_text_ok));
+        mmedtNote.setText(textnote);
 
 
-        lvDeliveryAcceptList = (ListView) v.findViewById(R.id.lv);
-        lvDeliveryAcceptList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lvDeliveryAcceptList = (RecyclerView) v.findViewById(R.id.lvacceptList);
+        lvDeliveryAcceptList.setLayoutManager(new LinearLayoutManager(this));
+        lvDeliveryAcceptList.setHasFixedSize(true);
+
+        if(mSelectResonIndex > 0)
+        {
+
+            arrayListReason.get(mSelectResonIndex).setIsselect("1");
+        }
+        else
+        {
+            arrayListReason.get(0).setIsselect("1");
+        }
+
+
+
+        mDeliveryAcceptListAdapter = new SaveOrderReasonViewAdapter(getApplicationContext(),arrayListReason);
+        lvDeliveryAcceptList.setAdapter(mDeliveryAcceptListAdapter);
+
+
+
+        lvDeliveryAcceptList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+                for(int i = arrayListReason.size()-1 ; i >= 0; i--)
+                {
+
+                    mSelect = arrayListReason.get(i).getIsselect().toString();
+
+                    if(mSelect.equals("1"))
+                    {
+                        arrayListReason.get(i).setIsselect("0");
+                    }
+
+                }
+
+
+                mSelect = arrayListReason.get(position).getIsselect();
+
+                arrayListReason.get(position).setIsselect("1");
+
+                String description = arrayListReason.get(position).getReason_desc();
+//
+                mSelectReson = description;
+
+                mSelectResonIndex = position;
+
+//                if(mSelect.equals("0"))
+//                {
+//                    arrayListReason.get(position).setIsselect("1");
+//
+//                }else
+//                {
+//                    arrayListReason.get(position).setIsselect("0");
+//
+//
+//                }
+
+                mDeliveryAcceptListAdapter.notifyDataSetChanged();
+
+
+
+
+            }
+        }));
+
+
+//        lvDeliveryAcceptList = (ListView) v.findViewById(R.id.lv);
+//        lvDeliveryAcceptList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 //        mDeliveryAcceptList.clear();
 //        mHelper = new DBHelper(getApplicationContext());
@@ -821,38 +848,38 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 //            arrayList.add(mDeliveryAcceptList.get(i).getReason_code() + " " + mDeliveryAcceptList.get(i).getReason_desc());
 //        }
 
-        if(arrayListReason.size() > 0)
-        {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayListReason);
-            lvDeliveryAcceptList.setAdapter(adapter);
-
-            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
-
-
-            if(mSelectResonIndex > 0)
-            {
-
-                lvDeliveryAcceptList.setItemChecked(mSelectResonIndex,true);
-            }
-            else
-            {
-                lvDeliveryAcceptList.setItemChecked(0,true);
-            }
-
-
-        }
-
-        lvDeliveryAcceptList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = mDeliveryAcceptList.get(position).getReason_desc();
-
-                mSelectReson = description;
-                mSelectResonIndex = position;
-
-                //Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        if(arrayListReason.size() > 0)
+//        {
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayListReason);
+//            lvDeliveryAcceptList.setAdapter(adapter);
+//
+//            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
+//
+//
+//            if(mSelectResonIndex > 0)
+//            {
+//
+//                lvDeliveryAcceptList.setItemChecked(mSelectResonIndex,true);
+//            }
+//            else
+//            {
+//                lvDeliveryAcceptList.setItemChecked(0,true);
+//            }
+//
+//
+//        }
+//
+//        lvDeliveryAcceptList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String description = mDeliveryAcceptList.get(position).getReason_desc();
+//
+//                mSelectReson = description;
+//                mSelectResonIndex = position;
+//
+//                //Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
 
@@ -863,7 +890,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 //loadData();
                 DialogBuilder.dismiss();
 
+                textnote = mmedtNote.getText().toString();
+
                 customCanvas.reason = mSelectReson;
+                customCanvas.note = textnote;
                 customCanvas.invalidate();
             }
         });
@@ -875,7 +905,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         });
 
         DialogBuilder.show();
-    }
+
+
 
 //    public void showMsgDialog(String msg)
 //    {
@@ -903,7 +934,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 //
 //
 //
-//    }
+    }
 
     public void showMsgDialog(String msg)
     {
