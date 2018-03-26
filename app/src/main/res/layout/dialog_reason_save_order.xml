@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -57,7 +58,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBG"
+            android:background="@color/colorBackground"
             android:orientation="vertical">
 
             <include
@@ -116,27 +117,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <EditText
                 android:id="@+id/edtNote"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/background_edittext"
-                android:ems="10"
-                android:imeActionLabel="@string/action_sign_in"
+                android:imeActionLabel="@string/action_ok"
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
-                android:lines="6"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorHintText"
-                android:textSize="@dimen/textEdittextSize14"
+                android:textSize="@dimen/textbtnDialogSize"
                 android:textStyle="normal" />
         </LinearLayout>
 

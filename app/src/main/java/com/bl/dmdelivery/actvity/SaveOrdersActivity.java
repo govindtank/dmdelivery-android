@@ -53,6 +53,7 @@ import com.thesurix.gesturerecycler.GestureManager;
 import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -83,7 +84,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
     private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
     //private List<Order> mListOrder = new List<Order>();
-    private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="";
+    private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="0";
+
+    private Integer mSelectIndex = 0;
 
     String sigTruckNo = "";
     String sigDeliveryDate = "";
@@ -220,7 +223,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
             lv.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<Order>() {
 
                 @Override
-                public boolean onItemClick(final Order item, final int position) {
+                public boolean onItemClick(final Order item, int position) {
 //                    //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
 //                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
 //                    toast.show();
@@ -232,7 +235,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                     //showMsgUserSelectedMenuDialog(mListOrderData.get(position).getTransNo(),position);
 
+                    //showMsgDialogSelectedMenu(position);
+
                     showMsgDialogSelectedMenu(position);
+
+
 
                     return true;
                 }
@@ -242,33 +249,55 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 @Override
                 public void onItemLongPress(final Order item, final int position) {
                     //Snackbar.make(view, "Long press event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Long press event on the " + position + " position", Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Long press event on the " + position + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
+
+                    //adapter.notifyDataSetChanged();
+
+                    //showMsgDialogSelectedMenu(position);
+
+
                 }
 
                 @Override
                 public boolean onDoubleTap(final Order item, final int position) {
                     //Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
 
+//                    showMsgDialogSelectedMenu(position);
+
+                    mSelectIndex = position;
 
                     mSelect = mListOrderDataN.get(position).getIsselect();
 
                     if(mSelect.equals("0"))
                     {
                         mListOrderDataN.get(position).setIsselect("1");
-                        //selectCount = selectCount+1;
+
                     }else
                     {
                         mListOrderDataN.get(position).setIsselect("0");
 
-//                        if(!selectCount.equals(0))
-//                        {
-//                            selectCount = selectCount-1;
-//                        }
+
                     }
 
+                    adapter.notifyDataSetChanged();
+
+//                    mSelect = mListOrderDataN.get(position).getIsselect();
+//
+//                    if(mSelect.equals("0"))
+//                    {
+//                        mListOrderDataN.get(position).setIsselect("1");
+//
+//                    }else
+//                    {
+//                        mListOrderDataN.get(position).setIsselect("0");
+//
+//
+//                    }
+
+                    //adapter.setData(mListOrderDataN);
                     //adapter.notifyDataSetChanged();
 
 
@@ -298,8 +327,24 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 @Override
                 public void onItemReorder(final Order item, final int fromPos, final int toPos) {
                     //Snackbar.make(view, "Month moved from position " + fromPos + " to " + toPos, Snackbar.LENGTH_SHORT).show();
-//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Month moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
 //                    toast.show();
+
+
+//                    Toast toast2 = Toast.makeText(SaveOrdersActivity.this,adapter.getItem(fromPos).getRep_name(), Toast.LENGTH_SHORT);
+//                    toast2.show();
+
+
+
+                    if (fromPos <= toPos) {
+                        Collections.rotate(mListOrderDataN.subList(fromPos, toPos + 1), -1);
+                    } else {
+                        Collections.rotate(mListOrderDataN.subList(toPos, fromPos + 1), 1);
+                    }
+
+
+                    adapter.notifyDataSetChanged();
+                    //lv.notify();
                 }
             });
 
@@ -1118,7 +1163,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListOrderDataY = mHelper.getOrderWaitList("Y");
 
             mListOrderDataN.clear();
-            mListOrderDataN = mHelper.getOrderWaitList("N");
+            //mListOrderDataN = mHelper.getOrderWaitList("N");
+            mListOrderDataN = mHelper.getOrderWaitList("ALL");
 
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");

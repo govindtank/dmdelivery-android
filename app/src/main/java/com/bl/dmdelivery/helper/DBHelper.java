@@ -489,7 +489,7 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             else
             {
-                sigGetData = sigGetData + "'" + mOrderCriteria.get(i).getRep_code() + "'";
+                sigGetData = sigGetData + ",'" + mOrderCriteria.get(i).getRep_code() + "'";
             }
         }
 
@@ -678,7 +678,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                null,
+                Order.Column.Itemno,
                 null);
 
 
@@ -928,7 +928,7 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             else
             {
-                sigGetData = sigGetData + "'" + mOrder.get(i).getTransNo() + "'";
+                sigGetData = sigGetData + ",'" + mOrder.get(i).getTransNo() + "'";
             }
         }
 
@@ -949,7 +949,7 @@ public class DBHelper extends SQLiteOpenHelper {
 //                    null);
 
 
-            cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, SUM(unpack_qty) AS unpack_qty FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc" ,null);
+            cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, SUM(unpack_qty) AS unpack_qty,transno FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc,transno" ,null);
             if (cursor != null  && cursor.getCount()>0) {
                 cursor.moveToFirst();
             }
@@ -1345,6 +1345,7 @@ public class DBHelper extends SQLiteOpenHelper {
             mReason.setReason_code(cursor.getString(0));
             mReason.setReason_desc(cursor.getString(1));
             mReason.setReason_type(cursor.getString(2));
+            mReason.setIsselect("0");
             Reasons.add(mReason);
             cursor.moveToNext();
         }
