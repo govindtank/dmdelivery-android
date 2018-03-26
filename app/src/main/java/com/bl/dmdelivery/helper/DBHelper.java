@@ -949,7 +949,7 @@ public class DBHelper extends SQLiteOpenHelper {
 //                    null);
 
 
-            cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, SUM(unpack_qty) AS unpack_qty FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc" ,null);
+            cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, SUM(unpack_qty) AS unpack_qty,transno FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc,transno" ,null);
             if (cursor != null  && cursor.getCount()>0) {
                 cursor.moveToFirst();
             }
