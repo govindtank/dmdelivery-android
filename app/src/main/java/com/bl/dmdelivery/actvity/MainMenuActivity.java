@@ -720,6 +720,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setDelivery_status(obj.getOrder().get(i).getDelivery_status().toString());
                         f.setIsselect("0");
                         f.setCre_date(mLoadOrderReq.getDeliveryDate().toString());
+                        f.setFullpathimage("");
                         orders.add(f);
 
                         mHelper.addOrdersTemp(f);
@@ -758,6 +759,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setReturn_status("0");
                         f.setReason_code("");
                         f.setReturn_note("");
+                        f.setFullpathimage("");
                         orderReturns.add(f);
 
                         mHelper.addOrdersReturn(f);

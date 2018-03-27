@@ -66,7 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
                 TableOrderTemp,
                 Order.Column.ID,
                 Order.Column.Oucode,
@@ -102,7 +102,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.Itemno,
                 Order.Column.delivery_status,
                 Order.Column.isselect,
-                Order.Column.cre_date
+                Order.Column.cre_date,
+                Order.Column.fullpathimage
         );
 
         Log.i(TAG, CREATE_ORDERTEMP_TABLE);
@@ -113,7 +114,8 @@ public class DBHelper extends SQLiteOpenHelper {
         String CREATE_RETURN_TABLE = String.format("CREATE TABLE %s " +
                         "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
                 TableOrderReturn,
                 OrderReturn.Column.ou_code,
                 OrderReturn.Column.return_no,
@@ -132,7 +134,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 OrderReturn.Column.return_remark,
                 OrderReturn.Column.return_status,
                 OrderReturn.Column.reason_code,
-                OrderReturn.Column.return_note
+                OrderReturn.Column.return_note,
+                OrderReturn.Column.fullpathimage
         );
 
         Log.i(TAG, CREATE_RETURN_TABLE);
@@ -789,6 +792,24 @@ public class DBHelper extends SQLiteOpenHelper {
             case "Y":
                 sigCriteriaSql="delivery_status='Y'";
                 break;
+            case "NY":
+                sigCriteriaSql="delivery_status IN ('N','Y')";
+                break;
+            case "YN":
+                sigCriteriaSql="delivery_status IN ('Y','N')";
+                break;
+            case "NW":
+                sigCriteriaSql="delivery_status IN ('N','W')";
+                break;
+            case "WN":
+                sigCriteriaSql="delivery_status IN ('W','N')";
+                break;
+            case "YW":
+                sigCriteriaSql="delivery_status IN ('Y','W')";
+                break;
+            case "WY":
+                sigCriteriaSql="delivery_status IN ('W','Y')";
+                break;
             case "ALL":
                 sigCriteriaSql="delivery_status IS NOT NULL";
                 break;
@@ -1186,6 +1207,92 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return orderReturns;
     }
+
+    public boolean updateOrderDeliveryStatus(Order mOrder) {
+        sqLiteDatabase = this.getWritableDatabase();
+        try{
+            ContentValues cv = new ContentValues();
+            cv.put("delivery_status",mOrder.getDelivery_status());
+
+            int intResult = sqLiteDatabase.update(TableOrder, cv,
+                    "TransNo='" + mOrder.getTransNo() + "'",
+                    null);
+
+            if(intResult > 0){
+                return  true;
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
+    }
+
+    public boolean updateOrderFullpathimage(Order mOrder) {
+        sqLiteDatabase = this.getWritableDatabase();
+        try{
+            ContentValues cv = new ContentValues();
+            cv.put("fullpathimage",mOrder.getFullpathimage());
+
+            int intResult = sqLiteDatabase.update(TableOrder, cv,
+                    "TransNo='" + mOrder.getTransNo() + "'",
+                    null);
+
+            if(intResult > 0){
+                return  true;
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
+    }
+
+    public boolean updateOrderReturnFullpathimage(OrderReturn mOrderReturn) {
+        sqLiteDatabase = this.getWritableDatabase();
+        try{
+            ContentValues cv = new ContentValues();
+            cv.put("fullpathimage",mOrderReturn.getFullpathimage());
+
+            int intResult = sqLiteDatabase.update("OrderReturns", cv,
+                    "return_no='" + mOrderReturn.getReturn_no()
+                            + "' AND rep_code='" + mOrderReturn.getRep_code() + "'",
+                    null);
+
+            if(intResult > 0){
+                return  true;
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
+    }
+
 
 
     public boolean updateOrderReturn(OrderReturn mOrderReturn) {

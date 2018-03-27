@@ -26,6 +26,7 @@ public class OrderReturn implements Parcelable {
     private String return_status;
     private String reason_code;
     private String return_note;
+    private String fullpathimage;
 
     public class Column{
 
@@ -47,6 +48,7 @@ public class OrderReturn implements Parcelable {
         public static final String return_status = "return_status";
         public static final String reason_code = "reason_code";
         public static final String return_note = "return_note";
+        public static final String fullpathimage = "fullpathimage";
     }
 
     public String getOu_code() {
@@ -190,6 +192,15 @@ public class OrderReturn implements Parcelable {
         this.return_note = return_note;
     }
 
+    public String getFullpathimage() {
+        return fullpathimage;
+    }
+
+    public void setFullpathimage(String fullpathimage) {
+        this.fullpathimage = fullpathimage;
+    }
+
+
 
     @Override
     public int describeContents() {
@@ -216,6 +227,7 @@ public class OrderReturn implements Parcelable {
         dest.writeString(this.return_status);
         dest.writeString(this.reason_code);
         dest.writeString(this.return_note);
+        dest.writeString(this.fullpathimage);
     }
 
     public OrderReturn() {
@@ -240,6 +252,7 @@ public class OrderReturn implements Parcelable {
         this.return_status = in.readString();
         this.reason_code = in.readString();
         this.return_note = in.readString();
+        this.fullpathimage = in.readString();
     }
 
     public static final Creator<OrderReturn> CREATOR = new Creator<OrderReturn>() {

@@ -46,7 +46,7 @@ public class Order implements Parcelable {
     private String delivery_status;
     private String isselect;
     private String cre_date;
-
+    private String fullpathimage;
 
 
     public class Column{
@@ -88,6 +88,7 @@ public class Order implements Parcelable {
         public static final String delivery_status = "delivery_status";
         public static final String isselect = "isselect";
         public static final String cre_date = "cre_date";
+        public static final String fullpathimage = "fullpathimage";
     }
 
     public String getDelivery_status() {
@@ -387,6 +388,15 @@ public class Order implements Parcelable {
         this.cre_date = cre_date;
     }
 
+    public String getFullpathimage() {
+        return fullpathimage;
+    }
+
+    public void setFullpathimage(String fullpathimage) {
+        this.fullpathimage = fullpathimage;
+    }
+
+
     public Order() {
     }
 
@@ -435,6 +445,7 @@ public class Order implements Parcelable {
         dest.writeString(this.delivery_status);
         dest.writeString(this.isselect);
         dest.writeString(this.cre_date);
+        dest.writeString(this.fullpathimage);
     }
 
     protected Order(Parcel in) {
@@ -475,6 +486,7 @@ public class Order implements Parcelable {
         this.delivery_status = in.readString();
         this.isselect = in.readString();
         this.cre_date = in.readString();
+        this.fullpathimage = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
