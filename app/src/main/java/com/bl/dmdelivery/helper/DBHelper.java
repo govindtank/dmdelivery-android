@@ -210,7 +210,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.Itemno  + " TEXT, " +
                 Order.Column.delivery_status  + " TEXT, " +
                 Order.Column.isselect  + " TEXT, " +
-                Order.Column.cre_date + " TEXT);");
+                Order.Column.cre_date  + " TEXT, " +
+                Order.Column.fullpathimage + " TEXT);");
 
 
         try
@@ -336,6 +337,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.delivery_status,order.getDelivery_status());
         values.put(Order.Column.isselect,order.getIsselect());
         values.put(Order.Column.cre_date,order.getCre_date());
+        values.put(Order.Column.fullpathimage,order.getFullpathimage());
 
         sqLiteDatabase.insert(TableOrder, null, values);
 
@@ -380,6 +382,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.delivery_status,order.getDelivery_status());
         values.put(Order.Column.isselect,order.getIsselect());
         values.put(Order.Column.cre_date,order.getCre_date());
+        values.put(Order.Column.fullpathimage,order.getFullpathimage());
 
         sqLiteDatabase.insert(TableOrderTemp, null, values);
 
@@ -489,6 +492,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(OrderReturn.Column.return_unit, order.getReturn_unit());
         values.put(OrderReturn.Column.return_remark, order.getReturn_remark());
         values.put(OrderReturn.Column.return_status, order.getReturn_status());
+        values.put(OrderReturn.Column.fullpathimage, order.getFullpathimage());
 
         sqLiteDatabase.insert(TableOrderReturn, null, values);
 

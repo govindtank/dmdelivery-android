@@ -4,16 +4,21 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +37,11 @@ import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.utility.TagUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
@@ -70,6 +79,13 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private String sigReson_code="";
     private String sigNote="";
     private String backToPage="";
+
+    public String batteryPercent = "0";
+    private File mFile;
+    private String mFileName;
+
+    private String mLatitude = "0";
+    private String mLongitude = "0";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -253,6 +269,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                     mOrderReturnSaveData.setReason_code(sigReson_code);
                     mOrderReturnSaveData.setReturn_note(sigNote);
                     mOrderReturnSaveData.setReturn_unit_real("0");
+                    mOrderReturnSaveData.setFullpathimage("");
                     mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
 
 
@@ -395,4 +412,104 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         });
         DialogBuilder.show();
     }
+
+
+    private void takeScreenshot(int position,String sendResult) {
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+        java.util.Date currentLocalTime = cal.getTime();
+        SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+        date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+        String localTime = date.format(currentLocalTime);
+        localTime = localTime.replace(" ", "").replace("-", "");
+
+        getBatteryPercentage();
+
+
+      /*  NumberFormat nf = NumberFormat.getInstance();
+        lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location lx = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        String latlng = nf.format(lx.getLatitude()) + "," + nf.format(lx.getLongitude());*/
+
+        String latlng = mLatitude+","+mLongitude;
+
+        String truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
+
+
+        String fileName= "V" + getResources().getString(R.string.app_version_slip) + "_" + Build.SERIAL.trim() +  "-" + truckNo + "-" + mOrderReturnGetData.getReftrans_no() + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + "-" + sendResult + ".jpg";
+
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/SLIP/" + fileName;
+
+
+            View v = (View) findViewById(R.id.lnlSlip);
+
+            // create bitmap screen capture
+            //View v1 = getWindow().getDecorView().getRootView();
+            v.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+            v.setDrawingCacheEnabled(false);
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            mFileName = fileName;
+            mFile =imageFile;
+
+            //processSlip(mPath);
+
+            //openScreenshot(imageFile);
+
+        } catch (Throwable e) {
+            // Several error may come out with file handling or OOM
+            e.printStackTrace();
+        }
+    }
+
+
+    private void getBatteryPercentage() {
+        try {
+            Intent batteryIntent = getApplicationContext().registerReceiver(null,
+                    new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            int rawlevel = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            int level = -1;
+            if (rawlevel >= 0 && scale > 0) {
+                level = (rawlevel * 100) / scale;
+                batteryPercent = "P"+String.valueOf(level);
+            }else
+            {
+                batteryPercent = "P"+String.valueOf(0);
+            }
+
+
+        } catch (Exception e)
+        {
+            showMsgDialog(e.toString());
+        }
+    }
+
+    public String getImeiNumber() {
+        String imeiNumber ="";
+        try {
+            TelephonyManager telephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            imeiNumber = telephony.getDeviceId();
+
+        } catch (SecurityException e)
+        {
+            showMsgDialog(e.toString());
+        }
+
+        return imeiNumber;
+    }
+
+
+
 }
