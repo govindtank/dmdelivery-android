@@ -2,13 +2,12 @@ package com.bl.dmdelivery.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.BaseColumns;
 
 /**
- * Created by tHundorn_j on 28/2/2561.
+ * Created by thundorn_j on 26/3/2561.
  */
 
-public class Order implements Parcelable {
+public class OrderTemp implements Parcelable {
     private Integer Itemno;
     private String Oucode;
     private String Year;
@@ -45,66 +44,6 @@ public class Order implements Parcelable {
     private Integer id;
     private String delivery_status;
     private String isselect;
-    private String cre_date;
-
-
-
-    public class Column{
-
-        public static final String ID = BaseColumns._ID;
-        public static final String Itemno = "Itemno";
-        public static final String Oucode = "Oucode";
-        public static final String Trans_Year = "Trans_Year";
-        public static final String Trans_Group ="Trans_Group";
-        public static final String TransNo = "TransNo";
-        public static final String Transdate = "Transdate";
-        public static final String rep_seq = "rep_seq";
-        public static final String rep_code = "rep_code";
-        public static final String rep_name = "rep_name";
-        public static final String rep_nickname = "rep_nickname";
-        public static final String address1 = "address1";
-        public static final String address2 = "address2";
-        public static final String tumbon = "tumbon";
-        public static final String amphur = "amphur";
-        public static final String province = "province";
-        public static final String postal = "postal";
-        public static final String rep_telno = "rep_telno";
-        public static final String dsm_name = "dsm_name";
-        public static final String dsm_telno = "dsm_telno";
-        public static final String loc_code = "loc_code";
-        public static final String trans_campaign = "trans_campaign";
-        public static final String ord_campaign = "ord_campaign";
-        public static final String ord_type = "ord_type";
-        public static final String del_type = "del_type";
-        public static final String ord_flag_status = "ord_flag_status";
-        public static final String return_flag = "return_flag";
-        public static final String unpack_items = "unpack_items";
-        public static final String order_flag_desc = "order_flag_desc";
-        public static final String delivery_desc = "delivery_desc";
-        public static final String ordertype_desc = "ordertype_desc";
-        public static final String cont_desc = "cont_desc";
-        public static final String delivery_date = "delivery_date";
-        public static final String truckNo = "truckNo";
-        public static final String delivery_status = "delivery_status";
-        public static final String isselect = "isselect";
-        public static final String cre_date = "cre_date";
-    }
-
-    public String getDelivery_status() {
-        return delivery_status;
-    }
-
-    public void setDelivery_status(String delivery_status) {
-        this.delivery_status = delivery_status;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getItemno() {
         return Itemno;
@@ -370,6 +309,21 @@ public class Order implements Parcelable {
         this.truckNo = truckNo;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDelivery_status() {
+        return delivery_status;
+    }
+
+    public void setDelivery_status(String delivery_status) {
+        this.delivery_status = delivery_status;
+    }
 
     public String getIsselect() {
         return isselect;
@@ -377,17 +331,6 @@ public class Order implements Parcelable {
 
     public void setIsselect(String isselect) {
         this.isselect = isselect;
-    }
-
-    public String getCre_date() {
-        return cre_date;
-    }
-
-    public void setCre_date(String cre_date) {
-        this.cre_date = cre_date;
-    }
-
-    public Order() {
     }
 
 
@@ -434,10 +377,12 @@ public class Order implements Parcelable {
         dest.writeValue(this.id);
         dest.writeString(this.delivery_status);
         dest.writeString(this.isselect);
-        dest.writeString(this.cre_date);
     }
 
-    protected Order(Parcel in) {
+    public OrderTemp() {
+    }
+
+    protected OrderTemp(Parcel in) {
         this.Itemno = (Integer) in.readValue(Integer.class.getClassLoader());
         this.Oucode = in.readString();
         this.Year = in.readString();
@@ -474,18 +419,17 @@ public class Order implements Parcelable {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.delivery_status = in.readString();
         this.isselect = in.readString();
-        this.cre_date = in.readString();
     }
 
-    public static final Creator<Order> CREATOR = new Creator<Order>() {
+    public static final Parcelable.Creator<OrderTemp> CREATOR = new Parcelable.Creator<OrderTemp>() {
         @Override
-        public Order createFromParcel(Parcel source) {
-            return new Order(source);
+        public OrderTemp createFromParcel(Parcel source) {
+            return new OrderTemp(source);
         }
 
         @Override
-        public Order[] newArray(int size) {
-            return new Order[size];
+        public OrderTemp[] newArray(int size) {
+            return new OrderTemp[size];
         }
     };
 }

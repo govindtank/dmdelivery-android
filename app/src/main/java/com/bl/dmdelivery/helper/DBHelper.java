@@ -12,9 +12,11 @@ import android.widget.Switch;
 
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
+import com.bl.dmdelivery.model.OrderTemp;
 import com.bl.dmdelivery.model.OrdersChangeList;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.model.Unpack;
+import com.bl.dmdelivery.utility.TagUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -36,6 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TableUnpack = "Unpacks";
     public static final String TableOrderReturn = "OrderReturns";
     public static final String TableReason = "Reasons";
+    public static final String TableOrderTemp = "OrdersTemp";
 
     public static String getAppPackagePath(Context _context) {
         final String SDCARD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -56,15 +59,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
 
-        String CREATE_ORDER_TABLE = String.format("CREATE TABLE %s " +
+        String CREATE_ORDERTEMP_TABLE = String.format("CREATE TABLE %s " +
                         "(%s INTEGER PRIMARY KEY  AUTOINCREMENT,%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT,%s TEXT)",
-                TableOrder,
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
+                TableOrderTemp,
                 Order.Column.ID,
                 Order.Column.Oucode,
                 Order.Column.Trans_Year,
@@ -98,12 +101,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.cont_desc,
                 Order.Column.Itemno,
                 Order.Column.delivery_status,
-                Order.Column.isselect
+                Order.Column.isselect,
+                Order.Column.cre_date
         );
 
-        Log.i(TAG, CREATE_ORDER_TABLE);
+        Log.i(TAG, CREATE_ORDERTEMP_TABLE);
         // create friend table
-        db.execSQL(CREATE_ORDER_TABLE);
+        db.execSQL(CREATE_ORDERTEMP_TABLE);
 
         //Order Return
         String CREATE_RETURN_TABLE = String.format("CREATE TABLE %s " +
@@ -167,11 +171,73 @@ public class DBHelper extends SQLiteOpenHelper {
         // create friend table
         db.execSQL(CREATE_REASON_TABLE);
 
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TableOrder + " (" +
+                Order.Column.ID + " INTEGER PRIMARY KEY  AUTOINCREMENT, " +
+                Order.Column.Oucode + " TEXT, " +
+                Order.Column.Trans_Year  + " TEXT, " +
+                Order.Column.Trans_Group + " TEXT, " +
+                Order.Column.TransNo  + " TEXT, " +
+                Order.Column.Transdate  + " TEXT, " +
+                Order.Column.rep_seq  + " TEXT, " +
+                Order.Column.rep_code  + " TEXT, " +
+                Order.Column.rep_name  + " TEXT, " +
+                Order.Column.rep_nickname  + " TEXT, " +
+                Order.Column.address1  + " TEXT, " +
+                Order.Column.address2  + " TEXT, " +
+                Order.Column.tumbon  + " TEXT, " +
+                Order.Column.amphur  + " TEXT, " +
+                Order.Column.province  + " TEXT, " +
+                Order.Column.postal  + " TEXT, " +
+                Order.Column.rep_telno  + " TEXT, " +
+                Order.Column.dsm_name  + " TEXT, " +
+                Order.Column.dsm_telno  + " TEXT, " +
+                Order.Column.loc_code  + " TEXT, " +
+                Order.Column.trans_campaign  + " TEXT, " +
+                Order.Column.ord_campaign  + " TEXT, " +
+                Order.Column.ord_type  + " TEXT, " +
+                Order.Column.del_type  + " TEXT, " +
+                Order.Column.ord_flag_status  + " TEXT, " +
+                Order.Column.return_flag  + " TEXT, " +
+                Order.Column.unpack_items  + " TEXT, " +
+                Order.Column.order_flag_desc  + " TEXT, " +
+                Order.Column.delivery_desc  + " TEXT, " +
+                Order.Column.ordertype_desc  + " TEXT, " +
+                Order.Column.cont_desc  + " TEXT, " +
+                Order.Column.Itemno  + " TEXT, " +
+                Order.Column.delivery_status  + " TEXT, " +
+                Order.Column.isselect  + " TEXT, " +
+                Order.Column.cre_date + " TEXT);");
+
+
+        try
+        {
+            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN isselect TEXT DEFAULT '0' ";
+            db.execSQL(ALTER_ORDER_TABLE);
+        }
+        catch (Exception ex)
+        {
+            Log.d("DBHelper",ex.getMessage());
+        }
+
+        try
+        {
+
+            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN cre_date TEXT DEFAULT '27/3/2018' ";
+            db.execSQL(ALTER_ORDER_TABLE);
+        }
+        catch (Exception ex)
+        {
+            Log.d("DBHelper",ex.getMessage());
+        }
+
+
+
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        String DROP_ORDER_TABLE = "DROP TABLE IF EXISTS " + TableOrder;
+        String DROP_ORDER_TABLE = "DROP TABLE IF EXISTS " + TableOrderTemp;
         db.execSQL(DROP_ORDER_TABLE);
 
         String DROP_ORDERRETURN_TABLE = "DROP TABLE IF EXISTS " + TableOrderReturn;
@@ -182,6 +248,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String DROP_REASON_TABLE = "DROP TABLE IF EXISTS " + TableReason;
         db.execSQL(DROP_REASON_TABLE);
+
+        String DELETE_TABLE = "";
+        db.delete(TableOrder,"cre_date != ? ",new String[]{TagUtils.PREF_DELIVERY_DATE});
+
+
+
 
         Log.i(TAG, "Upgrade Database from " + oldVersion + " to " + newVersion);
 
@@ -260,11 +332,57 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.Itemno, order.getItemno());
         values.put(Order.Column.delivery_status,order.getDelivery_status());
         values.put(Order.Column.isselect,order.getIsselect());
+        values.put(Order.Column.cre_date,order.getCre_date());
 
         sqLiteDatabase.insert(TableOrder, null, values);
 
         sqLiteDatabase.close();
     }
+
+    public void addOrdersTemp(Order order) {
+        sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Order.Column.Oucode, order.getOucode());
+        values.put(Order.Column.Trans_Year, order.getYear());
+        values.put(Order.Column.Trans_Group, order.getGroup());
+        values.put(Order.Column.TransNo, order.getTransNo());
+        values.put(Order.Column.Transdate, order.getTransdate());
+        values.put(Order.Column.rep_seq, order.getRep_seq());
+        values.put(Order.Column.rep_code, order.getRep_code());
+        values.put(Order.Column.rep_name, order.getRep_name());
+        values.put(Order.Column.rep_nickname, order.getRep_nickname());
+        values.put(Order.Column.address1, order.getAddress1());
+        values.put(Order.Column.address2, order.getAddress2());
+        values.put(Order.Column.tumbon, order.getTumbon());
+        values.put(Order.Column.amphur, order.getAmphur());
+        values.put(Order.Column.province, order.getProvince());
+        values.put(Order.Column.postal, order.getPostal());
+        values.put(Order.Column.rep_telno, order.getRep_telno());
+        values.put(Order.Column.dsm_name, order.getDsm_name());
+        values.put(Order.Column.dsm_telno, order.getDsm_telno());
+        values.put(Order.Column.loc_code, order.getLoc_code());
+        values.put(Order.Column.trans_campaign, order.getTrans_campaign());
+        values.put(Order.Column.ord_campaign, order.getOrd_campaign());
+        values.put(Order.Column.ord_type, order.getOrd_type());
+        values.put(Order.Column.del_type, order.getDel_type());
+        values.put(Order.Column.ord_flag_status, order.getOrd_flag_status());
+        values.put(Order.Column.return_flag, order.getReturn_flag());
+        values.put(Order.Column.unpack_items, order.getUnpack_items());
+        values.put(Order.Column.order_flag_desc, order.getOrder_flag_desc());
+        values.put(Order.Column.delivery_desc, order.getDelivery_desc());
+        values.put(Order.Column.ordertype_desc, order.getOrdertype_desc());
+        values.put(Order.Column.cont_desc, order.getCont_desc());
+        values.put(Order.Column.Itemno, order.getItemno());
+        values.put(Order.Column.delivery_status,order.getDelivery_status());
+        values.put(Order.Column.isselect,order.getIsselect());
+        values.put(Order.Column.cre_date,order.getCre_date());
+
+        sqLiteDatabase.insert(TableOrderTemp, null, values);
+
+        sqLiteDatabase.close();
+    }
+
 
     public Order getOrders(String id) {
 
@@ -370,6 +488,11 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(OrderReturn.Column.return_status, order.getReturn_status());
 
         sqLiteDatabase.insert(TableOrderReturn, null, values);
+
+
+        ContentValues cv = new ContentValues();
+        cv.put(Order.Column.return_flag,"R"); //These Fields should be your String values of actual column names
+        sqLiteDatabase.update(TableOrder,cv,"rep_seq='" + order.getRep_seq().toString() + "'",null);
 
         sqLiteDatabase.close();
 
@@ -1324,6 +1447,22 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return Reasons;
+    }
+
+    public boolean getCheckLoadOrder(String oucode,String year,String group,String Transno) {
+        boolean result = false;
+        sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM " + TableOrder + " WHERE  Oucode ='" + oucode + "' and Trans_Year ='" + year + "' and Trans_Group ='" + group +"' and TransNo ='"+ Transno + "'",null);
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            result =  true;
+        }else {
+            result = false;
+        }
+
+        return result;
     }
 
 }

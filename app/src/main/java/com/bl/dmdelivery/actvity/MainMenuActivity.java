@@ -719,11 +719,23 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setItemno(obj.getOrder().get(i).getItemno());
                         f.setDelivery_status(obj.getOrder().get(i).getDelivery_status().toString());
                         f.setIsselect("0");
+                        f.setCre_date(mLoadOrderReq.getDeliveryDate().toString());
                         orders.add(f);
 
-                        mHelper.addOrders(f);
+                        mHelper.addOrdersTemp(f);
+
+                        //check orderload
+                        boolean _order = mHelper.getCheckLoadOrder(f.getOucode(),f.getYear(),f.getGroup(),f.getTransNo());
+                        if(_order==true){
+
+                        }else {
+                            mHelper.addOrders(f);
+                        }
+
 
                     }
+
+
 
                     for(int i=0; i<obj.getOrderReturn().size();i++){
 
