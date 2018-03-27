@@ -103,6 +103,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
     Order mOrder;
 
+    private OrderAdapter adapter;
+
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -139,34 +141,44 @@ public class SaveOrdersActivity extends AppCompatActivity {
         }
     }
 
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-////        if(ogject.getSign().toString().equals("1"))
-////        {
-////            selectCount = 0;
-////            mListOrderData = ogject.getListCheckOrderData();
-////
-////
-////            mAdapter = new RVListDeliveryBWAdapter(getApplicationContext(),mListOrderData);
-////            lv.setAdapter(mAdapter);
-////            mAdapter.notifyDataSetChanged();
-////
-////            setSelectCount();
-////        }
-//
-//
-//
-//            selectCount = 0;
-//            mListOrderData = ogject.getListCheckOrderData();
-//
-//
-//            mAdapter = new RVListDeliveryBWAdapter(getApplicationContext(),mListOrderData);
-//            lv.setAdapter(mAdapter);
-//            mAdapter.notifyDataSetChanged();
-//    }
+    @Override
+    public void onResume(){
+        super.onResume();
+
+//        if()
+        String resumeOrderList = sp.getString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+        String selectOrderPosition = sp.getString(TagUtils.PREF_SELECT_ORDER_POSITION, "-1");
+
+
+        if(resumeOrderList.equals(""))
+        {
+
+        }
+        else
+        {
+            if(Integer.parseInt(selectOrderPosition) > -1)
+            {
+                //mListOrderDataN.get(Integer.parseInt(selectOrderPosition)).setIsselect("1");
+
+                adapter.notifyDataSetChanged();
+
+                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
+                toast.show();
+
+                editor = sp.edit();
+                editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+                editor.apply();
+            }
+            else
+            {
+
+            }
+
+
+        }
+
+    }
+
 
     private void bindWidget()
     {
@@ -216,7 +228,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
             lv.setHasFixedSize(true);
             lv.setLayoutManager(manager);
 
-            final OrderAdapter adapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
+            adapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
             adapter.setData(mListOrderDataN);
 
             lv.setAdapter(adapter);
@@ -420,299 +432,6 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
 
-//    private void getOrder() {
-//
-//        try {
-////            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-////            {
-////
-////                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-////                {
-////
-////                    new getOrderDataInAsync().execute();
-////                }
-////                else
-////                {
-////
-////                    showMsgDialog(getResources().getString(R.string.error_webservice));
-////
-////                }
-////
-////            }else
-////            {
-////
-////                showMsgDialog(getResources().getString(R.string.error_network));
-////            }
-//
-//
-//            new getOrderDataInAsync().execute();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
-//        private class getOrderDataInAsync extends AsyncTask<String, Void, PageResultHolder>
-//        {
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//
-////                mProgressDialog = new ACProgressFlower.Builder(SaveOrdersActivity.this)
-////                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-////                        .themeColor(getResources().getColor(R.color.colorBackground))
-////                        //.text(getResources().getString(R.string.progress_loading))
-////                        .fadeColor(Color.DKGRAY).build();
-////                mProgressDialog.show();
-//
-//
-//                showMsgDialog("onPreExecute");
-//            }
-//
-//            @Override
-//            protected PageResultHolder doInBackground(String... params) {
-//
-//
-//
-//                // TODO Auto-generated method stub
-//                PageResultHolder pageResultHolder = new PageResultHolder();
-//                try
-//                {
-////                    SoapObject responseorder = new SoapObject();
-////                    responseorder = webHelper.getOrderIntransit(ogject.getDate().toString(),ogject.getTruck().toString(),"1");
-////
-////                    mListOrderData.clear();
-////                    for(int i=0; i<responseorder.getPropertyCount();i++){
-////
-////                        SoapObject array = (SoapObject)responseorder.getProperty(i);
-////
-////                        OrderData item = new OrderData();
-////                        item.setRepcode(array.getPrimitivePropertySafelyAsString("repcode"));
-////                        item.setRepname(array.getPrimitivePropertySafelyAsString("repname"));
-////                        item.setRepaddr1(array.getPrimitivePropertySafelyAsString("repaddr1"));
-////                        item.setRepaddr2(array.getPrimitivePropertySafelyAsString("repaddr2"));
-////                        item.setRepaddr3(array.getPrimitivePropertySafelyAsString("repaddr3"));
-////                        item.setRepaddr4(array.getPrimitivePropertySafelyAsString("repaddr4"));
-////                        item.setRepphone(array.getPrimitivePropertySafelyAsString("repphone"));
-////                        item.setRepmobile(array.getPrimitivePropertySafelyAsString("repmobile"));
-////                        item.setInvoiceno(array.getPrimitivePropertySafelyAsString("invoiceno"));
-////                        item.setCarton(array.getPrimitivePropertySafelyAsString("carton"));
-////                        item.setBag(array.getPrimitivePropertySafelyAsString("bag"));
-////                        item.setOtrstatus(array.getPrimitivePropertySafelyAsString("otrstatus"));
-////                        item.setOtrdeliverystatus(array.getPrimitivePropertySafelyAsString("otrdeliverystatus"));
-////                        item.setSelect("0");
-////                        mListOrderData.add(item);
-////                    }
-//
-//
-////
-////                        mListOrderData.clear();
-////                        OrderData item = new OrderData();
-////
-////                        item.setRepcode("0181149095");
-////                        item.setRepname("คุณศะศิรา โชติปรีชารัตน์");
-////                        item.setRepaddr1("500 ร้านยา B.C ราชประสงค์เภสัช เพลินจิต (ชั้น2 )OK");
-////                        item.setRepaddr2("");
-////                        item.setRepaddr3("แขวงวังใหม่ เขตปทุมวัน");
-////                        item.setRepaddr4("กรุงเทพมหานคร 10330");
-////                        item.setRepphone("");
-////                        item.setRepmobile("0875989989");
-////                        item.setInvoiceno("1100863742");
-////                        item.setCarton("1");
-////                        item.setBag("0");
-////                        item.setOtrstatus("02");
-////                        item.setOtrdeliverystatus("02");
-////                        item.setSelect("0");
-////                        mListOrderData.add(item);
-////
-////                        item.setRepcode("0025117963");
-////                        item.setRepname("คุณพรประภา อรุณสิทธิวงศ์");
-////                        item.setRepaddr1("444เสื้อผ้าเด็กห้องB059000 ชั้น3 ซ.3 มาบุญครองโซนโรงแรม");
-////                        item.setRepaddr2("");
-////                        item.setRepaddr3("แขวงวังใหม่ เขตปทุมวัน");
-////                        item.setRepaddr4("กรุงเทพมหานคร 10330");
-////                        item.setRepphone("");
-////                        item.setRepmobile("0890363176");
-////                        item.setInvoiceno("1100870630");
-////                        item.setCarton("1");
-////                        item.setBag("0");
-////                        item.setOtrstatus("02");
-////                        item.setOtrdeliverystatus("02");
-////                        item.setSelect("0");
-////                        mListOrderData.add(item);
-//
-//                } catch (Exception e) {
-//                    pageResultHolder.content = "Exception : CheckOrderData";
-//                    pageResultHolder.exception = e;
-//                }
-//
-//                return pageResultHolder;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(final PageResultHolder result) {
-//                // TODO Auto-generated method stub
-//
-//                try {
-//
-//                    if (result.exception != null) {
-//                        mProgressDialog.dismiss();
-//                        showMsgDialog(result.exception.toString());
-//                    }
-//                    else
-//                    {
-//
-//                        final Handler handler = new Handler();
-//                        handler.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                //Do something after 100ms
-//                                mProgressDialog.dismiss();
-//
-//                                if(mListOrderData.size()>0)
-//                                {
-////                                    bindData();
-//                                }else
-//                                {
-//                                    //finish();
-//                                    showMsgDialog(getResources().getString(R.string.error_data_not_in_system));
-//                                }
-//
-//                            }
-//                        }, 200);
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        }
-//
-//    private class PageResultHolder {
-//        private String content;
-//        private Exception exception;
-//    }
-//
-//    private void bindData() {
-//
-//        try {
-//
-////            setSelectCount();
-////
-////            mAdapter = new RVListDeliveryBWAdapter(getApplicationContext(),mListOrderData);
-////            lv.setAdapter(mAdapter);
-////
-////
-////            lv.addOnItemTouchListener(
-////                    new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-////                        @Override
-////                        public void onItemClick(View view, int position) {
-////                            // TODO Handle item click
-////                            //String fscode = mListPhysicalCount.get(position).getFscode().toString();
-////
-////                            PositionSelect = position;
-////                            mInvoiceno = mListOrderData.get(position).getInvoiceno().toString();
-////                            mSelect = mListOrderData.get(position).getSelect().toString();
-////
-////                            if(mSelect.equals("0"))
-////                            {
-////                                mListOrderData.get(position).setSelect("1");
-////                                selectCount = selectCount+1;
-////                            }else
-////                            {
-////                                mListOrderData.get(position).setSelect("0");
-////
-////                                if(!selectCount.equals(0))
-////                                {
-////                                    selectCount = selectCount-1;
-////                                }
-////                            }
-////
-////                            mAdapter.notifyDataSetChanged();
-////                            setSelectCount();
-////
-////
-////                     /*   Toast toast = Toast.makeText(ListDeliveryBWActivity.this, mInvoiceno, Toast.LENGTH_SHORT);
-////                        toast.show();*/
-////                        }
-////                    })
-////            );
-//
-//
-//
-//
-//
-////            setSelectCount();
-//
-//            mAdapter = new RVListDeliveryBWAdapter(getApplicationContext(),mListOrderData);
-//            lv.setAdapter(mAdapter);
-//
-//
-//            lv.addOnItemTouchListener(
-//                    new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(View view, int position) {
-//                            // TODO Handle item click
-//                            //String fscode = mListPhysicalCount.get(position).getFscode().toString();
-//
-//                            PositionSelect = position;
-//                            mInvoiceno = mListOrderData.get(position).getInvoiceno().toString();
-//                            mSelect = mListOrderData.get(position).getSelect().toString();
-//
-//                            if(mSelect.equals("0"))
-//                            {
-//                                mListOrderData.get(position).setSelect("1");
-////                                selectCount = selectCount+1;
-//                            }else
-//                            {
-//                                mListOrderData.get(position).setSelect("0");
-//
-////                                if(!selectCount.equals(0))
-////                                {
-////                                    selectCount = selectCount-1;
-////                                }
-//                            }
-//
-//                            mAdapter.notifyDataSetChanged();
-////                            setSelectCount();
-//
-//                        }
-//                    })
-//            );
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            showMsgDialog(e.toString());
-//        }
-//    }
-
-
-//    public void showMsgDialog(String msg)
-//    {
-//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-//        final AlertDialog alert = DialogBuilder.create();
-//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View v = li.inflate(R.layout.dialog_message, null, false);
-//
-//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-//
-//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-//        mTxtMsg.setTypeface(tf);
-//        mTxtMsg.setText(msg);
-//
-//        DialogBuilder.setView(v);
-//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                dialog.dismiss();
-//            }
-//        });
-//        DialogBuilder.show();
-//    }
 
     public void showMsgDialog(String msg)
     {
@@ -785,17 +504,102 @@ public class SaveOrdersActivity extends AppCompatActivity {
         f2.setMenuname_mode("0");
         mListMenuData.add(f2);
 
-        MenuSaveOrder f3 = new MenuSaveOrder();
-        f3.setMenuname("โทร MSL : 0983939393");
-        f3.setMenuname_type("2");
-        f3.setMenuname_mode("0");
-        mListMenuData.add(f3);
 
-        MenuSaveOrder f4 = new MenuSaveOrder();
-        f4.setMenuname("โทร DSM : 0874848949");
-        f4.setMenuname_type("2");
-        f4.setMenuname_mode("0");
-        mListMenuData.add(f4);
+        final String[] telsMSL = mListOrderDataN.get(selectedPosition).getRep_telno().split(",");
+        final String[] telsDSM = mListOrderDataN.get(selectedPosition).getDsm_telno().split(",");
+
+
+        if(telsMSL.length>0)
+        {
+
+            if (telsMSL[0].toString().trim().equals(""))
+            {
+                //mLnlTel1.setVisibility(View.GONE);
+                //mLnlTel2.setVisibility(View.GONE);
+            }
+            else
+            {
+                if(telsMSL.length>=2)
+                {
+                    MenuSaveOrder msl1 = new MenuSaveOrder();
+                    msl1.setMenuname("โทร MSL 1 : "+ telsMSL[0]);
+                    msl1.setMenuname_type("2");
+                    msl1.setMenuname_mode("0");
+                    mListMenuData.add(msl1);
+
+                    MenuSaveOrder msl2 = new MenuSaveOrder();
+                    msl2.setMenuname("โทร MSL 2 : "+ telsMSL[1]);
+                    msl2.setMenuname_type("2");
+                    msl2.setMenuname_mode("0");
+                    mListMenuData.add(msl2);
+                }
+                else
+                {
+
+
+                    MenuSaveOrder msl1 = new MenuSaveOrder();
+                    msl1.setMenuname("โทร MSL : "+ telsMSL[0]);
+                    msl1.setMenuname_type("2");
+                    msl1.setMenuname_mode("0");
+                    mListMenuData.add(msl1);
+
+                }
+            }
+
+        }
+
+        if(telsDSM.length>0)
+        {
+
+            if (telsDSM[0].toString().trim().equals(""))
+            {
+                //mLnlTel1.setVisibility(View.GONE);
+                //mLnlTel2.setVisibility(View.GONE);
+            }
+            else
+            {
+                if(telsDSM.length>=2)
+                {
+                    MenuSaveOrder dsm1 = new MenuSaveOrder();
+                    dsm1.setMenuname("โทร DSM 1 : "+ telsDSM[0]);
+                    dsm1.setMenuname_type("2");
+                    dsm1.setMenuname_mode("0");
+                    mListMenuData.add(dsm1);
+
+                    MenuSaveOrder dsm2 = new MenuSaveOrder();
+                    dsm2.setMenuname("โทร DSM 2 : "+ telsDSM[1]);
+                    dsm2.setMenuname_type("2");
+                    dsm2.setMenuname_mode("0");
+                    mListMenuData.add(dsm2);
+                }
+                else
+                {
+
+
+                    MenuSaveOrder dsm1 = new MenuSaveOrder();
+                    dsm1.setMenuname("โทร DSM : "+ telsDSM[0]);
+                    dsm1.setMenuname_type("2");
+                    dsm1.setMenuname_mode("0");
+                    mListMenuData.add(dsm1);
+
+                }
+            }
+
+        }
+
+
+
+//        MenuSaveOrder f3 = new MenuSaveOrder();
+//        f3.setMenuname("โทร MSL : 0983939393");
+//        f3.setMenuname_type("2");
+//        f3.setMenuname_mode("0");
+//        mListMenuData.add(f3);
+
+//        MenuSaveOrder f4 = new MenuSaveOrder();
+//        f4.setMenuname("โทร DSM : 0874848949");
+//        f4.setMenuname_type("2");
+//        f4.setMenuname_mode("0");
+//        mListMenuData.add(f4);
 
 
         mMenuAdapter = new MenuSaveOrderViewAdapter(getApplicationContext(),mListMenuData);
@@ -810,6 +614,12 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 switch (mListMenuData.get(position).getMenuname_type()){
                     case "0":
                         //จัดส่งสินค้า
+
+                        editor = sp.edit();
+                        editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "1");
+                        editor.putString(TagUtils.PREF_SELECT_ORDER_POSITION, String.valueOf(selectedPosition));
+                        editor.apply();
+
                         DialogBuilder.dismiss();
 
                         mOrder = new Order();

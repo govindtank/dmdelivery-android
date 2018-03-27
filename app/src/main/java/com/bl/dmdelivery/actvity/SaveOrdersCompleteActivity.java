@@ -443,23 +443,112 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
         f11.setMenuname_mode("0");
         mListMenuData.add(f11);
 
+
         MenuSaveOrder f2 = new MenuSaveOrder();
         f2.setMenuname("กิจกรรม");
         f2.setMenuname_type("1");
         f2.setMenuname_mode("1");
         mListMenuData.add(f2);
 
-        MenuSaveOrder f3 = new MenuSaveOrder();
-        f3.setMenuname("โทร MSL : 0983939393");
-        f3.setMenuname_type("2");
-        f3.setMenuname_mode("1");
-        mListMenuData.add(f3);
+        final String[] telsMSL = mListOrderDataY.get(selectedPosition).getRep_telno().split(",");
+        final String[] telsDSM = mListOrderDataY.get(selectedPosition).getDsm_telno().split(",");
 
-        MenuSaveOrder f4 = new MenuSaveOrder();
-        f4.setMenuname("โทร DSM : 0874848949");
-        f4.setMenuname_type("2");
-        f4.setMenuname_mode("1");
-        mListMenuData.add(f4);
+
+        if(telsMSL.length>0)
+        {
+
+            if (telsMSL[0].toString().trim().equals(""))
+            {
+                //mLnlTel1.setVisibility(View.GONE);
+                //mLnlTel2.setVisibility(View.GONE);
+            }
+            else
+            {
+                if(telsMSL.length>=2)
+                {
+                    MenuSaveOrder msl1 = new MenuSaveOrder();
+                    msl1.setMenuname("โทร MSL 1 : "+ telsMSL[0]);
+                    msl1.setMenuname_type("2");
+                    msl1.setMenuname_mode("0");
+                    mListMenuData.add(msl1);
+
+                    MenuSaveOrder msl2 = new MenuSaveOrder();
+                    msl2.setMenuname("โทร MSL 2 : "+ telsMSL[1]);
+                    msl2.setMenuname_type("2");
+                    msl2.setMenuname_mode("0");
+                    mListMenuData.add(msl2);
+                }
+                else
+                {
+
+
+                    MenuSaveOrder msl1 = new MenuSaveOrder();
+                    msl1.setMenuname("โทร MSL : "+ telsMSL[0]);
+                    msl1.setMenuname_type("2");
+                    msl1.setMenuname_mode("0");
+                    mListMenuData.add(msl1);
+
+                }
+            }
+
+        }
+
+        if(telsDSM.length>0)
+        {
+
+            if (telsDSM[0].toString().trim().equals(""))
+            {
+                //mLnlTel1.setVisibility(View.GONE);
+                //mLnlTel2.setVisibility(View.GONE);
+            }
+            else
+            {
+                if(telsDSM.length>=2)
+                {
+                    MenuSaveOrder dsm1 = new MenuSaveOrder();
+                    dsm1.setMenuname("โทร DSM 1 : "+ telsDSM[0]);
+                    dsm1.setMenuname_type("2");
+                    dsm1.setMenuname_mode("0");
+                    mListMenuData.add(dsm1);
+
+                    MenuSaveOrder dsm2 = new MenuSaveOrder();
+                    dsm2.setMenuname("โทร DSM 2 : "+ telsDSM[1]);
+                    dsm2.setMenuname_type("2");
+                    dsm2.setMenuname_mode("0");
+                    mListMenuData.add(dsm2);
+                }
+                else
+                {
+
+
+                    MenuSaveOrder dsm1 = new MenuSaveOrder();
+                    dsm1.setMenuname("โทร DSM : "+ telsDSM[0]);
+                    dsm1.setMenuname_type("2");
+                    dsm1.setMenuname_mode("0");
+                    mListMenuData.add(dsm1);
+
+                }
+            }
+
+        }
+
+//        MenuSaveOrder f2 = new MenuSaveOrder();
+//        f2.setMenuname("กิจกรรม");
+//        f2.setMenuname_type("1");
+//        f2.setMenuname_mode("1");
+//        mListMenuData.add(f2);
+//
+//        MenuSaveOrder f3 = new MenuSaveOrder();
+//        f3.setMenuname("โทร MSL : 0983939393");
+//        f3.setMenuname_type("2");
+//        f3.setMenuname_mode("1");
+//        mListMenuData.add(f3);
+//
+//        MenuSaveOrder f4 = new MenuSaveOrder();
+//        f4.setMenuname("โทร DSM : 0874848949");
+//        f4.setMenuname_type("2");
+//        f4.setMenuname_mode("1");
+//        mListMenuData.add(f4);
 
 
         mMenuAdapter = new MenuSaveOrderViewAdapter(getApplicationContext(),mListMenuData);
@@ -666,24 +755,36 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
     public void showMsgDialog(String msg)
     {
-        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog alert = DialogBuilder.create();
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_message, null, false);
 
-        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-        mTxtMsg.setTypeface(tf);
-        mTxtMsg.setText(msg);
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
-        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
+
         DialogBuilder.show();
     }
 
