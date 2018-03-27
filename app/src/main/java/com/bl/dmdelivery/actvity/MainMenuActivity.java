@@ -98,7 +98,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     private int[] gridViewImageId = {
-            R.mipmap.ic_menu_barcode128, R.mipmap.ic_menu_downloaddata128, R.mipmap.ic_menu_unpack128, R.mipmap.ic_menu_saveorders128, R.mipmap.ic_menu_downloadtel128, R.mipmap.ic_menu_undateprogram128,R.mipmap.ic_menu_undateprogram128,R.mipmap.ic_menu_undateprogram128
+            R.mipmap.ic_menu_barcode128, R.mipmap.ic_menu_downloaddata128, R.mipmap.ic_menu_unpack128, R.mipmap.ic_menu_saveorders128, R.mipmap.ic_menu_downloadtel128, R.mipmap.ic_menu_activitydata128,R.mipmap.ic_menu_undateprogram128,R.mipmap.ic_menu_exitdata128
 
     };
 
