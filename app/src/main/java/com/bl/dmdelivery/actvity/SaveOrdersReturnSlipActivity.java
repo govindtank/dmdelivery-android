@@ -45,7 +45,7 @@ import java.util.TimeZone;
 
 public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtInvNo,mTxtRepcode;
+    private TextView mmTxtMsg,mTxtHeader,mmTxtTitle,mTxtInvNo,mTxtRepcode;
     private Button mBtnBack,mBtnCancelGPS,mBtnCancel,mBtnGPS,mBtnSaveGPS,mBtnSave,mBtnNew,mBtnNote,mmBtnOk,mmBtnClose;
     private ImageView mmImvTitle;
     private EditText medtNote;
@@ -259,6 +259,8 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                         sigNote = "";
                     }
 
+                    takeScreenshot();
+
                     //บันทึกข้อมูล รับได้
                     mHelper = new DBHelper(getApplicationContext());
                     mOrderReturnSaveData = new OrderReturn();
@@ -272,9 +274,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                     mOrderReturnSaveData.setFullpathimage("");
                     mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
 
-
-                   //รับได้
-                    finish();
+//
+//                   //รับได้
+//                    finish();
                 }
             });
 
@@ -392,29 +394,61 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
     public void showMsgDialog(String msg)
     {
-        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog alert = DialogBuilder.create();
+//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+//        final AlertDialog alert = DialogBuilder.create();
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_message, null, false);
+//
+//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mTxtMsg.setTypeface(tf);
+//        mTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                dialog.dismiss();
+//            }
+//        });
+//        DialogBuilder.show();
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_message, null, false);
 
-        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-        mTxtMsg.setTypeface(tf);
-        mTxtMsg.setText(msg);
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
-        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
+
         DialogBuilder.show();
     }
 
 
-    private void takeScreenshot(int position,String sendResult) {
+    private void takeScreenshot() {
 
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
         java.util.Date currentLocalTime = cal.getTime();
@@ -436,12 +470,12 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         String truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
 
 
-        String fileName= "V" + getResources().getString(R.string.app_version_slip) + "_" + Build.SERIAL.trim() +  "-" + truckNo + "-" + mOrderReturnGetData.getReftrans_no() + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + "-" + sendResult + ".jpg";
+        String fileName= "V" + getResources().getString(R.string.app_version_slip) + "_" + Build.SERIAL.trim() +  "-" + truckNo + "-" + mOrderReturnGetData.getReftrans_no() + "-" + mOrderReturnGetData.getRep_code() + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + ".jpg";
 
 
         try {
             // image naming and path  to include sd card  appending name you choose for file
-            String mPath = Environment.getExternalStorageDirectory().toString() + "/SLIP/" + fileName;
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/SLIPRETURN/" + fileName;
 
 
             View v = (View) findViewById(R.id.lnlSlip);
@@ -489,7 +523,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                 batteryPercent = "P"+String.valueOf(0);
             }
 
-
         } catch (Exception e)
         {
             showMsgDialog(e.toString());
@@ -509,7 +542,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
         return imeiNumber;
     }
-
 
 
 }
