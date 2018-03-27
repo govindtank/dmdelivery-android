@@ -108,7 +108,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-        if(!isResumeState)
+        if(isResumeState)
         {
 //            //มาจากหน้า slip
 //            Toast toast = Toast.makeText(SaveOrdersReturnActivity.this, "onResume - Slip2", Toast.LENGTH_SHORT);
@@ -154,7 +154,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 ref_rep_code= mOrderReturnSaveData.getRep_code();
             }
 
-            isResumeState = true;
+            isResumeState = false;
 
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnConfirm = (Button) findViewById(R.id.btnConfirm);
@@ -217,7 +217,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             mBtnConfirm.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
-                    isResumeState = false;
+                    isResumeState = true;
 
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnSlipActivity.class);
                     myIntent.putExtra("datareturn", mOrderReturnSaveData);
@@ -502,8 +502,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 //รับได้
                 finish();
 
-
-                //loadData();
                 DialogBuilder.dismiss();
             }
         });

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -31,6 +32,7 @@ import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.MenuSaveOrder;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
+import com.bl.dmdelivery.utility.TagUtils;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
@@ -67,8 +69,18 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
     private GestureManager mGestureManager;
     DBHelper mHelper;
 
-
     OrderReturn mOrder;
+
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
+
+    private String sigTruckNo = "";
+    private String sigDeliveryDate = "";
+    private boolean isResumeState = false;
+
+    private  OrderReturnListAdapter adapter = null;
+
+    private  int selectedPositionNotifyDataSetChanged = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +95,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
         }
 
         try {
+            sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
 
             bindWidget();
 //
@@ -95,10 +108,36 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        if(isResumeState)
+        {
+//            //มาจากหน้า slip
+//            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, "onResume - OK= " + mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status(), Toast.LENGTH_SHORT);
+//            toast.show();
+
+
+            getInit();
+
+            mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).setReturn_status(mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status());
+
+            adapter.clearData();
+            adapter.setData(mListReturnDataALL);
+            adapter.notifyDataSetChanged();
+            lv.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+
 
     private void bindWidget()
     {
         try{
+            sigTruckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
+            sigDeliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
+
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
@@ -111,7 +150,12 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
 
+            mBtnMenu.setVisibility(View.INVISIBLE);
+
             lv = (RecyclerView) findViewById(R.id.lv);
+
+
+            isResumeState = false;
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -135,11 +179,12 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
             getInit();
 
+
             final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
             lv.setHasFixedSize(true);
             lv.setLayoutManager(manager);
 
-            final OrderReturnListAdapter adapter = new OrderReturnListAdapter(getApplicationContext(), R.layout.list_row_order_return_item);
+            adapter = new OrderReturnListAdapter(getApplicationContext(), R.layout.list_row_order_return_item);
             adapter.setData(mListReturnDataALL);
 
             lv.setAdapter(adapter);
@@ -147,16 +192,8 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onItemClick(final OrderReturn item, final int position) {
-                    //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-//                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
-//                    toast.show();
-
-                    //showMsgDialogSelectedMenu(position);
-
-//                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
-//                    startActivity(myIntent);
-//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-
+                    selectedPositionNotifyDataSetChanged = position;
+                    showMsgDialogMenu(position);
                     return true;
                 }
 
@@ -228,15 +265,15 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                 }
             });
 
-            mBtnMenu.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-//                    myIntent = new Intent(getApplicationContext(), OthersMenuActivity.class);
-//                    startActivity(myIntent);
-//                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-
-                    showMsgDialogMenu();
-                }
-            });
+//            mBtnMenu.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+////                    myIntent = new Intent(getApplicationContext(), OthersMenuActivity.class);
+////                    startActivity(myIntent);
+////                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//
+//                    showMsgDialogMenu();
+//                }
+//            });
 
             mBtnSaveOrders.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -268,12 +305,6 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
         try {
 
-//            mListReturnDataALL.clear();
-//
-//            mHelper = new DBHelper(getApplicationContext());
-//            mListReturnDataALL.clear();
-//            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
-
             mHelper = new DBHelper(getApplicationContext());
 
             mListOrderDataALL.clear();
@@ -298,7 +329,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
     }
 
-    public void showMsgDialogMenu()
+    public void showMsgDialogMenu(final int selectedPosition)
     {
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         DialogBuilder.setIcon(R.mipmap.ic_launcher);
@@ -307,8 +338,6 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
 
         DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
         mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnClose = (Button) v.findViewById(R.id.btClose);
@@ -317,22 +346,27 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
         lvmenu.setLayoutManager(new LinearLayoutManager(this));
         lvmenu.setHasFixedSize(true);
 
-        //mListMenuData
-
         mListMenuData.clear();
 
-//        MenuSaveOrder f1 = new MenuSaveOrder();
-//        f1.setMenuname("เซ็นรับสินค้า");
-//        f1.setMenuname_type("0");
-//        f1.setMenuname_mode("0");
-//        mListMenuData.add(f1);
+        MenuSaveOrder f1 = new MenuSaveOrder();
+        f1.setMenuname("ดูสลิปเซ็นต์รับคืน");
+        f1.setMenuname_type("0");
+        f1.setMenuname_mode("1");
+        mListMenuData.add(f1);
 
 
         MenuSaveOrder f2 = new MenuSaveOrder();
-        f2.setMenuname("กิจกรรม");
-        f2.setMenuname_type("1");
+        f2.setMenuname("แก้ไขการเซ็นต์รับคืนสินค้า");
+        f2.setMenuname_type("0");
         f2.setMenuname_mode("0");
         mListMenuData.add(f2);
+
+
+        MenuSaveOrder f3 = new MenuSaveOrder();
+        f3.setMenuname("กิจกรรม");
+        f3.setMenuname_type("1");
+        f3.setMenuname_mode("0");
+        mListMenuData.add(f3);
 
 
 
@@ -347,56 +381,72 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
                 switch (mListMenuData.get(position).getMenuname_type()){
                     case "0":
-                        //กิจกรรมอื่นๆ
+                        //ดูสลิปเซ็นต์รับคืน
                         DialogBuilder.dismiss();
 
-//                        mOrder = new Order();
-//                        mOrder.setRep_code(mListOrderDataN.get(0).getRep_code());
-//                        mOrder.setRep_name(mListOrderDataN.get(0).getRep_name());
-//                        mOrder.setTransNo(mListOrderDataN.get(0).getTransNo());
-//                        mOrder.setDelivery_date(sigDeliveryDate);
-//                        mOrder.setTruckNo(sigTruckNo);
-//                        mOrder.setRep_telno(mListOrderDataN.get(0).getRep_telno());
-//                        mOrder.setDsm_telno(mListOrderDataN.get(0).getDsm_telno());
+                        ArrayList<Order> mOrders = null;
+                        Order mOrder = null;
+                        if(mListMenuData.get(position).getMenuname_mode() == "0")
+                        {
+                            //แก้ไขการเซ็นต์รับคืนสินค้า
+                            isResumeState = true;
+
+                            mOrders = new ArrayList<Order>();
+                            mOrder = new Order();
+                            mOrder.setTruckNo(mListReturnDataALL.get(selectedPosition).getReftrans_no());
+                            mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
+                            mOrders.add(mOrder);
+
+                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                            myIntent.putExtra("data",mOrders);
+                            startActivity(myIntent);
+                        }
+                        else if(mListMenuData.get(position).getMenuname_mode() == "1")
+                        {
+                            //ดูสลิปเซ็นต์รับคืน
+
+                            isResumeState = true;
+
+//                            mOrder = new Order();
+//                            mOrder.setTruckNo(mListReturnDataALL.get(selectedPosition).getReftrans_no());
+//                            mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
+//
+//                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                            myIntent.putExtra("data",mOrder);
+//                            startActivity(myIntent);
+
+//                            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, "tranno=>" + mListReturnDataALL.get(selectedPosition).getReftrans_no() +
+//                                    ", Rep_code=>"+ mListReturnDataALL.get(selectedPosition).getRep_code(), Toast.LENGTH_SHORT);
+//                            toast.show();
+                        }
+                        break;
+                    case "1":
+                        //กิจกรรม
+                        DialogBuilder.dismiss();
+
+//                        isResumeState = true;
+
+                        mOrder = new Order();
+                        mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
+                        mOrder.setRep_name(mListReturnDataALL.get(selectedPosition).getRep_name());
+                        mOrder.setTransNo(mListReturnDataALL.get(selectedPosition).getReftrans_no());
+                        mOrder.setDelivery_date(sigDeliveryDate);
+                        mOrder.setTruckNo(sigTruckNo);
+                        mOrder.setRep_telno("");
+                        mOrder.setDsm_telno("");
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
-                        //myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("data",mOrder);
                         startActivity(myIntent);
-                        break;
-
-
-                    case "1":
-                        //กิจกรรมอื่นๆ
-                        DialogBuilder.dismiss();
-
-//                        mOrder = new Order();
-//                        mOrder.setRep_code(mListOrderDataN.get(0).getRep_code());
-//                        mOrder.setRep_name(mListOrderDataN.get(0).getRep_name());
-//                        mOrder.setTransNo(mListOrderDataN.get(0).getTransNo());
-//                        mOrder.setDelivery_date(sigDeliveryDate);
-//                        mOrder.setTruckNo(sigTruckNo);
-//                        mOrder.setRep_telno(mListOrderDataN.get(0).getRep_telno());
-//                        mOrder.setDsm_telno(mListOrderDataN.get(0).getDsm_telno());
-//
-//                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
-//                        myIntent.putExtra("data",mOrder);
-//                        startActivity(myIntent);
-                        break;
-
-                    case "2":
-                        //โทร
-                        DialogBuilder.dismiss();
-
-                        //showMsgDialog(mListMenuData.get(position).getMenuname());
 
                         break;
-
                     default:
+
+//                        isResumeState = true;
 
                         DialogBuilder.dismiss();
                         showMsgDialog("default");
-
-
+                        break;
                 }
 
             }

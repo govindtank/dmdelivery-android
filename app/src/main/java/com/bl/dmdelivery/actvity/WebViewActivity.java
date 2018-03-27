@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 public class WebViewActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
-    private Button mBtnBack;
+    private Button mBtnBack,mBtnMenu;
     private WebView mWebViewDisplay;
     private ProgressDialog prDialog;
 
@@ -75,6 +75,7 @@ public class WebViewActivity extends AppCompatActivity {
 
             //button
             mBtnBack = (Button) findViewById(R.id.btnBack);
+            mBtnMenu = (Button) findViewById(R.id.btnMenu);
             mWebViewDisplay = (WebView) findViewById(R.id.webviewDisplay);
 
             //textbox
@@ -88,7 +89,6 @@ public class WebViewActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try {
-
             Order mOrder=null;
             Intent intInv= getIntent();
             Bundle bdlInv = intInv.getExtras();
@@ -98,6 +98,10 @@ public class WebViewActivity extends AppCompatActivity {
                 mOrder=new Order();
                 mOrder =(Order)bdlInv.get("data");
             }
+
+
+            mBtnMenu.setVisibility(View.INVISIBLE);
+
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {

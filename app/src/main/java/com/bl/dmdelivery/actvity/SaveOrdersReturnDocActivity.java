@@ -81,7 +81,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-        if(!isResumeState)
+        if(isResumeState)
         {
 //            //มาจากหน้า slip
 //            Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - OK", Toast.LENGTH_SHORT);
@@ -155,7 +155,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                 mListOrder =(ArrayList<Order>)bdlGetExtras.get("data");
             }
 
-            isResumeState = true;
+            isResumeState = false;
 
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnBack.setVisibility(View.INVISIBLE);
@@ -188,7 +188,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                     mOrderReturn.setRep_code( mListOrderReturn.get(position).getRep_code());
                     mOrderReturn.setRep_name( mListOrderReturn.get(position).getRep_name());
 
-                    isResumeState = false;
+                    isResumeState = true;
 
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
                     myIntent.putExtra("data", mOrderReturn);
