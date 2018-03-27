@@ -124,6 +124,22 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:id="@+id/btnFlash"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_flash_off_black_24dp"
+                        android:paddingTop="15dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:tooltipText="flash off"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -144,6 +160,8 @@
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/textbtnMenuSize" />
                 </LinearLayout>
+
+
 
             </LinearLayout>
 

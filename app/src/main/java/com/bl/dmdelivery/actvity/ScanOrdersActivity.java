@@ -28,6 +28,7 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +68,9 @@ import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 import okhttp3.Response;
 
+import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
+
 public class ScanOrdersActivity extends AppCompatActivity {
 
     private ACProgressFlower mProgressDialog;
@@ -89,6 +93,8 @@ public class ScanOrdersActivity extends AppCompatActivity {
     private String serverUrl;
     private Integer i = 0;
     private CheckNetwork chkNetwork = new CheckNetwork();
+    private ImageButton mBtnFlash;
+
 
     private DecoratedBarcodeView barcodeScannerView;
     private BarcodeCallback callback = new BarcodeCallback() {
@@ -102,6 +108,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
         }
     };
+
 
 
     @Override
@@ -172,6 +179,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnCheckScan = (Button)findViewById(R.id.btnCheckScan);
             mBtnConfirm = (Button)findViewById(R.id.btnConfirm);
+            mBtnFlash = (ImageButton)findViewById(R.id.btnFlash);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
@@ -185,23 +193,17 @@ public class ScanOrdersActivity extends AppCompatActivity {
             //Camara
             barcodeScannerView = (DecoratedBarcodeView)findViewById(R.id.zxing_barcode_scanner);
             barcodeScannerView.decodeContinuous(callback);
+
+
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
         }
     }
 
-//    private void setDefaultFonts() {
-//
-//        try {
-//            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-//            mTxtHeader.setTypeface(tf);
-//            mBtnBack.setTypeface(tf);
-//
-//        } catch (Exception e) {
-//            showMsgDialog(e.toString());
-//        }
-//    }
+
+
+
 
     private void setWidgetControl() {
         try{
@@ -227,6 +229,26 @@ public class ScanOrdersActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     showMsgConfirmDialog("ยืนยันการสแกนสินค้าขึ้นรถ",getResources().getString(R.string.btn_text_confirm));
+                }
+            });
+
+
+            mBtnFlash.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mBtnFlash.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_flash_off_black_24dp).getConstantState())){
+                        barcodeScannerView.setTorchOn();
+                        ((ImageButton)view).setImageResource(R.drawable.ic_flash_on_black_24dp);
+                    }else{
+                        barcodeScannerView.setTorchOff();
+                        ((ImageButton)view).setImageResource(R.drawable.ic_flash_off_black_24dp);
+                    }
+
+                   /* if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
+                        barcodeScannerView.setTorchOn();
+                    } else {
+                        barcodeScannerView.setTorchOff();
+                    }*/
                 }
             });
 

@@ -68,12 +68,11 @@
                 android:weightSum="2">
 
                 <LinearLayout
+                    android:id="@+id/linearLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/linearLayout4"
                     android:layout_below="@+id/linearLayout3"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/txtResult"
@@ -82,6 +81,7 @@
                         android:layout_weight="2.13"
                         android:text="Scan...."
                         android:textSize="@dimen/textRowSize" />
+
 
                 </LinearLayout>
 
