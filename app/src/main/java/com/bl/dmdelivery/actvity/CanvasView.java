@@ -146,7 +146,7 @@ public class CanvasView extends View {
 
 
 		xOrder = 720;
-		yOrder = 1075;
+		yOrder = 970;
 
 
 		if(mListOrderData != null)
