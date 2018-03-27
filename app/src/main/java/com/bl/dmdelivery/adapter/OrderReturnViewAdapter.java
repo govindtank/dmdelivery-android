@@ -60,13 +60,13 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
 //            holder.txtRefCode.setText(refCode);
 
 
-            String refNo = "เลขที่รับคืน : "+String.valueOf(f.getReturn_no());
+            String refNo = "เลขที่รับคืน: "+String.valueOf(f.getReturn_no());
             holder.txtRefReturnNo.setText(refNo);
 
-            String refInv = "Inv No : "+String.valueOf(f.getReftrans_no());
+            String refInv = "Inv: "+String.valueOf(f.getReftrans_no());
             holder.txtInvNo.setText(refInv);
 
-            String refCode = "Ref Code :"+String.valueOf(f.getRep_code())+" - "+String.valueOf(f.getRep_name());
+            String refCode = "รหัส-ชื่อ:"+String.valueOf(f.getRep_code())+" - "+String.valueOf(f.getRep_name());
             holder.txtRefCode.setText(refCode);
 
             String sigReturn_status=String.valueOf(f.getReturn_status());

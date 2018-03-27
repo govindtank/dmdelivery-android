@@ -496,7 +496,8 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 mOrderReturnSaveData.setReturn_status("2");
                 mOrderReturnSaveData.setReason_code(sigReson_code);
                 mOrderReturnSaveData.setReturn_note(sigNote);
-                mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
+                mOrderReturnSaveData.setReturn_unit_real("0");
+                mHelper.updateOrderReturnDetails(mOrderReturnSaveData);
 
 
                 //รับได้

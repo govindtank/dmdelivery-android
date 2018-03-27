@@ -349,14 +349,14 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
         mListMenuData.clear();
 
         MenuSaveOrder f1 = new MenuSaveOrder();
-        f1.setMenuname("ดูสลิปเซ็นต์รับคืน");
+        f1.setMenuname("ดูสลิปเซ็นรับคืนสินค้า");
         f1.setMenuname_type("0");
         f1.setMenuname_mode("1");
         mListMenuData.add(f1);
 
 
         MenuSaveOrder f2 = new MenuSaveOrder();
-        f2.setMenuname("แก้ไขการเซ็นต์รับคืนสินค้า");
+        f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
         f2.setMenuname_type("0");
         f2.setMenuname_mode("0");
         mListMenuData.add(f2);

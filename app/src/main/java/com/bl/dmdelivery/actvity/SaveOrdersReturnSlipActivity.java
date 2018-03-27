@@ -252,6 +252,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                     mOrderReturnSaveData.setReturn_status("1");
                     mOrderReturnSaveData.setReason_code(sigReson_code);
                     mOrderReturnSaveData.setReturn_note(sigNote);
+                    mOrderReturnSaveData.setReturn_unit_real("0");
                     mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
 
 

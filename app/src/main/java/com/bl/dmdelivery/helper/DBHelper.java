@@ -1249,6 +1249,38 @@ public class DBHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    public boolean updateOrderReturnDetails(OrderReturn mOrderReturn) {
+        sqLiteDatabase = this.getWritableDatabase();
+        try{
+            ContentValues cv = new ContentValues();
+            cv.put("reason_code",mOrderReturn.getReason_code());
+            cv.put("return_status",mOrderReturn.getReturn_status());
+            cv.put("return_note",mOrderReturn.getReturn_note());
+            cv.put("return_unit_real",mOrderReturn.getReturn_unit_real());
+
+            int intResult = sqLiteDatabase.update("OrderReturns", cv,
+                    "return_no='" + mOrderReturn.getReturn_no()
+                            + "' AND rep_code='" + mOrderReturn.getRep_code() + "'",
+                    null);
+
+            if(intResult > 0){
+                return  true;
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
+    }
+
 
     public boolean updateOrderReturnDtl(OrderReturn mOrderReturn) {
         sqLiteDatabase = this.getWritableDatabase();
