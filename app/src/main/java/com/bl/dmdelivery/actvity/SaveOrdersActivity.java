@@ -975,7 +975,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             mListOrderDataN.clear();
             //mListOrderDataN = mHelper.getOrderWaitList("N");
-            mListOrderDataN = mHelper.getOrderWaitList("ALL");
+            mListOrderDataN = mHelper.getOrderWaitList("YW");
 
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
