@@ -118,15 +118,18 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 //            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, "onResume - OK= " + mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status(), Toast.LENGTH_SHORT);
 //            toast.show();
 
+//
+//            mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).setReturn_status(mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status());
 
-            getInit();
 
-            mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).setReturn_status(mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status());
+            mListReturnDataALL.clear();
+            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
             adapter.clearData();
             adapter.setData(mListReturnDataALL);
             adapter.notifyDataSetChanged();
-            lv.getAdapter().notifyDataSetChanged();
+            lv.scrollToPosition(selectedPositionNotifyDataSetChanged);
+
         }
     }
 
@@ -348,25 +351,79 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
         mListMenuData.clear();
 
-        MenuSaveOrder f1 = new MenuSaveOrder();
-        f1.setMenuname("ดูสลิปเซ็นรับคืนสินค้า");
-        f1.setMenuname_type("0");
-        f1.setMenuname_mode("1");
-        mListMenuData.add(f1);
 
 
-        MenuSaveOrder f2 = new MenuSaveOrder();
-        f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
-        f2.setMenuname_type("0");
-        f2.setMenuname_mode("0");
-        mListMenuData.add(f2);
+        if(mListReturnDataALL.get(selectedPosition).getReturn_status() == "รับคืนได้")
+        {
+            //รับคืนได้
+            MenuSaveOrder f1 = new MenuSaveOrder();
+            f1.setMenuname("ดูสลิปเซ็นรับคืนสินค้า");
+            f1.setMenuname_type("0");
+            f1.setMenuname_mode("1");
+            mListMenuData.add(f1);
 
 
-        MenuSaveOrder f3 = new MenuSaveOrder();
-        f3.setMenuname("กิจกรรม");
-        f3.setMenuname_type("1");
-        f3.setMenuname_mode("0");
-        mListMenuData.add(f3);
+            MenuSaveOrder f2 = new MenuSaveOrder();
+            f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
+            f2.setMenuname_type("0");
+            f2.setMenuname_mode("0");
+            mListMenuData.add(f2);
+
+
+            MenuSaveOrder f3 = new MenuSaveOrder();
+            f3.setMenuname("กิจกรรม");
+            f3.setMenuname_type("1");
+            f3.setMenuname_mode("0");
+            mListMenuData.add(f3);
+        }
+        else  if(mListReturnDataALL.get(selectedPosition).getReturn_status() == "รับคืนไม่ได้")
+        {
+            //รับคืนไม่ได้
+
+            MenuSaveOrder f2 = new MenuSaveOrder();
+            f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
+            f2.setMenuname_type("0");
+            f2.setMenuname_mode("0");
+            mListMenuData.add(f2);
+
+
+            MenuSaveOrder f3 = new MenuSaveOrder();
+            f3.setMenuname("กิจกรรม");
+            f3.setMenuname_type("1");
+            f3.setMenuname_mode("0");
+            mListMenuData.add(f3);
+        }
+        else
+        {
+            //ยังไม่รับคืน
+
+            MenuSaveOrder f3 = new MenuSaveOrder();
+            f3.setMenuname("กิจกรรม");
+            f3.setMenuname_type("1");
+            f3.setMenuname_mode("0");
+            mListMenuData.add(f3);
+        }
+
+
+//        MenuSaveOrder f1 = new MenuSaveOrder();
+//        f1.setMenuname("ดูสลิปเซ็นรับคืนสินค้า");
+//        f1.setMenuname_type("0");
+//        f1.setMenuname_mode("1");
+//        mListMenuData.add(f1);
+//
+//
+//        MenuSaveOrder f2 = new MenuSaveOrder();
+//        f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
+//        f2.setMenuname_type("0");
+//        f2.setMenuname_mode("0");
+//        mListMenuData.add(f2);
+//
+//
+//        MenuSaveOrder f3 = new MenuSaveOrder();
+//        f3.setMenuname("กิจกรรม");
+//        f3.setMenuname_type("1");
+//        f3.setMenuname_mode("0");
+//        mListMenuData.add(f3);
 
 
 
@@ -407,17 +464,20 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
                             isResumeState = true;
 
-//                            mOrder = new Order();
-//                            mOrder.setTruckNo(mListReturnDataALL.get(selectedPosition).getReftrans_no());
-//                            mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
-//
-//                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-//                            myIntent.putExtra("data",mOrder);
-//                            startActivity(myIntent);
-
-//                            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, "tranno=>" + mListReturnDataALL.get(selectedPosition).getReftrans_no() +
-//                                    ", Rep_code=>"+ mListReturnDataALL.get(selectedPosition).getRep_code(), Toast.LENGTH_SHORT);
+//                            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, mListReturnDataALL.get(selectedPosition).getFullpathimage(), Toast.LENGTH_SHORT);
 //                            toast.show();
+
+                            OrderReturn  mOrderReturn = new OrderReturn();
+                            mOrderReturn.setReftrans_no(mListReturnDataALL.get(selectedPosition).getReftrans_no());
+                            mOrderReturn.setReturn_no(mListReturnDataALL.get(selectedPosition).getReturn_no());
+                            mOrderReturn.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
+                            mOrderReturn.setRep_name(mListReturnDataALL.get(selectedPosition).getRep_name());
+                            mOrderReturn.setFullpathimage(mListReturnDataALL.get(selectedPosition).getFullpathimage());
+
+
+                            myIntent = new Intent(getApplicationContext(), ViewSlipReturnActivity.class);
+                            myIntent.putExtra("datareturn",mOrderReturn);
+                            startActivity(myIntent);
                         }
                         break;
                     case "1":

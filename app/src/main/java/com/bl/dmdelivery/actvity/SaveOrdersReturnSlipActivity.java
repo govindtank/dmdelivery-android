@@ -8,7 +8,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -69,7 +71,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private Integer mSelectResonIndex = 0;
     private String  mSelect="0";
 
-    String mInputPath = Environment.getExternalStorageDirectory().toString() + "/SLIPRETURN/";
+    private String mInputPath = Environment.getExternalStorageDirectory().toString() + "/SLIPRETURN/";
+
+//    private String mPath = "";
 
 
     private String sigInvNo="";
@@ -168,7 +172,8 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
 
             mCanvasViewSlipReturn = (CanvasViewSlipReturn) findViewById(R.id.signature_canvas);
-
+//            mCanvasViewSlipReturn.setBackground(Dr);
+//            mCanvasViewSlipReturn.drawBitmap(image, 0, 0, null);
 
 
             File dirInput = new File (mInputPath);
@@ -270,13 +275,12 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                     mOrderReturnSaveData.setReturn_status("1");
                     mOrderReturnSaveData.setReason_code(sigReson_code);
                     mOrderReturnSaveData.setReturn_note(sigNote);
-                    mOrderReturnSaveData.setReturn_unit_real("0");
-                    mOrderReturnSaveData.setFullpathimage("");
+                    mOrderReturnSaveData.setFullpathimage(mFileName);
                     mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
 
-//
-//                   //รับได้
-//                    finish();
+
+                   //รับได้
+                    finish();
                 }
             });
 
@@ -394,26 +398,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
     public void showMsgDialog(String msg)
     {
-//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-//        final AlertDialog alert = DialogBuilder.create();
-//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View v = li.inflate(R.layout.dialog_message, null, false);
-//
-//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-//
-//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-//        mTxtMsg.setTypeface(tf);
-//        mTxtMsg.setText(msg);
-//
-//        DialogBuilder.setView(v);
-//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                dialog.dismiss();
-//            }
-//        });
-//        DialogBuilder.show();
-
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -483,6 +467,8 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             // create bitmap screen capture
             //View v1 = getWindow().getDecorView().getRootView();
             v.setDrawingCacheEnabled(true);
+            v.setBackgroundColor(Color.parseColor("#ffffff"));
+            v.invalidate();
             Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
             v.setDrawingCacheEnabled(false);
 

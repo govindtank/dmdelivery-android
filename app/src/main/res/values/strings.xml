@@ -78,6 +78,7 @@
     <string name="txt_text_headder_saveorders_slip">สลิปเซ็นต์รับ</string>
     <string name="txt_text_headder_saveorders_return_slip">สลิปเซ็นต์รับคืน</string>
     <string name="txt_text_headder_saveorders_slip_details">รายละเอียด</string>
+    <string name="txt_text_headder_slip_return_list">สลิปรับคืนสินค้า</string>
 
     <string name="txt_text_headder_check_map">ตำแหน่งปัจจุบัน</string>
 
