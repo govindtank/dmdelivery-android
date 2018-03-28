@@ -80,6 +80,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private ArrayList<Order> mListOrderDataALL = new ArrayList<Order>();
     private ArrayList<Order> mListOrderDataY = new ArrayList<Order>();
     private ArrayList<Order> mListOrderDataN = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataNN = new ArrayList<Order>();
     private ArrayList<OrderReturn> mListReturnDataALL = new ArrayList<OrderReturn>();
     private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
     private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
@@ -160,14 +161,44 @@ public class SaveOrdersActivity extends AppCompatActivity {
             {
                 //mListOrderDataN.get(Integer.parseInt(selectOrderPosition)).setIsselect("1");
 
+                editor = sp.edit();
+                editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+                editor.apply();
+
+                setHeader();
+
+                mHelper = new DBHelper(getApplicationContext());
+//
+                mListOrderDataNN.clear();
+                mListOrderDataNN = mHelper.getOrderWaitList("W");
+
+                for(int i=0;i < mListOrderDataN.size(); i++)
+                {
+                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+
+
+                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+
+                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataN.get(i).getTransNo()))
+                        {
+                            mListOrderDataN.get(i).setDelivery_status("W");
+
+                            //mListOrderDataN.remove(i);
+                            //mListOrderDataN.remove(i);
+
+                        }
+
+                    }
+
+
+                }
+
                 adapter.notifyDataSetChanged();
 
                 Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
                 toast.show();
 
-                editor = sp.edit();
-                editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "");
-                editor.apply();
+
             }
             else
             {
@@ -178,6 +209,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
         }
 
+    }
+
+
+    private int getCategoryPos(String category) {
+        return mListOrderDataN.indexOf(category);
     }
 
 
@@ -224,6 +260,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private void setWidgetControl() {
         try{
             getInit();
+
+            setHeader();
 
             final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
             lv.setHasFixedSize(true);
@@ -387,11 +425,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                }
 //            });
 
-            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
 
-            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
-
-            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 
 
             mBtnSaveOrdersComplete.setOnClickListener(new View.OnClickListener() {
@@ -633,7 +667,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         mOrder.setRep_telno(mListOrderDataN.get(selectedPosition).getRep_telno());
                         mOrder.setReturn_flag(mListOrderDataN.get(selectedPosition).getReturn_flag());
                         mOrder.setCont_desc(mListOrderDataN.get(selectedPosition).getCont_desc());
-
+                        mOrder.setDelivery_status("W");
                         ArrayList<Order> order = new ArrayList<Order>();
                         order.add(mOrder);
 
@@ -771,6 +805,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                                 mOrder.setRep_telno(mListOrderDataN.get(i).getRep_telno());
                                 mOrder.setReturn_flag(mListOrderDataN.get(i).getReturn_flag());
                                 mOrder.setCont_desc(mListOrderDataN.get(i).getCont_desc());
+                                mOrder.setDelivery_status("W");
 
                                 order.add(mOrder);
                             }
@@ -852,115 +887,26 @@ public class SaveOrdersActivity extends AppCompatActivity {
     }
 
 
-    public void showMsgUserSelectedMenuDialog(String sigGetTransNo,int selectedPosition)
-    {
+    private void getInit() {
 
-        final String sigTransNo=sigGetTransNo;
-        final int intSelectedPosition=selectedPosition;
-        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersActivity.this).create();
-        LayoutInflater inflater = getLayoutInflater();
-        View v = (View) inflater.inflate(R.layout.dialog_call_telandact, null);
-        DialogBuilder.setView(v);
-
-        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-        mmTxtTitle.setText("เลือกเมนู");
-        mBtnClose = (Button) v.findViewById(R.id.btnClose);
-        lvGetMenu = (ListView) v.findViewById(R.id.lv);
-
-        ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add("หน้าจอเซ็นรับ");
-        arrayList.add("กิจกรรรม");
-        arrayList.add("โทรหา MSL 1: 0800000000");
-        arrayList.add("โทรหา MSL 2: 0800000000");
-        arrayList.add("โทรหา DSM 1: 0800000000");
-        arrayList.add("โทรหา DSM 2: 0800000000");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
-        lvGetMenu.setAdapter(adapter);
+        try {
 
 
-        mBtnClose.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                DialogBuilder.dismiss();
-            }
-        });
+            mHelper = new DBHelper(getApplicationContext());
 
 
-        // Set item click listener
-        lvGetMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String  description    = (String) lvGetMenu.getItemAtPosition(position);
-
-                switch (position){
-                    case 0:
-                        //จัดส่งสินค้า
-                        DialogBuilder.dismiss();
-
-                        mOrder = new Order();
-                        mOrder.setRep_code(mListOrderDataN.get(intSelectedPosition).getRep_code());
-                        mOrder.setRep_name(mListOrderDataN.get(intSelectedPosition).getRep_name());
-                        mOrder.setTransNo(mListOrderDataN.get(intSelectedPosition).getTransNo());
-                        mOrder.setAddress1(mListOrderDataN.get(intSelectedPosition).getAddress1());
-                        mOrder.setAddress2(mListOrderDataN.get(intSelectedPosition).getAddress2());
-                        mOrder.setPostal(mListOrderDataN.get(intSelectedPosition).getPostal());
-                        mOrder.setRep_telno(mListOrderDataN.get(intSelectedPosition).getRep_telno());
-                        mOrder.setReturn_flag(mListOrderDataN.get(intSelectedPosition).getReturn_flag());
-                        mOrder.setCont_desc(mListOrderDataN.get(intSelectedPosition).getCont_desc());
-
-                        ArrayList<Order> order = new ArrayList<Order>();
-                        order.add(mOrder);
-
-                        //TinyDB tinydb = new TinyDB(getApplicationContext());
+            mListOrderDataN.clear();
+            mListOrderDataN = mHelper.getOrderWaitList("WN");
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
 
-
-                        myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
-                        myIntent.putExtra("data",order);
-                        startActivity(myIntent);
-                        break;
-                    case 1:
-                        //กิจกรรมอื่นๆ
-                        DialogBuilder.dismiss();
-
-                        mOrder = new Order();
-                        mOrder.setRep_code(mListOrderDataN.get(intSelectedPosition).getRep_code());
-                        mOrder.setRep_name(mListOrderDataN.get(intSelectedPosition).getRep_name());
-                        mOrder.setTransNo(mListOrderDataN.get(intSelectedPosition).getTransNo());
-                        mOrder.setDelivery_date(sigDeliveryDate);
-                        mOrder.setTruckNo(sigTruckNo);
-                        mOrder.setRep_telno(mListOrderDataN.get(intSelectedPosition).getRep_telno());
-                        mOrder.setDsm_telno(mListOrderDataN.get(intSelectedPosition).getDsm_telno());
-
-                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
-                        myIntent.putExtra("data",mOrder);
-                        startActivity(myIntent);
-                        break;
-                }
-            }
-        });
-
-
-//        lvGetMenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                DialogBuilder.dismiss();
-//
-////                myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
-////                startActivity(myIntent);
-////                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-//            }
-//        });
-
-        DialogBuilder.show();
     }
 
-
-
-
-
-    private void getInit() {
+    private void setHeader() {
 
         try {
 
@@ -973,9 +919,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListOrderDataY.clear();
             mListOrderDataY = mHelper.getOrderWaitList("Y");
 
-            mListOrderDataN.clear();
-            //mListOrderDataN = mHelper.getOrderWaitList("N");
-            mListOrderDataN = mHelper.getOrderWaitList("YW");
+            mListOrderDataNN.clear();
+            mListOrderDataNN = mHelper.getOrderWaitList("WN");
 
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
@@ -983,66 +928,16 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListReturnDataY.clear();
             mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
 
+            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataNN.size()+"/"+mListOrderDataALL.size()+")");
 
+            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
 
-//            Order f = new Order();
-//            f.setTransNo("1");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("2");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("3");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("4");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("5");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("6");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("7");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("8");
-//            mListOrderData.add(f);
+            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 
-
-            //new getInitDataInAsync().execute();
-
-           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-            {
-
-                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-                {
-
-                    new getOrderDataInAsync().execute();
-                }
-                else
-                {
-
-                    showMsgDialog(getResources().getString(R.string.error_webservice));
-
-                }
-
-            }else
-            {
-
-                showMsgDialog(getResources().getString(R.string.error_network));
-            }*/
 
         } catch (Exception e) {
             e.printStackTrace();
+            showMsgDialog(e.toString());
         }
 
     }

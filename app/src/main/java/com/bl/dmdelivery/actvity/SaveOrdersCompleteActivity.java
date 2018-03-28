@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -22,12 +23,14 @@ import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.MenuSaveOrderViewAdapter;
+import com.bl.dmdelivery.adapter.OrderAdapter;
 import com.bl.dmdelivery.adapter.OrderCompleteAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.MenuSaveOrder;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
+import com.bl.dmdelivery.utility.TagUtils;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
@@ -52,7 +55,9 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
     private ArrayList<Order> mListOrderDataALL = new ArrayList<Order>();
     private ArrayList<Order> mListOrderDataY = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataYY = new ArrayList<Order>();
     private ArrayList<Order> mListOrderDataN = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataNN = new ArrayList<Order>();
     private ArrayList<OrderReturn> mListReturnDataALL = new ArrayList<OrderReturn>();
     private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
 
@@ -63,8 +68,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     private GestureManager mGestureManager;
     DBHelper mHelper;
 
+    private OrderCompleteAdapter adapter;
+
 
     Order mOrder;
+
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +89,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
+        sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
+
         try {
 
             bindWidget();
@@ -92,6 +104,75 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+//        if()
+        String resumeOrderList = sp.getString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+        String selectOrderPosition = sp.getString(TagUtils.PREF_SELECT_ORDER_POSITION, "-1");
+
+
+        if(resumeOrderList.equals(""))
+        {
+
+        }
+        else
+        {
+            if(Integer.parseInt(selectOrderPosition) > -1)
+            {
+                //mListOrderDataN.get(Integer.parseInt(selectOrderPosition)).setIsselect("1");
+
+                editor = sp.edit();
+                editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+                editor.apply();
+
+                setHeader();
+
+                mHelper = new DBHelper(getApplicationContext());
+//
+                mListOrderDataNN.clear();
+                mListOrderDataNN = mHelper.getOrderWaitList("W");
+
+                for(int i=0;i < mListOrderDataY.size(); i++)
+                {
+                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+
+
+                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+
+                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataY.get(i).getTransNo()))
+                        {
+                            mListOrderDataY.get(i).setDelivery_status("W");
+
+                            //mListOrderDataN.remove(i);
+                            //mListOrderDataN.remove(i);
+
+                        }
+
+                    }
+
+
+                }
+
+                adapter.notifyDataSetChanged();
+
+//                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
+//                toast.show();
+
+
+            }
+            else
+            {
+
+
+            }
+
+
+        }
+
     }
 
 
@@ -152,12 +233,14 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             getInit();
 
+            setHeader();
+
 
             final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
             lv.setHasFixedSize(true);
             lv.setLayoutManager(manager);
 
-            final OrderCompleteAdapter adapter = new OrderCompleteAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
+            adapter = new OrderCompleteAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
             adapter.setData(mListOrderDataY);
 
             lv.setAdapter(adapter);
@@ -233,11 +316,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 //            mBtnReturnList.setText("ใบรับคืน\n(0/0)");
 
 
-            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
 
-            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
-
-            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -576,6 +655,16 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                         mOrder.setReturn_flag(mListOrderDataY.get(selectedPosition).getReturn_flag());
                         mOrder.setCont_desc(mListOrderDataY.get(selectedPosition).getCont_desc());
 
+                        if(mListMenuData.get(position).getMenuname_mode().equals("0"))
+                        {
+                            mOrder.setDelivery_status("W");
+                        }else
+                        {
+                            mOrder.setDelivery_status(mListOrderDataY.get(selectedPosition).getDelivery_status());
+                        }
+
+
+
                         ArrayList<Order> order = new ArrayList<Order>();
                         order.add(mOrder);
 
@@ -584,6 +673,12 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
                         if(mListMenuData.get(position).getMenuname_mode().equals("0"))
                         {
+
+                            editor = sp.edit();
+                            editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "1");
+                            editor.putString(TagUtils.PREF_SELECT_ORDER_POSITION, String.valueOf(selectedPosition));
+                            editor.apply();
+
                             myIntent = new Intent(getApplicationContext(), SaveOrdersApproveSlipActivity.class);
                             myIntent.putExtra("data",order);
                             startActivity(myIntent);
@@ -669,78 +764,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             mHelper = new DBHelper(getApplicationContext());
 
-            mListOrderDataALL.clear();
-            mListOrderDataALL = mHelper.getOrderWaitList("ALL");
 
             mListOrderDataY.clear();
             mListOrderDataY = mHelper.getOrderWaitList("Y");
 
-            mListOrderDataN.clear();
-            mListOrderDataN = mHelper.getOrderWaitList("N");
-
-            mListReturnDataALL.clear();
-            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
-
-            mListReturnDataY.clear();
-            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
 
 
 
-//            Order f = new Order();
-//            f.setTransNo("1");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("2");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("3");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("4");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("5");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("6");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("7");
-//            mListOrderData.add(f);
-//
-//            f = new Order();
-//            f.setTransNo("8");
-//            mListOrderData.add(f);
-
-
-            //new getInitDataInAsync().execute();
-
-           /* if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-            {
-
-                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-                {
-
-                    new getOrderDataInAsync().execute();
-                }
-                else
-                {
-
-                    showMsgDialog(getResources().getString(R.string.error_webservice));
-
-                }
-
-            }else
-            {
-
-                showMsgDialog(getResources().getString(R.string.error_network));
-            }*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -748,6 +778,43 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
     }
 
+
+    private void setHeader() {
+
+        try {
+
+
+            mHelper = new DBHelper(getApplicationContext());
+
+            mListOrderDataALL.clear();
+            mListOrderDataALL = mHelper.getOrderWaitList("ALL");
+
+            mListOrderDataYY.clear();
+            mListOrderDataYY = mHelper.getOrderWaitList("Y");
+
+            mListOrderDataN.clear();
+            mListOrderDataN = mHelper.getOrderWaitList("WN");
+
+            mListReturnDataALL.clear();
+            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
+
+            mListReturnDataY.clear();
+            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
+
+            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n("+mListOrderDataYY.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
 
 
 

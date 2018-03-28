@@ -369,7 +369,17 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                         for(int i=0; i<=order.size()-1; i++){
                             takeScreenshot(i,"1");
+
+                            order.get(i).setFullpathimage(mFileName);
                         }
+
+                        boolean isRes = true;
+
+                        mHelper = new DBHelper(getApplicationContext());
+                        isRes = mHelper.updateOrderDeliveryStatus(order);
+
+                        isRes = mHelper.updateOrderFullpathimage(order);
+
 
                         customCanvas.totalDx = 0;
                         customCanvas.totalDy  = 0;
@@ -404,7 +414,17 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                     if ( (customCanvas.totalDx > 100) || (customCanvas.totalDy > 100)) {
                         for(int i=0; i<=order.size()-1; i++){
                             takeScreenshot(i,"3");
+
+                            order.get(i).setFullpathimage(mFileName);
                         }
+
+
+                        boolean isRes = true;
+
+                        mHelper = new DBHelper(getApplicationContext());
+                        isRes = mHelper.updateOrderDeliveryStatus(order);
+
+                        isRes = mHelper.updateOrderFullpathimage(order);
 
                         customCanvas.totalDx = 0;
                         customCanvas.totalDy  = 0;
@@ -576,6 +596,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
             View v = (View) findViewById(R.id.lnlSlip);
 
+
             // create bitmap screen capture
             //View v1 = getWindow().getDecorView().getRootView();
             v.setDrawingCacheEnabled(true);
@@ -646,69 +667,6 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
     }
 
-//    public void showMsgReasonApproveSelectedSingleDialog()
-//    {
-//        final AlertDialog DialogBuilder = new AlertDialog.Builder(SaveOrdersApproveSlipActivity.this).create();
-//        LayoutInflater inflater = getLayoutInflater();
-//        View v = (View) inflater.inflate(R.layout.dialog_save_orders_return_cancel, null);
-//        DialogBuilder.setView(v);
-//
-//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-//        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
-//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-//        mmTxtTitle.setText("เหตุผล/หมายเหตุ");
-//
-//        lvDeliveryAcceptList = (ListView) v.findViewById(R.id.lv);
-//        lvDeliveryAcceptList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//
-//
-//        mDeliveryAcceptList.clear();
-//        mHelper = new DBHelper(getApplicationContext());
-//        mDeliveryAcceptList = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT'");
-//
-//        ArrayList<String> arrayList = new ArrayList<String>();
-//        for(int i = 0; i < mDeliveryAcceptList.size();i++)
-//        {
-//            arrayList.add(mDeliveryAcceptList.get(i).getReason_code() + " " + mDeliveryAcceptList.get(i).getReason_desc());
-//        }
-//
-//        if(arrayList.size() > 0)
-//        {
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayList);
-//            lvDeliveryAcceptList.setAdapter(adapter);
-//
-//            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
-//            lvDeliveryAcceptList.setItemChecked(0,true);
-//        }
-//
-//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                DialogBuilder.dismiss();
-//
-////                finish();
-////
-////                myIntent = new Intent(getApplicationContext(), SaveOrdersActivity.class);
-////                startActivity(myIntent);
-//            }
-//        });
-//
-//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                DialogBuilder.dismiss();
-//            }
-//        });
-//
-////        // Set item click listener
-////        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-////            @Override
-////            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                String description = sigDeliverylist[position];
-////                Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
-////            }
-////        });
-//
-//        DialogBuilder.show();
-//    }
 
     public void showMsgReasonApproveSelectedSingleDialog()
     {
@@ -1091,7 +1049,16 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                 for(int i=0; i<=order.size()-1; i++){
                         takeScreenshot(i,sendstatus);
+
+                    order.get(i).setFullpathimage(mFileName);
                 }
+
+                boolean isRes = true;
+
+                mHelper = new DBHelper(getApplicationContext());
+                isRes = mHelper.updateOrderDeliveryStatus(order);
+
+                isRes = mHelper.updateOrderFullpathimage(order);
 
 
                 if(returnflag.equals(""))

@@ -38,6 +38,16 @@ public class OrderCompleteAdapter extends GestureAdapter<Order, GestureViewHolde
         orderViewHolder.mSeqText.setText(String.valueOf(position+1));
         orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo())+" ");
 
+
+
+        if(order.getDelivery_status().equals("W"))
+        {
+            orderViewHolder.mSeqText.setBackgroundResource(R.color.colorBackgroundGrayButton);
+        }else
+        {
+            orderViewHolder.mSeqText.setBackgroundResource(R.color.colorBackgroundGreen);
+        }
+
         if(order.getCont_desc().contains("+"))
         {
             String[] separated = order.getCont_desc().split("\\+");

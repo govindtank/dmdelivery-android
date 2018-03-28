@@ -58,14 +58,14 @@ public class ViewSlipActivity extends AppCompatActivity {
 
             mBtnBack = (Button) findViewById(R.id.btnBack);
 
-            txtRepcode = (TextView) findViewById(R.id.txtRepcode);
-            txtInvNo = (TextView) findViewById(R.id.txtInvNo);
+            //txtRepcode = (TextView) findViewById(R.id.txtRepcode);
+            //txtInvNo = (TextView) findViewById(R.id.txtInvNo);
             //txtAddress1 = (TextView) findViewById(R.id.txtAddress1);
             //txtAddress2 = (TextView) findViewById(R.id.txtAddress2);
             //txtMslTel = (TextView) findViewById(R.id.txtMslTel);
             //txtgps = (TextView) findViewById(R.id.txtgps);
 
-            txtCarton = (TextView) findViewById(R.id.txtCarton);
+            //txtCarton = (TextView) findViewById(R.id.txtCarton);
 
             //mBtnNote = (Button) findViewById(R.id.btnNote);
             //mBtnSendGps = (Button) findViewById(R.id.btnSendGps);
@@ -117,15 +117,15 @@ public class ViewSlipActivity extends AppCompatActivity {
 
                 if(order.size() != 0) {
 
-                    txtRepcode.setText(setRepcodeFormat(order.get(0).getRep_code())+" "+order.get(0).getRep_name());
-                    txtInvNo.setText(order.get(0).getTransNo());
-                    //txtAddress1.setText(order.get(0).getAddress1());
-                    //txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
-                    //txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
-                    txtCarton.setText(order.get(0).getCont_desc());
-                    //txtgps.setText("GPS : 0,0");
-
-                    returnflag = order.get(0).getReturn_flag();
+//                    txtRepcode.setText(setRepcodeFormat(order.get(0).getRep_code())+" "+order.get(0).getRep_name());
+//                    txtInvNo.setText(order.get(0).getTransNo());
+//                    //txtAddress1.setText(order.get(0).getAddress1());
+//                    //txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
+//                    //txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
+//                    txtCarton.setText(order.get(0).getCont_desc());
+//                    //txtgps.setText("GPS : 0,0");
+//
+//                    returnflag = order.get(0).getReturn_flag();
 
 
 

@@ -53,6 +53,15 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
         }
 
 
+        if(order.getDelivery_status().equals("W"))
+        {
+            orderViewHolder.mSeqText.setBackgroundResource(R.color.colorBackgroundGrayButton);
+        }else
+        {
+            orderViewHolder.mSeqText.setBackgroundResource(R.color.colorPrimary);
+        }
+
+
 
         orderViewHolder.mSeqText.setText(String.valueOf(position+1));
         //orderViewHolder.txtInv.setText(String.valueOf(order.getTransNo())+" ");
