@@ -1212,19 +1212,29 @@ public class DBHelper extends SQLiteOpenHelper {
         return orderReturns;
     }
 
-    public boolean updateOrderDeliveryStatus(Order mOrder) {
+    public boolean updateOrderDeliveryStatus(ArrayList<Order> mOrders) {
         sqLiteDatabase = this.getWritableDatabase();
         try{
-            ContentValues cv = new ContentValues();
-            cv.put("delivery_status",mOrder.getDelivery_status());
+            int intResult=0;
+            for(int i=0;i<mOrders.size();i++)
+            {
+                ContentValues cv = new ContentValues();
+                cv.put("delivery_status",mOrders.get(i).getDelivery_status());
 
-            int intResult = sqLiteDatabase.update(TableOrder, cv,
-                    "TransNo='" + mOrder.getTransNo() + "'",
-                    null);
+                intResult = sqLiteDatabase.update(TableOrder, cv,
+                        "TransNo='" + mOrders.get(i).getTransNo() + "'",
+                        null);
+
+                if (intResult ==0 ){
+                    return  false;
+                }
+            }
+
 
             if(intResult > 0){
                 return  true;
             }
+
         }
         catch (Exception ex)
         {
@@ -1240,15 +1250,23 @@ public class DBHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public boolean updateOrderFullpathimage(Order mOrder) {
+    public boolean updateOrderFullpathimage(ArrayList<Order> mOrders) {
         sqLiteDatabase = this.getWritableDatabase();
         try{
-            ContentValues cv = new ContentValues();
-            cv.put("fullpathimage",mOrder.getFullpathimage());
+            int intResult = 0;
 
-            int intResult = sqLiteDatabase.update(TableOrder, cv,
-                    "TransNo='" + mOrder.getTransNo() + "'",
-                    null);
+            for(int i=0;i<mOrders.size();i++) {
+                ContentValues cv = new ContentValues();
+                cv.put("fullpathimage", mOrders.get(i).getFullpathimage());
+
+                intResult = sqLiteDatabase.update(TableOrder, cv,
+                        "TransNo='" + mOrders.get(i).getTransNo() + "'",
+                        null);
+
+                if (intResult ==0 ){
+                    return  false;
+                }
+            }
 
             if(intResult > 0){
                 return  true;
