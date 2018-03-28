@@ -795,6 +795,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 break;
             case "Y":
                 sigCriteriaSql="delivery_status='Y'";
+            case "W":
+                sigCriteriaSql="delivery_status='W'";
                 break;
             case "NY":
                 sigCriteriaSql="delivery_status IN ('N','Y')";
@@ -1353,6 +1355,7 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put("reason_code",mOrderReturn.getReason_code());
             cv.put("return_status",mOrderReturn.getReturn_status());
             cv.put("return_note",mOrderReturn.getReturn_note());
+            cv.put("fullpathimage",mOrderReturn.getFullpathimage());
 
 
             int intResult = sqLiteDatabase.update("OrderReturns", cv,
