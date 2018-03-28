@@ -204,6 +204,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             lv = (RecyclerView) findViewById(R.id.lv);
 
+            mBtnMenu.setVisibility(View.INVISIBLE);
+
 
 
 //            lv = (RecyclerView) findViewById(R.id.lv);
