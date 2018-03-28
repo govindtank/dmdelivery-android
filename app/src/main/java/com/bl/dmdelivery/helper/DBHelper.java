@@ -795,6 +795,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 break;
             case "Y":
                 sigCriteriaSql="delivery_status='Y'";
+                break;
             case "W":
                 sigCriteriaSql="delivery_status='W'";
                 break;
