@@ -694,7 +694,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor=null;
         sqLiteDatabase = this.getReadableDatabase();
 
-        cursor = sqLiteDatabase.rawQuery(" SELECT return_no,rep_code,rep_name,return_status, SUM(return_unit_real) AS return_unit_real,SUM(return_unit) AS return_unit,reftrans_no FROM " + TableOrderReturn + " WHERE " + sigCriteriaSql + " GROUP BY return_no" ,null);
+        cursor = sqLiteDatabase.rawQuery(" SELECT return_no,rep_code,rep_name,return_status, SUM(return_unit_real) AS return_unit_real,SUM(return_unit) AS return_unit,reftrans_no,fullpathimage FROM " + TableOrderReturn + " WHERE " + sigCriteriaSql + " GROUP BY return_no" ,null);
         if (cursor != null  && cursor.getCount()>0) {
             cursor.moveToFirst();
         }
@@ -725,6 +725,7 @@ public class DBHelper extends SQLiteOpenHelper {
             mOrderReturn.setReturn_unit_real(cursor.getString(4));
             mOrderReturn.setReturn_unit(cursor.getString(5));
             mOrderReturn.setReftrans_no(cursor.getString(6));
+            mOrderReturn.setFullpathimage(cursor.getString(7));
             mOrderReturnlist.add(mOrderReturn);
 
             cursor.moveToNext();
@@ -818,7 +819,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 sigCriteriaSql="delivery_status IN ('W','Y')";
                 break;
             case "ALL":
-                sigCriteriaSql="delivery_status IS NOT NULL";
+                sigCriteriaSql="TransNo IS NOT NULL";
                 break;
         }
 
