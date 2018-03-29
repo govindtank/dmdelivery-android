@@ -183,8 +183,18 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         {
                             mListOrderDataN.get(i).setDelivery_status("W");
 
+//                            Order ordersend = new Order();
+//                            ordersend = mListOrderDataN.get(i);
+//                            mListOrderDataN.remove(ordersend);
+
+
+
+                            //mAdapter.notifyItemRangeChanged(i, mListOrderDataN.size());
+//                            mListOrderDataN.remove(i);
+//                            adapter.notifyItemRemoved(i);
+//                            lv.removeViewAt(i);
                             //mListOrderDataN.remove(i);
-                            //mListOrderDataN.remove(i);
+                            adapter.notifyItemRemoved(i);
 
                         }
 
@@ -194,6 +204,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 }
 
                 adapter.notifyDataSetChanged();
+                lv.invalidate();
+                //lv.notify();
 
                 Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
                 toast.show();
@@ -235,7 +247,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_list));
+
 
 
             lv = (RecyclerView) findViewById(R.id.lv);
@@ -928,9 +940,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListReturnDataY.clear();
             mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
 
-            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataNN.size()+"/"+mListOrderDataALL.size()+")");
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataALL.size()+"/"+mListOrderDataALL.size()+")");
 
-            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
+            mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataNN.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
 
             mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 

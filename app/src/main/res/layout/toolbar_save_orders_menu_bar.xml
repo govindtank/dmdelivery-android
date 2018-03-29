@@ -32,10 +32,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/btntab"
-                    android:padding="10dp"
+                    android:padding="8dp"
                     android:text="รอส่ง"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/textSize25"
+                    android:textSize="@dimen/textDialogSize"
                     android:textStyle="normal" />
             </LinearLayout>
 
@@ -52,10 +52,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/btntabdis"
-                    android:padding="10dp"
+                    android:padding="8dp"
                     android:text="ส่งแล้ว"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSize25" />
+                    android:textSize="@dimen/textDialogSize" />
             </LinearLayout>
 
             <LinearLayout
@@ -71,10 +71,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/btntabdis"
-                    android:padding="10dp"
+                    android:padding="8dp"
                     android:text="ใบรับคืน"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSize25" />
+                    android:textSize="@dimen/textDialogSize" />
             </LinearLayout>
         </LinearLayout>
 

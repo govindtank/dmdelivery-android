@@ -151,7 +151,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
+            //mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
 
             mBtnMenu.setVisibility(View.INVISIBLE);
 
@@ -252,10 +252,14 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 //
 //            mBtnReturnList.setText("ใบรับคืน\n(0/"+mListReturnDataALL.size()+")");
 
+            //mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" (0/0)");
 
-            mBtnSaveOrders.setText("รอส่งข้อมูล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataALL.size()+"/"+mListOrderDataALL.size()+")");
 
-            mBtnSaveOrdersComplete.setText("ส่งข้อมูลได้\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
 
             mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 
