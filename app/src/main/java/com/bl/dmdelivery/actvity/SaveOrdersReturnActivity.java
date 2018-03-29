@@ -51,7 +51,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     private Intent myIntent=null;
 
 
-
+    private String backToPage="";
     private String ref_rep_code;
     private String ref_return_no;
 
@@ -71,7 +71,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     private RecyclerView lvReturnAcceptRejectList;
     private RecyclerView.Adapter mReturnAcceptRejectListAdapter;
-
 
 
     private String sigReson_code="";
@@ -127,6 +126,17 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 //            Toast toast = Toast.makeText(SaveOrdersReturnActivity.this, "onResume - returnDoc", Toast.LENGTH_SHORT);
 //            toast.show();
 //        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        backToPage = "BACK_TO_PAGE";
+
+        editor = sp.edit();
+        editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+        editor.apply();
+
+        finish();
     }
 
     private void bindWidget()
@@ -477,6 +487,12 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+
+                backToPage = "SAVE_TO_PAGE";
+
+                editor = sp.edit();
+                editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+                editor.apply();
 
                 //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
                 if(medtNote != null){

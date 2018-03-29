@@ -118,18 +118,22 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 //            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, "onResume - OK= " + mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status(), Toast.LENGTH_SHORT);
 //            toast.show();
 
-//
-//            mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).setReturn_status(mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status());
 
             setHeader();
 
-            mListReturnDataALL.clear();
-            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
-            adapter.clearData();
-            adapter.setData(mListReturnDataALL);
-            adapter.notifyDataSetChanged();
-            lv.scrollToPosition(selectedPositionNotifyDataSetChanged);
+            String sigBackToPage = sp.getString(TagUtils.PREF_BACK_TO_PAGE, "");
+            if (sigBackToPage.toUpperCase().equals("SAVE_TO_PAGE"))
+            {
+                mListReturnDataALL.clear();
+                mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
+
+                adapter.clearData();
+                adapter.setData(mListReturnDataALL);
+                adapter.notifyDataSetChanged();
+                lv.scrollToPosition(selectedPositionNotifyDataSetChanged);
+            }
+
 
         }
     }
