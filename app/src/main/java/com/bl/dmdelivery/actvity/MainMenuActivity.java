@@ -754,7 +754,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setReturn_seq(obj.getOrderReturn().get(i).getReturn_seq().toString());
                         f.setFs_code(obj.getOrderReturn().get(i).getFs_code().toString());
                         f.setFs_desc(obj.getOrderReturn().get(i).getFs_desc().toString());
-                        f.setReturn_unit_real("0");
+                        f.setReturn_unit_real("");
                         f.setReturn_unit(obj.getOrderReturn().get(i).getReturn_unit().toString());
                         f.setReturn_remark(obj.getOrderReturn().get(i).getReturn_remark().toString());
                         f.setReturn_status("0");

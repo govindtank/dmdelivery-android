@@ -876,6 +876,8 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setItemno(cursor.getInt(31));
             order.setDelivery_status(cursor.getString(32));
             order.setIsselect(cursor.getString(33));
+            order.setCre_date(cursor.getString(34));
+            order.setFullpathimage(cursor.getString(35));
             orders.add(order);
 
             cursor.moveToNext();
