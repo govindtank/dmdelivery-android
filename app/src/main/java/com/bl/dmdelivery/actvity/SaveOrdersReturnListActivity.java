@@ -121,6 +121,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 //
 //            mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).setReturn_status(mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status());
 
+            setHeader();
 
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
@@ -181,6 +182,8 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
         try{
 
             getInit();
+
+            setHeader();
 
 
             final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
@@ -254,14 +257,14 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
             //mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" (0/0)");
 
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataALL.size()+"/"+mListOrderDataALL.size()+")");
-
-
-            mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
-
-            mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
-
-            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
+//            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataALL.size()+"/"+mListOrderDataALL.size()+")");
+//
+//
+//            mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
+//
+//            mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
+//
+//            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 
 
 
@@ -314,11 +317,40 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
             mHelper = new DBHelper(getApplicationContext());
 
+//            mListOrderDataALL.clear();
+//            mListOrderDataALL = mHelper.getOrderWaitList("ALL");
+//
+//            mListOrderDataY.clear();
+//            mListOrderDataY = mHelper.getOrderWaitList("Y");
+//
+//            mListOrderDataN.clear();
+//            mListOrderDataN = mHelper.getOrderWaitList("N");
+
+            mListReturnDataALL.clear();
+            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
+
+            mListReturnDataY.clear();
+            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setHeader() {
+
+        try {
+
+
+            mHelper = new DBHelper(getApplicationContext());
+
             mListOrderDataALL.clear();
             mListOrderDataALL = mHelper.getOrderWaitList("ALL");
 
             mListOrderDataY.clear();
-            mListOrderDataY = mHelper.getOrderWaitList("Y");
+            mListOrderDataY = mHelper.getOrderWaitList("WY");
 
             mListOrderDataN.clear();
             mListOrderDataN = mHelper.getOrderWaitList("N");
@@ -330,8 +362,19 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
 
 
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataALL.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
+            showMsgDialog(e.toString());
         }
 
     }

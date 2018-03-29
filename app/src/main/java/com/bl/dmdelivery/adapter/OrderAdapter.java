@@ -114,11 +114,45 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
             orderViewHolder.txtReturn.setText("("+String.valueOf(order.getReturn_flag())+")");
         }
 
-        orderViewHolder.txtRepcode.setText(setRepcodeFormat(String.valueOf(order.getRep_code()))+" - "+order.getRep_name());
+        orderViewHolder.txtRepcode.setText(setRepcodeFormat(String.valueOf(order.getRep_code()))+" "+order.getRep_name());
         orderViewHolder.txtAddress1.setText(String.valueOf(order.getAddress1()));
         orderViewHolder.txtAddress2.setText(String.valueOf(order.getAddress2()+" "+order.getPostal()));
         orderViewHolder.txtMslTel.setText("MSL:"+String.valueOf(order.getRep_telno()));
         orderViewHolder.txtDsmTel.setText("DSM:"+String.valueOf(order.getDsm_telno()));
+
+        String orderFlag = "";
+
+
+        switch(order.getOrd_flag_status()) {
+            case "N":
+                orderFlag = "";
+                break;
+            case "F":
+                orderFlag = "FIRST";
+                break;
+            case "L":
+                orderFlag = "LATE";
+                break;
+            case "X":
+                orderFlag = "FIRST";
+                break;
+            case "S":
+                orderFlag = "LATE";
+                break;
+            case "T":
+                orderFlag = "";
+                break;
+            case "LT":
+                orderFlag = "LATE";
+                break;
+            default:
+                orderFlag = "";
+        }
+
+
+
+        orderViewHolder.txtOrdertype.setText(orderFlag);
+
 
 
     }

@@ -34,7 +34,7 @@ public class OrderViewHolder extends GestureViewHolder {
 //    @BindView(R.id.month_background_stub)
 //    ViewStub mBackgroundView;
 
-    public TextView mSeqText,txtRepcode,txtInv,txtAddress1,txtAddress2,txtMslTel,txtDsmTel,txtReturn,txtUnpack,txtcarton,txtcartonb;
+    public TextView mSeqText,txtRepcode,txtInv,txtAddress1,txtAddress2,txtMslTel,txtDsmTel,txtReturn,txtUnpack,txtcarton,txtcartonb,txtOrdertype;
     public Button btnTelActivity;
     public ImageView mMonthPicture,mItemDrag,imgCheck;
     public View mForegroundView;
@@ -54,6 +54,7 @@ public class OrderViewHolder extends GestureViewHolder {
         this.txtDsmTel = (TextView) view.findViewById(R.id.txtDsmTel);
         this.txtcarton = (TextView) view.findViewById(R.id.txtcarton);
         this.txtcartonb = (TextView) view.findViewById(R.id.txtcartonb);
+        this.txtOrdertype = (TextView) view.findViewById(R.id.txtOrdertype);
 
 
 //        this.btnTelActivity = (Button) view.findViewById(R.id.btnTelActivity);

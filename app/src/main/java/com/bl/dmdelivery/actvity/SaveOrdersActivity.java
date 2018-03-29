@@ -170,41 +170,51 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 mHelper = new DBHelper(getApplicationContext());
 //
                 mListOrderDataNN.clear();
-                mListOrderDataNN = mHelper.getOrderWaitList("W");
-
-                for(int i=0;i < mListOrderDataN.size(); i++)
-                {
-                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+                mListOrderDataNN = mHelper.getOrderWaitList("N");
 
 
-                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+                mListOrderDataN.clear();
+                mListOrderDataN = mListOrderDataNN;
 
-                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataN.get(i).getTransNo()))
-                        {
-                            mListOrderDataN.get(i).setDelivery_status("W");
-
-//                            Order ordersend = new Order();
-//                            ordersend = mListOrderDataN.get(i);
-//                            mListOrderDataN.remove(ordersend);
-
-
-
-                            //mAdapter.notifyItemRangeChanged(i, mListOrderDataN.size());
-//                            mListOrderDataN.remove(i);
+//                for(int i=0;i < mListOrderDataN.size(); i++)
+//                {
+//                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+//
+//
+//                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+//
+//                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataN.get(i).getTransNo()))
+//                        {
+//                            mListOrderDataN.get(i).setDelivery_status("W");
+//
+////                            Order ordersend = new Order();
+////                            ordersend = mListOrderDataN.get(i);
+////                            mListOrderDataN.remove(ordersend);
+//
+//
+//
+//                            //mAdapter.notifyItemRangeChanged(i, mListOrderDataN.size());
+////                            mListOrderDataN.remove(i);
+////                            adapter.notifyItemRemoved(i);
+////                            lv.removeViewAt(i);
+//                            //mListOrderDataN.remove(i);
 //                            adapter.notifyItemRemoved(i);
-//                            lv.removeViewAt(i);
-                            //mListOrderDataN.remove(i);
-                            adapter.notifyItemRemoved(i);
+//
+//                        }
+//
+//                    }
+//
+//
+//                }
 
-                        }
+                //adapter.notifyDataSetChanged();
+                //lv.invalidate();
 
-                    }
-
-
-                }
-
+                adapter.clearData();
+                adapter.setData(mListOrderDataN);
                 adapter.notifyDataSetChanged();
-                lv.invalidate();
+                //lv.scrollToPosition(selectedPositionNotifyDataSetChanged);
+
                 //lv.notify();
 
                 Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
@@ -224,9 +234,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
     }
 
 
-    private int getCategoryPos(String category) {
-        return mListOrderDataN.indexOf(category);
-    }
+
 
 
     private void bindWidget()
@@ -908,7 +916,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
             mListOrderDataN.clear();
-            mListOrderDataN = mHelper.getOrderWaitList("WN");
+            mListOrderDataN = mHelper.getOrderWaitList("N");
 
 
         } catch (Exception e) {
@@ -929,10 +937,10 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListOrderDataALL = mHelper.getOrderWaitList("ALL");
 
             mListOrderDataY.clear();
-            mListOrderDataY = mHelper.getOrderWaitList("Y");
+            mListOrderDataY = mHelper.getOrderWaitList("WY");
 
             mListOrderDataNN.clear();
-            mListOrderDataNN = mHelper.getOrderWaitList("WN");
+            mListOrderDataNN = mHelper.getOrderWaitList("N");
 
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");

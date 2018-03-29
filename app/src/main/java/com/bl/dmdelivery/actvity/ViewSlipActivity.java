@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +26,7 @@ public class ViewSlipActivity extends AppCompatActivity {
 
     private TextView mmTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtCarton;
     private Button mBtnOk,mmBtnClose,mBtnBack;
-    private ImageView mmImvTitle;
+    private ImageView mmImvTitle,imvSlip;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
     private String returnflag = "";
 
@@ -57,6 +59,7 @@ public class ViewSlipActivity extends AppCompatActivity {
 
 
             mBtnBack = (Button) findViewById(R.id.btnBack);
+            imvSlip = (ImageView) findViewById(R.id.imvSlip);
 
             //txtRepcode = (TextView) findViewById(R.id.txtRepcode);
             //txtInvNo = (TextView) findViewById(R.id.txtInvNo);
@@ -86,6 +89,16 @@ public class ViewSlipActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+
+
+            if(order.get(0).getFullpathimage().equals("") || order.get(0).getFullpathimage().equals("null") || order.get(0).getFullpathimage() == null){
+                imvSlip.setImageResource(R.mipmap.ic_noimg);
+            }
+            else
+            {
+                String mPath = Environment.getExternalStorageDirectory().toString() + "/SLIP/" + order.get(0).getFullpathimage();
+                imvSlip.setImageBitmap(BitmapFactory.decodeFile(mPath));
+            }
 
             mBtnBack.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {

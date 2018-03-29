@@ -134,29 +134,36 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                 mHelper = new DBHelper(getApplicationContext());
 //
                 mListOrderDataNN.clear();
-                mListOrderDataNN = mHelper.getOrderWaitList("W");
+                mListOrderDataNN = mHelper.getOrderWaitList("WY");
 
-                for(int i=0;i < mListOrderDataY.size(); i++)
-                {
-                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+                mListOrderDataY.clear();
+                mListOrderDataY = mListOrderDataNN;
 
+//                for(int i=0;i < mListOrderDataY.size(); i++)
+//                {
+//                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+//
+//
+//                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+//
+//                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataY.get(i).getTransNo()))
+//                        {
+//                            mListOrderDataY.get(i).setDelivery_status("W");
+//
+//                            //mListOrderDataN.remove(i);
+//                            //mListOrderDataN.remove(i);
+//
+//                        }
+//
+//                    }
+//
+//
+//                }
 
-                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+                //adapter.notifyDataSetChanged();
 
-                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataY.get(i).getTransNo()))
-                        {
-                            mListOrderDataY.get(i).setDelivery_status("W");
-
-                            //mListOrderDataN.remove(i);
-                            //mListOrderDataN.remove(i);
-
-                        }
-
-                    }
-
-
-                }
-
+                adapter.clearData();
+                adapter.setData(mListOrderDataY);
                 adapter.notifyDataSetChanged();
 
 //                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
@@ -266,15 +273,15 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                 @Override
                 public void onItemLongPress(final Order item, final int position) {
                     //Snackbar.make(view, "Long press event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Long press event on the " + position + " position", Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Long press event on the " + position + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
                 }
 
                 @Override
                 public boolean onDoubleTap(final Order item, final int position) {
                     //Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
                     return true;
                 }
 
@@ -293,15 +300,15 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                 @Override
                 public void onItemRemoved(final Order item, final int position) {
                     //Snackbar.make(view, "Month removed from position " + position, Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Month removed from position " + position, Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Month removed from position " + position, Toast.LENGTH_SHORT);
+//                    toast.show();
                 }
 
                 @Override
                 public void onItemReorder(final Order item, final int fromPos, final int toPos) {
                     //Snackbar.make(view, "Month moved from position " + fromPos + " to " + toPos, Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Month moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersCompleteActivity.this, "Month moved from position " + fromPos + " to " + toPos, Toast.LENGTH_SHORT);
+//                    toast.show();
                 }
             });
 
@@ -656,6 +663,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                         mOrder.setRep_telno(mListOrderDataY.get(selectedPosition).getRep_telno());
                         mOrder.setReturn_flag(mListOrderDataY.get(selectedPosition).getReturn_flag());
                         mOrder.setCont_desc(mListOrderDataY.get(selectedPosition).getCont_desc());
+                        mOrder.setFullpathimage(mListOrderDataY.get(selectedPosition).getFullpathimage());
 
                         if(mListMenuData.get(position).getMenuname_mode().equals("0"))
                         {
@@ -768,7 +776,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
 
             mListOrderDataY.clear();
-            mListOrderDataY = mHelper.getOrderWaitList("Y");
+            mListOrderDataY = mHelper.getOrderWaitList("WY");
 
 
 
@@ -792,10 +800,10 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             mListOrderDataALL = mHelper.getOrderWaitList("ALL");
 
             mListOrderDataYY.clear();
-            mListOrderDataYY = mHelper.getOrderWaitList("Y");
+            mListOrderDataYY = mHelper.getOrderWaitList("WY");
 
             mListOrderDataN.clear();
-            mListOrderDataN = mHelper.getOrderWaitList("WN");
+            mListOrderDataN = mHelper.getOrderWaitList("N");
 
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
