@@ -249,38 +249,47 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             mBtnSave.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
-                    backToPage = "SAVE_TO_PAGE";
 
-                    editor = sp.edit();
-                    editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
-                    editor.apply();
+                    if ( (CanvasViewSlipReturn.totalDx > 100) || (CanvasViewSlipReturn.totalDy > 100)) {
 
-                    //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
-                    if(medtNote != null){
-                        sigNote = medtNote.getText().toString();
+                        backToPage = "SAVE_TO_PAGE";
+
+                        editor = sp.edit();
+                        editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+                        editor.apply();
+
+                        //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
+                        if(medtNote != null){
+                            sigNote = medtNote.getText().toString();
+                        }
+                        else
+                        {
+                            sigNote = "";
+                        }
+
+                        takeScreenshot();
+
+                        //บันทึกข้อมูล รับได้
+                        mHelper = new DBHelper(getApplicationContext());
+                        mOrderReturnSaveData = new OrderReturn();
+
+                        mOrderReturnSaveData.setReturn_no(sigReturn_no);
+                        mOrderReturnSaveData.setRep_code(sigRepcode);
+                        mOrderReturnSaveData.setReturn_status("1");
+                        mOrderReturnSaveData.setReason_code(sigReson_code);
+                        mOrderReturnSaveData.setReturn_note(sigNote);
+                        mOrderReturnSaveData.setFullpathimage(mFileName);
+                        mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
+
+
+                        //รับได้
+                        finish();
                     }
                     else
                     {
-                        sigNote = "";
+                        showMsgDialog("ไม่มีลายเซ็น");
                     }
 
-                    takeScreenshot();
-
-                    //บันทึกข้อมูล รับได้
-                    mHelper = new DBHelper(getApplicationContext());
-                    mOrderReturnSaveData = new OrderReturn();
-
-                    mOrderReturnSaveData.setReturn_no(sigReturn_no);
-                    mOrderReturnSaveData.setRep_code(sigRepcode);
-                    mOrderReturnSaveData.setReturn_status("1");
-                    mOrderReturnSaveData.setReason_code(sigReson_code);
-                    mOrderReturnSaveData.setReturn_note(sigNote);
-                    mOrderReturnSaveData.setFullpathimage(mFileName);
-                    mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
-
-
-                   //รับได้
-                    finish();
                 }
             });
 

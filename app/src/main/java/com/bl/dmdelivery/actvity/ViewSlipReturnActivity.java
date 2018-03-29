@@ -92,8 +92,8 @@ public class ViewSlipReturnActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
-            mTxtRefReturnNo.setText(mOrderReturnGetData.getReturn_no());
-            mTxtRepcode.setText(mOrderReturnGetData.getRep_code() + " - " + mOrderReturnGetData.getRep_name());
+//            mTxtRefReturnNo.setText(mOrderReturnGetData.getReturn_no());
+//            mTxtRepcode.setText(mOrderReturnGetData.getRep_code() + " - " + mOrderReturnGetData.getRep_name());
 
             if(mOrderReturnGetData.getFullpathimage().equals("") || mOrderReturnGetData.getFullpathimage().equals("null") || mOrderReturnGetData.getFullpathimage() == null){
                 mimvSlip.setImageResource(R.mipmap.ic_noimg);

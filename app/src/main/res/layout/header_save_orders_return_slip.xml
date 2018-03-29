@@ -47,104 +47,117 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="horizontal">-->
 
-                <include
-                    android:id="@+id/includeSeparatorBarWhite1"
-                    layout="@layout/separator_bar_white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <!--<include-->
+                    <!--android:id="@+id/includeSeparatorBarWhite1"-->
+                    <!--layout="@layout/separator_bar_white"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="0dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginTop="0dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="2">-->
 
-                <TextView
-                    android:id="@+id/txtInvNo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="0000000000"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/textRowSize" />
+                <!--<TextView-->
+                    <!--android:id="@+id/txtInvNo"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="0000000000"-->
+                    <!--android:textColor="@color/colorPrimary"-->
+                    <!--android:textSize="@dimen/textRowSize" />-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="0dp"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginTop="0dp"-->
+                <!--android:orientation="horizontal">-->
 
 
-                <TextView
-                    android:id="@+id/txtRepcode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:lines="1"
-                    android:text="000-000-000-0 - Name"
-                    android:textSize="@dimen/textRowSize"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/txtRepcode"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:lines="1"-->
+                    <!--android:text="000-000-000-0 - Name"-->
+                    <!--android:textSize="@dimen/textRowSize"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
+
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="2">
-
-                <LinearLayout
-                    android:id="@+id/lnlSlip"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <com.bl.dmdelivery.actvity.CanvasViewSlipReturn
-                        android:id="@+id/signature_canvas"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/background_layout" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.7"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/includeHeader"
-                        layout="@layout/footer_save_order"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
+            <include
+                android:id="@+id/includeSeparatorBarWhite1"
+                layout="@layout/separator_bar_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <!--<LinearLayout-->
+
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="vertical"-->
+                <!--android:weightSum="2">-->
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/lnlSlip"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="0.3"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="5dp">-->
+
+                    <!--<com.bl.dmdelivery.actvity.CanvasViewSlipReturn-->
+                        <!--android:id="@+id/signature_canvas"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:background="@drawable/background_layout" />-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1.7"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<include-->
+                        <!--android:id="@+id/includeHeader"-->
+                        <!--layout="@layout/footer_save_order"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content" />-->
+
+                <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 

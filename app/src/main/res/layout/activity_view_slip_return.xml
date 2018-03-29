@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorBG"
         android:orientation="vertical"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,61 +28,61 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <!--<LinearLayout-->
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="0dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:weightSum="2">-->
 
-                <TextView
-                    android:id="@+id/txtRefReturnNo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="0000000000"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/textRowSize" />
+        <!--<TextView-->
+        <!--android:id="@+id/txtRefReturnNo"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="0000000000"-->
+        <!--android:textColor="@color/colorPrimary"-->
+        <!--android:textSize="@dimen/textRowSize" />-->
 
-                <TextView
-                    android:id="@+id/txtCarton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:paddingRight="30dp"
-                    android:text=""
-                    android:textColor="@color/colorGreen"
-                    android:textSize="@dimen/textRowSize" />
-            </LinearLayout>
+        <!--<TextView-->
+        <!--android:id="@+id/txtCarton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="right"-->
+        <!--android:paddingRight="30dp"-->
+        <!--android:text=""-->
+        <!--android:textColor="@color/colorGreen"-->
+        <!--android:textSize="@dimen/textRowSize" />-->
+        <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="0dp"
-                android:orientation="horizontal">
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:orientation="horizontal">-->
 
 
-                <TextView
-                    android:id="@+id/txtRepcode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:lines="1"
-                    android:text="000-000-000-0 - Name"
-                    android:textSize="@dimen/textRowSize"
-                    android:textStyle="bold" />
-            </LinearLayout>
+        <!--<TextView-->
+        <!--android:id="@+id/txtRepcode"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:lines="1"-->
+        <!--android:text="000-000-000-0 - Name"-->
+        <!--android:textSize="@dimen/textRowSize"-->
+        <!--android:textStyle="bold" />-->
+        <!--</LinearLayout>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -95,8 +95,8 @@
                 android:id="@+id/imvSlip"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" />
 
 
         </LinearLayout>

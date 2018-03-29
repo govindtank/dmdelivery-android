@@ -52,22 +52,27 @@ public class OrderReturnDtlViewAdapter extends RecyclerView.Adapter<OrderReturnD
             String fsname = String.valueOf(f.getFs_desc());
             holder.txtFsname.setText(fsname);
 
-            if(f.getReturn_unit_real().equals("") || f.getReturn_unit_real().isEmpty() || f.getReturn_unit_real()==null)
-            {
-                holder.txtReq.setText("0");
-            }
-            else
-            {
-                holder.txtReq.setText(String.valueOf(f.getReturn_unit_real()));
-            }
 
-            if(f.getReturn_unit().equals("") || f.getReturn_unit().isEmpty() || f.getReturn_unit()==null)
+            if(f.getReturn_unit().equals("") || f.getReturn_unit().equals("0") || f.getReturn_unit().isEmpty() || f.getReturn_unit()==null)
             {
                 holder.txtRet.setText("0");
             }
             else
             {
                 holder.txtRet.setText(String.valueOf(f.getReturn_unit()));
+            }
+
+            if(f.getReturn_unit_real().equals("") || f.getReturn_unit_real().isEmpty() || f.getReturn_unit_real()==null)
+            {
+                holder.txtReq.setText(String.valueOf(f.getReturn_unit()));
+            }
+            else if(f.getReturn_unit_real().equals("0"))
+            {
+                holder.txtReq.setText("0");
+            }
+            else
+            {
+                holder.txtReq.setText(String.valueOf(f.getReturn_unit_real()));
             }
 
 
