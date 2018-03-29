@@ -45,6 +45,7 @@ import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.OrderScan;
 import com.bl.dmdelivery.model.OrderScanReq;
 import com.bl.dmdelivery.model.OrderScanResponse;
+import com.bl.dmdelivery.model.OrderSourceResponse;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.model.Unpack;
 import com.bl.dmdelivery.utility.TagUtils;
@@ -716,7 +717,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setDelivery_desc(obj.getOrder().get(i).getDelivery_desc().toString());
                         f.setOrdertype_desc(obj.getOrder().get(i).getOrdertype_desc().toString());
                         f.setCont_desc(obj.getOrder().get(i).getCont_desc().toString());
-                        f.setItemno(obj.getOrder().get(i).getItemno());
+                        f.setItemno(999);
                         f.setDelivery_status(obj.getOrder().get(i).getDelivery_status().toString());
                         f.setIsselect("0");
                         f.setCre_date(mLoadOrderReq.getDeliveryDate().toString());
@@ -792,6 +793,34 @@ public class MainMenuActivity extends AppCompatActivity {
                         mHelper.addReason(f);
 
                     }
+
+                    //source order
+                    String _serverurl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/OrderSource";
+                    gson = new Gson();
+                    String s[] = mLoadOrderReq.getDeliveryDate().toString().split("/");
+                    String _datefull = s[2] + s[1] +s[0];
+                   /* String dd = _datefull.substring(6,8);
+                    String mm = _datefull.substring(5,2);
+                    String yy = _datefull.substring(1,4);
+                    String _date = dd + mm + yy;*/
+                    mLoadOrderReq.setDeliveryDate(_datefull);
+                    json = gson.toJson(mLoadOrderReq);
+                    result = new WebServiceHelper().postServiceAPI(_serverurl,json);
+                    Log.i("LoginResult", result.toString());
+
+                    //convert json to obj
+                    OrderSourceResponse objsource = gson.fromJson(result,OrderSourceResponse.class);
+                    if (objsource.getResponseCode().equals("1"))
+                    {
+                        for(int i=0; i<objsource.getOrderSource().size();i++){
+
+
+                            mHelper.updateItemno(objsource.getOrderSource().get(i).getTrans_no1().toString(),objsource.getOrderSource().get(i).getNorder());
+
+                        }
+                    }
+
+
 
                 }
 

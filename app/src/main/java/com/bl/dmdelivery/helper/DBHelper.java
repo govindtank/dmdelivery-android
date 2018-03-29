@@ -1632,4 +1632,26 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public  void updateItemno(String tranNo,String itemNo)
+    {
+        if (tranNo == null || tranNo.isEmpty() || tranNo.equals("null")){return;}
+        try{
+            sqLiteDatabase = this.getWritableDatabase();
+
+            ContentValues cv = new ContentValues();
+            cv.put(Order.Column.Itemno,itemNo); //These Fields should be your String values of actual column names
+            sqLiteDatabase.update(TableOrder,cv,"TransNo='" + tranNo.toString().trim() + "'",null);
+
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+
+        }finally {
+
+                sqLiteDatabase.close();
+
+        }
+    }
+
 }
