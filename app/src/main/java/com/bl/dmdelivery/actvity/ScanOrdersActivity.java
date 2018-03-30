@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -75,7 +76,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
     private ACProgressFlower mProgressDialog;
     private TextView mTxtMsg,mTxtHeader,mTxtResult,mTxtOrderSum,mTxtBoxBagSum,mTxtBoxSum,mTxtBagSum,mmTxtMsg,mmTxtTitle;
-    private Button mBtnBack,mBtnCheckScan,mBtnOk,mBtnClose,mBtnConfirm,mmBtnOk,mmBtnClose;
+    private Button mBtnBack,mBtnCheckScan,mBtnOk,mBtnClose,mBtnConfirm,mmBtnOk,mmBtnClose,mBtnFlash;
     private ImageView mmImvTitle;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
     private RecyclerView lv;
@@ -93,7 +94,9 @@ public class ScanOrdersActivity extends AppCompatActivity {
     private String serverUrl;
     private Integer i = 0;
     private CheckNetwork chkNetwork = new CheckNetwork();
-    private ImageButton mBtnFlash;
+
+    private boolean isFlash =false;
+    //private ImageButton mBtnFlash;
 
 
     private DecoratedBarcodeView barcodeScannerView;
@@ -179,7 +182,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnCheckScan = (Button)findViewById(R.id.btnCheckScan);
             mBtnConfirm = (Button)findViewById(R.id.btnConfirm);
-            mBtnFlash = (ImageButton)findViewById(R.id.btnFlash);
+            mBtnFlash = (Button)findViewById(R.id.btnFlash);
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
@@ -236,12 +239,20 @@ public class ScanOrdersActivity extends AppCompatActivity {
             mBtnFlash.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mBtnFlash.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_flash_off_black_24dp).getConstantState())){
+                    if(!isFlash){
+                        isFlash = true;
                         barcodeScannerView.setTorchOn();
-                        ((ImageButton)view).setImageResource(R.drawable.ic_flash_on_black_24dp);
+                        //mBtnFlash.setBackgroundResource(R.mipmap.ic_launcher);
+                        Drawable icon = getResources(). getDrawable( R.mipmap.ic_flashlightfilled_on);
+                        mBtnFlash.setCompoundDrawablesWithIntrinsicBounds( null, icon, null, null );
+                        //((ImageButton)view).setImageResource(R.drawable.ic_flash_on_black_24dp);
                     }else{
+                        isFlash = false;
                         barcodeScannerView.setTorchOff();
-                        ((ImageButton)view).setImageResource(R.drawable.ic_flash_off_black_24dp);
+                        //mBtnFlash.setBackgroundResource(R.mipmap.ic_launcher_round);
+                        Drawable icon = getResources(). getDrawable( R.mipmap.ic_flashlightfilled_off);
+                        mBtnFlash.setCompoundDrawablesWithIntrinsicBounds( null, icon, null, null );
+                        //((ImageButton)view).setImageResource(R.drawable.ic_flash_off_black_24dp);
                     }
 
                    /* if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {

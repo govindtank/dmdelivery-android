@@ -138,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/btncheckgps"
-                        android:drawableTop="@mipmap/ic_marker50_r"
+                        android:drawableTop="@mipmap/ic_flashlightfilled_off"
                         android:paddingTop="10dp"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
