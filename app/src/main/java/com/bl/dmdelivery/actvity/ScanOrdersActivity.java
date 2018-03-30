@@ -151,7 +151,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
             BeepManager bm = new BeepManager(this);
             bm.playBeepSoundAndVibrate();
             //getInsertData(result);
-            if(InsertData(result) == "0"){
+            if(InsertData(result) == "1"){
                 barcodeScannerView.resume();
             }
 
@@ -287,6 +287,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
         DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
+                barcodeScannerView.resume();
                 dialog.dismiss();
             }
         });
@@ -664,6 +665,54 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
                     //convert json to obj
                     BookingResponse obj = gson.fromJson(result,BookingResponse.class);
+                    switch (obj.getResponseCode().toString()){
+                        case "0":
+                            showMsgDialog("Error !! " + obj.getResponseMessage());
+                            break;
+                        case "1":
+                            mListOrderSum.clear();
+                            if(obj.getOrderSummary() != null){
+                                for(int i=0; i<obj.getOrderSummary().size();i++){
+
+                                    OrderSummary f = new OrderSummary();
+                                    f.setInvoiceno(obj.getOrderSummary().get(i).getInvoiceno());
+                                    f.setDeliveryDate(obj.getOrderSummary().get(i).getDeliveryDate().toString());
+                                    f.setTruckNo(obj.getOrderSummary().get(i).getTruckNo().toString());
+                                    f.setCartonQty(obj.getOrderSummary().get(i).getCartonQty());
+                                    f.setBags(obj.getOrderSummary().get(i).getBags());
+                                    f.setTotal(obj.getOrderSummary().get(i).getTotal());
+                                    mListOrderSum.add(f);
+
+                                }
+                            }
+                            _result = "1";
+                            break;
+                        case "2":
+                            showMsgDialog("Error !! " + obj.getResponseMessage());
+                            break;
+                        case "3":
+                            showMsgDialog("Error !! " + obj.getResponseMessage());
+                            break;
+                        case "4":
+                            showMsgDialog("Error !! " + obj.getResponseMessage());
+                            break;
+                        case "5":
+                            showMsgDialog("Error !! " + obj.getResponseMessage());
+                            break;
+                        case "6":
+                            if(obj.getResponseMessage().equals(mBookingReq.getTruckNo().toString())){
+                                showMsgDialog("Error !! " + "มีการสแกนซ้ำ!!!!!");
+                            }else {
+                                showMsgDialog("เบอร์รถ " + obj.getResponseMessage() + " สแกนไปแล้ว");
+                            }
+                            break;
+                    }
+
+
+
+
+
+                   /*
                     if(obj.getResponseCode().equals("0")){
                         showMsgDialog("Error !! "+obj.getResponseMessage());
                     }else {
@@ -688,7 +737,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
                             mTxtBoxBagSum.setText(String.valueOf(mListOrderSum.get(0).getTotal()));
 
                         }
-                    }
+                    }*/
                 }
             }
 
@@ -762,8 +811,48 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
                 //convert json to obj
                 BookingResponse obj = gson.fromJson(result,BookingResponse.class);
-                if(obj.getResponseCode().equals("0")){
-                    pageResultHolder.content = "มีการสแกนซ้ำ !!!!! ";
+
+                switch (obj.getResponseCode()){
+                    case "0":
+                        pageResultHolder.content = obj.getResponseMessage();
+                    case "1":
+                        mListOrderSum.clear();
+                        if(obj.getOrderSummary() != null){
+                            for(int i=0; i<obj.getOrderSummary().size();i++){
+
+                                OrderSummary f = new OrderSummary();
+                                f.setInvoiceno(obj.getOrderSummary().get(i).getInvoiceno());
+                                f.setDeliveryDate(obj.getOrderSummary().get(i).getDeliveryDate().toString());
+                                f.setTruckNo(obj.getOrderSummary().get(i).getTruckNo().toString());
+                                f.setCartonQty(obj.getOrderSummary().get(i).getCartonQty());
+                                f.setBags(obj.getOrderSummary().get(i).getBags());
+                                f.setTotal(obj.getOrderSummary().get(i).getTotal());
+                                mListOrderSum.add(f);
+
+                            }
+                        }
+                    case "2":
+                        pageResultHolder.content = obj.getResponseMessage();
+                    case "3":
+                        pageResultHolder.content = obj.getResponseMessage();
+                    case "4":
+                        pageResultHolder.content = obj.getResponseMessage();
+                    case "5":
+                        pageResultHolder.content = obj.getResponseMessage();
+                    case "6":
+                        if(obj.getResponseMessage().equals(mBookingReq.getTruckNo().toString())){
+                            pageResultHolder.content = "มีการสแกนซ้ำ!!!!!";
+                        }else {
+                            pageResultHolder.content = "เบอร์รถ " + obj.getResponseMessage() + " สแกนไปแล้ว";
+                        }
+                }
+
+
+                /*if(obj.getResponseCode().equals("0")){
+                    pageResultHolder.content = obj.getResponseMessage();
+                else if(obj.getResponseCode().equals("")){
+
+                    }
                 }else {
                     mListOrderSum.clear();
                     if(obj.getOrderSummary() != null){
@@ -780,7 +869,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
 
                         }
                     }
-                }
+                }*/
 
 
 
