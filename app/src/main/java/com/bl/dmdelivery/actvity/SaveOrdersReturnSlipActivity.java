@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
+import com.bl.dmdelivery.adapter.SaveOrderReturnReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.OrderReturn;
@@ -207,6 +208,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
             if(arrayListReason.size() > 0)
             {
+                sigReson_code =  arrayListReason.get(0).getReason_code();
                 mSelectReson =  arrayListReason.get(0).getReason_desc();
                 mSelectResonIndex = 0;
 
@@ -276,17 +278,33 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
                         takeScreenshot();
 
-                        //บันทึกข้อมูล รับได้
-                        mHelper = new DBHelper(getApplicationContext());
-                        mOrderReturnSaveData = new OrderReturn();
+//                        //บันทึกข้อมูล รับได้
+//                        mHelper = new DBHelper(getApplicationContext());
+//                        mOrderReturnSaveData = new OrderReturn();
+//
+//                        mOrderReturnSaveData.setReturn_no(sigReturn_no);
+//                        mOrderReturnSaveData.setRep_code(sigRepcode);
+//                        mOrderReturnSaveData.setReturn_status("1");
+//                        mOrderReturnSaveData.setReason_code(sigReson_code);
+//                        mOrderReturnSaveData.setReturn_note(sigNote);
+//                        mOrderReturnSaveData.setReturn_unit_real("0");
+//                        mOrderReturnSaveData.setFullpathimage(mFileName);
+//                        mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
 
-                        mOrderReturnSaveData.setReturn_no(sigReturn_no);
-                        mOrderReturnSaveData.setRep_code(sigRepcode);
-                        mOrderReturnSaveData.setReturn_status("1");
-                        mOrderReturnSaveData.setReason_code(sigReson_code);
-                        mOrderReturnSaveData.setReturn_note(sigNote);
-                        mOrderReturnSaveData.setFullpathimage(mFileName);
-                        mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
+
+                        for(int i=0; i < mListOrderReturnSavDate.size(); i++){
+                            //บันทึกข้อมูล รับได้
+                            mHelper = new DBHelper(getApplicationContext());
+                            OrderReturn mOrderReturn = new OrderReturn();
+                            mOrderReturn.setReturn_no(sigReturn_no);
+                            mOrderReturn.setRep_code(sigRepcode);
+                            mOrderReturn.setReturn_status("1");
+                            mOrderReturn.setReason_code(sigReson_code);
+                            mOrderReturn.setReturn_note(sigNote);
+                            mOrderReturn.setReturn_unit_real(mListOrderReturnSavDate.get(i).getReturn_unit_real());
+                            mOrderReturn.setFullpathimage(mFileName);
+                            mHelper.updateOrderReturnSlip(mOrderReturn);
+                        }
 
 
                         //รับได้
@@ -346,13 +364,15 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         {
 
             arrayListReason.get(mSelectResonIndex).setIsselect("1");
+            sigReson_code = arrayListReason.get(mSelectResonIndex).getReason_code();
         }
         else
         {
             arrayListReason.get(0).setIsselect("1");
+            sigReson_code = arrayListReason.get(0).getReason_code();
         }
 
-        mReturnAcceptRejectListAdapter = new SaveOrderReasonViewAdapter(getApplicationContext(),arrayListReason);
+        mReturnAcceptRejectListAdapter = new SaveOrderReturnReasonViewAdapter(getApplicationContext(),arrayListReason);
         lvReturnAcceptRejectList.setAdapter(mReturnAcceptRejectListAdapter);
 
 
@@ -377,10 +397,14 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                 arrayListReason.get(position).setIsselect("1");
 
                 String description = arrayListReason.get(position).getReason_desc();
+                sigReson_code = arrayListReason.get(mSelectResonIndex).getReason_code();
+
 
                 mSelectReson = description;
 
                 mSelectResonIndex = position;
+
+
 
                 mReturnAcceptRejectListAdapter.notifyDataSetChanged();
 

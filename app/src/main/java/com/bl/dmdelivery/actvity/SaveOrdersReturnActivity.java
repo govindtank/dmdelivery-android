@@ -26,6 +26,7 @@ import com.bl.dmdelivery.adapter.OrderReturnDtlViewAdapter;
 import com.bl.dmdelivery.adapter.OrderReturnViewAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
+import com.bl.dmdelivery.adapter.SaveOrderReturnReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.OrderReturn;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 
 public class SaveOrdersReturnActivity extends AppCompatActivity {
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtsum,mmTxtQty;
+    private TextView mmTxtMsg,mTxtHeader,mmTxtTitle,mTxtsum,mmTxtQty;
     private Button mBtnBack,mmBtnOk,mmBtnClose,mBtnPlus,mBtnDel,mBtnConfirm,mBtnCheckScan;
     private ImageView mmImvTitle;
     private EditText medtNote;
@@ -199,6 +200,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
             if(arrayListReason.size() > 0)
             {
+                sigReson_code =  arrayListReason.get(0).getReason_code();
                 mSelectReson =  arrayListReason.get(0).getReason_desc();
                 mSelectResonIndex = 0;
             }
@@ -227,11 +229,30 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             mBtnConfirm.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
-                    isResumeState = true;
+                    //check Qty
+                    int intCountReturn_unit_real_Blank = 0;
+                    for(int i=0;i<mListOrderReturn.size();i++){
+                        if(mListOrderReturn.get(i).getReturn_unit_real().equals("") ||
+                                mListOrderReturn.get(i).getReturn_unit_real().equals("0") ||
+                                mListOrderReturn.get(i).getReturn_unit_real() == null){
+                                intCountReturn_unit_real_Blank++;
+                        }
+                    }
 
+                    if (mListOrderReturn.size()>0){
+                        if(intCountReturn_unit_real_Blank == mListOrderReturn.size())
+                        {
+                            showMsgDialog("จำนวนรับคืนจริงไม่ถูกต้อง...กรุณาตรวจสอบใหม่อีกครั้ง !!!");
+                            return;
+                        }
+                    }
+
+
+
+                    isResumeState = true;
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnSlipActivity.class);
                     myIntent.putExtra("datareturn", mOrderReturnSaveData);
-                    myIntent.putExtra("datareturnAll", mListOrderReturnSaveData);
+                    myIntent.putExtra("datareturnAll", mListOrderReturn);
                     startActivity(myIntent);
                 }
             });
@@ -272,6 +293,13 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
             if(mListOrderReturn.size()>0)
             {
+
+                for (int i=0; i<mListOrderReturn.size();i++)
+                {
+                    String sigReturn_unit = mListOrderReturn.get(i).getReturn_unit();
+                    mListOrderReturn.get(i).setReturn_unit_real(sigReturn_unit);
+                }
+
                 mAdapter = new OrderReturnDtlViewAdapter(getApplicationContext(),mListOrderReturn);
                 lv.setAdapter(mAdapter);
             }else
@@ -383,17 +411,34 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             public void onClick(View view) {
                 DialogBuilder.dismiss();
 
-                //update qty on row
-                mHelper = new DBHelper(getApplicationContext());
-                OrderReturn mOrderReturn = new OrderReturn();
-                mOrderReturn.setRep_code(ref_rep_code);
-                mOrderReturn.setReturn_no(ref_return_no);
-                mOrderReturn.setFs_code(sigFs_code_final);
-                mOrderReturn.setReturn_unit_real(mmTxtQty.getText().toString());
-                mHelper.updateOrderReturnDtl(mOrderReturn);
+//                //update qty on row
+//                mHelper = new DBHelper(getApplicationContext());
+//                OrderReturn mOrderReturn = new OrderReturn();
+//                mOrderReturn.setRep_code(ref_rep_code);
+//                mOrderReturn.setReturn_no(ref_return_no);
+//                mOrderReturn.setFs_code(sigFs_code_final);
+//                mOrderReturn.setReturn_unit_real(mmTxtQty.getText().toString());
+//                mHelper.updateOrderReturnDtl(mOrderReturn);
 
-                //call init
-                getInit();
+
+                mListOrderReturn.get(selectedPosition_Final).setRep_code(ref_rep_code);
+                mListOrderReturn.get(selectedPosition_Final).setReturn_no(ref_return_no);
+                mListOrderReturn.get(selectedPosition_Final).setFs_code(sigFs_code_final);
+                mListOrderReturn.get(selectedPosition_Final).setReturn_unit_real(mmTxtQty.getText().toString());
+
+                if(mListOrderReturn.size() > 0) {
+                    mAdapter = new OrderReturnDtlViewAdapter(getApplicationContext(),mListOrderReturn);
+                    lv.setAdapter(mAdapter);
+
+                    mAdapter.notifyDataSetChanged();
+                    lv.scrollToPosition(selectedPosition_Final);
+                }
+
+
+
+//
+//                //call init
+//                getInit();
             }
         });
 
@@ -438,13 +483,15 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         {
 
             arrayListReason.get(mSelectResonIndex).setIsselect("1");
+            sigReson_code = arrayListReason.get(mSelectResonIndex).getReason_code();
         }
         else
         {
             arrayListReason.get(0).setIsselect("1");
+            sigReson_code = arrayListReason.get(0).getReason_code();
         }
 
-        mReturnAcceptRejectListAdapter = new SaveOrderReasonViewAdapter(getApplicationContext(),arrayListReason);
+        mReturnAcceptRejectListAdapter = new SaveOrderReturnReasonViewAdapter(getApplicationContext(),arrayListReason);
         lvReturnAcceptRejectList.setAdapter(mReturnAcceptRejectListAdapter);
 
 
@@ -471,6 +518,8 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 arrayListReason.get(position).setIsselect("1");
 
                 String description = arrayListReason.get(position).getReason_desc();
+
+                sigReson_code = arrayListReason.get(position).getReason_code();
 
                 mSelectReson = description;
 
@@ -506,7 +555,6 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 //บันทึกข้อมูล รับไม่ได้
                 mHelper = new DBHelper(getApplicationContext());
                 mOrderReturnSaveData = new OrderReturn();
-
                 mOrderReturnSaveData.setReturn_no(ref_return_no);
                 mOrderReturnSaveData.setRep_code(ref_rep_code);
                 mOrderReturnSaveData.setReturn_status("2");
@@ -535,24 +583,36 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     public void showMsgDialog(String msg)
     {
-        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog alert = DialogBuilder.create();
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_message, null, false);
 
-        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-        mTxtMsg.setTypeface(tf);
-        mTxtMsg.setText(msg);
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
-        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
+
         DialogBuilder.show();
     }
 

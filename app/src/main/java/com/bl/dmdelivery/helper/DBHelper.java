@@ -1359,6 +1359,7 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put("reason_code",mOrderReturn.getReason_code());
             cv.put("return_status",mOrderReturn.getReturn_status());
             cv.put("return_note",mOrderReturn.getReturn_note());
+            cv.put("return_unit_real",mOrderReturn.getReturn_unit_real());
             cv.put("fullpathimage",mOrderReturn.getFullpathimage());
 
 
@@ -1402,6 +1403,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if(intResult > 0){
                 return  true;
             }
+
         }
         catch (Exception ex)
         {
