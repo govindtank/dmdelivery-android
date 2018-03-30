@@ -25,61 +25,6 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="0dp"-->
-        <!--android:layout_marginTop="0dp"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<include-->
-        <!--android:id="@+id/includeToolbarSaveOrdersReturnMenuBar"-->
-        <!--layout="@layout/toolbar_save_orders_return_menu_bar"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
-
-
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/colorBG"-->
-            <!--android:orientation="vertical">-->
-
-            <!--<include-->
-                <!--android:id="@+id/includeHeader"-->
-                <!--layout="@layout/toolbar_save_orders_return_slip_menu_bar"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-
-        <!--</LinearLayout>-->
-
-        <!--<include-->
-            <!--android:id="@+id/includeSeparatorBarWhite1"-->
-            <!--layout="@layout/separator_bar_white"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-
-            <!--android:background="@color/colorBGMain"-->
-            <!--android:orientation="horizontal">-->
-
-            <!--<include-->
-                <!--android:id="@+id/includeHeaderSerach"-->
-                <!--layout="@layout/toolbar_search"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="10dp"-->
-                <!--android:layout_marginLeft="10dp"-->
-
-                <!--android:layout_marginRight="10dp"-->
-                <!--android:layout_marginTop="10dp" />-->
-        <!--</LinearLayout>-->
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -111,14 +56,6 @@
             android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
-
-            <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/lv"-->
-
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/colorBackgroundWhite" />-->
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/lv"
 
@@ -126,13 +63,6 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorBackground" />
 
-
-            <!--<ListView-->
-                <!--android:id="@+id/lv"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:background="@color/colorBG" />-->
 
         </LinearLayout>
 

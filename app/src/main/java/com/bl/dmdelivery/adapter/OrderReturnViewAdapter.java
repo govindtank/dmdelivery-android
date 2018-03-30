@@ -3,6 +3,7 @@ package com.bl.dmdelivery.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -38,7 +39,6 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.list_row_order_return, parent, false);
-
         ViewHolder ViewHolder = new ViewHolder(view);
         return ViewHolder;
     }
@@ -48,26 +48,23 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
 
         try
         {
+            Typeface typeface = Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PSL162pro-webfont.ttf");
+
+
             OrderReturn f = mData.get(position);
-
-//            String refNo = "Ref No : "+String.valueOf(f.getReturn_no());
-//            holder.txtRefReturnNo.setText(refNo);
-//
-//            String refInv = "Inv No : "+String.valueOf(f.getReftrans_no());
-//            holder.txtInvNo.setText(refInv);
-//
-//            String refCode = "Ref Code :"+String.valueOf(f.getRep_code())+" - "+String.valueOf(f.getRep_name());
-//            holder.txtRefCode.setText(refCode);
-
 
             String refNo = "เลขที่รับคืน: "+String.valueOf(f.getReturn_no());
             holder.txtRefReturnNo.setText(refNo);
+            holder.txtRefReturnNo.setTypeface(typeface);
 
             String refInv = "Inv: "+String.valueOf(f.getReftrans_no());
             holder.txtInvNo.setText(refInv);
+            holder.txtInvNo.setTypeface(typeface);
 
-            String refCode = "รหัส-ชื่อ:"+String.valueOf(f.getRep_code())+" - "+String.valueOf(f.getRep_name());
+            String refCode = "รหัส-ชื่อ: "+String.valueOf(f.getRep_code())+" - "+String.valueOf(f.getRep_name());
             holder.txtRefCode.setText(refCode);
+            holder.txtRefCode.setTypeface(typeface);
+            holder.txtReturnStatus.setTypeface(typeface);
 
             String sigReturn_status=String.valueOf(f.getReturn_status());
             if(sigReturn_status.isEmpty()){

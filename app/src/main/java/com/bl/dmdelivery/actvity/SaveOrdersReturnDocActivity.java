@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.StrictMode;
@@ -29,6 +30,7 @@ import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Unpack;
+import com.bl.dmdelivery.utility.TagUtils;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -52,6 +54,9 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
     private String sigMultiInv="";
     private boolean isResumeState = false;
 
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +70,10 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
         }
 
         try {
+            sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
 
             bindWidget();
-//
+
 //            setDefaultFonts();
 
             setWidgetControl();
@@ -76,6 +82,17 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
             showMsgDialog(e.toString());
         }
     }
+
+//        private void setDefaultFonts() {
+//        try {
+//            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//            mTxtHeader.setTypeface(tf);
+////            mBtnBack.setTypeface(tf);
+//
+//        } catch (Exception e) {
+//            showMsgDialog(e.toString());
+//        }
+//    }
 
     @Override
     public void onResume(){
@@ -87,15 +104,18 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 //            Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - OK", Toast.LENGTH_SHORT);
 //            toast.show();
 
-
-            if(isSaveOrderReturnAllComplete()){
-                //ถ้าบันทึกใบรับคืนครบให้ไปที่ หน้าจัดส่ง
-                finish();
-            }
-            else
+            String sigBackToPage = sp.getString(TagUtils.PREF_BACK_TO_PAGE, "");
+            if (sigBackToPage.toUpperCase().equals("SAVE_TO_PAGE"))
             {
-                //ถ้าบันทึกใบคืนไม่ครบให้ refresh ข้อมูล
-                getInit();
+                if(isSaveOrderReturnAllComplete()){
+                    //ถ้าบันทึกใบรับคืนครบให้ไปที่ หน้าจัดส่ง
+                    finish();
+                }
+                else
+                {
+                    //ถ้าบันทึกใบคืนไม่ครบให้ refresh ข้อมูล
+                    getInit();
+                }
             }
         }
 //        else
@@ -106,7 +126,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 //        }
     }
 
-
+    @Override
     public void onBackPressed() {
 //        finish();
 //
@@ -124,7 +144,10 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
 
             for(int i=0;i < mListOrderReturnGeOnResume.size(); i++)
             {
-                if (mListOrderReturnGeOnResume.get(i).getReturn_status() == "0")
+//                Toast toast = Toast.makeText(SaveOrdersReturnDocActivity.this, "onResume - OK " + mListOrderReturnGeOnResume.get(i).getReturn_status(), Toast.LENGTH_SHORT);
+//                toast.show();
+
+                if (mListOrderReturnGeOnResume.get(i).getReturn_status().equals("0") || mListOrderReturnGeOnResume.get(i).getReturn_status().equals(""))
                 {
                     return false;
                 }

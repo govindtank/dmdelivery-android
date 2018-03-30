@@ -1,6 +1,7 @@
 package com.bl.dmdelivery.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,15 +44,20 @@ public class OrderReturnDtlViewAdapter extends RecyclerView.Adapter<OrderReturnD
 
         try
         {
+            Typeface typeface = Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PSL162pro-webfont.ttf");
 
             OrderReturn f = mData.get(position);
 
             String fscode = String.valueOf(f.getFs_code());
             holder.txtFscode.setText(fscode);
+            holder.txtFscode.setTypeface(typeface);
 
             String fsname = String.valueOf(f.getFs_desc());
             holder.txtFsname.setText(fsname);
+            holder.txtFsname.setTypeface(typeface);
 
+            holder.txtRet.setTypeface(typeface);
+            holder.txtReq.setTypeface(typeface);
 
             if(f.getReturn_unit().equals("") || f.getReturn_unit().equals("0") || f.getReturn_unit().isEmpty() || f.getReturn_unit()==null)
             {

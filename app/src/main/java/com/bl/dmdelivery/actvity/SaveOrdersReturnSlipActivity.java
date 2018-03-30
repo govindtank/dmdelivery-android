@@ -107,7 +107,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         }
 
         try {
-
             sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
 
             bindWidget();
@@ -116,6 +115,17 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        backToPage = "BACK_TO_PAGE";
+
+        editor = sp.edit();
+        editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+        editor.apply();
+
+        finish();
     }
 
     private void bindWidget()
@@ -170,10 +180,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             mTxtRepcode = (TextView) findViewById(R.id.txtRepcode);
 
 
-
             mCanvasViewSlipReturn = (CanvasViewSlipReturn) findViewById(R.id.signature_canvas);
-//            mCanvasViewSlipReturn.setBackground(Dr);
-//            mCanvasViewSlipReturn.drawBitmap(image, 0, 0, null);
 
 
             File dirInput = new File (mInputPath);
