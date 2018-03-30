@@ -85,6 +85,7 @@
 
     <string name="txt_text_remark">หมายเหตุ : </string>
     <string name="txt_text_reason_remark">เหตุผล/หมายเหตุ</string>
+    <string name="txt_text_header_tel_download">เลือกโหลดเบอร์ติดต่อ</string>
 
 
     <string name="menu_text_headder_print">พิมพ์รายงาน</string>

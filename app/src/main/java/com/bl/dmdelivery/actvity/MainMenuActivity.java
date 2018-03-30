@@ -12,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,6 +22,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -36,6 +40,8 @@ import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.CustomGridViewAdapter;
+import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
+import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.helper.WebServiceHelper;
@@ -510,29 +516,124 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void showMsgConfirmSelectedSingleDialog()
     {
-        // Create the arrays
-        sigDcList = getResources().getStringArray(R.array.dcList);
-
-        final AlertDialog DialogBuilder = new AlertDialog.Builder(MainMenuActivity.this).create();
-        LayoutInflater inflater = getLayoutInflater();
-        View v = (View) inflater.inflate(R.layout.dialog_confirm_down_load_tel, null);
-        DialogBuilder.setView(v);
-//        DialogBuilder.setTitle("เลือกเงื่อนไขในการโหลดเบอร์ติดต่อ");
+//
 
 
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_tel_download, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
-        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-        mmTxtTitle.setText("เลือกเงื่อนไขการโหลดเบอร์ติดต่อ");
+        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+        //mmedtNote = (EditText) v.findViewById(R.id.edtNote);
+
+        //Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+        //mmedtNote.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.txt_text_header_tel_download));
+        //mmTxtMsg.setText(msg);
+        mmBtnOk.setText(getResources().getString(R.string.btn_text_ok));
+        //mmedtNote.setText(textnote);
 
 
-        lv = (ListView) v.findViewById(R.id.lv);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigDcList);
-        lv.setAdapter(adapter);
+//        lvDeliveryAcceptList = (RecyclerView) v.findViewById(R.id.lvacceptList);
+//        lvDeliveryAcceptList.setLayoutManager(new LinearLayoutManager(this));
+//        lvDeliveryAcceptList.setHasFixedSize(true);
+//
+//
+//        arrayListReason.clear();
+//        mHelper = new DBHelper(getApplicationContext());
+//        arrayListReason = mHelper.getReasonListForCondition("'DELIVERY_REJECT'");
+//
+//        if(mSelectNResonIndex > 0)
+//        {
+//
+//            arrayListReason.get(mSelectNResonIndex).setIsselect("1");
+//        }
+//        else
+//        {
+//            arrayListReason.get(0).setIsselect("1");
+//            String description = arrayListReason.get(mSelectNResonIndex).getReason_desc();
+//            mSelectReson = description;
+//        }
+//
+//
+//
+//        mDeliveryAcceptListAdapter = new SaveOrderReasonViewAdapter(getApplicationContext(),arrayListReason);
+//        lvDeliveryAcceptList.setAdapter(mDeliveryAcceptListAdapter);
+//
+//
+//
+//        lvDeliveryAcceptList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//
+//
+//                for(int i = arrayListReason.size()-1 ; i >= 0; i--)
+//                {
+//
+//                    mSelect = arrayListReason.get(i).getIsselect().toString();
+//
+//                    if(mSelect.equals("1"))
+//                    {
+//                        arrayListReason.get(i).setIsselect("0");
+//                    }
+//
+//                }
+//
+//
+//                mSelect = arrayListReason.get(position).getIsselect();
+//
+//                arrayListReason.get(position).setIsselect("1");
+//
+//                String description = arrayListReason.get(position).getReason_desc();
+////
+//                mSelectReson = description;
+//
+//                mSelectNResonIndex = position;
+//
+////                if(mSelect.equals("0"))
+////                {
+////                    arrayListReason.get(position).setIsselect("1");
+////
+////                }else
+////                {
+////                    arrayListReason.get(position).setIsselect("0");
+////
+////
+////                }
+//
+//                mDeliveryAcceptListAdapter.notifyDataSetChanged();
+//
+//
+//
+//
+//            }
+//        }));
+
+
+
+
+
+        DialogBuilder.setView(v);
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                //loadData();
                 DialogBuilder.dismiss();
+
+
             }
         });
 
@@ -542,17 +643,83 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
-        // Set item click listener
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = sigDcList[position];
-                Toast.makeText(MainMenuActivity.this, description, Toast.LENGTH_SHORT).show();
-            }
-        });
-
         DialogBuilder.show();
+
+
+
+//    public void showMsgDialog(String msg)
+//    {
+//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+//        final AlertDialog alert = DialogBuilder.create();
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_message, null, false);
+//
+//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mTxtMsg.setTypeface(tf);
+//        mTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                dialog.dismiss();
+//            }
+//        });
+//        DialogBuilder.show();
+//
+//
+//
+//
+//
     }
+
+//    public void showMsgConfirmSelectedSingleDialog()
+//    {
+//        // Create the arrays
+//        sigDcList = getResources().getStringArray(R.array.dcList);
+//
+//        final AlertDialog DialogBuilder = new AlertDialog.Builder(MainMenuActivity.this).create();
+//        LayoutInflater inflater = getLayoutInflater();
+//        View v = (View) inflater.inflate(R.layout.dialog_tel_download, null);
+//        DialogBuilder.setView(v);
+////        DialogBuilder.setTitle("เลือกเงื่อนไขในการโหลดเบอร์ติดต่อ");
+//
+//
+//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+//        mmBtnOk = (Button) v.findViewById(R.id.btnOk);
+//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
+//        mmTxtTitle.setText("เลือกเงื่อนไขการโหลดเบอร์ติดต่อ");
+//
+//
+////        lv = (ListView) v.findViewById(R.id.lv);
+////        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,sigDcList);
+////        lv.setAdapter(adapter);
+//
+//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                DialogBuilder.dismiss();
+//            }
+//        });
+//
+//        // Set item click listener
+////        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+////            @Override
+////            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+////                String description = sigDcList[position];
+////                Toast.makeText(MainMenuActivity.this, description, Toast.LENGTH_SHORT).show();
+////            }
+////        });
+//
+//        DialogBuilder.show();
+//    }
 
     public static class DatePickerFragment extends DialogFragment implements
             DatePickerDialog.OnDateSetListener {
@@ -898,6 +1065,13 @@ public class MainMenuActivity extends AppCompatActivity {
     private class PageResultHolder {
         private String content;
         private Exception exception;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        showMsgLogoutConfirmDialog("ยืนยันการออกจากระบบ ?",getResources().getString(R.string.btn_text_logout));
+
     }
 
     @Override
