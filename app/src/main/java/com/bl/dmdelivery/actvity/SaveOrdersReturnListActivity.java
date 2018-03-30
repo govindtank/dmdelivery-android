@@ -59,8 +59,10 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
     private ArrayList<Order> mListOrderDataALL = new ArrayList<Order>();
     private ArrayList<Order> mListOrderDataY = new ArrayList<Order>();
     private ArrayList<Order> mListOrderDataN = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataSend = new ArrayList<Order>();
     private ArrayList<OrderReturn> mListReturnDataALL = new ArrayList<OrderReturn>();
     private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
+
 
 
     //private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
@@ -359,6 +361,9 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mListOrderDataN.clear();
             mListOrderDataN = mHelper.getOrderWaitList("N");
 
+            mListOrderDataSend.clear();
+            mListOrderDataSend = mHelper.getOrderWaitList("Y");
+
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
@@ -366,7 +371,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
 
 
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataALL.size()+"/"+mListOrderDataALL.size()+")");
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataSend.size()+"/"+mListOrderDataALL.size()+")");
 
             mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
 

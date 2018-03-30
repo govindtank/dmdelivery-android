@@ -81,6 +81,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private ArrayList<Order> mListOrderDataY = new ArrayList<Order>();
     private ArrayList<Order> mListOrderDataN = new ArrayList<Order>();
     private ArrayList<Order> mListOrderDataNN = new ArrayList<Order>();
+    private ArrayList<Order> mListOrderDataSend = new ArrayList<Order>();
     private ArrayList<OrderReturn> mListReturnDataALL = new ArrayList<OrderReturn>();
     private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
     private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
@@ -217,8 +218,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                 //lv.notify();
 
-                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
+//                toast.show();
 
 
             }
@@ -942,13 +943,16 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListOrderDataNN.clear();
             mListOrderDataNN = mHelper.getOrderWaitList("N");
 
+            mListOrderDataSend.clear();
+            mListOrderDataSend = mHelper.getOrderWaitList("Y");
+
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
             mListReturnDataY.clear();
             mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
 
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataALL.size()+"/"+mListOrderDataALL.size()+")");
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataSend.size()+"/"+mListOrderDataALL.size()+")");
 
             mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataNN.size()+"/"+mListOrderDataALL.size()+")");
 

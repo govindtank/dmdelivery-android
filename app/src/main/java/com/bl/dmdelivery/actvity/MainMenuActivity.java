@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.CustomGridViewAdapter;
+import com.bl.dmdelivery.adapter.DownloadTelViewAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
@@ -53,12 +54,14 @@ import com.bl.dmdelivery.model.OrderScanReq;
 import com.bl.dmdelivery.model.OrderScanResponse;
 import com.bl.dmdelivery.model.OrderSourceResponse;
 import com.bl.dmdelivery.model.Reason;
+import com.bl.dmdelivery.model.TelListMenu;
 import com.bl.dmdelivery.model.Unpack;
 import com.bl.dmdelivery.utility.TagUtils;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -80,6 +83,11 @@ public class MainMenuActivity extends AppCompatActivity {
     private OrderScanReq mLoadOrderReq;
     private LoadOrderResponse mListLoadOrder =new LoadOrderResponse();
 
+    private String  mSelect="0";
+
+    private RecyclerView lvList;
+    private RecyclerView.Adapter mListAdapter;
+
     DBHelper mHelper;
     SQLiteDatabase mDb;
 
@@ -89,6 +97,10 @@ public class MainMenuActivity extends AppCompatActivity {
     private ListView lv;
     private String[] sigDcList;
 
+    private Integer mSelectDcListIndex = 0;
+
+    private ArrayList<TelListMenu> arrayTelListMenu = new ArrayList<TelListMenu>();
+
 //    private String[] gridViewString = {
 //            "Scan Order", "Save Order", "Load Contact", "Unpack", "Update Program", "Logout",
 //
@@ -97,6 +109,8 @@ public class MainMenuActivity extends AppCompatActivity {
     private String[] gridViewString = {
             "แสกนสินค้าขึ้นรถ", "โหลดข้อมูล", "สินค้านอกกล่อง", "บันทึกผลการจัดส่ง", "โหลดเบอร์ติดต่อ", "กิจกรรมอื่นๆ","อัพเดทโปรแกรม","ออกจากระบบ"
     } ;
+
+
 
 //    private int[] gridViewImageId = {
 //            R.mipmap.ic_barcodereaderfilled100, R.mipmap.ic_saveasfilled100, R.mipmap.ic_contactfilled100, R.mipmap.ic_formfilled100, R.mipmap.ic_downloadfromfilled100, R.mipmap.ic_padlockfilled100,
@@ -139,6 +153,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
             mTxtDate = (TextView) findViewById(R.id.txtdate);
             mTxtTroukno = (TextView) findViewById(R.id.txttruck);
+
+            mSelectDcListIndex = 0;
 
 //            //listview
 //            lv = (ListView) findViewById(R.id.lv);
@@ -547,9 +563,11 @@ public class MainMenuActivity extends AppCompatActivity {
         //mmedtNote.setText(textnote);
 
 
-//        lvDeliveryAcceptList = (RecyclerView) v.findViewById(R.id.lvacceptList);
-//        lvDeliveryAcceptList.setLayoutManager(new LinearLayoutManager(this));
-//        lvDeliveryAcceptList.setHasFixedSize(true);
+        lvList = (RecyclerView) v.findViewById(R.id.lvList);
+        lvList.setLayoutManager(new LinearLayoutManager(this));
+        lvList.setHasFixedSize(true);
+
+        sigDcList = getResources().getStringArray(R.array.dcList);
 //
 //
 //        arrayListReason.clear();
@@ -568,18 +586,120 @@ public class MainMenuActivity extends AppCompatActivity {
 //            mSelectReson = description;
 //        }
 //
+//        List<String> DcList = Arrays.asList(sigDcList);
+//
+//        ArrayList<String> arList = new ArrayList<String>();
+//        arList.addAll(DcList);
+//        arList.addAll(DcList);
+
+//         <item>ทั้งหมด</item>
+//        <item>BK-กรุงเทพมหานครและปริมณฑล</item>
+//        <item>CN-ภาคกลาง</item>
+//        <item>HY-หาดใหญ่</item>
+//        <item>KK-ขอนแก่น</item>
+//        <item>LP-ลำปาง</item>
+//        <item>NS-นครสวรรค์</item>
+//        <item>SR-สุรินทร์</item>
+//        <item>ST-สุราษฎร์ธานี</item>
+
+        arrayTelListMenu.clear();
+//
+        TelListMenu t;
+
+        t = new TelListMenu();
+        t.setTextname("ทั้งหมด");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+        t = new TelListMenu();
+        t.setTextname("BK-กรุงเทพมหานครและปริมณฑล");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+        t = new TelListMenu();
+        t.setTextname("CN-ภาคกลาง");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+        t = new TelListMenu();
+        t.setTextname("HY-หาดใหญ่");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+        t = new TelListMenu();
+        t.setTextname("KK-ขอนแก่น");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+        t = new TelListMenu();
+        t.setTextname("LP-ลำปาง");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+        t = new TelListMenu();
+        t.setTextname("NS-นครสวรรค์");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+        t = new TelListMenu();
+        t.setTextname("SR-สุรินทร์");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+        t = new TelListMenu();
+        t.setTextname("ST-สุราษฎร์ธานี");
+        t.setIsselect("0");
+        arrayTelListMenu.add(t);
+
+
+//        if(mSelectDcListIndex > 0)
+//        {
+//
+//            arrayTelListMenu.get(mSelectDcListIndex).setIsselect("1");
+//        }
+//        else
+//        {
+//            arrayTelListMenu.get(0).setIsselect("1");
+//
+//        }
+
+
+//
+        mListAdapter = new DownloadTelViewAdapter(getApplicationContext(),arrayTelListMenu);
+        lvList.setAdapter(mListAdapter);
 //
 //
-//        mDeliveryAcceptListAdapter = new SaveOrderReasonViewAdapter(getApplicationContext(),arrayListReason);
-//        lvDeliveryAcceptList.setAdapter(mDeliveryAcceptListAdapter);
 //
-//
-//
-//        lvDeliveryAcceptList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//
-//
+        lvList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+
+//                Toast toast = Toast.makeText(MainMenuActivity.this, arrayTelListMenu.get(position).getTextname(), Toast.LENGTH_SHORT);
+//                toast.show();
+
+
+                for(int i = arrayTelListMenu.size()-1 ; i >= 0; i--)
+                {
+
+                    mSelect = arrayTelListMenu.get(i).getIsselect().toString();
+
+                    if(mSelect.equals("1"))
+                    {
+                        arrayTelListMenu.get(i).setIsselect("0");
+                    }
+
+                }
+
+                mSelectDcListIndex = position;
+
+                //mSelect = arrayTelListMenu.get(position).getIsselect();
+
+                arrayTelListMenu.get(position).setIsselect("1");
+
+
+
 //                for(int i = arrayListReason.size()-1 ; i >= 0; i--)
 //                {
 //
@@ -591,36 +711,27 @@ public class MainMenuActivity extends AppCompatActivity {
 //                    }
 //
 //                }
+
+
+                //mSelect = arrayListReason.get(position).getIsselect();
+
+                //arrayListReason.get(position).setIsselect("1");
+
+                //String description = arrayListReason.get(position).getReason_desc();
 //
-//
-//                mSelect = arrayListReason.get(position).getIsselect();
-//
-//                arrayListReason.get(position).setIsselect("1");
-//
-//                String description = arrayListReason.get(position).getReason_desc();
-////
-//                mSelectReson = description;
-//
-//                mSelectNResonIndex = position;
-//
-////                if(mSelect.equals("0"))
-////                {
-////                    arrayListReason.get(position).setIsselect("1");
-////
-////                }else
-////                {
-////                    arrayListReason.get(position).setIsselect("0");
-////
-////
-////                }
-//
-//                mDeliveryAcceptListAdapter.notifyDataSetChanged();
-//
-//
-//
-//
-//            }
-//        }));
+                //mSelectReson = description;
+
+                //mSelectNResonIndex = position;
+
+
+
+                mListAdapter.notifyDataSetChanged();
+
+
+
+
+            }
+        }));
 
 
 
@@ -632,6 +743,9 @@ public class MainMenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //loadData();
                 DialogBuilder.dismiss();
+
+                Toast toast = Toast.makeText(MainMenuActivity.this, arrayTelListMenu.get(mSelectDcListIndex).getTextname(), Toast.LENGTH_SHORT);
+                toast.show();
 
 
             }
