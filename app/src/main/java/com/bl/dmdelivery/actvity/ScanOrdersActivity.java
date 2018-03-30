@@ -684,6 +684,10 @@ public class ScanOrdersActivity extends AppCompatActivity {
                                     mListOrderSum.add(f);
 
                                 }
+                                mTxtOrderSum.setText(String.valueOf(mListOrderSum.get(0).getInvoiceno()));
+                                mTxtBoxSum.setText(String.valueOf(mListOrderSum.get(0).getCartonQty()));
+                                mTxtBagSum.setText(String.valueOf(mListOrderSum.get(0).getBags()));
+                                mTxtBoxBagSum.setText(String.valueOf(mListOrderSum.get(0).getTotal()));
                             }
                             _result = "1";
                             break;
