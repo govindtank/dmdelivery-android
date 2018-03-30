@@ -101,8 +101,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
     //private ListView lvDeliveryAcceptList;
     private Intent myIntent=null;
 
-    String mInputPath = Environment.getExternalStorageDirectory().toString() + "/SLIP/";
-    String mOutputPath = Environment.getExternalStorageDirectory().toString() + "/PROCESSED/";
+    String mInputPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/";
+    String mOutputPath = Environment.getExternalStorageDirectory().toString() + "/DMPROCESSED/";
 
     public String batteryPercent = "0";
 
@@ -591,11 +591,12 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
         try {
             // image naming and path  to include sd card  appending name you choose for file
-            String mPath = Environment.getExternalStorageDirectory().toString() + "/SLIP/" + fileName;
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/" + fileName;
 
 
             View v = (View) findViewById(R.id.lnlSlip);
 
+            v.setBackgroundResource(R.color.colorWhite);
 
             // create bitmap screen capture
             //View v1 = getWindow().getDecorView().getRootView();

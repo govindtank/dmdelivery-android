@@ -74,6 +74,15 @@ public class MenuSaveOrderViewAdapter extends RecyclerView.Adapter<MenuSaveOrder
                 case "2":
                     holder.mImage.setImageResource(R.mipmap.ic_phone48);
                     break;
+                case "3":
+                    holder.mImage.setImageResource(R.mipmap.ic_checkallfilled50);
+                    holder.txtMenuName.setText(mContext.getResources().getString(R.string.btn_text_select));
+                    break;
+                case "4":
+                    holder.mImage.setImageResource(R.mipmap.ic_uncheckallfilled50);
+                    holder.txtMenuName.setText(mContext.getResources().getString(R.string.btn_text_noselect));
+                    break;
+
                 default:
                     holder.mImage.setImageResource(R.mipmap.ic_launcher);
             }

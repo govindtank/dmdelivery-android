@@ -111,6 +111,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
 
+
+    private boolean isSelectAll = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -339,6 +342,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 //                    showMsgDialogSelectedMenu(position);
 
+                    isSelectAll = true;
+
                     mSelectIndex = position;
 
                     mSelect = mListOrderDataN.get(position).getIsselect();
@@ -559,6 +564,12 @@ public class SaveOrdersActivity extends AppCompatActivity {
         f2.setMenuname_type("1");
         f2.setMenuname_mode("0");
         mListMenuData.add(f2);
+
+//        MenuSaveOrder f3 = new MenuSaveOrder();
+//        f3.setMenuname("เลือกทุกออเดอร์");
+//        f3.setMenuname_type("3");
+//        f3.setMenuname_mode("0");
+//        mListMenuData.add(f3);
 
 
         final String[] telsMSL = mListOrderDataN.get(selectedPosition).getRep_telno().split(",");
@@ -795,6 +806,28 @@ public class SaveOrdersActivity extends AppCompatActivity {
         mListMenuData.add(f2);
 
 
+        String selectText ="";
+        String selectType ="";
+
+        if(isSelectAll == false)
+        {
+            selectText = getResources().getString(R.string.btn_text_select);
+            selectType = "3";
+        }
+        else
+        {
+            selectText = getResources().getString(R.string.btn_text_noselect);
+            selectType = "4";
+        }
+
+
+        MenuSaveOrder f3 = new MenuSaveOrder();
+        f3.setMenuname(selectText);
+        f3.setMenuname_type(selectType);
+        f3.setMenuname_mode("0");
+        mListMenuData.add(f3);
+
+
 
         mMenuAdapter = new MenuSaveOrderViewAdapter(getApplicationContext(),mListMenuData);
         lvmenu.setAdapter(mMenuAdapter);
@@ -873,6 +906,50 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         DialogBuilder.dismiss();
 
                         showMsgDialog(mListMenuData.get(position).getMenuname());
+
+                        break;
+
+                    case "3":
+                        //โทร
+                        DialogBuilder.dismiss();
+
+
+                        for(int i=0; i<mListOrderDataN.size();i++){
+
+                            mListOrderDataN.get(i).setIsselect("1");
+                        }
+
+                        adapter.notifyDataSetChanged();
+
+                        if(isSelectAll == true)
+                        {
+                            isSelectAll = false;
+                        }else
+                        {
+                            isSelectAll = true;
+                        }
+
+                        break;
+
+                    case "4":
+                        //โทร
+                        DialogBuilder.dismiss();
+
+                        for(int i=0; i<mListOrderDataN.size();i++){
+
+                            mListOrderDataN.get(i).setIsselect("0");
+
+                        }
+
+                        adapter.notifyDataSetChanged();
+
+                        if(isSelectAll == true)
+                        {
+                            isSelectAll = false;
+                        }else
+                        {
+                            isSelectAll = true;
+                        }
 
                         break;
 
