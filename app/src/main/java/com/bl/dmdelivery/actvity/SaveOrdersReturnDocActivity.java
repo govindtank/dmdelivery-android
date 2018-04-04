@@ -219,6 +219,7 @@ public class SaveOrdersReturnDocActivity extends AppCompatActivity {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnActivity.class);
                     myIntent.putExtra("data", mOrderReturn);
                     myIntent.putExtra("dataAll", mListOrderReturn);
+                    myIntent.putExtra("dataInvUpdate", mListOrder);
                     startActivity(myIntent);
                 }
             }));

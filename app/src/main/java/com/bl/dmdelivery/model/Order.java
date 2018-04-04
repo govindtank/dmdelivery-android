@@ -47,6 +47,22 @@ public class Order implements Parcelable {
     private String isselect;
     private String cre_date;
     private String fullpathimage;
+    private String lat;
+    private String lon;
+    private String signature_timestamp;
+    private String reason_code;
+    private String reason_note;
+    private String send_status;
+    private String mobile_serial;
+    private String mobile_emei;
+    private String mobile_battery;
+    private String user_define1;
+    private String user_define2;
+    private String user_define3;
+    private String user_define4;
+    private String user_define5;
+    private String return_order;
+    private String return_status;
 
 
     public class Column{
@@ -89,6 +105,22 @@ public class Order implements Parcelable {
         public static final String isselect = "isselect";
         public static final String cre_date = "cre_date";
         public static final String fullpathimage = "fullpathimage";
+        public static final String lat = "lat";
+        public static final String lon = "lon";
+        public static final String signature_timestamp = "signature_timestamp";
+        public static final String reason_code = "reason_code";
+        public static final String reason_note = "reason_note";
+        public static final String send_status = "send_status";
+        public static final String mobile_serial = "mobile_serial";
+        public static final String mobile_emei = "mobile_emei";
+        public static final String mobile_battery = "mobile_battery";
+        public static final String user_define1 = "user_define1";
+        public static final String user_define2 = "user_define2";
+        public static final String user_define3 = "user_define3";
+        public static final String user_define4 = "user_define4";
+        public static final String user_define5 = "user_define5";
+        public static final String return_order = "return_order";
+        public static final String return_status = "return_status";
     }
 
     public String getDelivery_status() {
@@ -371,7 +403,6 @@ public class Order implements Parcelable {
         this.truckNo = truckNo;
     }
 
-
     public String getIsselect() {
         return isselect;
     }
@@ -395,6 +426,137 @@ public class Order implements Parcelable {
     public void setFullpathimage(String fullpathimage) {
         this.fullpathimage = fullpathimage;
     }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getSignature_timestamp() {
+        return signature_timestamp;
+    }
+
+    public void setSignature_timestamp(String signature_timestamp) {
+        this.signature_timestamp = signature_timestamp;
+    }
+
+    public String getReason_code() {
+        return reason_code;
+    }
+
+    public void setReason_code(String reason_code) {
+        this.reason_code = reason_code;
+    }
+
+    public String getReason_note() {
+        return reason_note;
+    }
+
+    public void setReason_note(String reason_note) {
+        this.reason_note = reason_note;
+    }
+
+    public String getSend_status() {
+        return send_status;
+    }
+
+    public void setSend_status(String send_status) {
+        this.send_status = send_status;
+    }
+
+    public String getMobile_serial() {
+        return mobile_serial;
+    }
+
+    public void setMobile_serial(String mobile_serial) {
+        this.mobile_serial = mobile_serial;
+    }
+
+    public String getMobile_emei() {
+        return mobile_emei;
+    }
+
+    public void setMobile_emei(String mobile_serial) {
+        this.mobile_emei = mobile_emei;
+    }
+
+    public String getMobile_battery() {
+        return mobile_battery;
+    }
+
+    public void setMobile_battery(String mobile_battery) {
+        this.mobile_battery = mobile_battery;
+    }
+
+    public String getUser_define1() {
+        return user_define1;
+    }
+
+    public void setUser_define1(String user_define1) {
+        this.user_define1 = user_define1;
+    }
+
+    public String getUser_define2() {
+        return user_define2;
+    }
+
+    public void setUser_define2(String user_define2) {
+        this.user_define2 = user_define2;
+    }
+
+    public String getUser_define3() {
+        return user_define3;
+    }
+
+    public void setUser_define3(String user_define3) {
+        this.user_define3 = user_define3;
+    }
+
+    public String getUser_define4() {
+        return user_define4;
+    }
+
+    public void setUser_define4(String user_define4) {
+        this.user_define4 = user_define4;
+    }
+
+    public String getUser_define5() {
+        return user_define5;
+    }
+
+    public void setUser_define5(String user_define5) {
+        this.user_define5 = user_define5;
+    }
+
+
+    public String getReturn_order() {
+        return return_order;
+    }
+
+    public void setReturn_order(String return_order) {
+        this.return_order = return_order;
+    }
+
+
+    public String getReturn_status() {
+        return return_status;
+    }
+
+    public void setReturn_status(String return_status) {
+        this.return_status = return_status;
+    }
+
 
 
     public Order() {
@@ -446,6 +608,22 @@ public class Order implements Parcelable {
         dest.writeString(this.isselect);
         dest.writeString(this.cre_date);
         dest.writeString(this.fullpathimage);
+        dest.writeString(this.lat);
+        dest.writeString(this.lon);
+        dest.writeString(this.signature_timestamp);
+        dest.writeString(this.reason_code);
+        dest.writeString(this.reason_note);
+        dest.writeString(this.send_status);
+        dest.writeString(this.mobile_serial);
+        dest.writeString(this.mobile_emei);
+        dest.writeString(this.mobile_battery);
+        dest.writeString(this.user_define1);
+        dest.writeString(this.user_define2);
+        dest.writeString(this.user_define3);
+        dest.writeString(this.user_define4);
+        dest.writeString(this.user_define5);
+        dest.writeString(this.return_order);
+        dest.writeString(this.return_status);
     }
 
     protected Order(Parcel in) {
@@ -487,6 +665,22 @@ public class Order implements Parcelable {
         this.isselect = in.readString();
         this.cre_date = in.readString();
         this.fullpathimage = in.readString();
+        this.lat = in.readString();
+        this.lon = in.readString();
+        this.signature_timestamp = in.readString();
+        this.reason_code = in.readString();
+        this.reason_note = in.readString();
+        this.send_status = in.readString();
+        this.mobile_serial = in.readString();
+        this.mobile_emei = in.readString();
+        this.mobile_battery = in.readString();
+        this.user_define1 = in.readString();
+        this.user_define2 = in.readString();
+        this.user_define3 = in.readString();
+        this.user_define4 = in.readString();
+        this.user_define5 = in.readString();
+        this.return_order = in.readString();
+        this.return_status = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {

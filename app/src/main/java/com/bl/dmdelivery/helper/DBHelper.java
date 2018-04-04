@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Switch;
 
 
+import com.bl.dmdelivery.adapter.OrderAdapter;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.OrderTemp;
@@ -66,7 +67,11 @@ public class DBHelper extends SQLiteOpenHelper {
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
+                        "%s TEXT)",
                 TableOrderTemp,
                 Order.Column.ID,
                 Order.Column.Oucode,
@@ -103,7 +108,23 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.delivery_status,
                 Order.Column.isselect,
                 Order.Column.cre_date,
-                Order.Column.fullpathimage
+                Order.Column.fullpathimage,
+                Order.Column.lat,
+                Order.Column.lon,
+                Order.Column.signature_timestamp,
+                Order.Column.reason_code,
+                Order.Column.reason_note,
+                Order.Column.send_status,
+                Order.Column.mobile_serial,
+                Order.Column.mobile_emei,
+                Order.Column.mobile_battery,
+                Order.Column.user_define1,
+                Order.Column.user_define2,
+                Order.Column.user_define3,
+                Order.Column.user_define4,
+                Order.Column.user_define5,
+                Order.Column.return_order,
+                Order.Column.return_status
         );
 
         Log.i(TAG, CREATE_ORDERTEMP_TABLE);
@@ -211,29 +232,45 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.delivery_status  + " TEXT, " +
                 Order.Column.isselect  + " TEXT, " +
                 Order.Column.cre_date  + " TEXT, " +
-                Order.Column.fullpathimage + " TEXT);");
+                Order.Column.fullpathimage + " TEXT, " +
+                Order.Column.lat + " TEXT, " +
+                Order.Column.lon + " TEXT, " +
+                Order.Column.signature_timestamp + " TEXT, " +
+                Order.Column.reason_code + " TEXT, " +
+                Order.Column.reason_note + " TEXT, " +
+                Order.Column.send_status + " TEXT, " +
+                Order.Column.mobile_serial + " TEXT, " +
+                Order.Column.mobile_emei + " TEXT, " +
+                Order.Column.mobile_battery + " TEXT, " +
+                Order.Column.user_define1 + " TEXT, " +
+                Order.Column.user_define2 + " TEXT, " +
+                Order.Column.user_define3 + " TEXT, " +
+                Order.Column.user_define4 + " TEXT, " +
+                Order.Column.user_define5 + " TEXT, " +
+                Order.Column.return_order + " TEXT, " +
+                Order.Column.return_status + " TEXT);");
 
 
-        try
-        {
-            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN isselect TEXT DEFAULT '0' ";
-            db.execSQL(ALTER_ORDER_TABLE);
-        }
-        catch (Exception ex)
-        {
-            Log.d("DBHelper",ex.getMessage());
-        }
-
-        try
-        {
-
-            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN cre_date TEXT DEFAULT '27/3/2018' ";
-            db.execSQL(ALTER_ORDER_TABLE);
-        }
-        catch (Exception ex)
-        {
-            Log.d("DBHelper",ex.getMessage());
-        }
+//        try
+//        {
+//            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN isselect TEXT DEFAULT '0' ";
+//            db.execSQL(ALTER_ORDER_TABLE);
+//        }
+//        catch (Exception ex)
+//        {
+//            Log.d("DBHelper",ex.getMessage());
+//        }
+//
+//        try
+//        {
+//
+//            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN cre_date TEXT DEFAULT '27/3/2018' ";
+//            db.execSQL(ALTER_ORDER_TABLE);
+//        }
+//        catch (Exception ex)
+//        {
+//            Log.d("DBHelper",ex.getMessage());
+//        }
 
 
 
@@ -338,6 +375,22 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.isselect,order.getIsselect());
         values.put(Order.Column.cre_date,order.getCre_date());
         values.put(Order.Column.fullpathimage,order.getFullpathimage());
+        values.put(Order.Column.lat,order.getLat());
+        values.put(Order.Column.lon,order.getLon());
+        values.put(Order.Column.signature_timestamp,order.getSignature_timestamp());
+        values.put(Order.Column.reason_code,order.getReason_code());
+        values.put(Order.Column.reason_note,order.getReason_note());
+        values.put(Order.Column.send_status,order.getSend_status());
+        values.put(Order.Column.mobile_serial,order.getMobile_serial());
+        values.put(Order.Column.mobile_emei,order.getMobile_emei());
+        values.put(Order.Column.mobile_battery,order.getMobile_battery());
+        values.put(Order.Column.user_define1,order.getUser_define1());
+        values.put(Order.Column.user_define2,order.getUser_define2());
+        values.put(Order.Column.user_define3,order.getUser_define3());
+        values.put(Order.Column.user_define4,order.getUser_define4());
+        values.put(Order.Column.user_define5,order.getUser_define5());
+        values.put(Order.Column.return_order,order.getReturn_order());
+        values.put(Order.Column.return_status,order.getReturn_status());
 
         sqLiteDatabase.insert(TableOrder, null, values);
 
@@ -1657,5 +1710,106 @@ public class DBHelper extends SQLiteOpenHelper {
 
         }
     }
+
+    //ปรับปรุงสถานะการคืน '' หรือ 0=ยังไม่รับคืน,1=รับคืน,2=ไม่รับคืน
+    public  void updateOrdersStatus(String tranNo,String status)
+    {
+        if (tranNo == null || tranNo.isEmpty() || tranNo.equals("null")){return;}
+        if (status == null || status.isEmpty() || status.equals("null")){return;}
+        try{
+            sqLiteDatabase = this.getWritableDatabase();
+
+            ContentValues cv = new ContentValues();
+            cv.put(Order.Column.return_status,status);
+            sqLiteDatabase.update(TableOrder,cv,"TransNo='" +  tranNo + "'",null);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+        }
+        finally
+        {
+            sqLiteDatabase.close();
+        }
+    }
+
+    //(String sigOld,String sigNew,String sigInv,OrderAdapter adapter)
+    public  boolean update_Arrange_Items_That_users_Call(String sigOld,String sigNew,OrderAdapter adapter)
+    {
+        if (sigOld == null || sigOld.isEmpty() || sigOld.equals("null")){return false;}
+        if (sigNew == null || sigNew.isEmpty() || sigNew.equals("null")){return false;}
+        if (adapter == null || adapter.equals("null")){return false;}
+
+
+        int intOld = 0;
+        int intNew = 0;
+        int intResult=0;
+        try{
+
+//            sqLiteDatabase = this.getWritableDatabase();
+
+            //sort data
+
+            Order mOrders = new Order();
+            for(int i=0; i < adapter.getItemCount(); i++)
+            {
+
+
+            }
+
+
+
+
+            //update data
+            for(int i=0; i < adapter.getItemCount(); i++){
+                try
+                {
+                    sqLiteDatabase = this.getWritableDatabase();
+
+                    ContentValues cv = new ContentValues();
+                    cv.put(Order.Column.Itemno,adapter.getData().get(i).getItemno());
+                    intResult = sqLiteDatabase.update(TableOrder,cv,"TransNo='" + adapter.getData().get(i).getTransNo() + "'",null);
+
+                    if(intResult > 0)
+                    {
+                        return  true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.d(TAG,e.getMessage());
+                }
+                finally
+                {
+                    //cleanup
+                    if (sqLiteDatabase !=null)
+                    {
+                        sqLiteDatabase.close();
+                    }
+                }
+            }
+
+
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+        }
+        finally
+        {
+//            //cleanup
+//            if (sqLiteDatabase !=null){
+//                sqLiteDatabase.close();
+//            }
+        }
+
+        return  false;
+    }
+
+
+
+
 
 }

@@ -506,7 +506,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
                             mOrders = new ArrayList<Order>();
                             mOrder = new Order();
-                            mOrder.setTruckNo(mListReturnDataALL.get(selectedPosition).getReftrans_no());
+                            mOrder.setTransNo(mListReturnDataALL.get(selectedPosition).getReftrans_no());
                             mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
                             mOrders.add(mOrder);
 

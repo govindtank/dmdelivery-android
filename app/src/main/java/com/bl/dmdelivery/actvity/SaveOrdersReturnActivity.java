@@ -29,6 +29,7 @@ import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.adapter.SaveOrderReturnReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.utility.TagUtils;
@@ -62,6 +63,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
     private ArrayList<OrderReturn> mListOrderReturn = new ArrayList<OrderReturn>();
     private ArrayList<OrderReturn> mListOrderReturnSaveData = new ArrayList<OrderReturn>();
+    private ArrayList<Order> mListOrder= new ArrayList<Order>();
     private OrderReturn mOrderReturnSaveData = null;
     private CheckNetwork chkNetwork = new CheckNetwork();
     DBHelper mHelper;
@@ -150,6 +152,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             if(bdlGetExtras == null) {
                 mOrderReturnSaveData = new OrderReturn();
                 mListOrderReturnSaveData.clear();
+                mListOrder.clear();
 
                 ref_return_no= null;
                 ref_rep_code= null;
@@ -159,6 +162,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
                 mListOrderReturnSaveData.clear();
                 mListOrderReturnSaveData = (ArrayList<OrderReturn>)bdlGetExtras.get("dataAll");
+
+                mListOrder.clear();
+                mListOrder = (ArrayList<Order>)bdlGetExtras.get("dataInvUpdate");
 
 
                 ref_return_no= mOrderReturnSaveData.getReturn_no();
@@ -253,6 +259,8 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnSlipActivity.class);
                     myIntent.putExtra("datareturn", mOrderReturnSaveData);
                     myIntent.putExtra("datareturnAll", mListOrderReturn);
+                    myIntent.putExtra("dataInvUpdateToSlip", mListOrder);
+
                     startActivity(myIntent);
                 }
             });
@@ -343,6 +351,10 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
             {
                 intQTY_UINT_REAL = intQTY_UINT;
             }
+        }
+        else if(sigQty_uint_real_final.equals("0"))
+        {
+            intQTY_UINT_REAL = 0;
         }
         else
         {
@@ -562,6 +574,18 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 mOrderReturnSaveData.setReturn_note(sigNote);
                 mOrderReturnSaveData.setReturn_unit_real("0");
                 mHelper.updateOrderReturnDetails(mOrderReturnSaveData);
+
+
+
+                for(int i=0; i < mListOrder.size(); i++){
+//                    Toast toast = Toast.makeText(SaveOrdersReturnActivity.this, mListOrder.get(i).getTransNo(), Toast.LENGTH_SHORT);
+//                    toast.show();
+
+                    //บันทึกข้อมูล รับได้ ไปยัง orders
+                    mHelper = new DBHelper(getApplicationContext());
+                    mHelper.updateOrdersStatus(mListOrder.get(i).getTransNo(),"2");
+                }
+
 
 
                 //รับได้

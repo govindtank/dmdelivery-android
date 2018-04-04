@@ -1003,6 +1003,24 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setIsselect("0");
                         f.setCre_date(mLoadOrderReq.getDeliveryDate().toString());
                         f.setFullpathimage("");
+                        f.setLat("");
+                        f.setLon("");
+                        f.setSignature_timestamp("");
+                        f.setReason_code("");
+                        f.setReason_note("");
+                        f.setSend_status("");
+                        f.setMobile_serial("");
+                        f.setMobile_emei("");
+                        f.setMobile_battery("");
+                        f.setUser_define1("");
+                        f.setUser_define2("");
+                        f.setUser_define3("");
+                        f.setUser_define4("");
+                        f.setUser_define5("");
+                        f.setReturn_order("");
+                        f.setReturn_status("");
+
+
                         orders.add(f);
 
                         mHelper.addOrdersTemp(f);

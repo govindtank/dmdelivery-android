@@ -35,6 +35,7 @@ import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.adapter.SaveOrderReturnReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.utility.TagUtils;
@@ -45,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
@@ -57,6 +59,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
     private ArrayList<Reason> mReturnAcceptRejectList = new ArrayList<Reason>();
     private ArrayList<OrderReturn> mListOrderReturnSavDate = new ArrayList<OrderReturn>();
+    private ArrayList<Order> mListOrder= new ArrayList<Order>();
     private OrderReturn mOrderReturnGetData = null;
     private OrderReturn mOrderReturnSaveData = null;
     private CheckNetwork chkNetwork = new CheckNetwork();
@@ -72,7 +75,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private Integer mSelectResonIndex = 0;
     private String  mSelect="0";
 
-    private String mInputPath = Environment.getExternalStorageDirectory().toString() + "/SLIPRETURN/";
+    private String mInputPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIPRETURN/";
+    private String mInputPathProcess = Environment.getExternalStorageDirectory().toString() + "/DMRETURNPROCESSED/";
+
 
 //    private String mPath = "";
 
@@ -138,8 +143,8 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
             if(bdlGetExtras == null) {
                 mOrderReturnGetData = new OrderReturn();
-
                 mListOrderReturnSavDate.clear();
+                mListOrder.clear();
 
                 sigInvNo="";
                 sigReturn_no="";
@@ -150,6 +155,10 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
                 mListOrderReturnSavDate.clear();
                 mListOrderReturnSavDate = (ArrayList<OrderReturn>)bdlGetExtras.get("datareturnAll");
+
+                mListOrder.clear();
+                mListOrder = (ArrayList<Order>)bdlGetExtras.get("dataInvUpdateToSlip");
+
 
                 sigInvNo = mOrderReturnGetData.getReftrans_no();
                 sigReturn_no = mOrderReturnGetData.getReturn_no();
@@ -188,6 +197,12 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
             if (!dirInput.exists())
             {
                 dirInput.mkdirs();
+            }
+
+            File dirInputProcess = new File (mInputPathProcess);
+            if (!dirInputProcess.exists())
+            {
+                dirInputProcess.mkdirs();
             }
 
 
@@ -307,6 +322,18 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                         }
 
 
+                        for(int i=0; i < mListOrder.size(); i++){
+//                            Toast toast = Toast.makeText(SaveOrdersReturnSlipActivity.this, mListOrder.get(i).getTransNo(), Toast.LENGTH_SHORT);
+//                            toast.show();
+
+                            //บันทึกข้อมูล รับได้ ไปยัง orders
+                            mHelper = new DBHelper(getApplicationContext());
+                            mHelper.updateOrdersStatus(mListOrder.get(i).getTransNo(),"1");
+                        }
+
+                        //sleep 5 seconds
+
+
                         //รับได้
                         finish();
                     }
@@ -314,6 +341,8 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                     {
                         showMsgDialog("ไม่มีลายเซ็น");
                     }
+
+
 
                 }
             });
