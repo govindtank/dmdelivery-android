@@ -1075,14 +1075,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try{
 
-             cursor = sqLiteDatabase.query(TableUnpack,
-                    null,
-                    "unpack_code = '"+ fscode +"'",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null);
+
+            cursor = sqLiteDatabase.rawQuery("select transno,rep_name,sum(unpack_qty) from Unpacks where unpack_code = '" + fscode + "' group by transno,rep_name ",null);
+
 
 
             if (cursor != null  && cursor.getCount()>0) {
@@ -1093,11 +1088,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 Unpack order = new Unpack();
                 order.setTransno(cursor.getString(0));
-                order.setUnpack_code(cursor.getString(1));
-                order.setUnpack_desc(cursor.getString(2));
-                order.setUnpack_qty(cursor.getString(3));
-                order.setUnpack_image(cursor.getString(4));
-                order.setRep_name(cursor.getString(5));
+                order.setUnpack_code("");
+                order.setUnpack_desc("");
+                order.setUnpack_qty(cursor.getString(2));
+                order.setUnpack_image("");
+                order.setRep_name(cursor.getString(1));
                 unpacks.add(order);
 
                 cursor.moveToNext();

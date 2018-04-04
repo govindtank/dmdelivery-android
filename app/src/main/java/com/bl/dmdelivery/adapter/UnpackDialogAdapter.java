@@ -55,6 +55,8 @@ public class UnpackDialogAdapter extends RecyclerView.Adapter<UnpackDialogAdapte
 
                 holder.mTxtInv.setText(f.getTransno().toString());
                 holder.mTxtRepcode.setText(f.getRep_name().toString());
+                holder.mTxtQty.setText(f.getUnpack_qty().toString());
+
 
 
 
@@ -74,18 +76,20 @@ public class UnpackDialogAdapter extends RecyclerView.Adapter<UnpackDialogAdapte
         public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-            public TextView mTxtInv, mTxtRepcode;
+            public TextView mTxtInv, mTxtRepcode,mTxtQty;
 
             public ViewHolder(View v) {
                 super(v);
 
                 this.mTxtInv = (TextView) v.findViewById(R.id.txtInvNo);
                 this.mTxtRepcode = (TextView) v.findViewById(R.id.txtRefCode);
+                this.mTxtQty = (TextView)v.findViewById(R.id.txtQty);
 
                 Typeface tf = Typeface.createFromAsset(v.getContext().getAssets(), defaultFonts);
 
                 mTxtInv.setTypeface(tf);
                 mTxtRepcode.setTypeface(tf);
+                mTxtQty.setTypeface(tf);
 
             }
         }

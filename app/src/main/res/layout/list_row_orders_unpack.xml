@@ -24,9 +24,19 @@
             android:id="@+id/txtRefCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".3"
+            android:layout_weight=".4"
             android:lines="1"
             android:text="Ref Code"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/textRowSize" />
+
+        <TextView
+            android:id="@+id/txtQty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:lines="1"
+            android:text="Qty"
             android:textColor="@color/colorText"
             android:textSize="@dimen/textRowSize" />
 
