@@ -1144,7 +1144,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try{
 
-            cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, SUM(unpack_qty) AS unpack_qty,transno FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc,transno" ,null);
+            cursor = sqLiteDatabase.rawQuery(" SELECT unpack_code,unpack_desc, SUM(unpack_qty) AS unpack_qty,transno,unpack_image FROM " + TableUnpack + " WHERE transno IN (" + sigGetData + ") GROUP BY unpack_code,unpack_desc,transno ORDER BY unpack_code" ,null);
             if (cursor != null  && cursor.getCount()>0) {
                 cursor.moveToFirst();
             }
@@ -1155,6 +1155,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 order.setUnpack_desc(cursor.getString(1));
                 order.setUnpack_qty(cursor.getString(2));
                 order.setTransno(cursor.getString(3));
+                order.setUnpack_image(cursor.getString(4));
                 unpacks.add(order);
                 cursor.moveToNext();
             }
