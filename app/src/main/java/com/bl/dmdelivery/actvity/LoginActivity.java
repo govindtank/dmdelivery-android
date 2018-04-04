@@ -34,6 +34,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.helper.WebServiceHelper;
@@ -51,6 +52,8 @@ import java.util.List;
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 import okhttp3.Response;
+import pl.tajchert.nammu.Nammu;
+import pl.tajchert.nammu.PermissionCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -75,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -84,6 +89,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         sp = getSharedPreferences(TagUtils.DMDELIVERY_PREF, Context.MODE_PRIVATE);
+
+        checkRuntimePermission();
 
         bindWidget();
 
@@ -475,7 +482,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+   /* @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 111: {
@@ -495,7 +502,35 @@ public class LoginActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
         }
+    }*/
+
+    // Begin - check runtimer permission
+    private void checkRuntimePermission() {
+
+        final String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION};
+
+        Nammu.init(getApplicationContext());
+        Nammu.askForPermission(this, permissions, new PermissionCallback() {
+            @Override
+            public void permissionGranted() {
+                //Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void permissionRefused() {
+                finish();
+
+            }
+        });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
 
 
 }

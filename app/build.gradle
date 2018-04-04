@@ -48,3 +48,15 @@ dependencies {
     implementation files('libs/glide-full-4.6.0.jar')
     compile 'com.google.android.gms:play-services:11.8.0'
 }
+
+// Nammu - Runtime Permission Helper Library Begin
+dependencies {
+    implementation 'com.github.tajchert:nammu:1.2.0'
+}
+
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+// Nammu - Runtime Permission Helper Library End
