@@ -373,13 +373,21 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         }
         else
         {
+            intQTY_UINT_REAL = Integer.parseInt(sigQty_uint_real_final);
+
             if(intQTY_UINT_REAL == 0)
             {
                 intQTY_UINT_REAL = intQTY_UINT;
             }
             else
             {
-                intQTY_UINT_REAL = Integer.parseInt(sigQty_uint_real_final);
+                if(intQTY_UINT_REAL <= intQTY_UINT){
+                    intQTY_UINT_REAL = Integer.parseInt(sigQty_uint_real_final);
+                }
+                else
+                {
+                    intQTY_UINT_REAL = intQTY_UINT;
+                }
             }
         }
 
