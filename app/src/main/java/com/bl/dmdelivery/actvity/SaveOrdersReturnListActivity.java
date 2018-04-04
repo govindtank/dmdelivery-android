@@ -504,15 +504,35 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                             //แก้ไขการเซ็นต์รับคืนสินค้า
                             isResumeState = true;
 
+//                            mOrders = new ArrayList<Order>();
+//                            mOrder = new Order();
+////                            mOrder.setRep_seq(mListReturnDataALL.get(selectedPosition).getRep_seq());
+//                            mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
+//                            mOrders.add(mOrder);
+//
+//                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                            myIntent.putExtra("data",mOrders);
+//                            startActivity(myIntent);
+
+
+
+
+                            mHelper = new DBHelper(getApplicationContext());
+                            String sigTransNo = mHelper.getInvOnOrder(mListReturnDataALL.get(selectedPosition).getRep_seq());
+
                             mOrders = new ArrayList<Order>();
                             mOrder = new Order();
-                            mOrder.setTransNo(mListReturnDataALL.get(selectedPosition).getReftrans_no());
+                            mOrder.setTransNo(sigTransNo);
                             mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
                             mOrders.add(mOrder);
 
                             myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
                             myIntent.putExtra("data",mOrders);
                             startActivity(myIntent);
+
+
+//                            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, sigRep_seq, Toast.LENGTH_SHORT);
+//                            toast.show();
                         }
                         else if(mListMenuData.get(position).getMenuname_mode() == "1")
                         {

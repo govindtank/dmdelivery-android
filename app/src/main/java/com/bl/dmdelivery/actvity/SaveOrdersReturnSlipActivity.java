@@ -12,9 +12,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,7 +48,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
@@ -63,7 +69,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
     private OrderReturn mOrderReturnGetData = null;
     private OrderReturn mOrderReturnSaveData = null;
     private CheckNetwork chkNetwork = new CheckNetwork();
-    DBHelper mHelper;
+    private DBHelper mHelper;
+    private ACProgressFlower mProgressDialog;
+    private String serverUrl;
 
     private CanvasViewSlipReturn mCanvasViewSlipReturn;
 
@@ -274,75 +282,67 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
 
-                    if ( (CanvasViewSlipReturn.totalDx > 100) || (CanvasViewSlipReturn.totalDy > 100)) {
-
-                        backToPage = "SAVE_TO_PAGE";
-
-                        editor = sp.edit();
-                        editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
-                        editor.apply();
-
-                        //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
-                        if(medtNote != null){
-                            sigNote = medtNote.getText().toString();
-                        }
-                        else
-                        {
-                            sigNote = "";
-                        }
-
-                        takeScreenshot();
-
-//                        //บันทึกข้อมูล รับได้
-//                        mHelper = new DBHelper(getApplicationContext());
-//                        mOrderReturnSaveData = new OrderReturn();
+//                    if ( (CanvasViewSlipReturn.totalDx > 100) || (CanvasViewSlipReturn.totalDy > 100)) {
 //
-//                        mOrderReturnSaveData.setReturn_no(sigReturn_no);
-//                        mOrderReturnSaveData.setRep_code(sigRepcode);
-//                        mOrderReturnSaveData.setReturn_status("1");
-//                        mOrderReturnSaveData.setReason_code(sigReson_code);
-//                        mOrderReturnSaveData.setReturn_note(sigNote);
-//                        mOrderReturnSaveData.setReturn_unit_real("0");
-//                        mOrderReturnSaveData.setFullpathimage(mFileName);
-//                        mHelper.updateOrderReturnSlip(mOrderReturnSaveData);
+//                        backToPage = "SAVE_TO_PAGE";
+//
+//                        editor = sp.edit();
+//                        editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+//                        editor.apply();
+//
+//                        //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
+//                        if(medtNote != null){
+//                            sigNote = medtNote.getText().toString();
+//                        }
+//                        else
+//                        {
+//                            sigNote = "";
+//                        }
+//
+//                        takeScreenshot();
+//
+//
+//                        for(int i=0; i < mListOrderReturnSavDate.size(); i++){
+//                            //บันทึกข้อมูล รับได้
+//                            mHelper = new DBHelper(getApplicationContext());
+//                            OrderReturn mOrderReturn = new OrderReturn();
+//                            mOrderReturn.setReturn_no(sigReturn_no);
+//                            mOrderReturn.setRep_code(sigRepcode);
+//                            mOrderReturn.setReturn_status("1");
+//                            mOrderReturn.setReason_code(sigReson_code);
+//                            mOrderReturn.setReturn_note(sigNote);
+//                            mOrderReturn.setReturn_unit_real(mListOrderReturnSavDate.get(i).getReturn_unit_real());
+//                            mOrderReturn.setFullpathimage(mFileName);
+//                            mHelper.updateOrderReturnSlip(mOrderReturn);
+//                        }
+//
+//
+//                        for(int i=0; i < mListOrder.size(); i++){
+//                            //บันทึกข้อมูล รับได้ ไปยัง orders
+//                            mHelper = new DBHelper(getApplicationContext());
+//                            mHelper.updateOrdersStatus(mListOrder.get(i).getTransNo(),"1");
+//                        }
+//
+//                        //sleep 5 seconds
+//
+//
+//                        //รับได้
+//                        finish();
+//                    }
+//                    else
+//                    {
+//                        showMsgDialog("ไม่มีลายเซ็น");
+//                    }
 
 
-                        for(int i=0; i < mListOrderReturnSavDate.size(); i++){
-                            //บันทึกข้อมูล รับได้
-                            mHelper = new DBHelper(getApplicationContext());
-                            OrderReturn mOrderReturn = new OrderReturn();
-                            mOrderReturn.setReturn_no(sigReturn_no);
-                            mOrderReturn.setRep_code(sigRepcode);
-                            mOrderReturn.setReturn_status("1");
-                            mOrderReturn.setReason_code(sigReson_code);
-                            mOrderReturn.setReturn_note(sigNote);
-                            mOrderReturn.setReturn_unit_real(mListOrderReturnSavDate.get(i).getReturn_unit_real());
-                            mOrderReturn.setFullpathimage(mFileName);
-                            mHelper.updateOrderReturnSlip(mOrderReturn);
-                        }
-
-
-                        for(int i=0; i < mListOrder.size(); i++){
-//                            Toast toast = Toast.makeText(SaveOrdersReturnSlipActivity.this, mListOrder.get(i).getTransNo(), Toast.LENGTH_SHORT);
-//                            toast.show();
-
-                            //บันทึกข้อมูล รับได้ ไปยัง orders
-                            mHelper = new DBHelper(getApplicationContext());
-                            mHelper.updateOrdersStatus(mListOrder.get(i).getTransNo(),"1");
-                        }
-
-                        //sleep 5 seconds
-
-
-                        //รับได้
-                        finish();
+                    if ( (CanvasViewSlipReturn.totalDx > 100) || (CanvasViewSlipReturn.totalDy > 100)) {
+                        doSaveProcessing();
                     }
                     else
                     {
                         showMsgDialog("ไม่มีลายเซ็น");
+                        return;
                     }
-
-
 
                 }
             });
@@ -480,11 +480,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnClose = (Button) v.findViewById(R.id.btClose);
 
-//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-//        mmTxtMsg.setTypeface(tf);
-//        mmTxtTitle.setTypeface(tf);
-//        mmBtnClose.setTypeface(tf);
-
         mmImvTitle.setImageResource(R.mipmap.ic_launcher);
         mmTxtTitle.setText(getResources().getString(R.string.app_name));
         mmTxtMsg.setText(msg);
@@ -597,6 +592,146 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity {
 
         return imeiNumber;
     }
+
+
+
+    private void doSaveProcessing() {
+
+        try {
+
+            serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/LoadOrder";
+            new loadDataDataInAsync().execute(serverUrl);
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+
+    private class loadDataDataInAsync extends AsyncTask<String, Void, SaveOrdersReturnSlipActivity.PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mProgressDialog = new ACProgressFlower.Builder(SaveOrdersReturnSlipActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .text(getResources().getString(R.string.progress_loading))
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected SaveOrdersReturnSlipActivity.PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            SaveOrdersReturnSlipActivity.PageResultHolder pageResultHolder = new SaveOrdersReturnSlipActivity.PageResultHolder();
+
+            try
+            {
+
+                backToPage = "SAVE_TO_PAGE";
+
+                editor = sp.edit();
+                editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+                editor.apply();
+
+                //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
+                if(medtNote != null){
+                    sigNote = medtNote.getText().toString();
+                }
+                else
+                {
+                    sigNote = "";
+                }
+
+                takeScreenshot();
+
+
+                // Current Date
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+                String formattedDate = df.format(cal.getTime());
+
+
+                for(int i=0; i < mListOrderReturnSavDate.size(); i++){
+                    //บันทึกข้อมูล รับได้
+                    mHelper = new DBHelper(getApplicationContext());
+                    OrderReturn mOrderReturn = new OrderReturn();
+                    mOrderReturn.setReturn_no(sigReturn_no);
+                    mOrderReturn.setRep_code(sigRepcode);
+                    mOrderReturn.setReturn_status("1");
+                    mOrderReturn.setReason_code(sigReson_code);
+                    mOrderReturn.setReturn_note(sigNote);
+                    mOrderReturn.setReturn_unit_real(mListOrderReturnSavDate.get(i).getReturn_unit_real());
+                    mOrderReturn.setFullpathimage(mFileName);
+                    mOrderReturn.setLat("");
+                    mOrderReturn.setLon("");
+                    mOrderReturn.setSignature_timestamp(formattedDate);
+                    mHelper.updateOrderReturnSlip(mOrderReturn);
+                }
+
+
+                //update order
+                mHelper = new DBHelper(getApplicationContext());
+                mHelper.updateOrdersStatus(mListOrder,"W");
+
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : เกิดข้อผิดพลาดในการบันทึกข้อมูล !!!";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final SaveOrdersReturnSlipActivity.PageResultHolder result) {
+            // TODO Auto-generated method stub
+            try {
+
+                if (result.exception != null) {
+                    mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+                            mProgressDialog.dismiss();
+
+                            //รับได้
+                            finish();
+                        }
+                    }, 200);
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class PageResultHolder {
+        private String content;
+        private Exception exception;
+    }
+
+
+
+
+
+
 
 
 }

@@ -6,13 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -29,12 +33,22 @@ import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.adapter.SaveOrderReturnReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.helper.WebServiceHelper;
+import com.bl.dmdelivery.model.LoadOrderResponse;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
+import com.bl.dmdelivery.model.OrderSourceResponse;
 import com.bl.dmdelivery.model.Reason;
+import com.bl.dmdelivery.model.Unpack;
 import com.bl.dmdelivery.utility.TagUtils;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class SaveOrdersReturnActivity extends AppCompatActivity {
 
@@ -66,8 +80,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
     private ArrayList<Order> mListOrder= new ArrayList<Order>();
     private OrderReturn mOrderReturnSaveData = null;
     private CheckNetwork chkNetwork = new CheckNetwork();
-    DBHelper mHelper;
-
+    private DBHelper mHelper;
+    private ACProgressFlower mProgressDialog;
+    private String serverUrl;
 
     private RecyclerView lv;
     private RecyclerView.Adapter mAdapter;
@@ -548,6 +563,107 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+//
+//                backToPage = "SAVE_TO_PAGE";
+//
+//                editor = sp.edit();
+//                editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
+//                editor.apply();
+//
+//                //ถ้าบันทึก ใบคืนไม่ครบ ไปหน้าใบคืน
+//                if(medtNote != null){
+//                    sigNote = medtNote.getText().toString();
+//                }
+//                else
+//                {
+//                    sigNote = "";
+//                }
+//
+//                //บันทึกข้อมูล รับไม่ได้
+//                mHelper = new DBHelper(getApplicationContext());
+//                mOrderReturnSaveData = new OrderReturn();
+//                mOrderReturnSaveData.setReturn_no(ref_return_no);
+//                mOrderReturnSaveData.setRep_code(ref_rep_code);
+//                mOrderReturnSaveData.setReturn_status("2");
+//                mOrderReturnSaveData.setReason_code(sigReson_code);
+//                mOrderReturnSaveData.setReturn_note(sigNote);
+//                mOrderReturnSaveData.setReturn_unit_real("0");
+//                mHelper.updateOrderReturnDetails(mOrderReturnSaveData);
+//
+//
+//
+//                for(int i=0; i < mListOrder.size(); i++){
+//                    //บันทึกข้อมูล รับได้ ไปยัง orders
+//                    mHelper = new DBHelper(getApplicationContext());
+//                    mHelper.updateOrdersStatus(mListOrder.get(i).getTransNo(),"2");
+//                }
+//
+//
+//
+//                //รับได้
+//                finish();
+
+//                DialogBuilder.dismiss();
+
+
+
+
+                DialogBuilder.dismiss();
+
+
+                doSaveProcessing();
+            }
+        });
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+    }
+
+
+    private void doSaveProcessing() {
+
+        try {
+
+            serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/LoadOrder";
+            new loadDataDataInAsync().execute(serverUrl);
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+
+    private class loadDataDataInAsync extends AsyncTask<String, Void, SaveOrdersReturnActivity.PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mProgressDialog = new ACProgressFlower.Builder(SaveOrdersReturnActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .text(getResources().getString(R.string.progress_loading))
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected SaveOrdersReturnActivity.PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            SaveOrdersReturnActivity.PageResultHolder pageResultHolder = new SaveOrdersReturnActivity.PageResultHolder();
+
+            try
+            {
 
                 backToPage = "SAVE_TO_PAGE";
 
@@ -564,6 +680,13 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                     sigNote = "";
                 }
 
+
+                // Current Date
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+                String formattedDate = df.format(cal.getTime());
+
+
                 //บันทึกข้อมูล รับไม่ได้
                 mHelper = new DBHelper(getApplicationContext());
                 mOrderReturnSaveData = new OrderReturn();
@@ -573,36 +696,63 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
                 mOrderReturnSaveData.setReason_code(sigReson_code);
                 mOrderReturnSaveData.setReturn_note(sigNote);
                 mOrderReturnSaveData.setReturn_unit_real("0");
+                mOrderReturnSaveData.setFullpathimage("");
+                mOrderReturnSaveData.setLat("");
+                mOrderReturnSaveData.setLon("");
+                mOrderReturnSaveData.setSignature_timestamp(formattedDate);
                 mHelper.updateOrderReturnDetails(mOrderReturnSaveData);
 
 
+                //update order
+                mHelper = new DBHelper(getApplicationContext());
+                mHelper.updateOrdersStatus(mListOrder,"W");
 
-                for(int i=0; i < mListOrder.size(); i++){
-//                    Toast toast = Toast.makeText(SaveOrdersReturnActivity.this, mListOrder.get(i).getTransNo(), Toast.LENGTH_SHORT);
-//                    toast.show();
 
-                    //บันทึกข้อมูล รับได้ ไปยัง orders
-                    mHelper = new DBHelper(getApplicationContext());
-                    mHelper.updateOrdersStatus(mListOrder.get(i).getTransNo(),"2");
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : เกิดข้อผิดพลาดในการบันทึกข้อมูล !!!";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final SaveOrdersReturnActivity.PageResultHolder result) {
+            // TODO Auto-generated method stub
+            try {
+
+                if (result.exception != null) {
+                    mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+                            mProgressDialog.dismiss();
+
+                            //รับได้
+                            finish();
+                        }
+                    }, 200);
+
                 }
 
-
-
-                //รับได้
-                finish();
-
-                DialogBuilder.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
-
-        mmBtnClose.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                DialogBuilder.dismiss();
-            }
-        });
-
-        DialogBuilder.show();
+        }
     }
+
+    private class PageResultHolder {
+        private String content;
+        private Exception exception;
+    }
+
 
 
     public void showMsgDialog(String msg)
@@ -612,18 +762,12 @@ public class SaveOrdersReturnActivity extends AppCompatActivity {
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_message, null, false);
 
-
         DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
         mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
         mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
         mmBtnClose = (Button) v.findViewById(R.id.btClose);
-
-//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-//        mmTxtMsg.setTypeface(tf);
-//        mmTxtTitle.setTypeface(tf);
-//        mmBtnClose.setTypeface(tf);
 
         mmImvTitle.setImageResource(R.mipmap.ic_launcher);
         mmTxtTitle.setText(getResources().getString(R.string.app_name));

@@ -27,6 +27,13 @@ public class OrderReturn implements Parcelable {
     private String reason_code;
     private String return_note;
     private String fullpathimage;
+    private String track_no;
+    private String delivery_date;
+    private String lat;
+    private String lon;
+    private String signature_timestamp;
+
+
 
     public class Column{
 
@@ -49,6 +56,11 @@ public class OrderReturn implements Parcelable {
         public static final String reason_code = "reason_code";
         public static final String return_note = "return_note";
         public static final String fullpathimage = "fullpathimage";
+        public static final String track_no = "track_no";
+        public static final String delivery_date = "delivery_date";
+        public static final String lat = "lat";
+        public static final String lon = "lon";
+        public static final String signature_timestamp = "signature_timestamp";
     }
 
     public String getOu_code() {
@@ -200,6 +212,47 @@ public class OrderReturn implements Parcelable {
         this.fullpathimage = fullpathimage;
     }
 
+    public String getTrack_no() {
+        return track_no;
+    }
+
+    public void setTrack_no(String track_no) {
+        this.track_no = track_no;
+    }
+
+    public String getDelivery_date() {
+        return delivery_date;
+    }
+
+    public void setDelivery_date(String delivery_date) {
+        this.delivery_date = delivery_date;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getSignature_timestamp() {
+        return signature_timestamp;
+    }
+
+    public void setSignature_timestamp(String signature_timestamp) {
+        this.signature_timestamp = signature_timestamp;
+    }
+
+
 
 
     @Override
@@ -228,6 +281,11 @@ public class OrderReturn implements Parcelable {
         dest.writeString(this.reason_code);
         dest.writeString(this.return_note);
         dest.writeString(this.fullpathimage);
+        dest.writeString(this.track_no);
+        dest.writeString(this.delivery_date);
+        dest.writeString(this.lat);
+        dest.writeString(this.lon);
+        dest.writeString(this.signature_timestamp);
     }
 
     public OrderReturn() {
@@ -253,6 +311,11 @@ public class OrderReturn implements Parcelable {
         this.reason_code = in.readString();
         this.return_note = in.readString();
         this.fullpathimage = in.readString();
+        this.track_no = in.readString();
+        this.delivery_date = in.readString();
+        this.lat = in.readString();
+        this.lon = in.readString();
+        this.signature_timestamp = in.readString();
     }
 
     public static final Creator<OrderReturn> CREATOR = new Creator<OrderReturn>() {

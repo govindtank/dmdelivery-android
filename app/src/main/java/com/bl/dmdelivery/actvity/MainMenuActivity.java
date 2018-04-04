@@ -84,6 +84,8 @@ public class MainMenuActivity extends AppCompatActivity {
     private LoadOrderResponse mListLoadOrder =new LoadOrderResponse();
 
     private String  mSelect="0";
+    String truckNo = "";
+    String deliveryDate = "";
 
     private RecyclerView lvList;
     private RecyclerView.Adapter mListAdapter;
@@ -167,8 +169,8 @@ public class MainMenuActivity extends AppCompatActivity {
 //            lv.setAdapter(adapter);
 
 
-            String truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
-            String deliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
+            truckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
+            deliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
 
             if(deliveryDate.equals(""))
             {
@@ -1018,12 +1020,13 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setUser_define4("");
                         f.setUser_define5("");
                         f.setReturn_order("");
-                        f.setReturn_status("");
+                        f.setReturn_status("N");
 
 
                         orders.add(f);
 
                         mHelper.addOrdersTemp(f);
+
 
                         //check orderload
                         boolean _order = mHelper.getCheckLoadOrder(f.getOucode(),f.getYear(),f.getGroup(),f.getTransNo());
@@ -1032,8 +1035,6 @@ public class MainMenuActivity extends AppCompatActivity {
                         }else {
                             mHelper.addOrders(f);
                         }
-
-
                     }
 
 
@@ -1060,6 +1061,11 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setReason_code("");
                         f.setReturn_note("");
                         f.setFullpathimage("");
+                        f.setTrack_no(truckNo);
+                        f.setDelivery_date(deliveryDate);
+                        f.setLat("");
+                        f.setLon("");
+                        f.setSignature_timestamp("");
                         orderReturns.add(f);
 
                         mHelper.addOrdersReturn(f);

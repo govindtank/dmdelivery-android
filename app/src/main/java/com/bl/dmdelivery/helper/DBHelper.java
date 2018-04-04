@@ -136,6 +136,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "(%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
                 TableOrderReturn,
                 OrderReturn.Column.ou_code,
@@ -156,7 +157,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 OrderReturn.Column.return_status,
                 OrderReturn.Column.reason_code,
                 OrderReturn.Column.return_note,
-                OrderReturn.Column.fullpathimage
+                OrderReturn.Column.fullpathimage,
+                OrderReturn.Column.track_no,
+                OrderReturn.Column.delivery_date,
+                OrderReturn.Column.lat,
+                OrderReturn.Column.lon,
+                OrderReturn.Column.signature_timestamp
         );
 
         Log.i(TAG, CREATE_RETURN_TABLE);
@@ -546,12 +552,19 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(OrderReturn.Column.return_remark, order.getReturn_remark());
         values.put(OrderReturn.Column.return_status, order.getReturn_status());
         values.put(OrderReturn.Column.fullpathimage, order.getFullpathimage());
+        values.put(OrderReturn.Column.track_no, order.getTrack_no());
+        values.put(OrderReturn.Column.delivery_date, order.getDelivery_date());
+        values.put(OrderReturn.Column.lat, order.getLat());
+        values.put(OrderReturn.Column.lon, order.getLon());
+        values.put(OrderReturn.Column.signature_timestamp, order.getSignature_timestamp());
+
 
         sqLiteDatabase.insert(TableOrderReturn, null, values);
 
 
         ContentValues cv = new ContentValues();
         cv.put(Order.Column.return_flag,"R"); //These Fields should be your String values of actual column names
+        cv.put(Order.Column.return_status,"N");
         sqLiteDatabase.update(TableOrder,cv,"rep_seq='" + order.getRep_seq().toString() + "'",null);
 
         sqLiteDatabase.close();
@@ -563,6 +576,11 @@ public class DBHelper extends SQLiteOpenHelper {
 //            //update flag
 //            updateReturnFlag(sigReftrans_no);
 //        }
+
+
+
+
+
     }
 
 
@@ -594,27 +612,6 @@ public class DBHelper extends SQLiteOpenHelper {
 //        return false;
 //    }
 
-
-    public  void updateReturnFlag(String sigTranNo)
-    {
-        if (sigTranNo == null || sigTranNo.isEmpty() || sigTranNo.equals("null")){return;}
-        try{
-            sqLiteDatabase = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("return_flag", "'R'");
-
-            sqLiteDatabase.update(TableOrder,
-                    values,
-                    "TransNo='" + sigTranNo + "'",
-                    null);
-            sqLiteDatabase.close();
-
-        }
-        catch (Exception e)
-        {
-
-        }
-    }
 
     public OrderReturn getOrdersReturn(String id) {
 
@@ -747,7 +744,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor=null;
         sqLiteDatabase = this.getReadableDatabase();
 
-        cursor = sqLiteDatabase.rawQuery(" SELECT return_no,rep_code,rep_name,return_status, SUM(return_unit_real) AS return_unit_real,SUM(return_unit) AS return_unit,reftrans_no,fullpathimage FROM " + TableOrderReturn + " WHERE " + sigCriteriaSql + " GROUP BY return_no" ,null);
+        cursor = sqLiteDatabase.rawQuery(" SELECT return_no,rep_code,rep_name,return_status, SUM(return_unit_real) AS return_unit_real,SUM(return_unit) AS return_unit,reftrans_no,fullpathimage,rep_seq FROM " + TableOrderReturn + " WHERE " + sigCriteriaSql + " GROUP BY return_no" ,null);
         if (cursor != null  && cursor.getCount()>0) {
             cursor.moveToFirst();
         }
@@ -779,6 +776,7 @@ public class DBHelper extends SQLiteOpenHelper {
             mOrderReturn.setReturn_unit(cursor.getString(5));
             mOrderReturn.setReftrans_no(cursor.getString(6));
             mOrderReturn.setFullpathimage(cursor.getString(7));
+            mOrderReturn.setRep_seq(cursor.getString(8));
             mOrderReturnlist.add(mOrderReturn);
 
             cursor.moveToNext();
@@ -1409,11 +1407,14 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase = this.getWritableDatabase();
         try{
             ContentValues cv = new ContentValues();
-            cv.put("reason_code",mOrderReturn.getReason_code());
-            cv.put("return_status",mOrderReturn.getReturn_status());
-            cv.put("return_note",mOrderReturn.getReturn_note());
-            cv.put("return_unit_real",mOrderReturn.getReturn_unit_real());
-            cv.put("fullpathimage",mOrderReturn.getFullpathimage());
+            cv.put(OrderReturn.Column.reason_code,mOrderReturn.getReason_code());
+            cv.put(OrderReturn.Column.return_status,mOrderReturn.getReturn_status());
+            cv.put(OrderReturn.Column.return_note,mOrderReturn.getReturn_note());
+            cv.put(OrderReturn.Column.return_unit_real,mOrderReturn.getReturn_unit_real());
+            cv.put(OrderReturn.Column.fullpathimage,mOrderReturn.getFullpathimage());
+            cv.put(OrderReturn.Column.lat,mOrderReturn.getLat());
+            cv.put(OrderReturn.Column.lon,mOrderReturn.getLon());
+            cv.put(OrderReturn.Column.signature_timestamp,mOrderReturn.getSignature_timestamp());
 
 
             int intResult = sqLiteDatabase.update("OrderReturns", cv,
@@ -1442,11 +1443,21 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean updateOrderReturnDetails(OrderReturn mOrderReturn) {
         sqLiteDatabase = this.getWritableDatabase();
         try{
+//            ContentValues cv = new ContentValues();
+//            cv.put("reason_code",mOrderReturn.getReason_code());
+//            cv.put("return_status",mOrderReturn.getReturn_status());
+//            cv.put("return_note",mOrderReturn.getReturn_note());
+//            cv.put("return_unit_real",mOrderReturn.getReturn_unit_real());
+
             ContentValues cv = new ContentValues();
-            cv.put("reason_code",mOrderReturn.getReason_code());
-            cv.put("return_status",mOrderReturn.getReturn_status());
-            cv.put("return_note",mOrderReturn.getReturn_note());
-            cv.put("return_unit_real",mOrderReturn.getReturn_unit_real());
+            cv.put(OrderReturn.Column.reason_code,mOrderReturn.getReason_code());
+            cv.put(OrderReturn.Column.return_status,mOrderReturn.getReturn_status());
+            cv.put(OrderReturn.Column.return_note,mOrderReturn.getReturn_note());
+            cv.put(OrderReturn.Column.return_unit_real,mOrderReturn.getReturn_unit_real());
+            cv.put(OrderReturn.Column.fullpathimage,mOrderReturn.getFullpathimage());
+            cv.put(OrderReturn.Column.lat,mOrderReturn.getLat());
+            cv.put(OrderReturn.Column.lon,mOrderReturn.getLon());
+            cv.put(OrderReturn.Column.signature_timestamp,mOrderReturn.getSignature_timestamp());
 
             int intResult = sqLiteDatabase.update("OrderReturns", cv,
                     "return_no='" + mOrderReturn.getReturn_no()
@@ -1689,6 +1700,50 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
+
+
+    public String getInvOnOrder(String rep_seq)
+    {
+        try {
+            sqLiteDatabase = this.getReadableDatabase();
+
+            Cursor cursor = sqLiteDatabase.query(TableOrder,
+                    null,
+                    Order.Column.rep_seq + " = ? ",
+                    new String[]{rep_seq},
+                    null,
+                    null,
+                    null,
+                    null);
+
+
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+            }
+
+            if (!cursor.isAfterLast()) {
+                return cursor.getString(4);
+            }
+
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+
+        }
+        finally
+        {
+
+
+            sqLiteDatabase.close();
+
+        }
+
+        return "";
+    }
+
+
+
     public  void updateItemno(String tranNo,String itemNo)
     {
         if (tranNo == null || tranNo.isEmpty() || tranNo.equals("null")){return;}
@@ -1712,16 +1767,35 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //ปรับปรุงสถานะการคืน '' หรือ 0=ยังไม่รับคืน,1=รับคืน,2=ไม่รับคืน
-    public  void updateOrdersStatus(String tranNo,String status)
+    public  void updateOrdersStatus(ArrayList<Order> mListOrder , String sigStatus)
     {
-        if (tranNo == null || tranNo.isEmpty() || tranNo.equals("null")){return;}
-        if (status == null || status.isEmpty() || status.equals("null")){return;}
-        try{
-            sqLiteDatabase = this.getWritableDatabase();
+        if (mListOrder == null || mListOrder.size()==0 || mListOrder.equals("null")){return;}
 
-            ContentValues cv = new ContentValues();
-            cv.put(Order.Column.return_status,status);
-            sqLiteDatabase.update(TableOrder,cv,"TransNo='" +  tranNo + "'",null);
+        try{
+            for(int i=0; i < mListOrder.size();i++)
+            {
+                sqLiteDatabase = this.getWritableDatabase();
+
+                ContentValues cv = new ContentValues();
+                cv.put(Order.Column.lat,mListOrder.get(i).getLat());
+                cv.put(Order.Column.lon,mListOrder.get(i).getLon());
+                cv.put(Order.Column.signature_timestamp,mListOrder.get(i).getSignature_timestamp());
+                cv.put(Order.Column.reason_code,mListOrder.get(i).getReason_code());
+                cv.put(Order.Column.reason_note,mListOrder.get(i).getReason_note());
+                cv.put(Order.Column.send_status,mListOrder.get(i).getSend_status());
+                cv.put(Order.Column.mobile_serial,mListOrder.get(i).getMobile_serial());
+                cv.put(Order.Column.mobile_emei,mListOrder.get(i).getMobile_emei());
+                cv.put(Order.Column.mobile_battery,mListOrder.get(i).getMobile_battery());
+                cv.put(Order.Column.return_order,mListOrder.get(i).getReturn_order());
+                cv.put(Order.Column.return_status,sigStatus);
+
+                String sigTransNo = mListOrder.get(i).getTransNo();
+                sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + " ='" + sigTransNo + "'",null);
+
+                if(sqLiteDatabase != null){
+                    sqLiteDatabase.close();
+                }
+            }
         }
         catch (Exception e)
         {
@@ -1729,7 +1803,9 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         finally
         {
-            sqLiteDatabase.close();
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
         }
     }
 
