@@ -96,7 +96,15 @@ public class ViewSlipActivity extends AppCompatActivity {
             }
             else
             {
-                String mPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/" + order.get(0).getFullpathimage();
+
+                String mPath = "";
+                if(order.get(0).getDelivery_status().equals("W"))
+                {
+                    mPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/" + order.get(0).getFullpathimage();
+                }else
+                {
+                    mPath = Environment.getExternalStorageDirectory().toString() + "/DMPROCESSED/" + order.get(0).getFullpathimage();
+                }
                 imvSlip.setImageBitmap(BitmapFactory.decodeFile(mPath));
             }
 

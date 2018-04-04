@@ -463,24 +463,24 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
-
-            List<String> permissions = new ArrayList<String>();
-
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.CAMERA);
-
-            }
-            if (!permissions.isEmpty()) {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
-            }
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//            int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
+//
+//            List<String> permissions = new ArrayList<String>();
+//
+//            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+//                permissions.add(Manifest.permission.CAMERA);
+//
+//            }
+//            if (!permissions.isEmpty()) {
+//                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
+//            }
+//        }
+//    }
 
    /* @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -507,7 +507,8 @@ public class LoginActivity extends AppCompatActivity {
     // Begin - check runtimer permission
     private void checkRuntimePermission() {
 
-        final String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION};
+        final String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS,Manifest.permission.READ_PHONE_STATE};
 
         Nammu.init(getApplicationContext());
         Nammu.askForPermission(this, permissions, new PermissionCallback() {

@@ -2,19 +2,29 @@ package com.bl.dmdelivery.actvity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +32,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AndroidException;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,19 +54,32 @@ import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.helper.GlobalObject;
 import com.bl.dmdelivery.helper.TinyDB;
+import com.bl.dmdelivery.helper.WebServiceHelper;
+import com.bl.dmdelivery.model.BaseResponse;
+import com.bl.dmdelivery.model.Delivery;
 import com.bl.dmdelivery.model.MenuSaveOrder;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderData;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.utility.TagUtils;
+import com.google.gson.Gson;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
 import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -85,6 +110,17 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private ArrayList<OrderReturn> mListReturnDataALL = new ArrayList<OrderReturn>();
     private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
     private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
+
+    private ArrayList<Order> mListOrderDataWaitSend = new ArrayList<Order>();
+
+    private ArrayList<OrderReturn> mListOrderReturnWaitSend = new ArrayList<OrderReturn>();
+
+    private ArrayList<Delivery.ReturnOrder> mListOrderReturnSend = new ArrayList<Delivery.ReturnOrder>();
+
+    private ArrayList<OrderReturn> mListOrderReturnItemSend = new ArrayList<OrderReturn>();
+
+    private ArrayList<Delivery.ReturnOrder.ReturnItem> mOrderReturnItemSend = new ArrayList<Delivery.ReturnOrder.ReturnItem>();
+
     //private List<Order> mListOrder = new List<Order>();
     private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="0";
 
@@ -107,12 +143,22 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
     private OrderAdapter adapter;
 
+    private boolean isResumeState = false;
+
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
 
 
     private boolean isSelectAll = false;
+
+    public boolean timerEnable = true;
+
+    public Timer t = new Timer();
+
+    public TimerTask task;
+
+    private String serverUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +187,42 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 //            getOrder();
 
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Do something after 100ms
+
+                    task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if ( timerEnable == true ) {
+                                        //sendSlip();
+                                        new sendDataInAsync().execute();
+                                    }
+                                }
+                            });
+                        }
+                    };
+
+
+
+                    t.scheduleAtFixedRate(task, 0, 20000);
+
+                }
+            }, 10000);
+
+
+
+            //sendSlip();
+
+
+
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -150,95 +232,118 @@ public class SaveOrdersActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-//        if()
-        String resumeOrderList = sp.getString(TagUtils.PREF_RESUME_ORDER_LIST, "");
-        String selectOrderPosition = sp.getString(TagUtils.PREF_SELECT_ORDER_POSITION, "-1");
+        timerEnable = true;
 
 
-        if(resumeOrderList.equals(""))
-        {
 
-        }
-        else
-        {
-            if(Integer.parseInt(selectOrderPosition) > -1)
-            {
-                //mListOrderDataN.get(Integer.parseInt(selectOrderPosition)).setIsselect("1");
+        setHeader();
 
-                editor = sp.edit();
-                editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "");
-                editor.apply();
+        adapter.clearData();
+        adapter.setData(mListOrderDataN);
+        adapter.notifyDataSetChanged();
 
-                setHeader();
-
-                mHelper = new DBHelper(getApplicationContext());
-//
-                mListOrderDataNN.clear();
-                mListOrderDataNN = mHelper.getOrderWaitList("N");
-
-
-                mListOrderDataN.clear();
-                mListOrderDataN = mListOrderDataNN;
-
-//                for(int i=0;i < mListOrderDataN.size(); i++)
-//                {
-//                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+//        String resumeOrderList = sp.getString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+//        String selectOrderPosition = sp.getString(TagUtils.PREF_SELECT_ORDER_POSITION, "-1");
 //
 //
-//                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+//        if(resumeOrderList.equals(""))
+//        {
 //
-//                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataN.get(i).getTransNo()))
-//                        {
-//                            mListOrderDataN.get(i).setDelivery_status("W");
+//        }
+//        else
+//        {
+//            if(Integer.parseInt(selectOrderPosition) > -1)
+//            {
+//                //mListOrderDataN.get(Integer.parseInt(selectOrderPosition)).setIsselect("1");
 //
-////                            Order ordersend = new Order();
-////                            ordersend = mListOrderDataN.get(i);
-////                            mListOrderDataN.remove(ordersend);
+//                editor = sp.edit();
+//                editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+//                editor.apply();
+//
+//                setHeader();
+//
+//                mHelper = new DBHelper(getApplicationContext());
+////
+//                mListOrderDataNN.clear();
+//                mListOrderDataNN = mHelper.getOrderWaitList("N");
 //
 //
+//                mListOrderDataN.clear();
+//                mListOrderDataN = mListOrderDataNN;
 //
-//                            //mAdapter.notifyItemRangeChanged(i, mListOrderDataN.size());
-////                            mListOrderDataN.remove(i);
+////                for(int i=0;i < mListOrderDataN.size(); i++)
+////                {
+////                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+////
+////
+////                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+////
+////                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataN.get(i).getTransNo()))
+////                        {
+////                            mListOrderDataN.get(i).setDelivery_status("W");
+////
+//////                            Order ordersend = new Order();
+//////                            ordersend = mListOrderDataN.get(i);
+//////                            mListOrderDataN.remove(ordersend);
+////
+////
+////
+////                            //mAdapter.notifyItemRangeChanged(i, mListOrderDataN.size());
+//////                            mListOrderDataN.remove(i);
+//////                            adapter.notifyItemRemoved(i);
+//////                            lv.removeViewAt(i);
+////                            //mListOrderDataN.remove(i);
 ////                            adapter.notifyItemRemoved(i);
-////                            lv.removeViewAt(i);
-//                            //mListOrderDataN.remove(i);
-//                            adapter.notifyItemRemoved(i);
+////
+////                        }
+////
+////                    }
+////
+////
+////                }
 //
-//                        }
+//                //adapter.notifyDataSetChanged();
+//                //lv.invalidate();
 //
-//                    }
+//                adapter.clearData();
+//                adapter.setData(mListOrderDataN);
+//                adapter.notifyDataSetChanged();
+//                //lv.setAdapter(adapter);
+//                //lv.scrollToPosition(mSelectIndex);
+//
+//                //setWidgetControl();
+//
+//                //lv.notify();
+//
+////                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
+////                toast.show();
 //
 //
-//                }
-
-                //adapter.notifyDataSetChanged();
-                //lv.invalidate();
-
-                adapter.clearData();
-                adapter.setData(mListOrderDataN);
-                adapter.notifyDataSetChanged();
-                //lv.scrollToPosition(selectedPositionNotifyDataSetChanged);
-
-                //lv.notify();
-
-//                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
-//                toast.show();
-
-
-            }
-            else
-            {
-
-
-            }
-
-
-        }
+//            }
+//            else
+//            {
+//
+//
+//            }
+//
+//
+//        }
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timerEnable = false;
 
+    }
 
+    @Override
+    protected void onDestroy() {
+        //t.cancel();
+        //Toast.makeText(this, "Timer cancel ", Toast.LENGTH_LONG).show();
+        super.onDestroy();
+    }
 
 
     private void bindWidget()
@@ -283,9 +388,10 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try{
+
+
             getInit();
 
-            setHeader();
 
             final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
             lv.setHasFixedSize(true);
@@ -429,6 +535,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                    //t.cancel();
                 }
             });
 
@@ -461,6 +568,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersCompleteActivity.class);
                     startActivity(myIntent);
                     overridePendingTransition(0,0);
+                    //t.cancel();
 
 ////                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
@@ -473,6 +581,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     myIntent = new Intent(getApplicationContext(), SaveOrdersReturnListActivity.class);
                     startActivity(myIntent);
                     overridePendingTransition(0,0);
+                    //t.cancel();
 ////                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
@@ -491,6 +600,365 @@ public class SaveOrdersActivity extends AppCompatActivity {
         }
     }
 
+    private class sendDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+//            mProgressDialog = new ACProgressFlower.Builder(MainMenuActivity.this)
+//                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+//                    .text(getResources().getString(R.string.progress_loading))
+//                    .themeColor(getResources().getColor(R.color.colorBackground))
+//                    //.text(getResources().getString(R.string.progress_loading))
+//                    .fadeColor(Color.DKGRAY).build();
+//            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+
+                sendSlip();
+
+                pageResultHolder.content = "";
+
+
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : NoData";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            //final String msg = "";
+
+            try {
+
+
+                setHeader();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    private class PageResultHolder {
+        private String content;
+        private Exception exception;
+    }
+
+
+    public void sendSlip() {
+
+
+        String inputPath = Environment.getExternalStorageDirectory().toString()+"/DMSLIP/";
+        String outputPath = Environment.getExternalStorageDirectory().toString()+"/DMPROCESSED/";
+        String inputPathReturn = Environment.getExternalStorageDirectory().toString()+"/DMSLIPRETURN/";
+        String outputPathReturn = Environment.getExternalStorageDirectory().toString()+"/DMRETURNPROCESSED/";
+
+
+        File f = new File(inputPath);
+        File file[] = f.listFiles();
+
+
+        try
+        {
+
+            mHelper = new DBHelper(getApplicationContext());
+
+
+            mListOrderDataWaitSend.clear();
+            mListOrderDataWaitSend = mHelper.getOrderWaitList("W");
+
+
+            serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/DeliveryOrders";
+
+
+
+            for(int i=0; i<=mListOrderDataWaitSend.size()-1; i++){
+
+
+                Delivery delivery = new Delivery();
+
+                delivery.setTruck_no(mListOrderDataWaitSend.get(i).getTruckNo());
+                delivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
+                delivery.setTrans_year(mListOrderDataWaitSend.get(i).getYear());
+                delivery.setTrans_group(mListOrderDataWaitSend.get(i).getGroup());
+                delivery.setTrans_no(mListOrderDataWaitSend.get(i).getTransNo());
+                delivery.setRoute_seq(String.valueOf(mListOrderDataWaitSend.get(i).getItemno()));
+                delivery.setRep_code(mListOrderDataWaitSend.get(i).getRep_code());
+                delivery.setLat(mListOrderDataWaitSend.get(i).getLat());
+                delivery.setLon(mListOrderDataWaitSend.get(i).getLon());
+                delivery.setSignature_timestamp(mListOrderDataWaitSend.get(i).getSignature_timestamp());
+                delivery.setReason_code(mListOrderDataWaitSend.get(i).getReason_code());
+                delivery.setReason_note(mListOrderDataWaitSend.get(i).getReason_note());
+                delivery.setDelivery_status(mListOrderDataWaitSend.get(i).getSend_status());
+                delivery.setMobile_serial(mListOrderDataWaitSend.get(i).getMobile_serial());
+                delivery.setMobile_emei(mListOrderDataWaitSend.get(i).getMobile_emei());
+                delivery.setMobile_battery(mListOrderDataWaitSend.get(i).getMobile_battery());
+                delivery.setApp_version(getResources().getString(R.string.app_version_slip));
+                delivery.setImage_signature(getBytesFromBitmap(inputPath + mListOrderDataWaitSend.get(i).getFullpathimage()));
+
+                mListOrderReturnWaitSend.clear();
+                mListOrderReturnWaitSend = mHelper.getOrdersReturnList(mListOrderDataWaitSend);
+
+                Delivery.ReturnOrder returnOrderdelivery = new Delivery.ReturnOrder();
+                Delivery.ReturnOrder.ReturnItem orderReturnItem = new Delivery.ReturnOrder.ReturnItem();
+
+
+                for(int x=0; x<=mListOrderReturnWaitSend.size()-1; x++){
+
+
+                    returnOrderdelivery.setTrack_no("000");
+                    returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
+                    returnOrderdelivery.setReturn_no(mListOrderReturnWaitSend.get(x).getReturn_no());
+                    returnOrderdelivery.setRep_code(mListOrderReturnWaitSend.get(x).getRep_code());
+                    returnOrderdelivery.setReturn_status(mListOrderReturnWaitSend.get(x).getReturn_status());
+                    returnOrderdelivery.setReturn_reason(mListOrderReturnWaitSend.get(x).getReason_code());
+                    returnOrderdelivery.setReturn_notes(mListOrderReturnWaitSend.get(x).getReturn_note());
+                    returnOrderdelivery.setLat("");
+                    returnOrderdelivery.setLon("");
+                    returnOrderdelivery.setSignature_timestamp("");
+                    returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
+
+
+                    mListOrderReturnItemSend.clear();
+                    mListOrderReturnItemSend = mHelper.getOrderReturnDtl(returnOrderdelivery.getReturn_no());
+
+
+                    for(int y=0; y<=mListOrderReturnItemSend.size()-1; y++){
+
+                        orderReturnItem.setFscode(mListOrderReturnItemSend.get(y).getFs_code());
+                        orderReturnItem.setFsdesc(mListOrderReturnItemSend.get(y).getFs_desc());
+                        orderReturnItem.setReturn_request(mListOrderReturnItemSend.get(y).getReturn_unit());
+                        orderReturnItem.setReturn_actual(mListOrderReturnItemSend.get(y).getReturn_unit_real());
+
+                        mOrderReturnItemSend.add(orderReturnItem);
+
+                    }
+
+                    returnOrderdelivery.setReturn_item(mOrderReturnItemSend);
+
+                }
+
+                mListOrderReturnSend.add(returnOrderdelivery);
+                delivery.setReturn_order(mListOrderReturnSend);
+
+
+                Gson gson = new Gson();
+                String json = gson.toJson(delivery);
+                String result = new WebServiceHelper().postServiceAPI(serverUrl,json);
+                BaseResponse obj = gson.fromJson(result,BaseResponse.class);
+
+
+                //Toast.makeText(this, "Process slip : " + obj.getResponseCode(), Toast.LENGTH_SHORT).show();
+
+                if(obj.getResponseCode().equals("1"))
+                {
+                    mListOrderDataWaitSend.get(i).setDelivery_status("Y");
+
+                    boolean isRes = true;
+                    mHelper = new DBHelper(getApplicationContext());
+                    isRes = mHelper.updateOrderDeliveryStatus(mListOrderDataWaitSend);
+
+
+                    moveSlip(inputPath,mListOrderDataWaitSend.get(i).getFullpathimage(),outputPath);
+
+
+
+
+                    //Toast.makeText(this, "Process slip : " + path + mListOrderDataWaitSend.get(i).getFullpathimage(), Toast.LENGTH_SHORT).show();
+                }
+
+
+
+                //Toast.makeText(this, "Process slip : " + getBytesFromBitmap(path + mListOrderDataWaitSend.get(i).getFullpathimage()), Toast.LENGTH_LONG).show();
+
+
+            }
+
+
+
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+
+    public String getBytesFromBitmap(String filepath) {
+        File imagefile = new File(filepath);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(imagefile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bm = BitmapFactory.decodeStream(fis);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100 , baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.NO_WRAP);
+        return encImage;
+    }
+
+
+
+    private void moveSlip(String inputPath, String inputFile, String outputPath) {
+
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+
+            //create output directory if it doesn't exist
+            File dir = new File (outputPath);
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+
+
+            in = new FileInputStream(inputPath + inputFile);
+            out = new FileOutputStream(outputPath + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            in = null;
+
+            // write the output file
+            out.flush();
+            out.close();
+            out = null;
+
+            // delete the original file
+            new File(inputPath + inputFile).delete();
+
+
+        }
+
+        catch (FileNotFoundException fnfe1) {
+            Log.e("tag", fnfe1.getMessage());
+        }
+        catch (Exception e) {
+            Log.e("tag", e.getMessage());
+        }
+
+    }
+
+    private void callPhone(String name,String tel) {
+
+        try {
+
+            if(!contactExists(tel))
+            {
+                //addContact
+                addContact(name,tel);
+            }
+
+
+
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            //String[] tel1 = tel.split(",");
+            if (tel.equals("")) {
+
+            }
+            else
+            {
+//                intent.setData(Uri.parse("tel:" + tel));
+//                startActivity(intent);
+
+                showMsgDialog("tel:" + tel);
+
+            }
+
+
+        } catch (SecurityException e) {
+            // e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    public boolean contactExists(String number) {
+        /// number is the phone number
+        Uri lookupUri = Uri.withAppendedPath(
+                ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
+                Uri.encode(number));
+        String[] mPhoneNumberProjection = { ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.NUMBER, ContactsContract.PhoneLookup.DISPLAY_NAME };
+        Cursor cur = this.getContentResolver().query(lookupUri,mPhoneNumberProjection, null, null, null);
+        try {
+            if (cur.moveToFirst()) {
+                return true;
+            }
+        } finally {
+            if (cur != null)
+                cur.close();
+        }
+        return false;
+    }
+
+    public void addContact(String name, String phone)
+    {
+        String fname = name;
+        String fphone = phone;
+        String mask = Character.toString((char)10)+":";
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+        int rawContactInsertIndex = ops.size();
+
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build());
+        ops.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, fname+mask).build());
+        ops.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID,rawContactInsertIndex)
+                .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, fphone)
+                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                .build());
+
+        try {
+            ContentProviderResult[] res = getContentResolver().applyBatch(
+                    ContactsContract.AUTHORITY, ops);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+
+    }
 
 
 
@@ -589,13 +1057,13 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 if(telsMSL.length>=2)
                 {
                     MenuSaveOrder msl1 = new MenuSaveOrder();
-                    msl1.setMenuname("โทร MSL 1 : "+ telsMSL[0]);
+                    msl1.setMenuname("MSL1 : "+ telsMSL[0]);
                     msl1.setMenuname_type("2");
                     msl1.setMenuname_mode("0");
                     mListMenuData.add(msl1);
 
                     MenuSaveOrder msl2 = new MenuSaveOrder();
-                    msl2.setMenuname("โทร MSL 2 : "+ telsMSL[1]);
+                    msl2.setMenuname("MSL2 : "+ telsMSL[1]);
                     msl2.setMenuname_type("2");
                     msl2.setMenuname_mode("0");
                     mListMenuData.add(msl2);
@@ -605,7 +1073,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
                     MenuSaveOrder msl1 = new MenuSaveOrder();
-                    msl1.setMenuname("โทร MSL : "+ telsMSL[0]);
+                    msl1.setMenuname("MSL : "+ telsMSL[0]);
                     msl1.setMenuname_type("2");
                     msl1.setMenuname_mode("0");
                     mListMenuData.add(msl1);
@@ -628,13 +1096,13 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 if(telsDSM.length>=2)
                 {
                     MenuSaveOrder dsm1 = new MenuSaveOrder();
-                    dsm1.setMenuname("โทร DSM 1 : "+ telsDSM[0]);
+                    dsm1.setMenuname("DSM1 : "+ telsDSM[0]);
                     dsm1.setMenuname_type("2");
                     dsm1.setMenuname_mode("0");
                     mListMenuData.add(dsm1);
 
                     MenuSaveOrder dsm2 = new MenuSaveOrder();
-                    dsm2.setMenuname("โทร DSM 2 : "+ telsDSM[1]);
+                    dsm2.setMenuname("DSM2 : "+ telsDSM[1]);
                     dsm2.setMenuname_type("2");
                     dsm2.setMenuname_mode("0");
                     mListMenuData.add(dsm2);
@@ -644,7 +1112,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
                     MenuSaveOrder dsm1 = new MenuSaveOrder();
-                    dsm1.setMenuname("โทร DSM : "+ telsDSM[0]);
+                    dsm1.setMenuname("DSM : "+ telsDSM[0]);
                     dsm1.setMenuname_type("2");
                     dsm1.setMenuname_mode("0");
                     mListMenuData.add(dsm1);
@@ -734,7 +1202,15 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         //โทร
                         DialogBuilder.dismiss();
 
-                        showMsgDialog(mListMenuData.get(position).getMenuname());
+                        String repcode = mListOrderDataN.get(selectedPosition).getRep_code();
+
+
+                        String[] Tels = mListMenuData.get(position).getMenuname().toString().trim().split(":");
+                        String name = Tels[0].toString();
+                        String phone = Tels[1].toString();
+
+
+                        callPhone(name+setRepcodeFormat(repcode),phone);
 
                         break;
 
@@ -767,6 +1243,34 @@ public class SaveOrdersActivity extends AppCompatActivity {
         });
 
         DialogBuilder.show();
+    }
+
+    private String setRepcodeFormat(String repcode) {
+
+
+        try {
+
+            String repcodeformat = "";
+
+            if(repcode.length() == 10)
+
+            {
+                repcodeformat = repcode.substring(0, 4)+"-"+repcode.substring(4, 9)+"-"+repcode.substring(9, 10);
+            }
+            else
+            {
+                repcodeformat = repcode;
+            }
+
+            return repcodeformat;
+
+
+        } catch (Exception e)
+        {
+            return repcode;
+            //showMsgDialog(e.toString());
+        }
+
     }
 
     public void showMsgDialogMenu()
@@ -1017,8 +1521,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListOrderDataY.clear();
             mListOrderDataY = mHelper.getOrderWaitList("WY");
 
-            mListOrderDataNN.clear();
-            mListOrderDataNN = mHelper.getOrderWaitList("N");
+            mListOrderDataN.clear();
+            mListOrderDataN = mHelper.getOrderWaitList("N");
 
             mListOrderDataSend.clear();
             mListOrderDataSend = mHelper.getOrderWaitList("Y");
@@ -1031,7 +1535,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataSend.size()+"/"+mListOrderDataALL.size()+")");
 
-            mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataNN.size()+"/"+mListOrderDataALL.size()+")");
+            mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
 
             mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
 
@@ -1092,46 +1596,49 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            int hasCameraPermission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-
-            List<String> permissions = new ArrayList<String>();
-
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-
-            }
-            if (!permissions.isEmpty()) {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 111: {
-                for (int i = 0; i < permissions.length; i++) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        System.out.println("Permissions --> " + "Permission Granted: " + permissions[i]);
-
-
-                    } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                        System.out.println("Permissions --> " + "Permission Denied: " + permissions[i]);
-
-                    }
-                }
-            }
-            break;
-            default: {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//            int hasCameraPermission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+//
+//            List<String> permissions = new ArrayList<String>();
+//
+//            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+//                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+//
+//            }
+//            if (!permissions.isEmpty()) {
+//                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
+//            }
+//
+//
+//
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        switch (requestCode) {
+//            case 111: {
+//                for (int i = 0; i < permissions.length; i++) {
+//                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+//                        System.out.println("Permissions --> " + "Permission Granted: " + permissions[i]);
+//
+//
+//                    } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+//                        System.out.println("Permissions --> " + "Permission Denied: " + permissions[i]);
+//
+//                    }
+//                }
+//            }
+//            break;
+//            default: {
+//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//            }
+//        }
+//    }
 
 //    protected List<OrderItem> getMonths() {
 //        final List<MonthItem> monthList = new ArrayList<>();

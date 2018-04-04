@@ -1,14 +1,21 @@
 package com.bl.dmdelivery.actvity;
 
 import android.app.AlertDialog;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.RemoteException;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -111,75 +118,81 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-//        if()
-        String resumeOrderList = sp.getString(TagUtils.PREF_RESUME_ORDER_LIST, "");
-        String selectOrderPosition = sp.getString(TagUtils.PREF_SELECT_ORDER_POSITION, "-1");
 
+        setHeader();
 
-        if(resumeOrderList.equals(""))
-        {
+        adapter.clearData();
+        adapter.setData(mListOrderDataY);
+        adapter.notifyDataSetChanged();
 
-        }
-        else
-        {
-            if(Integer.parseInt(selectOrderPosition) > -1)
-            {
-                //mListOrderDataN.get(Integer.parseInt(selectOrderPosition)).setIsselect("1");
-
-                editor = sp.edit();
-                editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "");
-                editor.apply();
-
-                setHeader();
-
-                mHelper = new DBHelper(getApplicationContext());
-//
-                mListOrderDataNN.clear();
-                mListOrderDataNN = mHelper.getOrderWaitList("WY");
-
-                mListOrderDataY.clear();
-                mListOrderDataY = mListOrderDataNN;
-
-//                for(int i=0;i < mListOrderDataY.size(); i++)
-//                {
-//                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+//        String resumeOrderList = sp.getString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+//        String selectOrderPosition = sp.getString(TagUtils.PREF_SELECT_ORDER_POSITION, "-1");
 //
 //
-//                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+//        if(resumeOrderList.equals(""))
+//        {
 //
-//                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataY.get(i).getTransNo()))
-//                        {
-//                            mListOrderDataY.get(i).setDelivery_status("W");
+//        }
+//        else
+//        {
+//            if(Integer.parseInt(selectOrderPosition) > -1)
+//            {
+//                //mListOrderDataN.get(Integer.parseInt(selectOrderPosition)).setIsselect("1");
 //
-//                            //mListOrderDataN.remove(i);
-//                            //mListOrderDataN.remove(i);
+//                editor = sp.edit();
+//                editor.putString(TagUtils.PREF_RESUME_ORDER_LIST, "");
+//                editor.apply();
 //
-//                        }
+//                setHeader();
 //
-//                    }
+//                mHelper = new DBHelper(getApplicationContext());
+////
+//                mListOrderDataNN.clear();
+//                mListOrderDataNN = mHelper.getOrderWaitList("WY");
+//
+//                mListOrderDataY.clear();
+//                mListOrderDataY = mListOrderDataNN;
+//
+////                for(int i=0;i < mListOrderDataY.size(); i++)
+////                {
+////                    //int retval = mListOrderDataN.indexOf(mListOrderDataNN.get(i).getTransNo());
+////
+////
+////                    for(int ii=0;ii < mListOrderDataNN.size(); ii++) {
+////
+////                        if(mListOrderDataNN.get(ii).getTransNo().equals(mListOrderDataY.get(i).getTransNo()))
+////                        {
+////                            mListOrderDataY.get(i).setDelivery_status("W");
+////
+////                            //mListOrderDataN.remove(i);
+////                            //mListOrderDataN.remove(i);
+////
+////                        }
+////
+////                    }
+////
+////
+////                }
+//
+//                //adapter.notifyDataSetChanged();
+//
+//                adapter.clearData();
+//                adapter.setData(mListOrderDataY);
+//                adapter.notifyDataSetChanged();
+//
+////                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
+////                toast.show();
 //
 //
-//                }
-
-                //adapter.notifyDataSetChanged();
-
-                adapter.clearData();
-                adapter.setData(mListOrderDataY);
-                adapter.notifyDataSetChanged();
-
-//                Toast toast = Toast.makeText(SaveOrdersActivity.this, "onResume - Slip", Toast.LENGTH_SHORT);
-//                toast.show();
-
-
-            }
-            else
-            {
-
-
-            }
-
-
-        }
+//            }
+//            else
+//            {
+//
+//
+//            }
+//
+//
+//        }
 
     }
 
@@ -243,7 +256,6 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             getInit();
 
-            setHeader();
 
 
             final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
@@ -556,13 +568,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                 if(telsMSL.length>=2)
                 {
                     MenuSaveOrder msl1 = new MenuSaveOrder();
-                    msl1.setMenuname("โทร MSL 1 : "+ telsMSL[0]);
+                    msl1.setMenuname("MSL1 : "+ telsMSL[0]);
                     msl1.setMenuname_type("2");
                     msl1.setMenuname_mode("0");
                     mListMenuData.add(msl1);
 
                     MenuSaveOrder msl2 = new MenuSaveOrder();
-                    msl2.setMenuname("โทร MSL 2 : "+ telsMSL[1]);
+                    msl2.setMenuname("MSL2 : "+ telsMSL[1]);
                     msl2.setMenuname_type("2");
                     msl2.setMenuname_mode("0");
                     mListMenuData.add(msl2);
@@ -572,7 +584,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
 
                     MenuSaveOrder msl1 = new MenuSaveOrder();
-                    msl1.setMenuname("โทร MSL : "+ telsMSL[0]);
+                    msl1.setMenuname("MSL : "+ telsMSL[0]);
                     msl1.setMenuname_type("2");
                     msl1.setMenuname_mode("0");
                     mListMenuData.add(msl1);
@@ -595,13 +607,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                 if(telsDSM.length>=2)
                 {
                     MenuSaveOrder dsm1 = new MenuSaveOrder();
-                    dsm1.setMenuname("โทร DSM 1 : "+ telsDSM[0]);
+                    dsm1.setMenuname("DSM1 : "+ telsDSM[0]);
                     dsm1.setMenuname_type("2");
                     dsm1.setMenuname_mode("0");
                     mListMenuData.add(dsm1);
 
                     MenuSaveOrder dsm2 = new MenuSaveOrder();
-                    dsm2.setMenuname("โทร DSM 2 : "+ telsDSM[1]);
+                    dsm2.setMenuname("DSM2 : "+ telsDSM[1]);
                     dsm2.setMenuname_type("2");
                     dsm2.setMenuname_mode("0");
                     mListMenuData.add(dsm2);
@@ -611,7 +623,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
 
                     MenuSaveOrder dsm1 = new MenuSaveOrder();
-                    dsm1.setMenuname("โทร DSM : "+ telsDSM[0]);
+                    dsm1.setMenuname("DSM : "+ telsDSM[0]);
                     dsm1.setMenuname_type("2");
                     dsm1.setMenuname_mode("0");
                     mListMenuData.add(dsm1);
@@ -726,7 +738,17 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                         //โทร
                         DialogBuilder.dismiss();
 
-                        showMsgDialog(mListMenuData.get(position).getMenuname());
+                        String repcode = mListOrderDataY.get(selectedPosition).getRep_code();
+
+
+                        String[] Tels = mListMenuData.get(position).getMenuname().toString().trim().split(":");
+                        String name = Tels[0].toString();
+                        String phone = Tels[1].toString();
+
+
+                        callPhone(name+setRepcodeFormat(repcode),phone);
+
+                        //showMsgDialog(mListMenuData.get(position).getMenuname());
 
                         break;
 
@@ -800,8 +822,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             mListOrderDataALL.clear();
             mListOrderDataALL = mHelper.getOrderWaitList("ALL");
 
-            mListOrderDataYY.clear();
-            mListOrderDataYY = mHelper.getOrderWaitList("WY");
+            mListOrderDataY.clear();
+            mListOrderDataY = mHelper.getOrderWaitList("WY");
 
             mListOrderDataN.clear();
             mListOrderDataN = mHelper.getOrderWaitList("N");
@@ -820,7 +842,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
 
-            mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataYY.size()+"/"+mListOrderDataALL.size()+")");
+            mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
 
             mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
 
@@ -834,7 +856,126 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     }
 
 
+    private void callPhone(String name,String tel) {
 
+        try {
+
+            if(!contactExists(tel))
+            {
+                //addContact
+                addContact(name,tel);
+            }
+
+
+
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            //String[] tel1 = tel.split(",");
+            if (tel.equals("")) {
+
+            }
+            else
+            {
+//                intent.setData(Uri.parse("tel:" + tel));
+//                startActivity(intent);
+
+                showMsgDialog("tel:" + tel);
+
+            }
+
+
+        } catch (SecurityException e) {
+            // e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    public boolean contactExists(String number) {
+        /// number is the phone number
+        Uri lookupUri = Uri.withAppendedPath(
+                ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
+                Uri.encode(number));
+        String[] mPhoneNumberProjection = { ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.NUMBER, ContactsContract.PhoneLookup.DISPLAY_NAME };
+        Cursor cur = this.getContentResolver().query(lookupUri,mPhoneNumberProjection, null, null, null);
+        try {
+            if (cur.moveToFirst()) {
+                return true;
+            }
+        } finally {
+            if (cur != null)
+                cur.close();
+        }
+        return false;
+    }
+
+    public void addContact(String name, String phone)
+    {
+        String fname = name;
+        String fphone = phone;
+        String mask = Character.toString((char)10)+":";
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+        int rawContactInsertIndex = ops.size();
+
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build());
+        ops.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, fname+mask).build());
+        ops.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID,rawContactInsertIndex)
+                .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, fphone)
+                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                .build());
+
+        try {
+            ContentProviderResult[] res = getContentResolver().applyBatch(
+                    ContactsContract.AUTHORITY, ops);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+
+    private String setRepcodeFormat(String repcode) {
+
+
+        try {
+
+            String repcodeformat = "";
+
+            if(repcode.length() == 10)
+
+            {
+                repcodeformat = repcode.substring(0, 4)+"-"+repcode.substring(4, 9)+"-"+repcode.substring(9, 10);
+            }
+            else
+            {
+                repcodeformat = repcode;
+            }
+
+            return repcodeformat;
+
+
+        } catch (Exception e)
+        {
+            return repcode;
+            //showMsgDialog(e.toString());
+        }
+
+    }
 
 
     public void showMsgDialog(String msg)

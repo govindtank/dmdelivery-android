@@ -130,6 +130,15 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
     private String mLongitude = "0";
 
     private String mSelectReson = "";
+    private String mResonCode = "";
+    private String mNote = "";
+    private String mSendStatus = "";
+    private String mMobileSerial = "";
+    private String mMobileEmei = "";
+    private String mMobileBattery = "";
+
+
+
     private Integer mSelectYResonIndex = 0;
     private Integer mSelectNResonIndex = 0;
 
@@ -281,6 +290,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             if(arrayListReason.size() > 0)
             {
                 mSelectReson =  arrayListReason.get(0).getReason_desc();
+                mResonCode =  arrayListReason.get(0).getReason_code();
                 mSelectYResonIndex = 0;
                 customCanvas.reason = mSelectReson;
                 customCanvas.invalidate();
@@ -320,6 +330,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             btnCancelGPS.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
+                    mSendStatus = "0";
                     showMsgReasonNoApproveSelectedSingleDialog("0");
 
 
@@ -332,6 +343,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             btnCancel.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
+                    mSendStatus = "2";
                     showMsgReasonNoApproveSelectedSingleDialog("2");
 
 
@@ -363,14 +375,31 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             btnSaveGPS.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
-
+                    mSendStatus = "1";
 
                     if ( (customCanvas.totalDx > 100) || (customCanvas.totalDy > 100)) {
 
                         for(int i=0; i<=order.size()-1; i++){
                             takeScreenshot(i,"1");
 
+
+                            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+                            java.util.Date currentLocalTime = cal.getTime();
+                            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+                            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                            String localTime = date.format(currentLocalTime);
+                            localTime = localTime.replace(" ", "").replace("-", "");
+
                             order.get(i).setFullpathimage(mFileName);
+                            order.get(i).setLat(mLatitude);
+                            order.get(i).setLon(mLongitude);
+                            order.get(i).setSignature_timestamp(localTime);
+                            order.get(i).setReason_code(mResonCode);
+                            order.get(i).setReason_note(mNote);
+                            order.get(i).setSend_status(mSendStatus);
+                            order.get(i).setMobile_serial(mMobileSerial);
+                            order.get(i).setMobile_emei(mMobileEmei);
+                            order.get(i).setMobile_battery(mMobileBattery);
                         }
 
                         boolean isRes = true;
@@ -410,12 +439,30 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             btnSave.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
+                    mSendStatus = "3";
 
                     if ( (customCanvas.totalDx > 100) || (customCanvas.totalDy > 100)) {
                         for(int i=0; i<=order.size()-1; i++){
                             takeScreenshot(i,"3");
 
+
+                            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+                            java.util.Date currentLocalTime = cal.getTime();
+                            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+                            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                            String localTime = date.format(currentLocalTime);
+                            localTime = localTime.replace(" ", "").replace("-", "");
+
                             order.get(i).setFullpathimage(mFileName);
+                            order.get(i).setLat(mLatitude);
+                            order.get(i).setLon(mLongitude);
+                            order.get(i).setSignature_timestamp(localTime);
+                            order.get(i).setReason_code(mResonCode);
+                            order.get(i).setReason_note(mNote);
+                            order.get(i).setSend_status(mSendStatus);
+                            order.get(i).setMobile_serial(mMobileSerial);
+                            order.get(i).setMobile_emei(mMobileEmei);
+                            order.get(i).setMobile_battery(mMobileBattery);
                         }
 
 
@@ -615,6 +662,10 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             mFileName = fileName;
             mFile =imageFile;
 
+            mMobileSerial = Build.SERIAL.trim();
+            mMobileEmei = getImeiNumber();
+            mMobileBattery = batteryPercent;
+
             //processSlip(mPath);
 
             //openScreenshot(imageFile);
@@ -714,10 +765,12 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         {
 
             arrayListReason.get(mSelectYResonIndex).setIsselect("1");
+            mResonCode = arrayListReason.get(mSelectYResonIndex).getReason_code();
         }
         else
         {
             arrayListReason.get(0).setIsselect("1");
+            mResonCode = arrayListReason.get(0).getReason_code();
             String description = arrayListReason.get(mSelectYResonIndex).getReason_desc();
             mSelectReson = description;
         }
@@ -750,6 +803,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 mSelect = arrayListReason.get(position).getIsselect();
 
                 arrayListReason.get(position).setIsselect("1");
+
+                mResonCode = arrayListReason.get(position).getReason_code();
 
                 String description = arrayListReason.get(position).getReason_desc();
 //
@@ -833,6 +888,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 DialogBuilder.dismiss();
 
                 textnote = mmedtNote.getText().toString();
+
+                mNote = textnote;
 
                 customCanvas.reason = mSelectReson;
                 customCanvas.note = textnote;
@@ -924,10 +981,12 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         {
 
             arrayListReason.get(mSelectNResonIndex).setIsselect("1");
+            mResonCode = arrayListReason.get(mSelectNResonIndex).getReason_code();
         }
         else
         {
             arrayListReason.get(0).setIsselect("1");
+            mResonCode = arrayListReason.get(0).getReason_code();
             String description = arrayListReason.get(mSelectNResonIndex).getReason_desc();
             mSelectReson = description;
         }
@@ -960,6 +1019,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 mSelect = arrayListReason.get(position).getIsselect();
 
                 arrayListReason.get(position).setIsselect("1");
+
+                mResonCode = arrayListReason.get(position).getReason_code();
 
                 String description = arrayListReason.get(position).getReason_desc();
 //
@@ -1044,6 +1105,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                 textnote = mmedtNote.getText().toString();
 
+                mNote = textnote;
+
                 customCanvas.reason = mSelectReson;
                 customCanvas.note = textnote;
                 customCanvas.invalidate();
@@ -1051,7 +1114,24 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 for(int i=0; i<=order.size()-1; i++){
                         takeScreenshot(i,sendstatus);
 
+
+                    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+                    java.util.Date currentLocalTime = cal.getTime();
+                    SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+                    date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                    String localTime = date.format(currentLocalTime);
+                    localTime = localTime.replace(" ", "").replace("-", "");
+
                     order.get(i).setFullpathimage(mFileName);
+                    order.get(i).setLat(mLatitude);
+                    order.get(i).setLon(mLongitude);
+                    order.get(i).setSignature_timestamp(localTime);
+                    order.get(i).setReason_code(mResonCode);
+                    order.get(i).setReason_note(mNote);
+                    order.get(i).setSend_status(mSendStatus);
+                    order.get(i).setMobile_serial(mMobileSerial);
+                    order.get(i).setMobile_emei(mMobileEmei);
+                    order.get(i).setMobile_battery(mMobileBattery);
                 }
 
                 boolean isRes = true;
@@ -1181,46 +1261,46 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            int hasCameraPermission = checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
-
-            List<String> permissions = new ArrayList<String>();
-
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.READ_PHONE_STATE);
-
-            }
-            if (!permissions.isEmpty()) {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 111: {
-                for (int i = 0; i < permissions.length; i++) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        System.out.println("Permissions --> " + "Permission Granted: " + permissions[i]);
-
-
-                    } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                        System.out.println("Permissions --> " + "Permission Denied: " + permissions[i]);
-
-                    }
-                }
-            }
-            break;
-            default: {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//            int hasCameraPermission = checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
+//
+//            List<String> permissions = new ArrayList<String>();
+//
+//            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+//                permissions.add(Manifest.permission.READ_PHONE_STATE);
+//
+//            }
+//            if (!permissions.isEmpty()) {
+//                requestPermissions(permissions.toArray(new String[permissions.size()]), 111);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        switch (requestCode) {
+//            case 111: {
+//                for (int i = 0; i < permissions.length; i++) {
+//                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+//                        System.out.println("Permissions --> " + "Permission Granted: " + permissions[i]);
+//
+//
+//                    } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+//                        System.out.println("Permissions --> " + "Permission Denied: " + permissions[i]);
+//
+//                    }
+//                }
+//            }
+//            break;
+//            default: {
+//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//            }
+//        }
+//    }
 
 
     @Override
