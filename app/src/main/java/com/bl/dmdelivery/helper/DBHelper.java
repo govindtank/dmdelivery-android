@@ -1266,7 +1266,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean updateOrderDeliveryStatus(ArrayList<Order> mListOrder) {
-        sqLiteDatabase = this.getWritableDatabase();
+
         try{
             int intResult=0;
             for(int i=0;i<mListOrder.size();i++)
