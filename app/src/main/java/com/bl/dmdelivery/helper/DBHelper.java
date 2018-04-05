@@ -1265,20 +1265,50 @@ public class DBHelper extends SQLiteOpenHelper {
         return orderReturns;
     }
 
-    public boolean updateOrderDeliveryStatus(ArrayList<Order> mOrders) {
+    public boolean updateOrderDeliveryStatus(ArrayList<Order> mListOrder) {
         sqLiteDatabase = this.getWritableDatabase();
         try{
             int intResult=0;
-            for(int i=0;i<mOrders.size();i++)
+            for(int i=0;i<mListOrder.size();i++)
             {
+
+
+//                ContentValues cv = new ContentValues();
+//                cv.put("delivery_status",mOrders.get(i).getDelivery_status());
+//
+//                intResult = sqLiteDatabase.update(TableOrder, cv,
+//                        "TransNo='" + mOrders.get(i).getTransNo() + "'",
+//                        null);
+//
+//                if (intResult ==0 ){
+//                    return  false;
+//                }
+
+
+
+                sqLiteDatabase = this.getWritableDatabase();
+
                 ContentValues cv = new ContentValues();
-                cv.put("delivery_status",mOrders.get(i).getDelivery_status());
+                cv.put(Order.Column.lat,mListOrder.get(i).getLat());
+                cv.put(Order.Column.lon,mListOrder.get(i).getLon());
+                cv.put(Order.Column.signature_timestamp,mListOrder.get(i).getSignature_timestamp());
+                cv.put(Order.Column.reason_code,mListOrder.get(i).getReason_code());
+                cv.put(Order.Column.reason_note,mListOrder.get(i).getReason_note());
+                cv.put(Order.Column.send_status,mListOrder.get(i).getSend_status());
+                cv.put(Order.Column.mobile_serial,mListOrder.get(i).getMobile_serial());
+                cv.put(Order.Column.mobile_emei,mListOrder.get(i).getMobile_emei());
+                cv.put(Order.Column.mobile_battery,mListOrder.get(i).getMobile_battery());
+                cv.put(Order.Column.return_order,mListOrder.get(i).getReturn_order());
+                cv.put(Order.Column.return_status,mListOrder.get(i).getDelivery_status());
 
-                intResult = sqLiteDatabase.update(TableOrder, cv,
-                        "TransNo='" + mOrders.get(i).getTransNo() + "'",
-                        null);
+                String sigTransNo = mListOrder.get(i).getTransNo();
+                intResult = sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + " ='" + sigTransNo + "'",null);
 
-                if (intResult ==0 ){
+                if(sqLiteDatabase != null){
+                    sqLiteDatabase.close();
+                }
+
+                if (intResult == 0 ){
                     return  false;
                 }
             }
@@ -1287,7 +1317,6 @@ public class DBHelper extends SQLiteOpenHelper {
             if(intResult > 0){
                 return  true;
             }
-
         }
         catch (Exception ex)
         {
@@ -1773,16 +1802,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 sqLiteDatabase = this.getWritableDatabase();
 
                 ContentValues cv = new ContentValues();
-                cv.put(Order.Column.lat,mListOrder.get(i).getLat());
-                cv.put(Order.Column.lon,mListOrder.get(i).getLon());
-                cv.put(Order.Column.signature_timestamp,mListOrder.get(i).getSignature_timestamp());
-                cv.put(Order.Column.reason_code,mListOrder.get(i).getReason_code());
-                cv.put(Order.Column.reason_note,mListOrder.get(i).getReason_note());
-                cv.put(Order.Column.send_status,mListOrder.get(i).getSend_status());
-                cv.put(Order.Column.mobile_serial,mListOrder.get(i).getMobile_serial());
-                cv.put(Order.Column.mobile_emei,mListOrder.get(i).getMobile_emei());
-                cv.put(Order.Column.mobile_battery,mListOrder.get(i).getMobile_battery());
-                cv.put(Order.Column.return_order,mListOrder.get(i).getReturn_order());
+//                cv.put(Order.Column.lat,mListOrder.get(i).getLat());
+//                cv.put(Order.Column.lon,mListOrder.get(i).getLon());
+//                cv.put(Order.Column.signature_timestamp,mListOrder.get(i).getSignature_timestamp());
+//                cv.put(Order.Column.reason_code,mListOrder.get(i).getReason_code());
+//                cv.put(Order.Column.reason_note,mListOrder.get(i).getReason_note());
+//                cv.put(Order.Column.send_status,mListOrder.get(i).getSend_status());
+//                cv.put(Order.Column.mobile_serial,mListOrder.get(i).getMobile_serial());
+//                cv.put(Order.Column.mobile_emei,mListOrder.get(i).getMobile_emei());
+//                cv.put(Order.Column.mobile_battery,mListOrder.get(i).getMobile_battery());
+//                cv.put(Order.Column.return_order,mListOrder.get(i).getReturn_order());
                 cv.put(Order.Column.return_status,sigStatus);
 
                 String sigTransNo = mListOrder.get(i).getTransNo();

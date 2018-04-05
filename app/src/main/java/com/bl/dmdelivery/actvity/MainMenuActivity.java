@@ -1000,6 +1000,8 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setDelivery_desc(obj.getOrder().get(i).getDelivery_desc().toString());
                         f.setOrdertype_desc(obj.getOrder().get(i).getOrdertype_desc().toString());
                         f.setCont_desc(obj.getOrder().get(i).getCont_desc().toString());
+                        f.setTruckNo(truckNo);
+                        f.setDelivery_date(deliveryDate);
                         f.setItemno(999);
                         f.setDelivery_status(obj.getOrder().get(i).getDelivery_status().toString());
                         f.setIsselect("0");
