@@ -1301,20 +1301,6 @@ public class DBHelper extends SQLiteOpenHelper {
             for(int i=0;i<mListOrder.size();i++)
             {
 
-
-//                ContentValues cv = new ContentValues();
-//                cv.put("delivery_status",mOrders.get(i).getDelivery_status());
-//
-//                intResult = sqLiteDatabase.update(TableOrder, cv,
-//                        "TransNo='" + mOrders.get(i).getTransNo() + "'",
-//                        null);
-//
-//                if (intResult ==0 ){
-//                    return  false;
-//                }
-
-
-
                 sqLiteDatabase = this.getWritableDatabase();
 
                 ContentValues cv = new ContentValues();
@@ -1360,6 +1346,53 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return false;
     }
+
+
+
+    public boolean updateOrderDeliveryStatusToServer(ArrayList<Order> mListOrder) {
+
+        try{
+            int intResult=0;
+            for(int i=0;i<mListOrder.size();i++)
+            {
+                sqLiteDatabase = this.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put(Order.Column.sendtoserver_timestamp,mListOrder.get(i).getSendtoserver_timestamp());
+                cv.put(Order.Column.delivery_status,mListOrder.get(i).getDelivery_status());
+
+                String sigTransNo = mListOrder.get(i).getTransNo();
+                intResult = sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + " ='" + sigTransNo + "'",null);
+
+                if(sqLiteDatabase != null){
+                    sqLiteDatabase.close();
+                }
+
+                if (intResult == 0 ){
+                    return  false;
+                }
+            }
+
+
+            if(intResult > 0){
+                return  true;
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
+    }
+
+
+
 
     public boolean updateOrderFullpathimage(ArrayList<Order> mOrders) {
         sqLiteDatabase = this.getWritableDatabase();
