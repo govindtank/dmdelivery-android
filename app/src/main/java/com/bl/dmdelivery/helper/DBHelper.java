@@ -1299,7 +1299,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 cv.put(Order.Column.mobile_emei,mListOrder.get(i).getMobile_emei());
                 cv.put(Order.Column.mobile_battery,mListOrder.get(i).getMobile_battery());
                 cv.put(Order.Column.return_order,mListOrder.get(i).getReturn_order());
-                cv.put(Order.Column.return_status,mListOrder.get(i).getDelivery_status());
+                cv.put(Order.Column.delivery_status,mListOrder.get(i).getDelivery_status());
 
                 String sigTransNo = mListOrder.get(i).getTransNo();
                 intResult = sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + " ='" + sigTransNo + "'",null);
