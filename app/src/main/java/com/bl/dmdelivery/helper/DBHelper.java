@@ -942,7 +942,7 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setLat(cursor.getString(36));
             order.setLon(cursor.getString(37));
             order.setSignature_timestamp(cursor.getString(38));
-            order.setRep_code(cursor.getString(39));
+            order.setReason_code(cursor.getString(39));
             order.setReason_note(cursor.getString(40));
             order.setSend_status(cursor.getString(41));
             order.setMobile_serial(cursor.getString(42));
