@@ -405,7 +405,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.return_order,order.getReturn_order());
         values.put(Order.Column.return_status,order.getReturn_status());
         values.put(Order.Column.delivery_date,order.getDelivery_date());
-        values.put(Order.Column.truckNo,order.getTransNo());
+        values.put(Order.Column.truckNo,order.getTruckNo());
         values.put(Order.Column.sendtoserver_timestamp,order.getSendtoserver_timestamp());
 
         sqLiteDatabase.insert(TableOrder, null, values);
