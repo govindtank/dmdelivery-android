@@ -32,7 +32,7 @@ public class OrderReturn implements Parcelable {
     private String lat;
     private String lon;
     private String signature_timestamp;
-
+    private String sendtoserver_timestamp;
 
 
     public class Column{
@@ -61,6 +61,7 @@ public class OrderReturn implements Parcelable {
         public static final String lat = "lat";
         public static final String lon = "lon";
         public static final String signature_timestamp = "signature_timestamp";
+        public static final String sendtoserver_timestamp = "sendtoserver_timestamp";
     }
 
     public String getOu_code() {
@@ -253,6 +254,15 @@ public class OrderReturn implements Parcelable {
     }
 
 
+    public String getSendtoserver_timestamp() {
+        return sendtoserver_timestamp;
+    }
+
+    public void setSendtoserver_timestamp(String sendtoserver_timestamp) {
+        this.sendtoserver_timestamp = sendtoserver_timestamp;
+    }
+
+
 
 
     @Override
@@ -286,6 +296,7 @@ public class OrderReturn implements Parcelable {
         dest.writeString(this.lat);
         dest.writeString(this.lon);
         dest.writeString(this.signature_timestamp);
+        dest.writeString(this.sendtoserver_timestamp);
     }
 
     public OrderReturn() {
@@ -316,6 +327,7 @@ public class OrderReturn implements Parcelable {
         this.lat = in.readString();
         this.lon = in.readString();
         this.signature_timestamp = in.readString();
+        this.sendtoserver_timestamp = in.readString();
     }
 
     public static final Creator<OrderReturn> CREATOR = new Creator<OrderReturn>() {

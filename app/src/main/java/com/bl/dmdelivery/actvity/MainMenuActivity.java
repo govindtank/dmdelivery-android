@@ -1023,7 +1023,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setUser_define5("");
                         f.setReturn_order("");
                         f.setReturn_status("N");
-
+                        f.setSendtoserver_timestamp("");
 
                         orders.add(f);
 
@@ -1068,6 +1068,8 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setLat("");
                         f.setLon("");
                         f.setSignature_timestamp("");
+                        f.setSendtoserver_timestamp("");
+
                         orderReturns.add(f);
 
                         mHelper.addOrdersReturn(f);

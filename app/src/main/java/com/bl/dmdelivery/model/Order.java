@@ -63,7 +63,7 @@ public class Order implements Parcelable {
     private String user_define5;
     private String return_order;
     private String return_status;
-
+    private String sendtoserver_timestamp;
 
     public class Column{
 
@@ -121,6 +121,8 @@ public class Order implements Parcelable {
         public static final String user_define5 = "user_define5";
         public static final String return_order = "return_order";
         public static final String return_status = "return_status";
+        public static final String sendtoserver_timestamp = "sendtoserver_timestamp";
+
     }
 
     public String getDelivery_status() {
@@ -557,6 +559,15 @@ public class Order implements Parcelable {
         this.return_status = return_status;
     }
 
+    public String getSendtoserver_timestamp() {
+        return sendtoserver_timestamp;
+    }
+
+    public void setSendtoserver_timestamp(String sendtoserver_timestamp) {
+        this.sendtoserver_timestamp = sendtoserver_timestamp;
+    }
+
+
 
 
     public Order() {
@@ -624,6 +635,7 @@ public class Order implements Parcelable {
         dest.writeString(this.user_define5);
         dest.writeString(this.return_order);
         dest.writeString(this.return_status);
+        dest.writeString(this.sendtoserver_timestamp);
     }
 
     protected Order(Parcel in) {
@@ -681,6 +693,7 @@ public class Order implements Parcelable {
         this.user_define5 = in.readString();
         this.return_order = in.readString();
         this.return_status = in.readString();
+        this.sendtoserver_timestamp = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {

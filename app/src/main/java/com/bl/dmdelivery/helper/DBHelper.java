@@ -71,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
                 TableOrderTemp,
                 Order.Column.ID,
                 Order.Column.Oucode,
@@ -124,7 +124,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.user_define4,
                 Order.Column.user_define5,
                 Order.Column.return_order,
-                Order.Column.return_status
+                Order.Column.return_status,
+                Order.Column.delivery_date,
+                Order.Column.truckNo,
+                Order.Column.sendtoserver_timestamp
         );
 
         Log.i(TAG, CREATE_ORDERTEMP_TABLE);
@@ -137,7 +140,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
                 TableOrderReturn,
                 OrderReturn.Column.ou_code,
                 OrderReturn.Column.return_no,
@@ -162,7 +165,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 OrderReturn.Column.delivery_date,
                 OrderReturn.Column.lat,
                 OrderReturn.Column.lon,
-                OrderReturn.Column.signature_timestamp
+                OrderReturn.Column.signature_timestamp,
+                OrderReturn.Column.sendtoserver_timestamp
         );
 
         Log.i(TAG, CREATE_RETURN_TABLE);
@@ -254,7 +258,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.user_define4 + " TEXT, " +
                 Order.Column.user_define5 + " TEXT, " +
                 Order.Column.return_order + " TEXT, " +
-                Order.Column.return_status + " TEXT);");
+                Order.Column.return_status + " TEXT, " +
+                Order.Column.delivery_date + " TEXT, " +
+                Order.Column.truckNo + " TEXT, " +
+                Order.Column.sendtoserver_timestamp + " TEXT);");
 
 
 //        try
@@ -397,6 +404,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Order.Column.user_define5,order.getUser_define5());
         values.put(Order.Column.return_order,order.getReturn_order());
         values.put(Order.Column.return_status,order.getReturn_status());
+        values.put(Order.Column.delivery_date,order.getDelivery_date());
+        values.put(Order.Column.truckNo,order.getTransNo());
+        values.put(Order.Column.sendtoserver_timestamp,order.getSendtoserver_timestamp());
 
         sqLiteDatabase.insert(TableOrder, null, values);
 
@@ -557,6 +567,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(OrderReturn.Column.lat, order.getLat());
         values.put(OrderReturn.Column.lon, order.getLon());
         values.put(OrderReturn.Column.signature_timestamp, order.getSignature_timestamp());
+        values.put(OrderReturn.Column.sendtoserver_timestamp, order.getSendtoserver_timestamp());
 
 
         sqLiteDatabase.insert(TableOrderReturn, null, values);
@@ -891,7 +902,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         while(!cursor.isAfterLast()) {
 
-
             Order order = new Order();
             order.setId(cursor.getInt(0));
             order.setOucode(cursor.getString(1));
@@ -929,6 +939,25 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setIsselect(cursor.getString(33));
             order.setCre_date(cursor.getString(34));
             order.setFullpathimage(cursor.getString(35));
+            order.setLat(cursor.getString(36));
+            order.setLon(cursor.getString(37));
+            order.setSignature_timestamp(cursor.getString(38));
+            order.setRep_code(cursor.getString(39));
+            order.setReason_note(cursor.getString(40));
+            order.setSend_status(cursor.getString(41));
+            order.setMobile_serial(cursor.getString(42));
+            order.setMobile_emei(cursor.getString(43));
+            order.setMobile_battery(cursor.getString(44));
+            order.setUser_define1(cursor.getString(45));
+            order.setUser_define2(cursor.getString(46));
+            order.setUser_define3(cursor.getString(47));
+            order.setUser_define4(cursor.getString(48));
+            order.setUser_define5(cursor.getString(49));
+            order.setReturn_order(cursor.getString(50));
+            order.setReturn_status(cursor.getString(51));
+            order.setDelivery_date(cursor.getString(52));
+            order.setTruckNo(cursor.getString(53));
+            order.setSendtoserver_timestamp(cursor.getString(54));
             orders.add(order);
 
             cursor.moveToNext();
