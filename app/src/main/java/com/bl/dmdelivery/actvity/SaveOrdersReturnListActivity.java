@@ -530,18 +530,12 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                             myIntent.putExtra("data",mOrders);
                             startActivity(myIntent);
 
-
-//                            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, sigRep_seq, Toast.LENGTH_SHORT);
-//                            toast.show();
                         }
                         else if(mListMenuData.get(position).getMenuname_mode() == "1")
                         {
                             //ดูสลิปเซ็นต์รับคืน
 
                             isResumeState = true;
-
-//                            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, mListReturnDataALL.get(selectedPosition).getFullpathimage(), Toast.LENGTH_SHORT);
-//                            toast.show();
 
                             OrderReturn  mOrderReturn = new OrderReturn();
                             mOrderReturn.setReftrans_no(mListReturnDataALL.get(selectedPosition).getReftrans_no());
@@ -560,8 +554,6 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                         //กิจกรรม
                         DialogBuilder.dismiss();
 
-//                        isResumeState = true;
-
                         mOrder = new Order();
                         mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
                         mOrder.setRep_name(mListReturnDataALL.get(selectedPosition).getRep_name());
@@ -577,8 +569,6 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
                         break;
                     default:
-
-//                        isResumeState = true;
 
                         DialogBuilder.dismiss();
                         showMsgDialog("default");

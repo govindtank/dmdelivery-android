@@ -100,7 +100,7 @@ public class ViewSlipReturnActivity extends AppCompatActivity {
             }
             else
             {
-                String mPath = Environment.getExternalStorageDirectory().toString() + "/SLIPRETURN/" + mOrderReturnGetData.getFullpathimage();
+                String mPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIPRETURN/" + mOrderReturnGetData.getFullpathimage();
                 mimvSlip.setImageBitmap(BitmapFactory.decodeFile(mPath));
             }
 

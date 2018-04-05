@@ -842,6 +842,96 @@ public class DBHelper extends SQLiteOpenHelper {
         return order;
     }
 
+
+    //delivery_status N=ยังไม่ส่ง, Y=ส่งแล้ว, ALL=แสดงทั้งหมด
+    public ArrayList<Order> getOrderWaitListToServer() {
+        ArrayList<Order> orders = new ArrayList<Order>();
+
+        sqLiteDatabase = this.getReadableDatabase();
+
+        String sigCriteriaSql= Order.Column.delivery_status + "='W' AND " + Order.Column.return_status + "='W'";
+        Cursor cursor = sqLiteDatabase.query(TableOrder,
+                null,
+                sigCriteriaSql,
+                null,
+                null,
+                null,
+                Order.Column.Itemno,
+                null);
+
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+
+            Order order = new Order();
+            order.setId(cursor.getInt(0));
+            order.setOucode(cursor.getString(1));
+            order.setYear(cursor.getString(2));
+            order.setGroup(cursor.getString(3));
+            order.setTransNo(cursor.getString(4));
+            order.setTransdate(cursor.getString(5));
+            order.setRep_seq(cursor.getString(6));
+            order.setRep_code(cursor.getString(7));
+            order.setRep_name(cursor.getString(8));
+            order.setRep_nickname(cursor.getString(9));
+            order.setAddress1(cursor.getString(10));
+            order.setAddress2(cursor.getString(11));
+            order.setTumbon(cursor.getString(12));
+            order.setAmphur(cursor.getString(13));
+            order.setProvince(cursor.getString(14));
+            order.setPostal(cursor.getString(15));
+            order.setRep_telno(cursor.getString(16));
+            order.setDsm_name(cursor.getString(17));
+            order.setDsm_telno(cursor.getString(18));
+            order.setLoc_code(cursor.getString(19));
+            order.setTrans_campaign(cursor.getString(20));
+            order.setOrd_campaign(cursor.getString(21));
+            order.setOrd_type(cursor.getString(22));
+            order.setDel_type(cursor.getString(23));
+            order.setOrd_flag_status(cursor.getString(24));
+            order.setReturn_flag(cursor.getString(25));
+            order.setUnpack_items(cursor.getString(26));
+            order.setOrder_flag_desc(cursor.getString(27));
+            order.setDelivery_desc(cursor.getString(28));
+            order.setOrdertype_desc(cursor.getString(29));
+            order.setCont_desc(cursor.getString(30));
+            order.setItemno(cursor.getInt(31));
+            order.setDelivery_status(cursor.getString(32));
+            order.setIsselect(cursor.getString(33));
+            order.setCre_date(cursor.getString(34));
+            order.setFullpathimage(cursor.getString(35));
+            order.setLat(cursor.getString(36));
+            order.setLon(cursor.getString(37));
+            order.setSignature_timestamp(cursor.getString(38));
+            order.setReason_code(cursor.getString(39));
+            order.setReason_note(cursor.getString(40));
+            order.setSend_status(cursor.getString(41));
+            order.setMobile_serial(cursor.getString(42));
+            order.setMobile_emei(cursor.getString(43));
+            order.setMobile_battery(cursor.getString(44));
+            order.setUser_define1(cursor.getString(45));
+            order.setUser_define2(cursor.getString(46));
+            order.setUser_define3(cursor.getString(47));
+            order.setUser_define4(cursor.getString(48));
+            order.setUser_define5(cursor.getString(49));
+            order.setReturn_order(cursor.getString(50));
+            order.setReturn_status(cursor.getString(51));
+            order.setDelivery_date(cursor.getString(52));
+            order.setTruckNo(cursor.getString(53));
+            order.setSendtoserver_timestamp(cursor.getString(54));
+            orders.add(order);
+
+            cursor.moveToNext();
+        }
+
+
+        return orders;
+    }
+
+
 //    delivery_status N=ยังไม่ส่ง, Y=ส่งแล้ว, ALL=แสดงทั้งหมด
     public ArrayList<Order> getOrderWaitList(String sigCriteria) {
 
@@ -1348,7 +1438,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
     public boolean updateOrderDeliveryStatusToServer(ArrayList<Order> mListOrder) {
 
         try{
@@ -1530,11 +1619,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean updateOrderReturnDetails(OrderReturn mOrderReturn) {
         sqLiteDatabase = this.getWritableDatabase();
         try{
-//            ContentValues cv = new ContentValues();
-//            cv.put("reason_code",mOrderReturn.getReason_code());
-//            cv.put("return_status",mOrderReturn.getReturn_status());
-//            cv.put("return_note",mOrderReturn.getReturn_note());
-//            cv.put("return_unit_real",mOrderReturn.getReturn_unit_real());
 
             ContentValues cv = new ContentValues();
             cv.put(OrderReturn.Column.reason_code,mOrderReturn.getReason_code());
@@ -1864,16 +1948,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 sqLiteDatabase = this.getWritableDatabase();
 
                 ContentValues cv = new ContentValues();
-//                cv.put(Order.Column.lat,mListOrder.get(i).getLat());
-//                cv.put(Order.Column.lon,mListOrder.get(i).getLon());
-//                cv.put(Order.Column.signature_timestamp,mListOrder.get(i).getSignature_timestamp());
-//                cv.put(Order.Column.reason_code,mListOrder.get(i).getReason_code());
-//                cv.put(Order.Column.reason_note,mListOrder.get(i).getReason_note());
-//                cv.put(Order.Column.send_status,mListOrder.get(i).getSend_status());
-//                cv.put(Order.Column.mobile_serial,mListOrder.get(i).getMobile_serial());
-//                cv.put(Order.Column.mobile_emei,mListOrder.get(i).getMobile_emei());
-//                cv.put(Order.Column.mobile_battery,mListOrder.get(i).getMobile_battery());
-//                cv.put(Order.Column.return_order,mListOrder.get(i).getReturn_order());
                 cv.put(Order.Column.return_status,sigStatus);
 
                 String sigTransNo = mListOrder.get(i).getTransNo();
@@ -1895,6 +1969,55 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
     }
+
+
+    public  boolean IsTranferDataToServer(ArrayList<Order> mListOrder)
+    {
+        if (mListOrder == null || mListOrder.size()==0 || mListOrder.equals("null")){return false;}
+
+        try{
+
+
+
+//            for(int i=0; i < mListOrder.size();i++)
+//            {
+//                sqLiteDatabase = this.getWritableDatabase();
+//
+//                ContentValues cv = new ContentValues();
+//                cv.put(Order.Column.return_status,sigStatus);
+//
+//                String sigTransNo = mListOrder.get(i).getTransNo();
+//                sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + " ='" + sigTransNo + "'",null);
+//
+//                if(sqLiteDatabase != null){
+//                    sqLiteDatabase.close();
+//                }
+//            }
+
+
+
+
+
+
+
+
+
+
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return false;
+    }
+
 
     //(String sigOld,String sigNew,String sigInv,OrderAdapter adapter)
     public  boolean update_Arrange_Items_That_users_Call(String sigOld,String sigNew,OrderAdapter adapter)
