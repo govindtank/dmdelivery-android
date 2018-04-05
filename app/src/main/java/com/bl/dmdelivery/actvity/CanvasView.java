@@ -146,7 +146,7 @@ public class CanvasView extends View {
 
 
 		xOrder = 720;
-		yOrder = 970;
+		yOrder = 1020;
 
 
 		if(mListOrderData != null)
@@ -173,7 +173,7 @@ public class CanvasView extends View {
 
 
 		xGps = 20;
-		yGps = 970;
+		yGps = 1020;
 
 		if(!gps.equals(""))
 		{
@@ -185,7 +185,7 @@ public class CanvasView extends View {
 
 		xGpstext = 20;
 		//yGpstext = 890;
-		yGpstext = 1020;
+		yGpstext = 1070;
 
 		if(!gpstext.equals(""))
 		{
@@ -197,7 +197,7 @@ public class CanvasView extends View {
 
 		xReason = 20;
 		//yReason = 940;
-		yReason = 1070;
+		yReason = 1120;
 
 		if(!reason.equals(""))
 		{
@@ -209,7 +209,7 @@ public class CanvasView extends View {
 
 		xNote = 20;
 		//yReason = 940;
-		yNote = 1115;
+		yNote = 1165;
 
 		if(!note.equals(""))
 		{

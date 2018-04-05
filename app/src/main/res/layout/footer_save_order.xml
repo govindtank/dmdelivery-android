@@ -15,8 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,6 +35,30 @@
                     android:textAllCaps="false"
                     android:textColor="@color/colorDark"
                     android:textSize="@dimen/textRowSize" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lilUnpack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnUnpack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/btncheckgps"
+                    android:padding="5dp"
+                    android:text="สินค้านอกกล่อง"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorDark"
+                    android:textSize="@dimen/textRowSize" />
+
+
             </LinearLayout>
 
             <LinearLayout

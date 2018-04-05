@@ -36,6 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,10 +45,13 @@ import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.MenuSaveOrderViewAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
+import com.bl.dmdelivery.adapter.UnpackListViewAdapter;
+import com.bl.dmdelivery.adapter.UnpackViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.Reason;
+import com.bl.dmdelivery.model.Unpack;
 import com.bl.dmdelivery.utility.TagUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -75,10 +79,12 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,txtRepcode,txtInvNo,txtAddress1,txtAddress2,txtMslTel,txtgps,mmTxtMsg,txtCarton;
-    private Button mBtnBack,mmBtnOk,mmBtnClose,btnCancelGPS,btnCancel,btnGPS,btnSaveGPS,btnSave,btnNew,btnNote;
+    private Button mBtnBack,mmBtnOk,mmBtnClose,btnCancelGPS,btnCancel,btnGPS,btnSaveGPS,btnSave,btnNew,btnNote,btnUnpack;
     private EditText mmedtNote;
 
     private ImageView mmImvTitle;
+
+    private LinearLayout lilUnpack;
 
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
@@ -95,8 +101,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
     private ListView lv;
 //    private String[] sigDeliverylist;
 
-    private RecyclerView lvDeliveryAcceptList;
-    private RecyclerView.Adapter mDeliveryAcceptListAdapter;
+    private RecyclerView lvDeliveryAcceptList,lvUnpacktList;
+    private RecyclerView.Adapter mDeliveryAcceptListAdapter,mUnpackListAdapter;
 
     //private ListView lvDeliveryAcceptList;
     private Intent myIntent=null;
@@ -144,6 +150,8 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
     private SharedPreferences sp;
 
+    public ArrayList<Unpack> mListUnpack = new ArrayList<Unpack>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +182,11 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             btnSave = (Button) findViewById(R.id.btnSave);
 
             btnNew = (Button) findViewById(R.id.btnNew);
+            btnUnpack = (Button) findViewById(R.id.btnUnpack);
             btnNote = (Button) findViewById(R.id.btnNote);
+
+
+            lilUnpack = (LinearLayout) findViewById(R.id.lilUnpack);
 
             txtRepcode = (TextView) findViewById(R.id.txtRepcode);
             txtInvNo = (TextView) findViewById(R.id.txtInvNo);
@@ -259,8 +271,22 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
 
                     mHelper = new DBHelper(getApplicationContext());
+
+
+                    mListUnpack.clear();
+                    mListUnpack  = mHelper.getUnpackListWithMultiInv(order);
+
+
                     customCanvas.mListUnpackData.clear();
-                    customCanvas.mListUnpackData  = mHelper.getUnpackListWithMultiInv(order);
+                    customCanvas.mListUnpackData  = mListUnpack;
+
+                    if(mListUnpack.size()>0)
+                    {
+                        lilUnpack.setVisibility(View.VISIBLE);
+                    }else
+                    {
+                        lilUnpack.setVisibility(View.GONE);
+                    }
 
 
                     if(order.size() > 1)
@@ -508,6 +534,17 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 }
             });
 
+            btnUnpack.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+
+                    if(mListUnpack.size()>0)
+                    {
+                        showMsgUnpackDialog();
+                    }
+
+                }
+            });
+
             btnNote.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     showMsgReasonApproveSelectedSingleDialog();
@@ -717,6 +754,81 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
             showMsgDialog(e.toString());
         }
 
+    }
+
+    public void showMsgUnpackDialog()
+    {
+//
+
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_unpack_save_order, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.txt_text_headder_unpack_list));
+
+
+
+        lvUnpacktList = (RecyclerView) v.findViewById(R.id.lvacceptList);
+        lvUnpacktList.setLayoutManager(new LinearLayoutManager(this));
+        lvUnpacktList.setHasFixedSize(true);
+
+
+
+
+        mUnpackListAdapter = new UnpackListViewAdapter(getApplicationContext(),mListUnpack);
+        lvUnpacktList.setAdapter(mUnpackListAdapter);
+
+
+        DialogBuilder.setView(v);
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+
+
+
+//    public void showMsgDialog(String msg)
+//    {
+//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+//        final AlertDialog alert = DialogBuilder.create();
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_message, null, false);
+//
+//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mTxtMsg.setTypeface(tf);
+//        mTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                dialog.dismiss();
+//            }
+//        });
+//        DialogBuilder.show();
+//
+//
+//
+//
+//
     }
 
 
