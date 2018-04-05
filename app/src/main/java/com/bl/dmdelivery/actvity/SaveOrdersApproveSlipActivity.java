@@ -426,6 +426,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                             order.get(i).setMobile_serial(mMobileSerial);
                             order.get(i).setMobile_emei(mMobileEmei);
                             order.get(i).setMobile_battery(mMobileBattery);
+                            order.get(i).setDelivery_status("W");
                         }
 
                         boolean isRes = true;
@@ -489,6 +490,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                             order.get(i).setMobile_serial(mMobileSerial);
                             order.get(i).setMobile_emei(mMobileEmei);
                             order.get(i).setMobile_battery(mMobileBattery);
+                            order.get(i).setDelivery_status("W");
                         }
 
 
@@ -1244,6 +1246,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                     order.get(i).setMobile_serial(mMobileSerial);
                     order.get(i).setMobile_emei(mMobileEmei);
                     order.get(i).setMobile_battery(mMobileBattery);
+                    order.get(i).setDelivery_status("W");
                 }
 
                 boolean isRes = true;
