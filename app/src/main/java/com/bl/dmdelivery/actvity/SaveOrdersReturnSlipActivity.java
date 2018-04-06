@@ -669,7 +669,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity implements
 
                 //update order
                 mHelper = new DBHelper(getApplicationContext());
-                mHelper.updateOrdersStatus(mListOrder,"W");
+                mHelper.updateOrdersStatus(mListOrder,"1");
 
 
             } catch (Exception e) {

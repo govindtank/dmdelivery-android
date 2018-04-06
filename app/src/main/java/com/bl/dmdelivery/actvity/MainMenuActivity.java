@@ -1022,7 +1022,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setUser_define4("");
                         f.setUser_define5("");
                         f.setReturn_order("");
-                        f.setReturn_status("N");
+                        f.setReturn_status("");
                         f.setSendtoserver_timestamp("");
 
                         orders.add(f);

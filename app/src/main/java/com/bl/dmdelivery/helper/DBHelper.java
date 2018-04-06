@@ -575,7 +575,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
         cv.put(Order.Column.return_flag,"R"); //These Fields should be your String values of actual column names
-        cv.put(Order.Column.return_status,"N");
+//        cv.put(Order.Column.return_status,"N");
         sqLiteDatabase.update(TableOrder,cv,"rep_seq='" + order.getRep_seq().toString() + "'",null);
 
         sqLiteDatabase.close();
@@ -849,7 +849,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase = this.getReadableDatabase();
 
-        String sigCriteriaSql= Order.Column.delivery_status + "='W' AND " + Order.Column.return_status + "='W'";
+        String sigCriteriaSql= Order.Column.delivery_status + "='W'";
         Cursor cursor = sqLiteDatabase.query(TableOrder,
                 null,
                 sigCriteriaSql,
