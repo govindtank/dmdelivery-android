@@ -209,17 +209,17 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
             //showPhoneStatePermission();
 
-            File dirInput = new File (mInputPath);
-            if (!dirInput.exists())
-            {
-                dirInput.mkdirs();
-            }
-
-            File dirOutput = new File (mOutputPath);
-            if (!dirOutput.exists())
-            {
-                dirOutput.mkdirs();
-            }
+//            File dirInput = new File (mInputPath);
+//            if (!dirInput.exists())
+//            {
+//                dirInput.mkdirs();
+//            }
+//
+//            File dirOutput = new File (mOutputPath);
+//            if (!dirOutput.exists())
+//            {
+//                dirOutput.mkdirs();
+//            }
 
             getData();
 
@@ -259,15 +259,101 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                 if(order.size() != 0) {
 
-                    txtRepcode.setText(setRepcodeFormat(order.get(0).getRep_code())+" "+order.get(0).getRep_name());
-                    txtInvNo.setText(order.get(0).getTransNo());
-                    //txtAddress1.setText(order.get(0).getAddress1());
-                    //txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
-                    //txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
-                    txtCarton.setText(order.get(0).getCont_desc());
-                    //txtgps.setText("GPS : 0,0");
 
-                    returnflag = order.get(0).getReturn_flag();
+                    if(order.size() == 1)
+                    {
+
+                        txtRepcode.setText(setRepcodeFormat(order.get(0).getRep_code())+" "+order.get(0).getRep_name());
+                        txtInvNo.setText(order.get(0).getTransNo());
+                        //txtAddress1.setText(order.get(0).getAddress1());
+                        //txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
+                        //txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
+                        txtCarton.setText(order.get(0).getCont_desc());
+                        //txtgps.setText("GPS : 0,0");
+
+                        returnflag = order.get(0).getReturn_flag();
+
+                    }else
+                    {
+                        txtRepcode.setText("");
+                        txtInvNo.setText("");
+                        //txtAddress1.setText(order.get(0).getAddress1());
+                        //txtAddress2.setText(order.get(0).getAddress2()+" "+order.get(0).getPostal());
+                        //txtMslTel.setText("โทร. "+order.get(0).getRep_telno());
+                        //txtCarton.setText("");
+                        //txtgps.setText("GPS : 0,0");
+
+                        //String carton = "";
+
+                        Integer allbox = 0;
+                        Integer allbag = 0;
+
+
+                        for(int i=0; i<order.size();i++){
+
+
+
+                            if(order.get(i).getReturn_flag().equals("R"))
+                            {
+                                returnflag = "R";
+                            }
+
+                            Integer box = 0;
+                            Integer bag = 0;
+
+                            //carton = order.get(i).getCont_desc().toString();
+
+                            if(order.get(i).getCont_desc().contains("+"))
+                            {
+                                String[] separated = order.get(i).getCont_desc().split("\\+");
+
+                                box = Integer.parseInt(separated[0].toString().replace("C","").trim());
+                                bag = Integer.parseInt(separated[1].toString().replace("B","").trim());
+
+                            }
+                            else
+                            {
+                                if(order.get(i).getCont_desc().contains("C"))
+                                {
+
+                                    box = Integer.parseInt(order.get(i).getCont_desc().toString().replace("C","").trim());
+
+                                }else
+                                {
+
+                                    bag = Integer.parseInt(order.get(i).getCont_desc().toString().replace("B","").trim());
+
+
+                                }
+
+                            }
+
+                            allbox = allbox + box;
+                            allbag = allbag + bag;
+
+                        }
+
+                        if(allbox>0 && allbag>0)
+                        {
+                            txtCarton.setText(String.valueOf(allbox)+"C"+" + "+String.valueOf(allbag)+"B");
+                        }
+                        else
+                        {
+                            if(allbox == 0)
+                            {
+                                txtCarton.setText(String.valueOf(allbag)+"B");
+                            }
+                            else
+                            {
+                                txtCarton.setText(String.valueOf(allbox)+"C");
+                            }
+
+                        }
+
+
+                    }
+
+
 
 
                     mHelper = new DBHelper(getApplicationContext());
@@ -426,7 +512,14 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                             order.get(i).setMobile_serial(mMobileSerial);
                             order.get(i).setMobile_emei(mMobileEmei);
                             order.get(i).setMobile_battery(mMobileBattery);
-                            order.get(i).setDelivery_status("W");
+
+                            if(order.get(i).getReturn_flag().equals("R"))
+                            {
+                                order.get(i).setDelivery_status("W");
+                            }else
+                            {
+                                order.get(i).setDelivery_status("S");
+                            }
                         }
 
                         boolean isRes = true;
@@ -490,7 +583,14 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                             order.get(i).setMobile_serial(mMobileSerial);
                             order.get(i).setMobile_emei(mMobileEmei);
                             order.get(i).setMobile_battery(mMobileBattery);
-                            order.get(i).setDelivery_status("W");
+
+                            if(order.get(i).getReturn_flag().equals("R"))
+                            {
+                                order.get(i).setDelivery_status("W");
+                            }else
+                            {
+                                order.get(i).setDelivery_status("S");
+                            }
                         }
 
 
@@ -1246,7 +1346,16 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                     order.get(i).setMobile_serial(mMobileSerial);
                     order.get(i).setMobile_emei(mMobileEmei);
                     order.get(i).setMobile_battery(mMobileBattery);
-                    order.get(i).setDelivery_status("W");
+
+                    if(order.get(i).getReturn_flag().equals("R"))
+                    {
+                        order.get(i).setDelivery_status("W");
+                    }else
+                    {
+                        order.get(i).setDelivery_status("S");
+                    }
+
+
                 }
 
                 boolean isRes = true;

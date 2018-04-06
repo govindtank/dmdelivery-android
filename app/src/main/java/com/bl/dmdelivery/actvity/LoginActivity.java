@@ -15,6 +15,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -43,6 +44,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,6 +72,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
+
+
+//    private String mInputPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/";
+//    private String mOutputPath = Environment.getExternalStorageDirectory().toString() + "/DMPROCESSED/";
+//
+//    private String mInputPathReturn = Environment.getExternalStorageDirectory().toString() + "/DMSLIPRETURN/";
+//    private String mInputPathProcessReturn = Environment.getExternalStorageDirectory().toString() + "/DMRETURNPROCESSED/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +139,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
             mEdtTroukno.setText(truckNo);
+
+
+
 
         } catch (Exception e) {
             showMsgDialog(e.toString());

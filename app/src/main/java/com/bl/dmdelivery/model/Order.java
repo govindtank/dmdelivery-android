@@ -489,7 +489,7 @@ public class Order implements Parcelable {
         return mobile_emei;
     }
 
-    public void setMobile_emei(String mobile_serial) {
+    public void setMobile_emei(String mobile_emei) {
         this.mobile_emei = mobile_emei;
     }
 

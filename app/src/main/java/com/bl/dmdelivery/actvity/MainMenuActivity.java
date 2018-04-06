@@ -16,6 +16,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -59,6 +60,7 @@ import com.bl.dmdelivery.model.Unpack;
 import com.bl.dmdelivery.utility.TagUtils;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,6 +104,12 @@ public class MainMenuActivity extends AppCompatActivity {
     private Integer mSelectDcListIndex = 0;
 
     private ArrayList<TelListMenu> arrayTelListMenu = new ArrayList<TelListMenu>();
+
+    private String mInputPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/";
+    private String mOutputPath = Environment.getExternalStorageDirectory().toString() + "/DMPROCESSED/";
+
+    private String mInputPathReturn = Environment.getExternalStorageDirectory().toString() + "/DMSLIPRETURN/";
+    private String mInputPathProcessReturn = Environment.getExternalStorageDirectory().toString() + "/DMRETURNPROCESSED/";
 
 //    private String[] gridViewString = {
 //            "Scan Order", "Save Order", "Load Contact", "Unpack", "Update Program", "Logout",
@@ -190,6 +198,32 @@ public class MainMenuActivity extends AppCompatActivity {
             mLoadOrderReq = new OrderScanReq();
             mLoadOrderReq.setTruckNo(sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, ""));
             mLoadOrderReq.setDeliveryDate(sp.getString(TagUtils.PREF_DELIVERY_DATE, ""));
+
+
+            File dirInput = new File (mInputPath);
+            if (!dirInput.exists())
+            {
+                dirInput.mkdirs();
+            }
+
+            File dirOutput = new File (mOutputPath);
+            if (!dirOutput.exists())
+            {
+                dirOutput.mkdirs();
+            }
+
+
+            File dirInputReturn = new File (mInputPathReturn);
+            if (!dirInputReturn.exists())
+            {
+                dirInputReturn.mkdirs();
+            }
+
+            File dirOutputReturn = new File (mInputPathProcessReturn);
+            if (!dirOutputReturn.exists())
+            {
+                dirOutputReturn.mkdirs();
+            }
 
 
         } catch (Exception e) {

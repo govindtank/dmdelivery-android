@@ -75,9 +75,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -219,6 +222,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
             //sendSlip();
+            //new sendDataInAsync().execute();
 
 
 
@@ -443,8 +447,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 @Override
                 public boolean onDoubleTap(final Order item, final int position) {
                     //Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
-//                    toast.show();
+                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
+                    toast.show();
 
 //                    showMsgDialogSelectedMenu(position);
 
@@ -452,20 +456,30 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                     mSelectIndex = position;
 
-                    mSelect = mListOrderDataN.get(position).getIsselect();
 
-                    if(mSelect.equals("0"))
+                    if(position > -1)
                     {
-                        mListOrderDataN.get(position).setIsselect("1");
+                        mSelect = mListOrderDataN.get(position).getIsselect();
 
-                    }else
-                    {
-                        mListOrderDataN.get(position).setIsselect("0");
+                        if(mSelect.equals("0"))
+                        {
+                            mListOrderDataN.get(position).setIsselect("1");
+
+                        }else
+                        {
+                            mListOrderDataN.get(position).setIsselect("0");
 
 
+                        }
+
+                        adapter.clearData();
+                        adapter.setData(mListOrderDataN);
+                        adapter.notifyDataSetChanged();
                     }
 
-                    adapter.notifyDataSetChanged();
+
+
+                    //adapter.notifyDataSetChanged();
 
 //                    mSelect = mListOrderDataN.get(position).getIsselect();
 //
@@ -685,14 +699,14 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
             mListOrderDataWaitSend.clear();
-            mListOrderDataWaitSend = mHelper.getOrderWaitList("W");
+            mListOrderDataWaitSend = mHelper.getOrderWaitListToServer();
 
 
             serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/DeliveryOrders";
 
 
 
-            for(int i=0; i<=mListOrderDataWaitSend.size()-1; i++){
+            for(int i=0; i<mListOrderDataWaitSend.size(); i++){
 
 
                 Delivery delivery = new Delivery();
@@ -719,46 +733,55 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 mListOrderReturnWaitSend.clear();
                 mListOrderReturnWaitSend = mHelper.getOrdersReturnList(mListOrderDataWaitSend);
 
-                Delivery.ReturnOrder returnOrderdelivery = new Delivery.ReturnOrder();
-                Delivery.ReturnOrder.ReturnItem orderReturnItem = new Delivery.ReturnOrder.ReturnItem();
+
+                if(mListOrderReturnWaitSend.size() > 0)
+                {
+                    Delivery.ReturnOrder returnOrderdelivery = new Delivery.ReturnOrder();
+                    Delivery.ReturnOrder.ReturnItem orderReturnItem = new Delivery.ReturnOrder.ReturnItem();
 
 
-                for(int x=0; x<=mListOrderReturnWaitSend.size()-1; x++){
+                    for(int x=0; x<mListOrderReturnWaitSend.size(); x++){
 
 
-                    returnOrderdelivery.setTrack_no("000");
-                    returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
-                    returnOrderdelivery.setReturn_no(mListOrderReturnWaitSend.get(x).getReturn_no());
-                    returnOrderdelivery.setRep_code(mListOrderReturnWaitSend.get(x).getRep_code());
-                    returnOrderdelivery.setReturn_status(mListOrderReturnWaitSend.get(x).getReturn_status());
-                    returnOrderdelivery.setReturn_reason(mListOrderReturnWaitSend.get(x).getReason_code());
-                    returnOrderdelivery.setReturn_notes(mListOrderReturnWaitSend.get(x).getReturn_note());
-                    returnOrderdelivery.setLat("");
-                    returnOrderdelivery.setLon("");
-                    returnOrderdelivery.setSignature_timestamp("");
-                    returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
+                        returnOrderdelivery.setTrack_no("000");
+                        returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
+                        returnOrderdelivery.setReturn_no(mListOrderReturnWaitSend.get(x).getReturn_no());
+                        returnOrderdelivery.setRep_code(mListOrderReturnWaitSend.get(x).getRep_code());
+                        returnOrderdelivery.setReturn_status(mListOrderReturnWaitSend.get(x).getReturn_status());
+                        returnOrderdelivery.setReturn_reason(mListOrderReturnWaitSend.get(x).getReason_code());
+                        returnOrderdelivery.setReturn_notes(mListOrderReturnWaitSend.get(x).getReturn_note());
+                        returnOrderdelivery.setLat("");
+                        returnOrderdelivery.setLon("");
+                        returnOrderdelivery.setSignature_timestamp("");
+                        //returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
 
 
-                    mListOrderReturnItemSend.clear();
-                    mListOrderReturnItemSend = mHelper.getOrderReturnDtl(returnOrderdelivery.getReturn_no());
+                        mListOrderReturnItemSend.clear();
+                        mListOrderReturnItemSend = mHelper.getOrderReturnDtl(returnOrderdelivery.getReturn_no());
 
 
-                    for(int y=0; y<=mListOrderReturnItemSend.size()-1; y++){
+                        for(int y=0; y<mListOrderReturnItemSend.size(); y++){
 
-                        orderReturnItem.setFscode(mListOrderReturnItemSend.get(y).getFs_code());
-                        orderReturnItem.setFsdesc(mListOrderReturnItemSend.get(y).getFs_desc());
-                        orderReturnItem.setReturn_request(mListOrderReturnItemSend.get(y).getReturn_unit());
-                        orderReturnItem.setReturn_actual(mListOrderReturnItemSend.get(y).getReturn_unit_real());
+                            orderReturnItem.setFscode(mListOrderReturnItemSend.get(y).getFs_code());
+                            orderReturnItem.setFsdesc(mListOrderReturnItemSend.get(y).getFs_desc());
+                            orderReturnItem.setReturn_request(mListOrderReturnItemSend.get(y).getReturn_unit());
+                            orderReturnItem.setReturn_actual(mListOrderReturnItemSend.get(y).getReturn_unit_real());
 
-                        mOrderReturnItemSend.add(orderReturnItem);
+                            mOrderReturnItemSend.add(orderReturnItem);
+
+                        }
+
+                        returnOrderdelivery.setReturn_item(mOrderReturnItemSend);
 
                     }
 
-                    returnOrderdelivery.setReturn_item(mOrderReturnItemSend);
+                    mListOrderReturnSend.add(returnOrderdelivery);
 
                 }
 
-                mListOrderReturnSend.add(returnOrderdelivery);
+
+
+
                 delivery.setReturn_order(mListOrderReturnSend);
 
 
@@ -772,11 +795,20 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                 if(obj.getResponseCode().equals("1"))
                 {
+
+                    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+                    java.util.Date currentLocalTime = cal.getTime();
+                    SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+                    date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                    String localTime = date.format(currentLocalTime);
+                    localTime = localTime.replace(" ", "").replace("-", "");
+
                     mListOrderDataWaitSend.get(i).setDelivery_status("Y");
+                    mListOrderDataWaitSend.get(i).setSendtoserver_timestamp(localTime);
 
                     boolean isRes = true;
                     mHelper = new DBHelper(getApplicationContext());
-                    isRes = mHelper.updateOrderDeliveryStatus(mListOrderDataWaitSend);
+                    isRes = mHelper.updateOrderDeliveryStatusToServer(mListOrderDataWaitSend);
 
 
                     moveSlip(inputPath,mListOrderDataWaitSend.get(i).getFullpathimage(),outputPath);
