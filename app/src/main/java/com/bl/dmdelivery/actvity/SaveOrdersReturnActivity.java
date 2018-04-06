@@ -758,7 +758,7 @@ public class SaveOrdersReturnActivity extends AppCompatActivity implements
 
                 //update order
                 mHelper = new DBHelper(getApplicationContext());
-                mHelper.updateOrdersStatus(mListOrder,"2");
+                mHelper.updateOrdersDeliveryStatus(mListOrder,"S");
 
 
             } catch (Exception e) {

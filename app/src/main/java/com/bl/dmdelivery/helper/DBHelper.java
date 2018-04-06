@@ -849,7 +849,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase = this.getReadableDatabase();
 
-        String sigCriteriaSql= Order.Column.delivery_status + "='W'";
+        String sigCriteriaSql= Order.Column.delivery_status + "='S'";
         Cursor cursor = sqLiteDatabase.query(TableOrder,
                 null,
                 sigCriteriaSql,
@@ -1938,7 +1938,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //ปรับปรุงสถานะการคืน '' หรือ 0=ยังไม่รับคืน,1=รับคืน,2=ไม่รับคืน
-    public  void updateOrdersStatus(ArrayList<Order> mListOrder , String sigStatus)
+    public  void updateOrdersDeliveryStatus(ArrayList<Order> mListOrder , String sigStatus)
     {
         if (mListOrder == null || mListOrder.size()==0 || mListOrder.equals("null")){return;}
 
@@ -1948,7 +1948,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 sqLiteDatabase = this.getWritableDatabase();
 
                 ContentValues cv = new ContentValues();
-                cv.put(Order.Column.return_status,sigStatus);
+                cv.put(Order.Column.delivery_status,sigStatus);
 
                 String sigTransNo = mListOrder.get(i).getTransNo();
                 sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + " ='" + sigTransNo + "'",null);
