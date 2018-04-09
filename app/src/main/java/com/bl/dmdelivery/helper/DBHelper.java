@@ -970,6 +970,18 @@ public class DBHelper extends SQLiteOpenHelper {
             case "WY":
                 sigCriteriaSql="delivery_status IN ('W','Y')";
                 break;
+            case "SWY":
+                sigCriteriaSql="delivery_status IN ('S','W','Y')";
+                break;
+            case "SYW":
+                sigCriteriaSql="delivery_status IN ('S','W','Y')";
+                break;
+            case "WSY":
+                sigCriteriaSql="delivery_status IN ('S','W','Y')";
+                break;
+            case "YSW":
+                sigCriteriaSql="delivery_status IN ('S','W','Y')";
+                break;
             case "ALL":
                 sigCriteriaSql="TransNo IS NOT NULL";
                 break;
