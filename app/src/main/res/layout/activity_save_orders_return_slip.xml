@@ -111,7 +111,7 @@
 
                     <include
                         android:id="@+id/includeHeader"
-                        layout="@layout/footer_save_order"
+                        layout="@layout/footer_save_order_return"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 

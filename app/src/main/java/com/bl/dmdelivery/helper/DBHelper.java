@@ -728,6 +728,62 @@ public class DBHelper extends SQLiteOpenHelper {
         return mOrderReturnlist;
     }
 
+    public ArrayList<OrderReturn> getOrdersReturnListByRepCode(Order mOrder) {
+
+        //add data
+        ArrayList<OrderReturn>  mOrderReturnlist = new ArrayList<OrderReturn>();
+        if(mOrder==null){return null ;}
+
+
+        String sigGetData="";
+        sigGetData = "'" + mOrder.getRep_code()+ "'";
+
+        if(sigGetData.isEmpty() || sigGetData==null || sigGetData.equals("null") || sigGetData.equals("")){return null;}
+        sqLiteDatabase = this.getReadableDatabase();
+
+
+        Cursor cursor = sqLiteDatabase.query(TableOrderReturn,
+                null,
+                "rep_code =" + sigGetData + " AND return_status IN ('1','2')",
+                null,
+                "return_no",
+                null,
+                null,
+                null);
+
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+            OrderReturn mOrderReturn = new OrderReturn();
+
+            mOrderReturn.setOu_code(cursor.getString(0));
+            mOrderReturn.setReturn_no(cursor.getString(1));
+            mOrderReturn.setReturn_code(cursor.getString(2));
+            mOrderReturn.setReturn_type(cursor.getString(3));
+            mOrderReturn.setReftrans_no(cursor.getString(4));
+            mOrderReturn.setReftrans_year(cursor.getString(5));
+            mOrderReturn.setRep_code(cursor.getString(6));
+            mOrderReturn.setRep_seq(cursor.getString(7));
+            mOrderReturn.setRep_name(cursor.getString(8));
+            mOrderReturn.setReturn_seq(cursor.getString(9));
+            mOrderReturn.setFs_code(cursor.getString(10));
+            mOrderReturn.setFs_desc(cursor.getString(11));
+            mOrderReturn.setReturn_unit_real(cursor.getString(12));
+            mOrderReturn.setReturn_unit(cursor.getString(13));
+            mOrderReturn.setReturn_remark(cursor.getString(14));
+            mOrderReturn.setReturn_status(cursor.getString(15));
+            mOrderReturnlist.add(mOrderReturn);
+
+            cursor.moveToNext();
+        }
+
+        return mOrderReturnlist;
+    }
+
+
     // return_status 0= ยังไม่รับคืน,1=รับคืน,2=ไม่รับคืน
     public ArrayList<OrderReturn> getOrdersReturnListSummary(String sigCriteria) {
 
@@ -1983,38 +2039,46 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public  boolean IsTranferDataToServer(ArrayList<Order> mListOrder)
+    public  boolean IsCheckOrdersReturnBalance(ArrayList<Order> mListOrder)
     {
-        if (mListOrder == null || mListOrder.size()==0 || mListOrder.equals("null")){return false;}
+        if(mListOrder==null){return false;}
+        if(mListOrder.size()==0){return false;}
 
         try{
+            String sigGetData="";
+            for(int i=0;i<mListOrder.size();i++)
+            {
+                if(i==0)
+                {
+                    sigGetData = "'" + mListOrder.get(i).getRep_code() + "'";
+                }
+                else
+                {
+                    sigGetData = sigGetData + ",'" + mListOrder.get(i).getRep_code() + "'";
+                }
+            }
+
+            if(sigGetData.isEmpty() || sigGetData==null || sigGetData.equals("null") || sigGetData.equals("")){return false;}
+
+            sqLiteDatabase = this.getReadableDatabase();
+
+            Cursor cursor = sqLiteDatabase.query(TableOrderReturn,
+                    null,
+                    "rep_code IN (" + sigGetData + ") AND return_status IN ('1','2')",
+                    null,
+                    "return_no",
+                    null,
+                    null,
+                    null);
 
 
+            if (cursor != null  && cursor.getCount()>0) {
+                cursor.moveToFirst();
+            }
 
-//            for(int i=0; i < mListOrder.size();i++)
-//            {
-//                sqLiteDatabase = this.getWritableDatabase();
-//
-//                ContentValues cv = new ContentValues();
-//                cv.put(Order.Column.return_status,sigStatus);
-//
-//                String sigTransNo = mListOrder.get(i).getTransNo();
-//                sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + " ='" + sigTransNo + "'",null);
-//
-//                if(sqLiteDatabase != null){
-//                    sqLiteDatabase.close();
-//                }
-//            }
-
-
-
-
-
-
-
-
-
-
+            if(!cursor.isAfterLast()){
+                return true;
+            }
         }
         catch (Exception e)
         {
@@ -2022,6 +2086,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         finally
         {
+            //clean up
             if(sqLiteDatabase != null){
                 sqLiteDatabase.close();
             }
