@@ -57,6 +57,7 @@
                     android:background="@drawable/background_edittext"
                     android:ems="10"
                     android:hint="@string/txt_text_headder_search"
+                    android:imeOptions="actionDone"
                     android:inputType="textPersonName"
                     android:textColor="@color/colorText"
                     android:textColorHint="@color/colorHintText"

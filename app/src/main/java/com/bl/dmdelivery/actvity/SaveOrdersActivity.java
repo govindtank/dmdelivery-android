@@ -31,6 +31,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AndroidException;
 import android.util.Base64;
 import android.util.Log;
@@ -39,6 +41,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -80,6 +83,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -98,7 +102,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mmTxtMsg;
     private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList,mBtnClose,mmBtnClose;
     private ImageView mmImvTitle;
-
+    private EditText mEdtSearchWord;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
 //    private WebserviceHelper webHelper = new WebserviceHelper();
@@ -123,6 +127,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private ArrayList<OrderReturn> mListOrderReturnItemSend = new ArrayList<OrderReturn>();
 
     private ArrayList<Delivery.ReturnOrder.ReturnItem> mOrderReturnItemSend = new ArrayList<Delivery.ReturnOrder.ReturnItem>();
+
+    private ArrayList<Order> mListSearchDataN = new ArrayList<Order>();
 
     //private List<Order> mListOrder = new List<Order>();
     private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="0";
@@ -238,6 +244,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
         timerEnable = true;
 
+        mEdtSearchWord.setText("");
 
 
         setHeader();
@@ -372,6 +379,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
             lv = (RecyclerView) findViewById(R.id.lv);
+
+            mEdtSearchWord = (EditText) findViewById(R.id.txtSearch);
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -704,6 +713,29 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     overridePendingTransition(0,0);
                     //t.cancel();
 ////                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
+            });
+
+            mEdtSearchWord.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                    String text = mEdtSearchWord.getText().toString().toLowerCase(Locale.getDefault());
+                    filter(text);
+
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1,
+                                              int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+                }
+
+                @Override
+                public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                    // TODO Auto-generated method stub
                 }
             });
 
@@ -1633,11 +1665,20 @@ public class SaveOrdersActivity extends AppCompatActivity {
         try {
 
 
+
+
             mHelper = new DBHelper(getApplicationContext());
 
 
             mListOrderDataN.clear();
             mListOrderDataN = mHelper.getOrderWaitList("N");
+
+            mListSearchDataN.clear();
+            mListSearchDataN = mHelper.getOrderWaitList("N");
+
+
+            String text = mEdtSearchWord.getText().toString().toLowerCase(Locale.getDefault());
+            filter(text);
 
 
         } catch (Exception e) {
@@ -1663,6 +1704,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListOrderDataN.clear();
             mListOrderDataN = mHelper.getOrderWaitList("N");
 
+            mListSearchDataN.clear();
+            mListSearchDataN = mHelper.getOrderWaitList("N");
+
             mListOrderDataSend.clear();
             mListOrderDataSend = mHelper.getOrderWaitList("Y");
 
@@ -1685,6 +1729,59 @@ public class SaveOrdersActivity extends AppCompatActivity {
             e.printStackTrace();
             showMsgDialog(e.toString());
         }
+
+    }
+
+    private void filter(String charText) {
+
+        mListOrderDataN.clear();
+        if (charText.toLowerCase(Locale.getDefault()).equals("")) {
+            mListOrderDataN.addAll(mListSearchDataN);
+            mFilter = "0";
+        }
+        else
+        {
+            for (Order wp : mListSearchDataN)
+            {
+                if (wp.getTransNo().toLowerCase(Locale.getDefault()).contains(charText))
+                {
+                    mListOrderDataN.add(wp);
+                }else
+                {
+                    if (wp.getRep_code().toLowerCase(Locale.getDefault()).contains(charText))
+                    {
+                        mListOrderDataN.add(wp);
+                    }else
+                    {
+                        if (wp.getRep_name().toLowerCase(Locale.getDefault()).contains(charText))
+                        {
+                            mListOrderDataN.add(wp);
+                        }else
+                        {
+                            if (wp.getAddress1().toLowerCase(Locale.getDefault()).contains(charText))
+                            {
+                                mListOrderDataN.add(wp);
+                            }else
+                            {
+                                if (wp.getAddress2().toLowerCase(Locale.getDefault()).contains(charText))
+                                {
+                                    mListOrderDataN.add(wp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            mFilter = "1";
+        }
+
+
+        adapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
+        adapter.setData(mListOrderDataN);
+
+        lv.setAdapter(adapter);
+
 
     }
 
