@@ -10,9 +10,14 @@ import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
@@ -21,6 +26,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -34,16 +41,32 @@ import com.bl.dmdelivery.adapter.OrderAdapter;
 import com.bl.dmdelivery.adapter.OrderCompleteAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.helper.WebServiceHelper;
+import com.bl.dmdelivery.model.BaseResponse;
+import com.bl.dmdelivery.model.Delivery;
 import com.bl.dmdelivery.model.MenuSaveOrder;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.utility.TagUtils;
+import com.google.gson.Gson;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
 import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
@@ -57,6 +80,16 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     String sigDeliveryDate = "";
 
     private Intent myIntent=null;
+
+    private ArrayList<Order> mListOrderDataWaitSend = new ArrayList<Order>();
+
+    private ArrayList<OrderReturn> mListOrderReturnWaitSend = new ArrayList<OrderReturn>();
+
+    private ArrayList<Delivery.ReturnOrder> mListOrderReturnSend = new ArrayList<Delivery.ReturnOrder>();
+
+    private ArrayList<OrderReturn> mListOrderReturnItemSend = new ArrayList<OrderReturn>();
+
+    private ArrayList<Delivery.ReturnOrder.ReturnItem> mOrderReturnItemSend = new ArrayList<Delivery.ReturnOrder.ReturnItem>();
 
     //private ArrayList<Order> mListOrderData = new ArrayList<Order>();
 
@@ -84,6 +117,15 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
 
+
+    public boolean timerEnable = true;
+
+    public Timer t = new Timer();
+
+    public TimerTask task;
+
+    private String serverUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +149,35 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             setWidgetControl();
 
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Do something after 100ms
+
+                    task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if ( timerEnable == true ) {
+                                        //sendSlip();
+                                        new sendDataInAsync().execute();
+                                    }
+                                }
+                            });
+                        }
+                    };
+
+
+
+                    t.scheduleAtFixedRate(task, 0, 20000);
+
+                }
+            }, 10000);
+
 //            getOrder();
 
         } catch (Exception e) {
@@ -117,6 +188,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
+
+        timerEnable = true;
 
 
         setHeader();
@@ -196,6 +269,20 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timerEnable = false;
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        //t.cancel();
+        //Toast.makeText(this, "Timer cancel ", Toast.LENGTH_LONG).show();
+        super.onDestroy();
+    }
 
     private void bindWidget()
     {
@@ -382,6 +469,288 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
+    }
+
+    private class sendDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+//            mProgressDialog = new ACProgressFlower.Builder(MainMenuActivity.this)
+//                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+//                    .text(getResources().getString(R.string.progress_loading))
+//                    .themeColor(getResources().getColor(R.color.colorBackground))
+//                    //.text(getResources().getString(R.string.progress_loading))
+//                    .fadeColor(Color.DKGRAY).build();
+//            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+
+                sendSlip();
+
+                pageResultHolder.content = "";
+
+
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : NoData";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            //final String msg = "";
+
+            try {
+
+
+                setHeader();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    private class PageResultHolder {
+        private String content;
+        private Exception exception;
+    }
+
+    public void sendSlip() {
+
+
+        String inputPath = Environment.getExternalStorageDirectory().toString()+"/DMSLIP/";
+        String outputPath = Environment.getExternalStorageDirectory().toString()+"/DMPROCESSED/";
+        String inputPathReturn = Environment.getExternalStorageDirectory().toString()+"/DMSLIPRETURN/";
+        String outputPathReturn = Environment.getExternalStorageDirectory().toString()+"/DMRETURNPROCESSED/";
+
+
+        File f = new File(inputPath);
+        File file[] = f.listFiles();
+
+
+        try
+        {
+
+            mHelper = new DBHelper(getApplicationContext());
+
+
+            mListOrderDataWaitSend.clear();
+            mListOrderDataWaitSend = mHelper.getOrderWaitListToServer();
+
+
+            serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/DeliveryOrders";
+
+
+
+            for(int i=0; i<mListOrderDataWaitSend.size(); i++){
+
+
+                Delivery delivery = new Delivery();
+
+                delivery.setTruck_no(mListOrderDataWaitSend.get(i).getTruckNo());
+                delivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
+                delivery.setTrans_year(mListOrderDataWaitSend.get(i).getYear());
+                delivery.setTrans_group(mListOrderDataWaitSend.get(i).getGroup());
+                delivery.setTrans_no(mListOrderDataWaitSend.get(i).getTransNo());
+                delivery.setRoute_seq(String.valueOf(mListOrderDataWaitSend.get(i).getItemno()));
+                delivery.setRep_code(mListOrderDataWaitSend.get(i).getRep_code());
+                delivery.setLat(mListOrderDataWaitSend.get(i).getLat());
+                delivery.setLon(mListOrderDataWaitSend.get(i).getLon());
+                delivery.setSignature_timestamp(mListOrderDataWaitSend.get(i).getSignature_timestamp());
+                delivery.setReason_code(mListOrderDataWaitSend.get(i).getReason_code());
+                delivery.setReason_note(mListOrderDataWaitSend.get(i).getReason_note());
+                delivery.setDelivery_status(mListOrderDataWaitSend.get(i).getSend_status());
+                delivery.setMobile_serial(mListOrderDataWaitSend.get(i).getMobile_serial());
+                delivery.setMobile_emei(mListOrderDataWaitSend.get(i).getMobile_emei());
+                delivery.setMobile_battery(mListOrderDataWaitSend.get(i).getMobile_battery());
+                delivery.setApp_version(getResources().getString(R.string.app_version_slip));
+                delivery.setImage_signature(getBytesFromBitmap(inputPath + mListOrderDataWaitSend.get(i).getFullpathimage()));
+
+                mListOrderReturnWaitSend.clear();
+                mListOrderReturnWaitSend = mHelper.getOrdersReturnListByRepCode(mListOrderDataWaitSend.get(i));
+
+
+                if(mListOrderReturnWaitSend.size() > 0)
+                {
+                    Delivery.ReturnOrder returnOrderdelivery = new Delivery.ReturnOrder();
+                    Delivery.ReturnOrder.ReturnItem orderReturnItem = new Delivery.ReturnOrder.ReturnItem();
+
+
+                    for(int x=0; x<mListOrderReturnWaitSend.size(); x++){
+
+
+                        returnOrderdelivery.setTrack_no(mListOrderReturnWaitSend.get(x).getTrack_no());
+                        returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
+                        returnOrderdelivery.setReturn_no(mListOrderReturnWaitSend.get(x).getReturn_no());
+                        returnOrderdelivery.setRep_code(mListOrderReturnWaitSend.get(x).getRep_code());
+                        returnOrderdelivery.setReturn_status(mListOrderReturnWaitSend.get(x).getReturn_status());
+                        returnOrderdelivery.setReturn_reason(mListOrderReturnWaitSend.get(x).getReason_code());
+                        returnOrderdelivery.setReturn_notes(mListOrderReturnWaitSend.get(x).getReturn_note());
+                        returnOrderdelivery.setLat(mListOrderReturnWaitSend.get(x).getLat());
+                        returnOrderdelivery.setLon(mListOrderReturnWaitSend.get(x).getLon());
+                        returnOrderdelivery.setSignature_timestamp(mListOrderReturnWaitSend.get(x).getSignature_timestamp());
+                        //returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
+
+
+                        mListOrderReturnItemSend.clear();
+                        mListOrderReturnItemSend = mHelper.getOrderReturnDtl(returnOrderdelivery.getReturn_no());
+
+
+                        for(int y=0; y<mListOrderReturnItemSend.size(); y++){
+
+                            orderReturnItem.setFscode(mListOrderReturnItemSend.get(y).getFs_code());
+                            orderReturnItem.setFsdesc(mListOrderReturnItemSend.get(y).getFs_desc());
+                            orderReturnItem.setReturn_request(mListOrderReturnItemSend.get(y).getReturn_unit());
+                            orderReturnItem.setReturn_actual(mListOrderReturnItemSend.get(y).getReturn_unit_real());
+
+                            mOrderReturnItemSend.add(orderReturnItem);
+
+                        }
+
+                        returnOrderdelivery.setReturn_item(mOrderReturnItemSend);
+
+                    }
+
+                    mListOrderReturnSend.add(returnOrderdelivery);
+
+                }
+
+
+
+
+                delivery.setReturn_order(mListOrderReturnSend);
+
+
+                Gson gson = new Gson();
+                String json = gson.toJson(delivery);
+                String result = new WebServiceHelper().postServiceAPI(serverUrl,json);
+                BaseResponse obj = gson.fromJson(result,BaseResponse.class);
+
+
+                //Toast.makeText(this, "Process slip : " + obj.getResponseCode(), Toast.LENGTH_SHORT).show();
+
+                if(obj.getResponseCode().equals("1"))
+                {
+
+                    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+                    java.util.Date currentLocalTime = cal.getTime();
+                    SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+                    date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                    String localTime = date.format(currentLocalTime);
+                    localTime = localTime.replace(" ", "").replace("-", "");
+
+                    mListOrderDataWaitSend.get(i).setDelivery_status("Y");
+                    mListOrderDataWaitSend.get(i).setSendtoserver_timestamp(localTime);
+
+                    boolean isRes = true;
+                    mHelper = new DBHelper(getApplicationContext());
+                    isRes = mHelper.updateOrderDeliveryStatusToServer(mListOrderDataWaitSend);
+
+
+                    moveSlip(inputPath,mListOrderDataWaitSend.get(i).getFullpathimage(),outputPath);
+
+
+
+
+                    //Toast.makeText(this, "Process slip : " + path + mListOrderDataWaitSend.get(i).getFullpathimage(), Toast.LENGTH_SHORT).show();
+                }
+
+
+
+                //Toast.makeText(this, "Process slip : " + getBytesFromBitmap(path + mListOrderDataWaitSend.get(i).getFullpathimage()), Toast.LENGTH_LONG).show();
+
+
+            }
+
+
+
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    public String getBytesFromBitmap(String filepath) {
+        File imagefile = new File(filepath);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(imagefile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bm = BitmapFactory.decodeStream(fis);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100 , baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.NO_WRAP);
+        return encImage;
+    }
+
+    private void moveSlip(String inputPath, String inputFile, String outputPath) {
+
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+
+            //create output directory if it doesn't exist
+            File dir = new File (outputPath);
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+
+
+            in = new FileInputStream(inputPath + inputFile);
+            out = new FileOutputStream(outputPath + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            in = null;
+
+            // write the output file
+            out.flush();
+            out.close();
+            out = null;
+
+            // delete the original file
+            new File(inputPath + inputFile).delete();
+
+
+        }
+
+        catch (FileNotFoundException fnfe1) {
+            Log.e("tag", fnfe1.getMessage());
+        }
+        catch (Exception e) {
+            Log.e("tag", e.getMessage());
+        }
+
     }
 
     public void showMsgDialogMenu()

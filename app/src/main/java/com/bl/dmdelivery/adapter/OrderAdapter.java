@@ -17,8 +17,8 @@ import com.thesurix.gesturerecycler.GestureViewHolder;
 
 public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
 
-    private final Context mCtx;
-    private final int mItemResId;
+    private  Context mCtx;
+    private  int mItemResId;
 
     public OrderAdapter(final Context ctx, @LayoutRes final int itemResId) {
         mCtx = ctx;
@@ -27,19 +27,19 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
 
     @Override
     public GestureViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_save_order_item, parent, false);
+         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_save_order_item, parent, false);
         return new OrderViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final GestureViewHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
-        final Order orderItem = getItem(position);
+         Order orderItem = getItem(position);
 
 
 
-        final OrderViewHolder orderViewHolder = (OrderViewHolder) holder;
-        final Order order = (Order) orderItem;
+         OrderViewHolder orderViewHolder = (OrderViewHolder) holder;
+         Order order = (Order) orderItem;
 
 
         if(order.getIsselect().equals("0"))
@@ -53,7 +53,7 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
         }
 
 
-        if(order.getDelivery_status().equals("W"))
+        if(order.getDelivery_status().equals("W") || order.getDelivery_status().equals("S"))
         {
             orderViewHolder.mSeqText.setBackgroundResource(R.color.colorBackgroundGrayButton);
         }else
@@ -91,8 +91,6 @@ public class OrderAdapter extends GestureAdapter<Order, GestureViewHolder> {
             }
 
         }
-
-
 
 
 

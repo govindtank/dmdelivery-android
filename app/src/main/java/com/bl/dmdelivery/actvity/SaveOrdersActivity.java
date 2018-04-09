@@ -445,21 +445,20 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public boolean onDoubleTap(final Order item, final int position) {
+                public boolean onDoubleTap(final Order item, int position) {
                     //Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + position + " position", Toast.LENGTH_SHORT);
-                    toast.show();
 
-//                    showMsgDialogSelectedMenu(position);
-
-                    isSelectAll = true;
-
-                    mSelectIndex = position;
-
-
-                    if(position > -1)
+                    if (position == -1)
                     {
-                        mSelect = mListOrderDataN.get(position).getIsselect();
+                        return false;
+                    }
+                    else
+                    {
+                        isSelectAll = true;
+
+                        mSelectIndex = position;
+
+                        mSelect = mListOrderDataN.get(position).getIsselect().toString();
 
                         if(mSelect.equals("0"))
                         {
@@ -469,13 +468,121 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         {
                             mListOrderDataN.get(position).setIsselect("0");
 
-
                         }
 
                         adapter.clearData();
                         adapter.setData(mListOrderDataN);
                         adapter.notifyDataSetChanged();
+
+
+                        return true;
                     }
+//                    showMsgDialogSelectedMenu(position);
+
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + mListOrderDataN.get(position).getTransNo() + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
+//
+//                    isSelectAll = true;
+//
+//                    mSelectIndex = position;
+//
+//
+//                    adapter.clearData();
+//                    adapter.setData(mListOrderDataN);
+//                    adapter.notifyDataSetChanged();
+//
+
+//                    for(int i=0; i<=mListOrderDataN.size()-1; i++){
+//
+//                        if(mListOrderDataN.get(position).getTransNo().equals(mListOrderDataN.get(i).getTransNo()))
+//                        {
+//                            Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + mListOrderDataN.get(position).getTransNo() + " position", Toast.LENGTH_SHORT);
+//                            toast.show();
+//
+//                            mSelect = mListOrderDataN.get(i).getIsselect().toString();
+//
+//                                if(mSelect.equals("0"))
+//                                {
+//                                    mListOrderDataN.get(position).setIsselect("1");
+//
+//                                }else
+//                                {
+//                                    mListOrderDataN.get(position).setIsselect("0");
+//
+//                                }
+//                        }
+//                    }
+
+
+//                    mSelect = mListOrderDataN.get(position).getIsselect().toString();
+//
+//                    if(mSelect.equals("0"))
+//                    {
+//                        mListOrderDataN.get(position).setIsselect("1");
+//
+//                    }else
+//                    {
+//                        mListOrderDataN.get(position).setIsselect("0");
+//
+//                    }
+//
+//                    adapter.clearData();
+//                    adapter.setData(mListOrderDataN);
+//                    adapter.notifyDataSetChanged();
+//
+
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + mListOrderDataN.get(position).getTransNo() + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
+//
+//                    if(position > -1)
+//                    {
+//
+//                        for(int i=0; i<=mListOrderDataN.size()-1; i++){
+//
+//                            if(mListOrderDataN.get(position).getTransNo().equals(mListOrderDataN.get(i).getTransNo()))
+//                            {
+//                                mSelect = mListOrderDataN.get(i).getIsselect();
+//
+//                                if(mSelect.equals("0"))
+//                                {
+//                                    //mListOrderDataN.get(i).setIsselect("1");
+//
+//                                }else
+//                                {
+//                                    //mListOrderDataN.get(i).setIsselect("0");
+//
+//
+//                                }
+//
+//                                //mListOrderDataN.iterator();
+//                            }
+//
+//                        }
+//
+////                        mSelect = mListOrderDataN.get(position).getIsselect();
+////
+////                        if(mSelect.equals("0"))
+////                        {
+////                            mListOrderDataN.get(position).setIsselect("1");
+////
+////                        }else
+////                        {
+////                            mListOrderDataN.get(position).setIsselect("0");
+////
+////
+////                        }
+//
+//                        //adapter.clearData();
+//                        //adapter.setData(mListOrderDataN);
+//                        adapter.notifyDataSetChanged();
+//
+//                        Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event on the " + mListOrderDataN.get(position).getTransNo() + " position", Toast.LENGTH_SHORT);
+//                        toast.show();
+//                    }else
+//                    {
+//                        Toast toast = Toast.makeText(SaveOrdersActivity.this, "Double tap event Error position", Toast.LENGTH_SHORT);
+//                        toast.show();
+//                    }
 
 
 
@@ -498,7 +605,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     //adapter.notifyDataSetChanged();
 
 
-                    return true;
+
                 }
             }));
 
