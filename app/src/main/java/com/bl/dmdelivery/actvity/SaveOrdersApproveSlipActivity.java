@@ -539,10 +539,24 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                         }
                         else {
 
-                            finish();
-                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                            myIntent.putExtra("data",order);
-                            startActivity(myIntent);
+                            boolean isRet = true;
+
+                            mHelper = new DBHelper(getApplicationContext());
+                            isRet = mHelper.IsCheckOrdersReturnBalance(order);
+
+                            if(isRet)
+                            {
+                                finish();
+                                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                                myIntent.putExtra("data",order);
+                                startActivity(myIntent);
+                            }
+                            else
+                            {
+                                finish();
+                            }
+
+
 
                         }
                     }
@@ -610,10 +624,22 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                         }
                         else {
 
-                            finish();
-                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                            myIntent.putExtra("data",order);
-                            startActivity(myIntent);
+                            boolean isRet = true;
+
+                            mHelper = new DBHelper(getApplicationContext());
+                            isRet = mHelper.IsCheckOrdersReturnBalance(order);
+
+                            if(isRet)
+                            {
+                                finish();
+                                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                                myIntent.putExtra("data",order);
+                                startActivity(myIntent);
+                            }
+                            else
+                            {
+                                finish();
+                            }
 
                         }
                     }
@@ -1373,10 +1399,22 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 else
                 {
 
-                    finish();
-                    myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                    myIntent.putExtra("data",order);
-                    startActivity(myIntent);
+                    boolean isRet = true;
+
+                    mHelper = new DBHelper(getApplicationContext());
+                    isRet = mHelper.IsCheckOrdersReturnBalance(order);
+
+                    if(isRet)
+                    {
+                        finish();
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                        myIntent.putExtra("data",order);
+                        startActivity(myIntent);
+                    }
+                    else
+                    {
+                        finish();
+                    }
 
                 }
 

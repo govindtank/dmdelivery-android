@@ -731,7 +731,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 delivery.setImage_signature(getBytesFromBitmap(inputPath + mListOrderDataWaitSend.get(i).getFullpathimage()));
 
                 mListOrderReturnWaitSend.clear();
-                mListOrderReturnWaitSend = mHelper.getOrdersReturnList(mListOrderDataWaitSend);
+                mListOrderReturnWaitSend = mHelper.getOrdersReturnListByRepCode(mListOrderDataWaitSend.get(i));
 
 
                 if(mListOrderReturnWaitSend.size() > 0)
@@ -743,16 +743,16 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     for(int x=0; x<mListOrderReturnWaitSend.size(); x++){
 
 
-                        returnOrderdelivery.setTrack_no("000");
+                        returnOrderdelivery.setTrack_no(mListOrderReturnWaitSend.get(x).getTrack_no());
                         returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
                         returnOrderdelivery.setReturn_no(mListOrderReturnWaitSend.get(x).getReturn_no());
                         returnOrderdelivery.setRep_code(mListOrderReturnWaitSend.get(x).getRep_code());
                         returnOrderdelivery.setReturn_status(mListOrderReturnWaitSend.get(x).getReturn_status());
                         returnOrderdelivery.setReturn_reason(mListOrderReturnWaitSend.get(x).getReason_code());
                         returnOrderdelivery.setReturn_notes(mListOrderReturnWaitSend.get(x).getReturn_note());
-                        returnOrderdelivery.setLat("");
-                        returnOrderdelivery.setLon("");
-                        returnOrderdelivery.setSignature_timestamp("");
+                        returnOrderdelivery.setLat(mListOrderReturnWaitSend.get(x).getLat());
+                        returnOrderdelivery.setLon(mListOrderReturnWaitSend.get(x).getLon());
+                        returnOrderdelivery.setSignature_timestamp(mListOrderReturnWaitSend.get(x).getSignature_timestamp());
                         //returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
 
 
@@ -1551,7 +1551,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListOrderDataALL = mHelper.getOrderWaitList("ALL");
 
             mListOrderDataY.clear();
-            mListOrderDataY = mHelper.getOrderWaitList("WY");
+            mListOrderDataY = mHelper.getOrderWaitList("SWY");
 
             mListOrderDataN.clear();
             mListOrderDataN = mHelper.getOrderWaitList("N");

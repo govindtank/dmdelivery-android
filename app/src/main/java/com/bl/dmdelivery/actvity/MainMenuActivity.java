@@ -329,38 +329,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void showMsgConfirmDialog(String msg,String btntxt)
     {
-//        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
-//        DialogBuilder.setIcon(R.mipmap.ic_launcher);
-//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View v = li.inflate(R.layout.dialog_confirm, null, false);
-//
-//
-//        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-//
-//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-//        mmBtnOk = (Button) v.findViewById(R.id.btnok);
-//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-//
-//        mmTxtTitle.setText("ยืนยัน");
-//        mmTxtMsg.setText(msg);
-//        mmBtnOk.setText(btntxt);
-//
-//        DialogBuilder.setView(v);
-//
-//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                loadData();
-//                DialogBuilder.dismiss();
-//            }
-//        });
-//
-//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                DialogBuilder.dismiss();
-//            }
-//        });
-//
-//        DialogBuilder.show();
 
 
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
@@ -925,27 +893,6 @@ public class MainMenuActivity extends AppCompatActivity {
             new loadDataDataInAsync().execute(serverUrl);
 
 
-//            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-//            {
-//                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-//                {
-//
-//                    serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/LoadOrder";
-//                    new loadDataDataInAsync().execute(serverUrl);
-//
-//
-//                }
-//                else
-//                {
-//                    showMsgDialog(getResources().getString(R.string.error_webservice));
-//
-//                }
-//
-//            }else
-//            {
-//                //showDialog("ไม่สามารถเชื่อมต่อ Internet ได้ กรุณากรุณาตรวจสอบ!!!");
-//                showMsgDialog(getResources().getString(R.string.error_network));
-//            }
 
         } catch (Exception e) {
             //e.printStackTrace();
@@ -1138,9 +1085,11 @@ public class MainMenuActivity extends AppCompatActivity {
                     }
 
                     //source order
+
+                    String deliveryDate = mLoadOrderReq.getDeliveryDate().toString();
                     String _serverurl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/OrderSource";
                     gson = new Gson();
-                    String s[] = mLoadOrderReq.getDeliveryDate().toString().split("/");
+                    String s[] = deliveryDate.split("/");
                     String _datefull = s[2] + s[1] +s[0];
                    /* String dd = _datefull.substring(6,8);
                     String mm = _datefull.substring(5,2);
@@ -1162,6 +1111,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
                         }
                     }
+
+                    mLoadOrderReq.setDeliveryDate(deliveryDate);
 
 
 

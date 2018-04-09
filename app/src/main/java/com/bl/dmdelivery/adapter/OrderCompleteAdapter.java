@@ -135,6 +135,29 @@ public class OrderCompleteAdapter extends GestureAdapter<Order, GestureViewHolde
 
         orderViewHolder.txtOrdertype.setText(orderFlag);
 
+
+
+        switch(order.getSend_status()) {
+            case "0":
+                orderViewHolder.imgCheck.setVisibility(View.VISIBLE);
+                orderViewHolder.imgCheck.setImageResource(R.mipmap.ic_notsend64);
+            case "1":
+                orderViewHolder.imgCheck.setVisibility(View.VISIBLE);
+                orderViewHolder.imgCheck.setImageResource(R.mipmap.ic_send64);
+                break;
+            case "2":
+                orderViewHolder.imgCheck.setVisibility(View.VISIBLE);
+                orderViewHolder.imgCheck.setImageResource(R.mipmap.ic_notsend64);
+                break;
+            case "3":
+                orderViewHolder.imgCheck.setVisibility(View.VISIBLE);
+                orderViewHolder.imgCheck.setImageResource(R.mipmap.ic_send64);
+                break;
+            default:
+                orderViewHolder.imgCheck.setVisibility(View.GONE);
+        }
+
+
     }
 
     private String setRepcodeFormat(String repcode) {

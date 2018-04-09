@@ -823,7 +823,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             mListOrderDataALL = mHelper.getOrderWaitList("ALL");
 
             mListOrderDataY.clear();
-            mListOrderDataY = mHelper.getOrderWaitList("WY");
+            mListOrderDataY = mHelper.getOrderWaitList("SWY");
 
             mListOrderDataN.clear();
             mListOrderDataN = mHelper.getOrderWaitList("N");
