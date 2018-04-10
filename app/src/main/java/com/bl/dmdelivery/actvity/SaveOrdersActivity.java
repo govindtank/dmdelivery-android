@@ -153,7 +153,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
     Order mOrder;
 
-    private OrderAdapter adapter;
+    private OrderAdapter adapter,oldadapter;
 
     private boolean isResumeState = false;
 
@@ -436,8 +436,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 @Override
                 public boolean onItemClick(final Order item, int position) {
 //                    //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Click event on the " + position  + " position", Toast.LENGTH_SHORT);
-//                    toast.show();
+                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Click event on the " + item.getItemno() + " position", Toast.LENGTH_SHORT);
+                    toast.show();
 //                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
 //                    myIntent.putExtra("inv", "'" + mListOrderData.get(position).getTransNo() + "'");
 //                    startActivity(myIntent);
@@ -673,8 +673,16 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     }
 
 
+                    oldadapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
+
+
+                    oldadapter = adapter;
+
                     adapter.notifyDataSetChanged();
-                    //lv.notify();
+
+                    mHelper = new DBHelper(getApplicationContext());
+                    mHelper.update_Arrange_Items_That_users_Call(oldadapter,adapter);
+
                 }
             });
 
