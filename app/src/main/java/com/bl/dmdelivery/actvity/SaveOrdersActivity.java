@@ -42,6 +42,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,6 +67,8 @@ import com.bl.dmdelivery.model.OrderData;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.utility.TagUtils;
 import com.google.gson.Gson;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
@@ -168,6 +171,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
     public TimerTask task;
 
     private String serverUrl;
+    private ImageButton mBtnScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,14 +248,14 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
         timerEnable = true;
 
-        mEdtSearchWord.setText("");
+        //mEdtSearchWord.setText("");
 
 
         setHeader();
 
-        adapter.clearData();
+        /*adapter.clearData();
         adapter.setData(mListOrderDataN);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
 
 //        String resumeOrderList = sp.getString(TagUtils.PREF_RESUME_ORDER_LIST, "");
 //        String selectOrderPosition = sp.getString(TagUtils.PREF_SELECT_ORDER_POSITION, "-1");
@@ -368,6 +372,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
             mBtnClose = (Button) findViewById(R.id.btnClose);
+            mBtnScan = (ImageButton) findViewById(R.id.btnScan);
+
 
             mBtnSaveOrders = (Button) findViewById(R.id.btnOrdersWait);
             mBtnSaveOrdersComplete = (Button) findViewById(R.id.btnOrdersComptete);
@@ -736,6 +742,22 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 public void onTextChanged(CharSequence arg0, int arg1, int arg2,
                                           int arg3) {
                     // TODO Auto-generated method stub
+                }
+            });
+
+            mBtnScan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                   /* IntentIntegrator integrator = new IntentIntegrator(SaveOrdersActivity.this);
+                    integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+                    integrator.setPrompt("Scan a barcode");
+                    integrator.setCameraId(0);  // Use a specific camera of the device
+                    integrator.setBeepEnabled(false);
+                    integrator.setBarcodeImageEnabled(true);
+                    integrator.initiateScan();*/
+                    new IntentIntegrator(SaveOrdersActivity.this).initiateScan();
+
                 }
             });
 
@@ -1896,6 +1918,18 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //    }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                mEdtSearchWord.setText(result.getContents());
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
 
-
+    }
 }
