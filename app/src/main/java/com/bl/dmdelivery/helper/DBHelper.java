@@ -2097,46 +2097,58 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     //(String sigOld,String sigNew,String sigInv,OrderAdapter adapter)
-    public  boolean update_Arrange_Items_That_users_Call(String sigOld,String sigNew,OrderAdapter adapter)
+    public  boolean update_Arrange_Items_That_users_Call(OrderAdapter oldAdapter,OrderAdapter newAdapter)
     {
-        if (sigOld == null || sigOld.isEmpty() || sigOld.equals("null")){return false;}
-        if (sigNew == null || sigNew.isEmpty() || sigNew.equals("null")){return false;}
-        if (adapter == null || adapter.equals("null")){return false;}
+        if (oldAdapter == null || oldAdapter.equals("null")){return false;}
+        if (newAdapter == null || newAdapter.equals("null")){return false;}
 
 
-        int intOld = 0;
-        int intNew = 0;
+
+//        int intOld = 0;
+//        int intNew = 0;
         int intResult=0;
+
+
         try{
 
-//            sqLiteDatabase = this.getWritableDatabase();
+//            if(sigOld == null || sigOld.isEmpty() || sigOld.equals("null"))
+//            {
+//                intOld = 0;
+//            }
+//            else
+//            {
+//                intOld = Integer.parseInt(sigOld);
+//            }
+//
+//            if(sigNew == null || sigNew.isEmpty() || sigNew.equals("null"))
+//            {
+//                intNew = 0;
+//            }
+//            else
+//            {
+//                intNew = Integer.parseInt(sigNew);
+//            }
 
-            //sort data
 
-            Order mOrders = new Order();
-            for(int i=0; i < adapter.getItemCount(); i++)
+
+
+
+
+            for(int i = 0; i < newAdapter.getItemCount(); i++)
             {
-
-
-            }
-
-
-
-
-            //update data
-            for(int i=0; i < adapter.getItemCount(); i++){
                 try
                 {
                     sqLiteDatabase = this.getWritableDatabase();
 
                     ContentValues cv = new ContentValues();
-                    cv.put(Order.Column.Itemno,adapter.getData().get(i).getItemno());
-                    intResult = sqLiteDatabase.update(TableOrder,cv,"TransNo='" + adapter.getData().get(i).getTransNo() + "'",null);
+                    cv.put(Order.Column.TransNo,newAdapter.getData().get(i).getTransNo());
+                    cv.put(Order.Column.Itemno,oldAdapter.getData().get(i).getItemno());
+                    intResult = sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + newAdapter.getData().get(i).getTransNo() + "'",null);
 
-                    if(intResult > 0)
-                    {
-                        return  true;
-                    }
+//                    if(intResult > 0)
+//                    {
+//                        return  true;
+//                    }
                 }
                 catch (Exception e)
                 {
@@ -2154,6 +2166,254 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
+
+
+
+
+//            int itemno = 0;
+//            String sigTransNo = "";
+//            ContentValues cv = new ContentValues();
+//
+//
+//            for(int i=0; i < adapter.getItemCount(); i++)
+//            {
+//                //clean up
+//                cv.clear();
+//
+//
+//
+//
+//                if(intOld < intNew)
+//                {
+//                    //ถ้า old น้อยกว่า New แสดงว่าลงล่าง
+//                    if(i == intNew)
+//                    {
+//                        //จัดเรียงรายการด้านบนและบันทึก
+//                        for(int j=0;j < intNew; j++)
+//                        {
+//
+//                            //ถ้า old เท่ากับ 0
+//                            if(intOld == 0)
+//                            {
+//                                //คำนวณ itemno -1
+//                                itemno = Integer.parseInt(String.valueOf(adapter.getItem(j+1).getItemno()))-1;
+//                                sigTransNo = adapter.getItem(j+1).getTransNo();
+//
+//
+//                                //update
+//                                sqLiteDatabase = this.getWritableDatabase();
+//
+//                                cv.put(Order.Column.Itemno,itemno);
+//                                sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + sigTransNo + "'",null);
+//
+//
+//                                //cleanup
+//                                if (sqLiteDatabase != null)
+//                                {
+//                                    sqLiteDatabase.close();
+//                                }
+//                            }
+//                            else
+//                            {
+//                                //ถ้า old มากกว่า 0
+//                                if(j == intNew)
+//                                {
+//                                    //ถ้า i เท่ากับ new
+//                                    //คำนวณ itemno +1
+//                                    itemno = Integer.parseInt(String.valueOf(adapter.getItem(intNew).getItemno()))+1;
+//                                    sigTransNo = adapter.getItem(intOld).getTransNo();
+//
+//
+//                                    //update
+//                                    sqLiteDatabase = this.getWritableDatabase();
+//
+//                                    cv.put(Order.Column.Itemno,itemno);
+//                                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + sigTransNo + "'",null);
+//
+//
+//                                    //cleanup
+//                                    if (sqLiteDatabase != null)
+//                                    {
+//                                        sqLiteDatabase.close();
+//                                    }
+//                                }
+//                                else
+//                                {
+//                                    //ถ้า i ไม่เท่ากับ new
+//                                    //คำนวณ itemno -1
+//                                    itemno = Integer.parseInt(String.valueOf(adapter.getItem(j+1).getItemno()))-1;
+//                                    sigTransNo = adapter.getItem(j+1).getTransNo();
+//
+//
+//                                    //update
+//                                    sqLiteDatabase = this.getWritableDatabase();
+//
+//                                    cv.put(Order.Column.Itemno,itemno);
+//                                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + sigTransNo + "'",null);
+//
+//
+//                                    //cleanup
+//                                    if (sqLiteDatabase != null)
+//                                    {
+//                                        sqLiteDatabase.close();
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                    else  if(i > intNew)
+//                    {
+//                        //บันทึกรายการด้านล่าง
+//                        itemno = Integer.parseInt(String.valueOf(adapter.getItem(i).getItemno()));
+//                        sigTransNo = adapter.getItem(i).getTransNo();
+//
+//                        //update
+//                        sqLiteDatabase = this.getWritableDatabase();
+//
+//                        cv.put(Order.Column.Itemno,itemno);
+//                        sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + sigTransNo + "'",null);
+//
+//
+//                        //cleanup
+//                        if (sqLiteDatabase != null)
+//                        {
+//                            sqLiteDatabase.close();
+//                        }
+//                    }
+//                }
+//                else if(intOld > intNew)
+//                {
+//                    //ถ้า old มากกว่า New แสดงว่าขึ้นบน
+//                    if(i == intOld)
+//                    {
+//                        for(int j=0;j < intOld; j++)
+//                        {
+//
+//                            //ถ้า intNew เท่ากับ 0
+//                            if(intNew == 0)
+//                            {
+//                                //คำนวณ itemno -1
+//                                itemno = Integer.parseInt(String.valueOf(adapter.getItem(0).getItemno()));
+//                                sigTransNo = adapter.getItem(intOld).getTransNo();
+//
+//
+//                                //update
+//                                sqLiteDatabase = this.getWritableDatabase();
+//
+//                                cv.put(Order.Column.Itemno,itemno);
+//                                sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + sigTransNo + "'",null);
+//
+//
+//                                //cleanup
+//                                if (sqLiteDatabase != null)
+//                                {
+//                                    sqLiteDatabase.close();
+//                                }
+//                            }
+//                            else
+//                            {
+//                                //ถ้า new มากกว่า 0
+//                                if(j == intOld)
+//                                {
+//
+////                                    itemno = Integer.parseInt(String.valueOf(adapter.getItem(intNew).getItemno()))+1;
+////                                    sigTransNo = adapter.getItem(intOld).getTransNo();
+////
+////
+////                                    //update
+////                                    sqLiteDatabase = this.getWritableDatabase();
+////
+////                                    cv.put(Order.Column.Itemno,itemno);
+////                                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + sigTransNo + "'",null);
+////
+////
+////                                    //cleanup
+////                                    if (sqLiteDatabase != null)
+////                                    {
+////                                        sqLiteDatabase.close();
+////                                    }
+//                                }
+//                                else
+//                                {
+//
+//                                    itemno = Integer.parseInt(String.valueOf(adapter.getItem(j+1).getItemno()))+1;
+//                                    sigTransNo = adapter.getItem(j+1).getTransNo();
+//
+//
+//                                    //update
+//                                    sqLiteDatabase = this.getWritableDatabase();
+//
+//                                    cv.put(Order.Column.Itemno,itemno);
+//                                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + sigTransNo + "'",null);
+//
+//
+//                                    //cleanup
+//                                    if (sqLiteDatabase != null)
+//                                    {
+//                                        sqLiteDatabase.close();
+//                                    }
+//
+//                                }
+//                            }
+//                        }
+//                    }
+//                    else if(i > intOld)
+//                    {
+//                        //บันทึกรายการด้านล่าง
+//                        itemno = Integer.parseInt(String.valueOf(adapter.getItem(i).getItemno()))+1;
+//                        sigTransNo = adapter.getItem(i).getTransNo();
+//
+//                        //update
+//                        sqLiteDatabase = this.getWritableDatabase();
+//
+//                        cv.put(Order.Column.Itemno,itemno);
+//                        sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + sigTransNo + "'",null);
+//
+//
+//                        //cleanup
+//                        if (sqLiteDatabase != null)
+//                        {
+//                            sqLiteDatabase.close();
+//                        }
+//                    }
+//                }
+//            }
+
+
+
+
+//            //update data
+//            for(int i=0; i < adapter.getItemCount(); i++){
+//                try
+//                {
+//                    sqLiteDatabase = this.getWritableDatabase();
+//
+//                    ContentValues cv = new ContentValues();
+//                    cv.put(Order.Column.Itemno,adapter.getData().get(i).getItemno());
+//                    intResult = sqLiteDatabase.update(TableOrder,cv,"TransNo='" + adapter.getData().get(i).getTransNo() + "'",null);
+//
+//                    if(intResult > 0)
+//                    {
+//                        return  true;
+//                    }
+//                }
+//                catch (Exception e)
+//                {
+//                    Log.d(TAG,e.getMessage());
+//                }
+//                finally
+//                {
+//                    //cleanup
+//                    if (sqLiteDatabase !=null)
+//                    {
+//                        sqLiteDatabase.close();
+//                    }
+//                }
+//            }
+
+
+
+
             return true;
         }
         catch (Exception e)
@@ -2162,10 +2422,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         finally
         {
-//            //cleanup
-//            if (sqLiteDatabase !=null){
-//                sqLiteDatabase.close();
-//            }
+            //cleanup
+            if (sqLiteDatabase !=null){
+                sqLiteDatabase.close();
+            }
         }
 
         return  false;
