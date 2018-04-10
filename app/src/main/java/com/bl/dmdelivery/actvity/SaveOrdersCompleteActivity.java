@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,6 +67,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -76,6 +79,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     private ImageView mmImvTitle;
     private EditText mEdtSearchWord;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
+
+    private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="0";
 
     String sigTruckNo = "";
     String sigDeliveryDate = "";
@@ -91,6 +96,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     private ArrayList<OrderReturn> mListOrderReturnItemSend = new ArrayList<OrderReturn>();
 
     private ArrayList<Delivery.ReturnOrder.ReturnItem> mOrderReturnItemSend = new ArrayList<Delivery.ReturnOrder.ReturnItem>();
+
+    private ArrayList<Order> mListSearchDataY = new ArrayList<Order>();
 
     //private ArrayList<Order> mListOrderData = new ArrayList<Order>();
 
@@ -464,6 +471,29 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                     startActivity(myIntent);
                     overridePendingTransition(0,0);
                     //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
+            });
+
+            mEdtSearchWord.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                    String text = mEdtSearchWord.getText().toString().toLowerCase(Locale.getDefault());
+                    filter(text);
+
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1,
+                                              int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+                }
+
+                @Override
+                public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                    // TODO Auto-generated method stub
                 }
             });
 
@@ -1173,6 +1203,9 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             mListOrderDataY = mHelper.getOrderWaitList("SWY");
 
 
+            mListSearchDataY.clear();
+            mListSearchDataY = mHelper.getOrderWaitList("SWY");
+
 
 
 
@@ -1195,6 +1228,9 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             mListOrderDataY.clear();
             mListOrderDataY = mHelper.getOrderWaitList("SWY");
+
+            mListSearchDataY.clear();
+            mListSearchDataY = mHelper.getOrderWaitList("SWY");
 
             mListOrderDataN.clear();
             mListOrderDataN = mHelper.getOrderWaitList("N");
@@ -1345,6 +1381,57 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             return repcode;
             //showMsgDialog(e.toString());
         }
+
+    }
+
+    private void filter(String charText) {
+
+        mListOrderDataY.clear();
+        if (charText.toLowerCase(Locale.getDefault()).equals("")) {
+            mListOrderDataY.addAll(mListSearchDataY);
+            mFilter = "0";
+        }
+        else
+        {
+            for (Order wp : mListSearchDataY)
+            {
+                if (wp.getTransNo().toLowerCase(Locale.getDefault()).contains(charText))
+                {
+                    mListOrderDataY.add(wp);
+                }else
+                {
+                    if (wp.getRep_code().toLowerCase(Locale.getDefault()).contains(charText))
+                    {
+                        mListOrderDataY.add(wp);
+                    }else
+                    {
+                        if (wp.getRep_name().toLowerCase(Locale.getDefault()).contains(charText))
+                        {
+                            mListOrderDataY.add(wp);
+                        }else
+                        {
+                            if (wp.getAddress1().toLowerCase(Locale.getDefault()).contains(charText))
+                            {
+                                mListOrderDataY.add(wp);
+                            }else
+                            {
+                                if (wp.getAddress2().toLowerCase(Locale.getDefault()).contains(charText))
+                                {
+                                    mListOrderDataY.add(wp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            mFilter = "1";
+        }
+
+
+        adapter.clearData();
+        adapter.setData(mListOrderDataY);
+        adapter.notifyDataSetChanged();
 
     }
 

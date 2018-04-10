@@ -45,6 +45,7 @@
             android:layout_height="match_parent"
             android:background="@color/colorBGMain"
             android:orientation="horizontal"
+            android:paddingRight="10dp"
             android:weightSum="2">
 
             <include
@@ -54,17 +55,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="1.7"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1.7" />
 
-            <ImageButton
+            <!--<ImageButton-->
+                <!--android:id="@+id/btnScan"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="0.3"-->
+                <!--android:background="@null"-->
+                <!--app:srcCompat="@mipmap/ic_barcode100" />-->
+
+            <Button
                 android:id="@+id/btnScan"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                app:srcCompat="@mipmap/ic_barcode100" />
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.3"
+                android:background="@drawable/btncheckgps"
+                android:drawableLeft="@mipmap/ic_scanbarcode50"
+                android:paddingLeft="5dp"
+                android:paddingRight="11dp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite" />
 
         </LinearLayout>
 

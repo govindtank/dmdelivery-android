@@ -14,10 +14,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,14 +42,17 @@ import com.thesurix.gesturerecycler.GestureManager;
 import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle;
     private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList,mmBtnClose;
     private ImageView mmImvTitle;
-
+    private EditText mEdtSearchWord;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
+
+    private String mFilter="0",mInvoiceno,mSelectall="0",mSelect="0";
 
     private Intent myIntent=null;
 
@@ -62,6 +68,9 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
     private ArrayList<Order> mListOrderDataSend = new ArrayList<Order>();
     private ArrayList<OrderReturn> mListReturnDataALL = new ArrayList<OrderReturn>();
     private ArrayList<OrderReturn> mListReturnDataY = new ArrayList<OrderReturn>();
+
+
+    private ArrayList<OrderReturn> mListSearchDataALL = new ArrayList<OrderReturn>();
 
 
 
@@ -101,7 +110,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
             bindWidget();
 //
-//            setDefaultFonts();
+            setDefaultFonts();
 
             setWidgetControl();
 
@@ -114,14 +123,15 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
+        setHeader();
+
+        mEdtSearchWord.setText("");
+
         if(isResumeState)
         {
 //            //มาจากหน้า slip
 //            Toast toast = Toast.makeText(SaveOrdersReturnListActivity.this, "onResume - OK= " + mListReturnDataALL.get(selectedPositionNotifyDataSetChanged).getReturn_status(), Toast.LENGTH_SHORT);
 //            toast.show();
-
-
-            setHeader();
 
 
             String sigBackToPage = sp.getString(TagUtils.PREF_BACK_TO_PAGE, "");
@@ -164,6 +174,8 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
             lv = (RecyclerView) findViewById(R.id.lv);
 
+            mEdtSearchWord = (EditText) findViewById(R.id.txtSearch);
+
 
             isResumeState = false;
         }
@@ -173,23 +185,23 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
     }
 
 
-//    private void setDefaultFonts() {
-//        try {
-////            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-////            mTxtHeader.setTypeface(tf);
-////            mBtnBack.setTypeface(tf);
-//
-//        } catch (Exception e) {
-//            showMsgDialog(e.toString());
-//        }
-//    }
+    private void setDefaultFonts() {
+        try {
+            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+            mEdtSearchWord.setTypeface(tf);
+//            mBtnBack.setTypeface(tf);
+
+        } catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+    }
 
     private void setWidgetControl() {
         try{
 
             getInit();
 
-            setHeader();
+            //setHeader();
 
 
             final LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
@@ -312,6 +324,29 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                 }
             });
 
+            mEdtSearchWord.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                    String text = mEdtSearchWord.getText().toString().toLowerCase(Locale.getDefault());
+                    filter(text);
+
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1,
+                                              int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+                }
+
+                @Override
+                public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                    // TODO Auto-generated method stub
+                }
+            });
+
         } catch (Exception e) {
             showMsgDialog(e.toString());
         }
@@ -335,8 +370,11 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
-            mListReturnDataY.clear();
-            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
+//            mListReturnDataY.clear();
+//            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
+
+            mListSearchDataALL.clear();
+            mListSearchDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
 
         } catch (Exception e) {
@@ -366,6 +404,9 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
+
+            mListSearchDataALL.clear();
+            mListSearchDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
             mListReturnDataY.clear();
             mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
@@ -596,6 +637,45 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
         });
 
         DialogBuilder.show();
+    }
+
+    private void filter(String charText) {
+
+        mListReturnDataALL.clear();
+        if (charText.toLowerCase(Locale.getDefault()).equals("")) {
+            mListReturnDataALL.addAll(mListSearchDataALL);
+            mFilter = "0";
+        }
+        else
+        {
+            for (OrderReturn wp : mListSearchDataALL)
+            {
+                if (wp.getReturn_no().toLowerCase(Locale.getDefault()).contains(charText))
+                {
+                    mListReturnDataALL.add(wp);
+                }else
+                {
+                    if (wp.getRep_code().toLowerCase(Locale.getDefault()).contains(charText))
+                    {
+                        mListReturnDataALL.add(wp);
+                    }else
+                    {
+                        if (wp.getRep_name().toLowerCase(Locale.getDefault()).contains(charText))
+                        {
+                            mListReturnDataALL.add(wp);
+                        }
+                    }
+                }
+            }
+
+            mFilter = "1";
+        }
+
+
+        adapter.clearData();
+        adapter.setData(mListReturnDataALL);
+        adapter.notifyDataSetChanged();
+
     }
 
 

@@ -108,17 +108,29 @@
                     android:orientation="vertical"
                     android:weightSum="2">
 
+                    <!--<Button-->
+                        <!--android:id="@+id/btnCheckScan"-->
+                        <!--android:layout_width="140dp"-->
+                        <!--android:layout_height="35dp"-->
+                        <!--android:layout_marginLeft="5dp"-->
+                        <!--android:layout_marginRight="5dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@drawable/btnnosend"-->
+                        <!--android:text="ตรวจสอบออเดอร์"-->
+                        <!--android:textColor="@color/colorWhite"-->
+                        <!--android:textSize="@dimen/textbtnMenuSize" />-->
+
                     <Button
                         android:id="@+id/btnCheckScan"
-                        android:layout_width="140dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/btnnosend"
+                        android:padding="5dp"
                         android:text="ตรวจสอบออเดอร์"
-                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBackgroundWhite"
                         android:textSize="@dimen/textbtnMenuSize" />
 
                 </LinearLayout>
@@ -129,8 +141,7 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1.2"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingTop="4dp">
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/btnFlash"
@@ -153,17 +164,29 @@
                     android:orientation="vertical"
                     android:weightSum="2">
 
+                    <!--<Button-->
+                        <!--android:id="@+id/btnConfirm"-->
+                        <!--android:layout_width="140dp"-->
+                        <!--android:layout_height="35dp"-->
+                        <!--android:layout_marginLeft="5dp"-->
+                        <!--android:layout_marginRight="5dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@drawable/btnok"-->
+                        <!--android:text="ยืนยันสินค้าขึ้นรถ"-->
+                        <!--android:textColor="@color/colorWhite"-->
+                        <!--android:textSize="@dimen/textbtnMenuSize" />-->
+
                     <Button
                         android:id="@+id/btnConfirm"
-                        android:layout_width="140dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/btnok"
+                        android:padding="5dp"
                         android:text="ยืนยันสินค้าขึ้นรถ"
-                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBackgroundWhite"
                         android:textSize="@dimen/textbtnMenuSize" />
                 </LinearLayout>
 

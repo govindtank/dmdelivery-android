@@ -171,7 +171,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
     public TimerTask task;
 
     private String serverUrl;
-    private ImageButton mBtnScan;
+    private Button mBtnScan;
+
+    private String mIsScan = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,10 +250,19 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
         timerEnable = true;
 
-        //mEdtSearchWord.setText("");
+
 
 
         setHeader();
+
+
+        if(!mIsScan.equals("1"))
+        {
+            mEdtSearchWord.setText("");
+            adapter.clearData();
+            adapter.setData(mListOrderDataN);
+            adapter.notifyDataSetChanged();
+        }
 
         /*adapter.clearData();
         adapter.setData(mListOrderDataN);
@@ -372,7 +383,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mBtnBack = (Button) findViewById(R.id.btnBack);
             mBtnMenu = (Button) findViewById(R.id.btnMenu);
             mBtnClose = (Button) findViewById(R.id.btnClose);
-            mBtnScan = (ImageButton) findViewById(R.id.btnScan);
+            mBtnScan = (Button) findViewById(R.id.btnScan);
 
 
             mBtnSaveOrders = (Button) findViewById(R.id.btnOrdersWait);
@@ -748,6 +759,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mBtnScan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    mIsScan = "1";
 
                    /* IntentIntegrator integrator = new IntentIntegrator(SaveOrdersActivity.this);
                     integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
@@ -1798,7 +1811,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mFilter = "1";
         }
 
-
+        adapter.clearData();
         adapter.setData(mListOrderDataN);
         adapter.notifyDataSetChanged();
 
@@ -1923,7 +1936,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
             if(result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 mEdtSearchWord.setText(result.getContents());
             }
