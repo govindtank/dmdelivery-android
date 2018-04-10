@@ -1043,15 +1043,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 break;
         }
 
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TableOrder + " WHERE " + sigCriteriaSql + " ORDER BY Itemno ASC" ,null);
 
-        Cursor cursor = sqLiteDatabase.query(TableOrder,
-                null,
-                sigCriteriaSql,
-                null,
-                null,
-                null,
-                Order.Column.Itemno,
-                null);
+
+
+//        Cursor cursor = sqLiteDatabase.query(TableOrder,
+//                null,
+//                sigCriteriaSql,
+//                null,
+//                null,
+//                null,
+//                Order.Column.Itemno,
+//                null);
 
 
         if (cursor != null  && cursor.getCount()>0) {
@@ -2097,66 +2100,41 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     //(String sigOld,String sigNew,String sigInv,OrderAdapter adapter)
-    public  boolean update_Arrange_Items_That_users_Call(OrderAdapter newAdapter)
+    public  boolean update_DragandDrop_items(int xform , int xTo, OrderAdapter newAdapter)
     {
-//        if (oldAdapter == null || oldAdapter.equals("null")){return false;}
         if (newAdapter == null || newAdapter.equals("null")){return false;}
 
 
-
-//        int intOld = 0;
-//        int intNew = 0;
         int intResult=0;
-
 
         try{
 
-//            if(sigOld == null || sigOld.isEmpty() || sigOld.equals("null"))
+//            for(int i = 0; i < newAdapter.getItemCount(); i++)
 //            {
-//                intOld = 0;
+//                try
+//                {
+//                    sqLiteDatabase = this.getWritableDatabase();
+//                    ContentValues cv = new ContentValues();
+//                    cv.put(Order.Column.Itemno,i);
+//                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + newAdapter.getItem(i).getTransNo() + "'",null);
+//                }
+//                catch (Exception e)
+//                {
+//                    Log.d(TAG,e.getMessage());
+//                }
+//                finally
+//                {
+//                    //cleanup
+//                    if (sqLiteDatabase != null)
+//                    {
+//                        sqLiteDatabase.close();
+//                    }
+//                }
 //            }
-//            else
-//            {
-//                intOld = Integer.parseInt(sigOld);
-//            }
-//
-//            if(sigNew == null || sigNew.isEmpty() || sigNew.equals("null"))
-//            {
-//                intNew = 0;
-//            }
-//            else
-//            {
-//                intNew = Integer.parseInt(sigNew);
-//            }
 
 
 
 
-
-
-            for(int i = 0; i < newAdapter.getItemCount(); i++)
-            {
-                try
-                {
-                    sqLiteDatabase = this.getWritableDatabase();
-                    ContentValues cv = new ContentValues();
-//                    cv.put(Order.Column.TransNo,newAdapter.getItem(i).getTransNo());
-                    cv.put(Order.Column.Itemno,i);
-                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + newAdapter.getItem(i).getTransNo() + "'",null);
-                }
-                catch (Exception e)
-                {
-                    Log.d(TAG,e.getMessage());
-                }
-                finally
-                {
-                    //cleanup
-                    if (sqLiteDatabase != null)
-                    {
-                        sqLiteDatabase.close();
-                    }
-                }
-            }
 
 
 
@@ -2369,38 +2347,6 @@ public class DBHelper extends SQLiteOpenHelper {
 //                        {
 //                            sqLiteDatabase.close();
 //                        }
-//                    }
-//                }
-//            }
-
-
-
-
-//            //update data
-//            for(int i=0; i < adapter.getItemCount(); i++){
-//                try
-//                {
-//                    sqLiteDatabase = this.getWritableDatabase();
-//
-//                    ContentValues cv = new ContentValues();
-//                    cv.put(Order.Column.Itemno,adapter.getData().get(i).getItemno());
-//                    intResult = sqLiteDatabase.update(TableOrder,cv,"TransNo='" + adapter.getData().get(i).getTransNo() + "'",null);
-//
-//                    if(intResult > 0)
-//                    {
-//                        return  true;
-//                    }
-//                }
-//                catch (Exception e)
-//                {
-//                    Log.d(TAG,e.getMessage());
-//                }
-//                finally
-//                {
-//                    //cleanup
-//                    if (sqLiteDatabase !=null)
-//                    {
-//                        sqLiteDatabase.close();
 //                    }
 //                }
 //            }

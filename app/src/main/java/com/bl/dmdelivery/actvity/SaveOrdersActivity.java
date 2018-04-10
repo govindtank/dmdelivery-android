@@ -679,8 +679,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                     adapter.notifyDataSetChanged();
 
-                    mHelper = new DBHelper(getApplicationContext());
-                    mHelper.update_Arrange_Items_That_users_Call(adapter);
+//                    mHelper = new DBHelper(getApplicationContext());
+//                    mHelper.update_DragandDrop_items(fromPos,toPos,adapter);
                 }
             });
 
