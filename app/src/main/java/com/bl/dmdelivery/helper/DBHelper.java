@@ -2140,9 +2140,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 {
                     sqLiteDatabase = this.getWritableDatabase();
                     ContentValues cv = new ContentValues();
-                    cv.put(Order.Column.TransNo,newAdapter.getData().get(i).getTransNo());
+//                    cv.put(Order.Column.TransNo,newAdapter.getItem(i).getTransNo());
                     cv.put(Order.Column.Itemno,i);
-                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + newAdapter.getData().get(i).getTransNo() + "'",null);
+                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + newAdapter.getItem(i).getTransNo() + "'",null);
                 }
                 catch (Exception e)
                 {
@@ -2151,7 +2151,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 finally
                 {
                     //cleanup
-                    if (sqLiteDatabase !=null)
+                    if (sqLiteDatabase != null)
                     {
                         sqLiteDatabase.close();
                     }

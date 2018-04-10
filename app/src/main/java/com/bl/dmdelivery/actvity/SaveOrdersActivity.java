@@ -673,16 +673,14 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     }
 
 
-                    oldadapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
+//                    oldadapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
+//                    oldadapter = adapter;
 
-
-                    oldadapter = adapter;
 
                     adapter.notifyDataSetChanged();
 
                     mHelper = new DBHelper(getApplicationContext());
-                    mHelper.update_Arrange_Items_That_users_Call(oldadapter,adapter);
-
+                    mHelper.update_Arrange_Items_That_users_Call(adapter);
                 }
             });
 
