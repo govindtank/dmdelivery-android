@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,7 +74,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mmTxtMsg;
     private Button mBtnBack,mBtnMenu,mBtnSaveOrders,mBtnSaveOrdersComplete,mBtnReturnList,mBtnClose,mmBtnClose;
     private ImageView mmImvTitle;
-
+    private EditText mEdtSearchWord;
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
     String sigTruckNo = "";
@@ -145,7 +146,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             bindWidget();
 //
-//            setDefaultFonts();
+            setDefaultFonts();
 
             setWidgetControl();
 
@@ -191,6 +192,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
         timerEnable = true;
 
+        mEdtSearchWord.setText("");
 
         setHeader();
 
@@ -314,7 +316,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             mBtnMenu.setVisibility(View.INVISIBLE);
 
-
+            mEdtSearchWord = (EditText) findViewById(R.id.txtSearch);
 
 //            lv = (RecyclerView) findViewById(R.id.lv);
 //
@@ -327,16 +329,16 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
     }
 
 
-//    private void setDefaultFonts() {
-//        try {
-////            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-////            mTxtHeader.setTypeface(tf);
-////            mBtnBack.setTypeface(tf);
-//
-//        } catch (Exception e) {
-//            showMsgDialog(e.toString());
-//        }
-//    }
+    private void setDefaultFonts() {
+        try {
+            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+            mEdtSearchWord.setTypeface(tf);
+//            mBtnBack.setTypeface(tf);
+
+        } catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+    }
 
     private void setWidgetControl() {
         try{
@@ -1168,7 +1170,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
 
             mListOrderDataY.clear();
-            mListOrderDataY = mHelper.getOrderWaitList("WY");
+            mListOrderDataY = mHelper.getOrderWaitList("SWY");
 
 
 

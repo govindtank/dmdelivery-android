@@ -190,7 +190,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             bindWidget();
 //
-//            setDefaultFonts();
+            setDefaultFonts();
 
             setWidgetControl();
 
@@ -388,16 +388,16 @@ public class SaveOrdersActivity extends AppCompatActivity {
     }
 
 
-//    private void setDefaultFonts() {
-//        try {
-////            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-////            mTxtHeader.setTypeface(tf);
-////            mBtnBack.setTypeface(tf);
-//
-//        } catch (Exception e) {
-//            showMsgDialog(e.toString());
-//        }
-//    }
+    private void setDefaultFonts() {
+        try {
+            Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+            mEdtSearchWord.setTypeface(tf);
+//            mBtnBack.setTypeface(tf);
+
+        } catch (Exception e) {
+            showMsgDialog(e.toString());
+        }
+    }
 
     private void setWidgetControl() {
         try{
@@ -1677,8 +1677,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mListSearchDataN = mHelper.getOrderWaitList("N");
 
 
-            String text = mEdtSearchWord.getText().toString().toLowerCase(Locale.getDefault());
-            filter(text);
+//            String text = mEdtSearchWord.getText().toString().toLowerCase(Locale.getDefault());
+//            filter(text);
 
 
         } catch (Exception e) {
@@ -1777,11 +1777,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
         }
 
 
-        adapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
         adapter.setData(mListOrderDataN);
-
-        lv.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
 
     }
 

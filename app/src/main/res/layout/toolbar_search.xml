@@ -60,8 +60,8 @@
                     android:imeOptions="actionDone"
                     android:inputType="textPersonName"
                     android:textColor="@color/colorText"
-                    android:textColorHint="@color/colorHintText"
-                    android:textSize="@dimen/textbtnDialogSize"
+                    android:textColorHint="@color/colorAccent"
+                    android:textSize="@dimen/textbtnMenuSize"
                     android:textStyle="normal" />
             </LinearLayout>
 
