@@ -2097,9 +2097,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     //(String sigOld,String sigNew,String sigInv,OrderAdapter adapter)
-    public  boolean update_Arrange_Items_That_users_Call(OrderAdapter oldAdapter,OrderAdapter newAdapter)
+    public  boolean update_Arrange_Items_That_users_Call(OrderAdapter newAdapter)
     {
-        if (oldAdapter == null || oldAdapter.equals("null")){return false;}
+//        if (oldAdapter == null || oldAdapter.equals("null")){return false;}
         if (newAdapter == null || newAdapter.equals("null")){return false;}
 
 
@@ -2139,16 +2139,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 try
                 {
                     sqLiteDatabase = this.getWritableDatabase();
-
                     ContentValues cv = new ContentValues();
                     cv.put(Order.Column.TransNo,newAdapter.getData().get(i).getTransNo());
-                    cv.put(Order.Column.Itemno,oldAdapter.getData().get(i).getItemno());
-                    intResult = sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + newAdapter.getData().get(i).getTransNo() + "'",null);
-
-//                    if(intResult > 0)
-//                    {
-//                        return  true;
-//                    }
+                    cv.put(Order.Column.Itemno,i);
+                    sqLiteDatabase.update(TableOrder,cv,Order.Column.TransNo + "='" + newAdapter.getData().get(i).getTransNo() + "'",null);
                 }
                 catch (Exception e)
                 {
