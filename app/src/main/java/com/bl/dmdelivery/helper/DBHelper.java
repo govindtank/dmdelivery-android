@@ -2042,10 +2042,16 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+
+
+
+
     public  boolean IsCheckOrdersReturnBalance(ArrayList<Order> mListOrder)
     {
         if(mListOrder==null){return false;}
         if(mListOrder.size()==0){return false;}
+
+        boolean IsCheckedStatus = false;
 
         try{
             String sigGetData="";
@@ -2080,7 +2086,13 @@ public class DBHelper extends SQLiteOpenHelper {
             }
 
             if(!cursor.isAfterLast()){
-                return true;
+                //ถ้ามีการรับคืนแล้ว
+                IsCheckedStatus = false;
+            }
+            else
+            {
+                //ไม่มีการรับคืน
+                IsCheckedStatus = true;
             }
         }
         catch (Exception e)
@@ -2095,14 +2107,49 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
 
-        return false;
+        return IsCheckedStatus;
     }
 
 
+    public boolean IsCheckOrdersShowMenuOnReturnList(String sigTransNo) {
+        boolean IsCheckedStatus = false;
+        try{
+            sqLiteDatabase = this.getReadableDatabase();
+            Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TableOrder + " WHERE delivery_status IN ('S','W','Y') AND return_flag='R' AND TransNo='" + sigTransNo + "' ORDER BY Itemno ASC" ,null);
+
+            if (cursor != null  && cursor.getCount()>0) {
+                cursor.moveToFirst();
+            }
+
+
+            if(!cursor.isAfterLast()){
+                //ถ้ามีการรับคืนแล้ว
+                IsCheckedStatus = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+        }
+        finally
+        {
+            //clean up
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return  IsCheckedStatus;
+    }
+
+
+
+
+
     //(String sigOld,String sigNew,String sigInv,OrderAdapter adapter)
-    public  boolean update_DragandDrop_items(int xform , int xTo, OrderAdapter newAdapter)
+    public  boolean update_DragandDrop_items(int xform , int xTo)
     {
-        if (newAdapter == null || newAdapter.equals("null")){return false;}
+//        if (newAdapter == null || newAdapter.equals("null")){return false;}
 
 
         int intResult=0;
