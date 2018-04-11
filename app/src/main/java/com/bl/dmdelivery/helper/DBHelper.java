@@ -775,6 +775,15 @@ public class DBHelper extends SQLiteOpenHelper {
             mOrderReturn.setReturn_unit(cursor.getString(13));
             mOrderReturn.setReturn_remark(cursor.getString(14));
             mOrderReturn.setReturn_status(cursor.getString(15));
+            mOrderReturn.setReason_code(cursor.getString(16));
+            mOrderReturn.setReturn_note(cursor.getString(17));
+            mOrderReturn.setFullpathimage(cursor.getString(18));
+            mOrderReturn.setTrack_no(cursor.getString(19));
+            mOrderReturn.setDelivery_date(cursor.getString(20));
+            mOrderReturn.setLat(cursor.getString(21));
+            mOrderReturn.setLon(cursor.getString(22));
+            mOrderReturn.setSignature_timestamp(cursor.getString(23));
+            mOrderReturn.setSendtoserver_timestamp(cursor.getString(24));
             mOrderReturnlist.add(mOrderReturn);
 
             cursor.moveToNext();
@@ -2155,6 +2164,17 @@ public class DBHelper extends SQLiteOpenHelper {
         int intResult=0;
 
         try{
+
+
+             ArrayList<Order> mOrders = new ArrayList<Order>();
+
+             mOrders = getOrderWaitList("ALL");
+
+
+
+
+
+
 
 //            for(int i = 0; i < newAdapter.getItemCount(); i++)
 //            {
