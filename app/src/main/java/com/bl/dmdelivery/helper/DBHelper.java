@@ -2115,7 +2115,7 @@ public class DBHelper extends SQLiteOpenHelper {
         boolean IsCheckedStatus = false;
         try{
             sqLiteDatabase = this.getReadableDatabase();
-            Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TableOrder + " WHERE delivery_status IN ('S','W','Y') AND return_flag='R' AND TransNo='" + sigTransNo + "' ORDER BY Itemno ASC" ,null);
+            Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TableOrder + " WHERE delivery_status ='W' AND return_flag='R' AND TransNo='" + sigTransNo + "' ORDER BY Itemno ASC" ,null);
 
             if (cursor != null  && cursor.getCount()>0) {
                 cursor.moveToFirst();
