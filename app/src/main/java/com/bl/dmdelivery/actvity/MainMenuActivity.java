@@ -4,21 +4,28 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +61,8 @@ import com.bl.dmdelivery.model.OrderScan;
 import com.bl.dmdelivery.model.OrderScanReq;
 import com.bl.dmdelivery.model.OrderScanResponse;
 import com.bl.dmdelivery.model.OrderSourceResponse;
+import com.bl.dmdelivery.model.PhoneNumberRequest;
+import com.bl.dmdelivery.model.PhoneNumberResponse;
 import com.bl.dmdelivery.model.Reason;
 import com.bl.dmdelivery.model.TelListMenu;
 import com.bl.dmdelivery.model.Unpack;
@@ -88,6 +97,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private String  mSelect="0";
     String truckNo = "";
     String deliveryDate = "";
+    String mDC = "";
 
     private RecyclerView lvList;
     private RecyclerView.Adapter mListAdapter;
@@ -667,6 +677,8 @@ public class MainMenuActivity extends AppCompatActivity {
 //
 //        }
 
+        arrayTelListMenu.get(0).setIsselect("1");
+
 
 //
         mListAdapter = new DownloadTelViewAdapter(getApplicationContext(),arrayTelListMenu);
@@ -746,10 +758,46 @@ public class MainMenuActivity extends AppCompatActivity {
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 //loadData();
+
+
+                switch(mSelectDcListIndex) {
+                    case 0:
+                        mDC = "ALL";
+                        break;
+                    case 1:
+                        mDC = "BK";
+                        break;
+                    case 2:
+                        mDC = "CN";
+                        break;
+                    case 3:
+                        mDC = "HY";
+                        break;
+                    case 4:
+                        mDC = "KK";
+                        break;
+                    case 5:
+                        mDC = "LP";
+                        break;
+                    case 6:
+                        mDC = "NS";
+                        break;
+                    case 7:
+                        mDC = "SR";
+                        break;
+                    case 8:
+                        mDC = "ST";
+                        break;
+                    default:
+                        mDC = "ALL";
+                }
+
                 DialogBuilder.dismiss();
 
-                Toast toast = Toast.makeText(MainMenuActivity.this, arrayTelListMenu.get(mSelectDcListIndex).getTextname(), Toast.LENGTH_SHORT);
-                toast.show();
+                loadContactsData();
+
+//                Toast toast = Toast.makeText(MainMenuActivity.this, arrayTelListMenu.get(mSelectDcListIndex).getTextname(), Toast.LENGTH_SHORT);
+//                toast.show();
 
 
             }
@@ -1189,9 +1237,213 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
+    private void loadContactsData() {
+
+        try {
+
+            serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/PhoneNumber";
+            new loadContactsDataInAsync().execute(serverUrl);
+
+
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    private class loadContactsDataInAsync extends AsyncTask<String, Void, PageResultHolder>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mProgressDialog = new ACProgressFlower.Builder(MainMenuActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .text(getResources().getString(R.string.progress_loading))
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected PageResultHolder doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            PageResultHolder pageResultHolder = new PageResultHolder();
+            //String xmlInput = params[0];
+            try
+            {
+
+                PhoneNumberRequest pnp = new PhoneNumberRequest();
+
+                pnp.setDC(mDC);
+
+
+                Gson gson = new Gson();
+                String json = gson.toJson(pnp);
+                String result = new WebServiceHelper().postServiceAPI(params[0],json);
+                Log.i("Result", result.toString());
+
+                //convert json to obj
+                PhoneNumberResponse obj = gson.fromJson(result,PhoneNumberResponse.class);
+
+
+//                ArrayList<Order> orders = new ArrayList<Order>();
+//                ArrayList<OrderReturn> orderReturns = new ArrayList<OrderReturn>();
+//                ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
+//                ArrayList<Reason> reasons = new ArrayList<Reason>();
+
+
+                if (obj.getResponseCode().equals("1"))
+                {
+                    for(int i=0; i<obj.getPhonenumber().size();i++){
+
+
+                        if(!contactExists(obj.getPhonenumber().get(i).getPhone()))
+                        {
+                            //addContact
+                            addContact(obj.getPhonenumber().get(i).getContact(),obj.getPhonenumber().get(i).getPhone());
+                        }
+
+                    }
+
+
+                }
+
+                pageResultHolder.content = obj.getResponseCode();
+
+
+
+            } catch (Exception e) {
+                pageResultHolder.content = "Exception : NoData";
+                pageResultHolder.exception = e;
+            }
+
+            return pageResultHolder;
+        }
+
+        @Override
+        protected void onPostExecute(final PageResultHolder result) {
+            // TODO Auto-generated method stub
+
+            //final String msg = "";
+
+            try {
+
+
+
+                if (result.exception != null) {
+                    mProgressDialog.dismiss();
+                    showMsgDialog(result.exception.toString());
+                }
+                else
+                {
+
+                    if (result.content.equals("1"))
+                    {
+
+                        result.content = getResources().getString(R.string.txt_text_load_contacts_success);
+                    }
+                    else
+                    {
+                        result.content = getResources().getString(R.string.error_data_not_in_system);
+                    }
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+
+                            mProgressDialog.dismiss();
+
+                            showMsgDialog(result.content.toString());
+
+                        }
+                    }, 200);
+
+                    /*runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    });*/
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     private class PageResultHolder {
         private String content;
         private Exception exception;
+    }
+
+
+    public boolean contactExists(String number) {
+        /// number is the phone number
+        Uri lookupUri = Uri.withAppendedPath(
+                ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
+                Uri.encode(number));
+        String[] mPhoneNumberProjection = { ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.NUMBER, ContactsContract.PhoneLookup.DISPLAY_NAME };
+        Cursor cur = this.getContentResolver().query(lookupUri,mPhoneNumberProjection, null, null, null);
+        try {
+            if (cur.moveToFirst()) {
+                return true;
+            }
+        } finally {
+            if (cur != null)
+                cur.close();
+        }
+        return false;
+    }
+
+    public void addContact(String name, String phone)
+    {
+        String fname = name;
+        String fphone = phone;
+        String mask = Character.toString((char)10)+":";
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+        int rawContactInsertIndex = ops.size();
+
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build());
+        ops.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, fname+mask).build());
+        ops.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.RawContacts.Data.RAW_CONTACT_ID,rawContactInsertIndex)
+                .withValue(ContactsContract.RawContacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, fphone)
+                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                .build());
+
+        try {
+            ContentProviderResult[] res = getContentResolver().applyBatch(
+                    ContactsContract.AUTHORITY, ops);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+
     }
 
     @Override

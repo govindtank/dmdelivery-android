@@ -453,7 +453,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 public void onClick(View view) {
 
                     mSendStatus = "0";
-                    showMsgReasonNoApproveSelectedSingleDialog("0");
+                    showMsgReasonNoApproveSelectedSingleDialog(mSendStatus);
 
 
 
@@ -466,7 +466,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 public void onClick(View view) {
 
                     mSendStatus = "2";
-                    showMsgReasonNoApproveSelectedSingleDialog("2");
+                    showMsgReasonNoApproveSelectedSingleDialog(mSendStatus);
 
 
 

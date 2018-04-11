@@ -141,6 +141,7 @@ public class OrderCompleteAdapter extends GestureAdapter<Order, GestureViewHolde
             case "0":
                 orderViewHolder.imgCheck.setVisibility(View.VISIBLE);
                 orderViewHolder.imgCheck.setImageResource(R.mipmap.ic_notsend64);
+                break;
             case "1":
                 orderViewHolder.imgCheck.setVisibility(View.VISIBLE);
                 orderViewHolder.imgCheck.setImageResource(R.mipmap.ic_send64);

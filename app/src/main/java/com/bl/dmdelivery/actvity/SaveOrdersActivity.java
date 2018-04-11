@@ -933,7 +933,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         returnOrderdelivery.setLat(mListOrderReturnWaitSend.get(x).getLat());
                         returnOrderdelivery.setLon(mListOrderReturnWaitSend.get(x).getLon());
                         returnOrderdelivery.setSignature_timestamp(mListOrderReturnWaitSend.get(x).getSignature_timestamp());
-                        //returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
+                        returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
 
 
                         mListOrderReturnItemSend.clear();

@@ -50,6 +50,7 @@
     <string name="txt_text_ddate">วันที่จัดส่ง</string>
     <string name="txt_text_update_success">UPDATE SUCCESS !!</string>
     <string name="txt_text_load_data_success">โหลดข้อมูลเรียบร้อยแล้ว !!</string>
+    <string name="txt_text_load_contacts_success">โหลดเบอร์โทรติดต่อ เรียบร้อยแล้ว !!</string>
     <string name="txt_text_close">ปิด</string>
     <string name="txt_text_save">จองออเดอร์</string>
     <string name="txt_text_cancel">ยกเลิกการจอง</string>
