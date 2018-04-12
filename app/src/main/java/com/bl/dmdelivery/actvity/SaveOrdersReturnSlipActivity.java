@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -326,6 +327,23 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity implements
 
                         takeScreenshot();
 
+
+//                        SystemClock.sleep(1000);
+
+
+//                        Thread closeActivity = new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+                                try {
+                                    Thread.sleep(1000);
+                                    // Do some stuff
+                                } catch (Exception e) {
+                                    e.getLocalizedMessage();
+                                }
+//                            }
+//                        });
+
+
                         doSaveProcessing();
                     }
                     else
@@ -509,7 +527,6 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity implements
 
 
         String fileName= "V" + getResources().getString(R.string.app_version_slip) + "_" + Build.SERIAL.trim() +  "-" + truckNo + "-" + mOrderReturnGetData.getReftrans_no() + "-" + mOrderReturnGetData.getRep_code() + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + ".jpg";
-
 
         try {
             // image naming and path  to include sd card  appending name you choose for file

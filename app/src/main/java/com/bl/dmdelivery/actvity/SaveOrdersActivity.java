@@ -661,9 +661,12 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                    toast.show();
 
 
-//                    Toast toast2 = Toast.makeText(SaveOrdersActivity.this,adapter.getItem(fromPos).getRep_name(), Toast.LENGTH_SHORT);
+//                    Toast toast2 = Toast.makeText(SaveOrdersActivity.this,mListOrderDataN.get(fromPos).getItemno() + " --- " + mListOrderDataN.get(toPos).getItemno(), Toast.LENGTH_SHORT);
 //                    toast2.show();
 
+
+                    mHelper = new DBHelper(getApplicationContext());
+                    mHelper.update_DragandDrop_items(mListOrderDataN.get(fromPos).getItemno(),mListOrderDataN.get(toPos).getItemno());
 
 
                     if (fromPos <= toPos) {
@@ -673,14 +676,19 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     }
 
 
-//                    oldadapter = new OrderAdapter(getApplicationContext(), R.layout.list_row_save_order_item);
-//                    oldadapter = adapter;
+
+//                    adapter.notifyDataSetChanged();
 
 
+                    mHelper = new DBHelper(getApplicationContext());
+                    mListOrderDataN.clear();
+                    mListOrderDataN = mHelper.getOrderWaitList("N");
+
+                    adapter.clearData();
+                    adapter.setData(mListOrderDataN);
                     adapter.notifyDataSetChanged();
+//                    lv.scrollToPosition(position);
 
-//                    mHelper = new DBHelper(getApplicationContext());
-//                    mHelper.update_DragandDrop_items(fromPos,toPos,adapter);
                 }
             });
 
