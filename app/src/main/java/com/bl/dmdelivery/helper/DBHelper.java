@@ -2152,8 +2152,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    //(String sigOld,String sigNew,String sigInv,OrderAdapter adapter)
-    public  boolean update_DragandDrop_items(int xForm_ItemNo , int xTo_ItemNo)
+    public  void update_DragandDrop_items(int xForm_ItemNo , int xTo_ItemNo)
     {
         try{
 
@@ -2165,23 +2164,24 @@ public class DBHelper extends SQLiteOpenHelper {
              for(int i=0;i < mOrders.size();i++)
              {
 
-                 //ดึงข้อมูล itemno
+                 //ดึงข้อมูล itemno รายการล่าสุด
                  getItemno = mOrders.get(i).getItemno();
 
 
+                 //ถ้า xForm_ItemNo มากกว่า xTo_ItemNo นั้นแสสดงว่า จาก ล่าง-->บน
                  if(xForm_ItemNo > xTo_ItemNo)
                  {
                      //ล่าง-->บน
                      if (getItemno == xForm_ItemNo)
                      {
 
-                         //เรียงออร์เดอร์ใหม่
+                         //เรียงออร์เดอร์ ระหว่าง xForm_ItemNo --> xTo_ItemNo ใหม่อีกครั้ง
                          for(int j=0;j < mOrders.size();j++)
                          {
-                             //ดึงข้อมูล
+                             //ดึงข้อมูล itemno รายการล่าสุด
                              int iGET_ITEMNO = mOrders.get(j).getItemno();
 
-                             //ถ้า iGET_ITEMNO เท่ากับ xForm_ItemNo
+                             //ถ้าดึงข้อมูล itemno รายการล่าสุด เท่ากับ xForm_ItemNo
                              if (iGET_ITEMNO == xForm_ItemNo)
                              {
                                 //ปรับปรุงข้อมูลปกติ (itemno)
@@ -2189,10 +2189,10 @@ public class DBHelper extends SQLiteOpenHelper {
                              }
                              else
                              {
-                                 //ถ้า iGET_ITEMNO น้อยกว่า xForm_ItemNo
+                                 //ถ้าดึงข้อมูล itemno รายการล่าสุด น้อยกว่า xForm_ItemNo
                                  if (iGET_ITEMNO < xForm_ItemNo )
                                  {
-                                     //ถ้าดึงข้อมูบมาแล้ว getitemno มากกว่า toitemno ให้  +1
+                                     //ถ้าดึงข้อมูล itemno รายการล่าสุด เท่ากับ xTo_ItemNo
                                      if (iGET_ITEMNO == xTo_ItemNo)
                                      {
                                          //ปรับปรุงข้อมูลปกติ (itemno)
@@ -2200,6 +2200,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                      }
                                      else  if (iGET_ITEMNO > xTo_ItemNo)
                                      {
+                                         //ถ้าดึงข้อมูล itemno รายการล่าสุด มากกว่า toitemno
                                          //ปรับปรุงข้อมูลปกติ (itemno)
                                          updateOrdersItemno(iGET_ITEMNO + 1,mOrders.get(j).getTransNo());
                                      }
@@ -2211,29 +2212,30 @@ public class DBHelper extends SQLiteOpenHelper {
                  }
                  else if(xForm_ItemNo < xTo_ItemNo)
                  {
+                     //ถ้า xForm_ItemNo น้อยกว่า xTo_ItemNo นั้นแสสดงว่า จาก บน-->ล่าง
                      // บน-->ล่าง
                      if (getItemno == xTo_ItemNo)
                      {
 
-                        //เรียงออร์เดอร์ใหม่
+                         //เรียงออร์เดอร์ ระหว่าง xForm_ItemNo --> xTo_ItemNo ใหม่อีกครั้ง
                          for(int j=0;j < mOrders.size();j++)
                          {
 
-                             //ดึงข้อมูล
+                             //ดึงข้อมูล itemno รายการล่าสุด
                              int iGET_ITEMNO = mOrders.get(j).getItemno();
 
-                             //ถ้า iGET_ITEMNO เท่ากับ xTo_ItemNo
+                             //ถ้าดึงข้อมูล itemno รายการล่าสุด เท่ากับ xTo_ItemNo
                              if (iGET_ITEMNO == xTo_ItemNo)
                              {
-                                 //ปรับปรุงข้อมูลปกติ (itemno) xForm_ItemNo + (xTo_ItemNo - xForm_ItemNo)
+                                 //ปรับปรุงข้อมูลปกติ (itemno)
                                  updateOrdersItemno(iGET_ITEMNO - 1,mOrders.get(j).getTransNo());
                              }
                              else
                              {
-                                 //ถ้า iGET_ITEMNO น้อยกว่า xForm_ItemNo
+                                 //ถ้าดึงข้อมูล itemno รายการล่าสุด น้อยกว่า xTo_ItemNo
                                  if (iGET_ITEMNO < xTo_ItemNo )
                                  {
-                                     //ถ้าดึงข้อมูบมาแล้ว getitemno มากกว่า toitemno ให้  -1
+                                     //ถ้าดึงข้อมูบมาแล้ว getitemno มากกว่า toitemno
                                      if (iGET_ITEMNO == xForm_ItemNo)
                                      {
                                          //ปรับปรุงข้อมูลปกติ (itemno)
@@ -2241,6 +2243,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                      }
                                      else if (iGET_ITEMNO > xForm_ItemNo)
                                      {
+                                         //ถ้าดึงข้อมูล itemno รายการล่าสุด มากกว่า xForm_ItemNo
                                          //ปรับปรุงข้อมูลปกติ (itemno)
                                          updateOrdersItemno(iGET_ITEMNO - 1,mOrders.get(j).getTransNo());
                                      }
@@ -2253,22 +2256,11 @@ public class DBHelper extends SQLiteOpenHelper {
                      }
                  }
              }
-
-            return true;
         }
         catch (Exception e)
         {
             Log.d(TAG,e.getMessage());
         }
-        finally
-        {
-//            //cleanup
-//            if (sqLiteDatabase !=null){
-//                sqLiteDatabase.close();
-//            }
-        }
-
-        return  false;
     }
 
 
