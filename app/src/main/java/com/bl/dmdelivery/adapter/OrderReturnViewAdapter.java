@@ -3,6 +3,7 @@ package com.bl.dmdelivery.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -69,31 +70,37 @@ public class OrderReturnViewAdapter extends RecyclerView.Adapter<OrderReturnView
             String sigReturn_status=String.valueOf(f.getReturn_status());
             if(sigReturn_status.isEmpty()){
                 //ถ้าว่าง "ยังไม่รับคืน"
-                holder.txtRefCode.setText("สถานะ: ยังไม่รับคืน");
+                holder.txtReturnStatus.setText("ยังไม่รับคืน");
+                holder.txtReturnStatus.setTextColor(Color.parseColor("#3E3E3E"));
             }
             else if(!sigReturn_status.isEmpty())
             {
                 if(sigReturn_status.equals("0")){
                     //ถ้าเท่ากับ 0 "ยังไม่รับคืน"
-                    holder.txtReturnStatus.setText("สถานะ: ยังไม่รับคืน");
+                    holder.txtReturnStatus.setText("ยังไม่รับคืน");
+                    holder.txtReturnStatus.setTextColor(Color.parseColor("#3E3E3E"));
                 }
                 else if(sigReturn_status.equals("null")){
                     //ถ้าเท่ากับ 0 "ยังไม่รับคืน"
-                    holder.txtReturnStatus.setText("สถานะ: ยังไม่รับคืน");
+                    holder.txtReturnStatus.setText("ยังไม่รับคืน");
+                    holder.txtReturnStatus.setTextColor(Color.parseColor("#3E3E3E"));
                 }
                 else if(sigReturn_status.equals("")){
                     //ถ้าเท่ากับ 0 "ยังไม่รับคืน"
-                    holder.txtReturnStatus.setText("สถานะ: ยังไม่รับคืน");
+                    holder.txtReturnStatus.setText("ยังไม่รับคืน");
+                    holder.txtReturnStatus.setTextColor(Color.parseColor("#3E3E3E"));
                 }
                 else if(sigReturn_status.equals("1"))
                 {
                     //ถ้าเท่ากับ 1 "รับคืน"
-                    holder.txtReturnStatus.setText("สถานะ: รับคืนได้");
+                    holder.txtReturnStatus.setText("รับคืนได้");
+                    holder.txtReturnStatus.setTextColor(Color.parseColor("#009284"));
                 }
                 else if(sigReturn_status.equals("2"))
                 {
                     //ถ้าเท่ากับ 2 "ไม่รับคืน"
-                    holder.txtReturnStatus.setText("สถานะ: รับคืนไม่ได้");
+                    holder.txtReturnStatus.setText("รับคืนไม่ได้");
+                    holder.txtReturnStatus.setTextColor(Color.parseColor("#E65457"));
                 }
             }
 

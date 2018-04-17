@@ -1,6 +1,7 @@
 package com.bl.dmdelivery.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,42 @@ public class OrderReturnListAdapter extends GestureAdapter<OrderReturn, GestureV
         orderViewHolder.txtReturnList.setText("จำนวนสินค้าที่ต้องรับคืน "+String.valueOf(order.getReturn_unit())+" ชิ้น");
         orderViewHolder.txtReturnListRes.setText("จำนวนสินค้าที่รับคืนจริง "+String.valueOf(order.getReturn_unit_real())+" ชิ้น");
         orderViewHolder.txtStatus.setText(String.valueOf(order.getReturn_status()));
+
+
+        //เปลี่ยนสี text
+        String sigReturn_status=String.valueOf(order.getReturn_status());
+        if(sigReturn_status.isEmpty()){
+            //ถ้าว่าง "ยังไม่รับคืน"
+            orderViewHolder.txtStatus.setTextColor(Color.parseColor("#3E3E3E"));
+        }
+        else if(!sigReturn_status.isEmpty())
+        {
+            if(sigReturn_status.equals("ยังไม่รับคืน")){
+                //ถ้าเท่ากับ 0 "ยังไม่รับคืน"
+                orderViewHolder.txtStatus.setTextColor(Color.parseColor("#3E3E3E"));
+            }
+            else if(sigReturn_status.equals("null")){
+                //ถ้าเท่ากับ 0 "ยังไม่รับคืน"
+                orderViewHolder.txtStatus.setTextColor(Color.parseColor("#3E3E3E"));
+            }
+            else if(sigReturn_status.equals("")){
+                //ถ้าเท่ากับ 0 "ยังไม่รับคืน"
+                orderViewHolder.txtStatus.setTextColor(Color.parseColor("#3E3E3E"));
+            }
+            else if(sigReturn_status.equals("รับคืนได้"))
+            {
+                //ถ้าเท่ากับ 1 "รับคืน"
+                orderViewHolder.txtStatus.setTextColor(Color.parseColor("#009284"));
+            }
+            else if(sigReturn_status.equals("รับคืนไม่ได้"))
+            {
+                //ถ้าเท่ากับ 2 "ไม่รับคืน"
+                orderViewHolder.txtStatus.setTextColor(Color.parseColor("#E65457"));
+            }
+        }
+
+
+
 
 
     }
