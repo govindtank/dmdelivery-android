@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
@@ -35,6 +38,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -70,6 +74,11 @@ import com.bl.dmdelivery.utility.TagUtils;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,6 +102,9 @@ public class MainMenuActivity extends AppCompatActivity {
     private String serverUrl;
     private OrderScanReq mLoadOrderReq;
     private LoadOrderResponse mListLoadOrder =new LoadOrderResponse();
+
+    int version;
+    private String URLDownload;
 
     private String  mSelect="0";
     String truckNo = "";
@@ -120,6 +132,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private String mInputPathReturn = Environment.getExternalStorageDirectory().toString() + "/DMSLIPRETURN/";
     private String mInputPathProcessReturn = Environment.getExternalStorageDirectory().toString() + "/DMRETURNPROCESSED/";
+
+    private String mAPKDownload = Environment.getExternalStorageDirectory().toString() + "/DMDOWNLOAD/";
 
 //    private String[] gridViewString = {
 //            "Scan Order", "Save Order", "Load Contact", "Unpack", "Update Program", "Logout",
@@ -234,6 +248,8 @@ public class MainMenuActivity extends AppCompatActivity {
             {
                 dirOutputReturn.mkdirs();
             }
+
+
 
 
         } catch (Exception e) {
@@ -386,38 +402,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void showMsgUpdateConfirmDialog(String msg,String btntxt)
     {
-//        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
-//        DialogBuilder.setIcon(R.mipmap.ic_launcher);
-//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View v = li.inflate(R.layout.dialog_confirm, null, false);
 //
-//
-//        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
-//
-//        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
-//        mmBtnOk = (Button) v.findViewById(R.id.btnok);
-//        mmBtnClose = (Button) v.findViewById(R.id.btnClose);
-//
-//        mmTxtTitle.setText("ยืนยัน");
-//        mmTxtMsg.setText(msg);
-//        mmBtnOk.setText(btntxt);
-//
-//        DialogBuilder.setView(v);
-//
-//        mmBtnOk.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                loadData();
-//                DialogBuilder.dismiss();
-//            }
-//        });
-//
-//        mmBtnClose.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                DialogBuilder.dismiss();
-//            }
-//        });
-//
-//        DialogBuilder.show();
 
 
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
@@ -450,6 +435,14 @@ public class MainMenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //loadData();
                 DialogBuilder.dismiss();
+
+                File APKDownload = new File (mAPKDownload);
+                if (!APKDownload.exists())
+                {
+                    APKDownload.mkdirs();
+                }
+
+                //checkVersion();
             }
         });
 
@@ -920,6 +913,200 @@ public class MainMenuActivity extends AppCompatActivity {
                 mTxtDate.setText(formatDate(year,month,day));
             }*/
         }
+    }
+
+
+
+    private void checkVersion() {
+
+
+        try {
+
+            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
+            {
+
+                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
+                {
+                    version = getVersionCode(MainMenuActivity.this);
+                    //String serverVersion = webHelper.checkVersion();
+                    String serverVersion = "101";
+
+                    if(version < Integer.parseInt(serverVersion))
+                    {
+
+                        URLDownload = "http://distributioncenter.mistine.co.th/download/dmdelivery/dmdelivery.apk";
+                        new DownloadFileAsync().execute(URLDownload);
+
+
+                    }else{
+                        showMsgDialog(getResources().getString(R.string.app_version_text));
+
+                    }
+
+                }
+                else
+                {
+                    showMsgDialog(getResources().getString(R.string.error_webservice));
+
+                }
+
+            }else
+            {
+                showMsgDialog(getResources().getString(R.string.error_network));
+            }
+
+
+
+        } catch (Exception e) {
+
+            showMsgDialog(e.toString());
+
+        }
+
+    }
+
+    private class DownloadFileAsync extends AsyncTask<String, String, String> {
+        private Context context;
+        private PowerManager.WakeLock mWakeLock;
+       /* public DownloadFileAsync(Context context) {
+            this.context = context;
+        }*/
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+
+
+            mProgressDialog = new ACProgressFlower.Builder(MainMenuActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .text(getResources().getString(R.string.progress_loading))
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
+
+
+
+        }
+
+        @Override
+        protected String doInBackground(String... aurl) {
+            int count;
+            HttpURLConnection connection = null;
+            InputStream input = null;
+            OutputStream output = null;
+            try {
+
+
+
+               /* URL url = new URL(aurl[0]);
+                URLConnection conexion = url.openConnection();
+                conexion.connect();*/
+                URL url = new URL(aurl[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                //int lenghtOfFile = conexion.getContentLength();
+                int lenghtOfFile = connection.getContentLength();
+                //Log.d("ANDRO_ASYNC", "Lenght of file: " + lenghtOfFile);
+
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage();
+                }
+                input = connection.getInputStream();
+
+                //InputStream input = new BufferedInputStream(url.openStream());
+
+
+                //String PATH = android.os.Environment.getExternalStorageDirectory().getPath() + "/Download/";
+                File file = new File(mAPKDownload);
+                file.mkdirs();
+
+                File outputFile = new File(file, "dmdelivery.apk");
+                if (outputFile.exists()) {
+                    outputFile.delete();
+                }
+                output = new FileOutputStream(outputFile);
+                //FileOutputStream output = new FileOutputStream(outputFile);
+
+
+                byte data[] = new byte[1024];
+
+                long total = 0;
+
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+                    output.write(data, 0, count);
+                }
+
+                output.flush();
+                output.close();
+                input.close();
+
+
+                mProgressDialog.dismiss();
+
+                finish();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(new File(mAPKDownload + "dmdelivery.apk")), "application/vnd.android.package-archive");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+            return null;
+
+        }
+    }
+
+
+
+    private String getMimeType(String url)
+    {
+        String parts[]=url.split("\\.");
+        String extension=parts[parts.length-1];
+        String type = null;
+        if (extension != null) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            type = mime.getMimeTypeFromExtension(extension);
+        }
+        return type;
+    }
+
+    private String fileExt(String url) {
+        if (url.indexOf("?") > -1) {
+            url = url.substring(0, url.indexOf("?"));
+        }
+        if (url.lastIndexOf(".") == -1) {
+            return null;
+        } else {
+            String ext = url.substring(url.lastIndexOf(".") + 1);
+            if (ext.indexOf("%") > -1) {
+                ext = ext.substring(0, ext.indexOf("%"));
+            }
+            if (ext.indexOf("/") > -1) {
+                ext = ext.substring(0, ext.indexOf("/"));
+            }
+            return ext.toLowerCase();
+
+        }
+    }
+
+    public static int getVersionCode(Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            return pi.versionCode;
+        } catch (PackageManager.NameNotFoundException ex) {}
+        return 0;
     }
 
     private static String formatDate(int year, int month, int day) {
