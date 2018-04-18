@@ -264,26 +264,26 @@ public class DBHelper extends SQLiteOpenHelper {
                 Order.Column.sendtoserver_timestamp + " TEXT);");
 
 
-//        try
-//        {
-//            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN isselect TEXT DEFAULT '0' ";
-//            db.execSQL(ALTER_ORDER_TABLE);
-//        }
-//        catch (Exception ex)
-//        {
-//            Log.d("DBHelper",ex.getMessage());
-//        }
-//
-//        try
-//        {
-//
-//            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN cre_date TEXT DEFAULT '27/3/2018' ";
-//            db.execSQL(ALTER_ORDER_TABLE);
-//        }
-//        catch (Exception ex)
-//        {
-//            Log.d("DBHelper",ex.getMessage());
-//        }
+        try
+        {
+            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN msllat TEXT DEFAULT '' ";
+            db.execSQL(ALTER_ORDER_TABLE);
+        }
+        catch (Exception ex)
+        {
+            Log.d("DBHelper",ex.getMessage());
+        }
+
+        try
+        {
+
+            String ALTER_ORDER_TABLE = "ALTER TABLE " + TableOrder + " ADD COLUMN msllng TEXT DEFAULT '' ";
+            db.execSQL(ALTER_ORDER_TABLE);
+        }
+        catch (Exception ex)
+        {
+            Log.d("DBHelper",ex.getMessage());
+        }
 
 
 
@@ -2003,8 +2003,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
             ContentValues cv = new ContentValues();
             cv.put(Order.Column.Itemno,itemNo); //These Fields should be your String values of actual column names
-            cv.put(Order.Column.lat,lat);
-            cv.put(Order.Column.lon,lng);
+            cv.put(Order.Column.msllat,lat);
+            cv.put(Order.Column.msllng,lng);
             sqLiteDatabase.update(TableOrder,cv,"TransNo='" + tranNo.toString().trim() + "'",null);
 
         }

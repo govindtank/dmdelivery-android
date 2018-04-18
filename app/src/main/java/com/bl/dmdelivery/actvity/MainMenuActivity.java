@@ -1453,6 +1453,8 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setReturn_order("");
                         f.setReturn_status("");
                         f.setSendtoserver_timestamp("");
+                        f.setMsllat("");
+                        f.setMsllng("");
 
                         orders.add(f);
 
