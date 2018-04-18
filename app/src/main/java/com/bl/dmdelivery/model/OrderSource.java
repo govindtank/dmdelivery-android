@@ -15,6 +15,8 @@ public class OrderSource implements Parcelable {
     private String truck_no1;
     private String norder;
     private String trans_no1;
+    private String lat;
+    private String lng;
 
     public String getDc1() {
         return dc1;
@@ -48,6 +50,22 @@ public class OrderSource implements Parcelable {
         this.trans_no1 = trans_no1;
     }
 
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
     public OrderSource() {
     }
 
@@ -62,6 +80,8 @@ public class OrderSource implements Parcelable {
         dest.writeString(this.truck_no1);
         dest.writeString(this.norder);
         dest.writeString(this.trans_no1);
+        dest.writeString(this.lat);
+        dest.writeString(this.lng);
     }
 
     protected OrderSource(Parcel in) {
@@ -69,6 +89,8 @@ public class OrderSource implements Parcelable {
         this.truck_no1 = in.readString();
         this.norder = in.readString();
         this.trans_no1 = in.readString();
+        this.lat = in.readString();
+        this.lng = in.readString();
     }
 
     public static final Creator<OrderSource> CREATOR = new Creator<OrderSource>() {

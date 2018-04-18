@@ -1555,7 +1555,8 @@ public class MainMenuActivity extends AppCompatActivity {
                         for(int i=0; i<objsource.getOrderSource().size();i++){
 
 
-                            mHelper.updateItemno(objsource.getOrderSource().get(i).getTrans_no1().toString(),objsource.getOrderSource().get(i).getNorder());
+                            mHelper.updateItemno(objsource.getOrderSource().get(i).getTrans_no1().toString(),objsource.getOrderSource().get(i).getNorder(),objsource.getOrderSource().get(i).getLat().toString(),objsource.getOrderSource().get(i).getLng().toString());
+
 
                         }
                     }

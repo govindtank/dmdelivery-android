@@ -1995,7 +1995,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public  void updateItemno(String tranNo,String itemNo)
+    public  void updateItemno(String tranNo,String itemNo,String lat,String lng)
     {
         if (tranNo == null || tranNo.isEmpty() || tranNo.equals("null")){return;}
         try{
@@ -2003,6 +2003,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
             ContentValues cv = new ContentValues();
             cv.put(Order.Column.Itemno,itemNo); //These Fields should be your String values of actual column names
+            cv.put(Order.Column.lat,lat);
+            cv.put(Order.Column.lon,lng);
             sqLiteDatabase.update(TableOrder,cv,"TransNo='" + tranNo.toString().trim() + "'",null);
 
         }
