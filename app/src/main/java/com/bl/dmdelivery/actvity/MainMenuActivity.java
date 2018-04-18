@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,6 +60,7 @@ import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.helper.WebServiceHelper;
+import com.bl.dmdelivery.model.BaseResponse;
 import com.bl.dmdelivery.model.LoadOrderResponse;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
@@ -442,7 +445,7 @@ public class MainMenuActivity extends AppCompatActivity {
                     APKDownload.mkdirs();
                 }
 
-                //checkVersion();
+                checkVersion();
             }
         });
 
@@ -927,21 +930,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
                 if(chkNetwork.isWebserviceConnected(getApplicationContext()))
                 {
-                    version = getVersionCode(MainMenuActivity.this);
-                    //String serverVersion = webHelper.checkVersion();
-                    String serverVersion = "101";
-
-                    if(version < Integer.parseInt(serverVersion))
-                    {
-
-                        URLDownload = "http://distributioncenter.mistine.co.th/download/dmdelivery/dmdelivery.apk";
-                        new DownloadFileAsync().execute(URLDownload);
 
 
-                    }else{
-                        showMsgDialog(getResources().getString(R.string.app_version_text));
-
-                    }
+                    DownloadFile();
 
                 }
                 else
@@ -965,19 +956,116 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
-    private class DownloadFileAsync extends AsyncTask<String, String, String> {
-        private Context context;
-        private PowerManager.WakeLock mWakeLock;
-       /* public DownloadFileAsync(Context context) {
-            this.context = context;
-        }*/
+    private void DownloadFile() {
+
+        try {
+
+
+            new DownloadFileAsync().execute();
+
+
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    private class DownloadFileAsync extends AsyncTask<URL, Integer, Long> {
+        protected Long doInBackground(URL... urls) {
+            int count;
+            HttpURLConnection connection = null;
+            InputStream input = null;
+            OutputStream output = null;
+
+            long total = 0;
+
+            try
+            {
+
+                serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/VersionApp";
+                Gson gson = new Gson();
+                String result = new WebServiceHelper().postServiceAPI(serverUrl,"");
+                Log.i("Result", result.toString());
+
+                //convert json to obj
+                BaseResponse obj = gson.fromJson(result,BaseResponse.class);
+
+                version = getVersionCode(MainMenuActivity.this);
+                //String serverVersion = obj.getResponseCode();
+
+                String serverVersion = "101";
+
+
+                if(version < Integer.parseInt(serverVersion))
+                {
+
+
+                    URLDownload = "http://distributioncenter.mistine.co.th/download/dmdelivery/dmdelivery.apk";
+
+                    URL url = new URL(URLDownload);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();
+
+                    int lenghtOfFile = connection.getContentLength();
+
+                    if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+
+                        return total;
+                    }
+                    input = connection.getInputStream();
+
+                    //InputStream input = new BufferedInputStream(url.openStream());
+
+
+                    //String PATH = android.os.Environment.getExternalStorageDirectory().getPath() + "/Download/";
+                    File file = new File(mAPKDownload);
+                    //file.mkdirs();
+
+                    File outputFile = new File(file, "dmdelivery.apk");
+                    if (outputFile.exists()) {
+                        outputFile.delete();
+                    }
+                    output = new FileOutputStream(outputFile);
+                    //FileOutputStream output = new FileOutputStream(outputFile);
+
+
+                    byte data[] = new byte[1024];
+
+
+                    while ((count = input.read(data)) != -1) {
+                        total += count;
+                        output.write(data, 0, count);
+                    }
+
+
+                    output.flush();
+                    output.close();
+                    input.close();
+
+
+                }else
+                {
+                    total=0;
+                    //pageResultHolder.content = getResources().getString(R.string.app_version_text);
+                }
+
+
+
+
+            } catch (Exception e) {
+
+                showMsgDialog(e.toString());
+
+            }
+
+            return total;
+        }
 
         @Override
         protected void onPreExecute() {
-
             super.onPreExecute();
-
-
 
             mProgressDialog = new ACProgressFlower.Builder(MainMenuActivity.this)
                     .direction(ACProgressConstant.DIRECT_CLOCKWISE)
@@ -987,85 +1075,210 @@ public class MainMenuActivity extends AppCompatActivity {
                     .fadeColor(Color.DKGRAY).build();
             mProgressDialog.show();
 
-
-
         }
 
-        @Override
-        protected String doInBackground(String... aurl) {
-            int count;
-            HttpURLConnection connection = null;
-            InputStream input = null;
-            OutputStream output = null;
-            try {
+//        protected void onProgressUpdate(Integer... progress) {
+//            mProgressDialog = new ACProgressFlower.Builder(MainMenuActivity.this)
+//                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+//                    .text(getResources().getString(R.string.progress_loading))
+//                    .themeColor(getResources().getColor(R.color.colorBackground))
+//                    //.text(getResources().getString(R.string.progress_loading))
+//                    .fadeColor(Color.DKGRAY).build();
+//            mProgressDialog.show();
+//        }
+
+        protected void onPostExecute(final Long result) {
+
+            final String AUTHORITY="com.bl.dmdelivery";
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Do something after 100ms
+
+                    mProgressDialog.dismiss();
+
+                    if(result < 1)
+                    {
+                        showMsgDialog(getResources().getString(R.string.app_version_text));
+                    }else
+                    {
+
+                        finish();
+
+                        Uri uri = FileProvider.getUriForFile(getApplicationContext(), getPackageName() + ".provider", new File(mAPKDownload+ "dmdelivery.apk"));
+
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivity(intent);
 
 
+                    }
 
-               /* URL url = new URL(aurl[0]);
-                URLConnection conexion = url.openConnection();
-                conexion.connect();*/
-                URL url = new URL(aurl[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                //int lenghtOfFile = conexion.getContentLength();
-                int lenghtOfFile = connection.getContentLength();
-                //Log.d("ANDRO_ASYNC", "Lenght of file: " + lenghtOfFile);
-
-                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return "Server returned HTTP " + connection.getResponseCode()
-                            + " " + connection.getResponseMessage();
                 }
-                input = connection.getInputStream();
-
-                //InputStream input = new BufferedInputStream(url.openStream());
-
-
-                //String PATH = android.os.Environment.getExternalStorageDirectory().getPath() + "/Download/";
-                File file = new File(mAPKDownload);
-                file.mkdirs();
-
-                File outputFile = new File(file, "dmdelivery.apk");
-                if (outputFile.exists()) {
-                    outputFile.delete();
-                }
-                output = new FileOutputStream(outputFile);
-                //FileOutputStream output = new FileOutputStream(outputFile);
-
-
-                byte data[] = new byte[1024];
-
-                long total = 0;
-
-                while ((count = input.read(data)) != -1) {
-                    total += count;
-                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
-                    output.write(data, 0, count);
-                }
-
-                output.flush();
-                output.close();
-                input.close();
-
-
-                mProgressDialog.dismiss();
-
-                finish();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(new File(mAPKDownload + "dmdelivery.apk")), "application/vnd.android.package-archive");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-
-            return null;
+            }, 200);
 
         }
     }
+
+//    private class DownloadFileAsync extends AsyncTask<String, Void, PageResultHolder>
+//    {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//
+//            mProgressDialog = new ACProgressFlower.Builder(MainMenuActivity.this)
+//                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+//                    .text(getResources().getString(R.string.progress_loading))
+//                    .themeColor(getResources().getColor(R.color.colorBackground))
+//                    //.text(getResources().getString(R.string.progress_loading))
+//                    .fadeColor(Color.DKGRAY).build();
+//            mProgressDialog.show();
+//
+//        }
+//
+//        @Override
+//        protected PageResultHolder doInBackground(String... params) {
+//            // TODO Auto-generated method stub
+//            PageResultHolder pageResultHolder = new PageResultHolder();
+//            //String xmlInput = params[0];
+//            int count;
+//            HttpURLConnection connection = null;
+//            InputStream input = null;
+//            OutputStream output = null;
+//
+//            try
+//            {
+//
+//
+//                Gson gson = new Gson();
+//                String result = new WebServiceHelper().getServiceAPI(params[0]);
+//                Log.i("Result", result.toString());
+//
+//                //convert json to obj
+//                BaseResponse obj = gson.fromJson(result,BaseResponse.class);
+//
+//                version = getVersionCode(MainMenuActivity.this);
+//                String serverVersion = obj.getResponseCode();
+//
+//
+//                if(version < Integer.parseInt(serverVersion))
+//                {
+//                    pageResultHolder.content = obj.getResponseCode();
+//
+//
+//                    URLDownload = "http://distributioncenter.mistine.co.th/download/dmdelivery/dmdelivery.apk";
+//
+//                    URL url = new URL(URLDownload);
+//                    connection = (HttpURLConnection) url.openConnection();
+//                    connection.connect();
+//
+//                    int lenghtOfFile = connection.getContentLength();
+//
+//                    if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+//
+//                        pageResultHolder.content = connection.getResponseMessage();
+//
+//                        return pageResultHolder;
+//                    }
+//                    input = connection.getInputStream();
+//
+//                    //InputStream input = new BufferedInputStream(url.openStream());
+//
+//
+//                    //String PATH = android.os.Environment.getExternalStorageDirectory().getPath() + "/Download/";
+//                    File file = new File(mAPKDownload);
+//                    file.mkdirs();
+//
+//                    File outputFile = new File(file, "dmdelivery.apk");
+//                    if (outputFile.exists()) {
+//                        outputFile.delete();
+//                    }
+//                    output = new FileOutputStream(outputFile);
+//                    //FileOutputStream output = new FileOutputStream(outputFile);
+//
+//
+//                    byte data[] = new byte[1024];
+//
+//                    long total = 0;
+//
+//                    while ((count = input.read(data)) != -1) {
+//                        total += count;
+//                        publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+//                        output.write(data, 0, count);
+//                    }
+//
+//
+//                    output.flush();
+//                    output.close();
+//                    input.close();
+//
+//
+//                }else
+//                {
+//                    pageResultHolder.content = getResources().getString(R.string.app_version_text);
+//                }
+//
+//
+//
+//
+//            } catch (Exception e) {
+//                pageResultHolder.content = "Exception : NoData";
+//                pageResultHolder.exception = e;
+//            }
+//
+//            return pageResultHolder;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final PageResultHolder result) {
+//            // TODO Auto-generated method stub
+//
+//            //final String msg = "";
+//
+//            try {
+//
+//
+//
+//                if (result.exception != null) {
+//                    mProgressDialog.dismiss();
+//                    showMsgDialog(result.exception.toString());
+//                }
+//                else
+//                {
+//
+//
+//                    final Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            //Do something after 100ms
+//
+//                            mProgressDialog.dismiss();
+//
+//                            showMsgDialog(result.content.toString());
+//
+//                        }
+//                    }, 200);
+//
+//                    /*runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    });*/
+//
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
 
 
 
