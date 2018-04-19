@@ -1134,8 +1134,8 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setDelivery_date(cursor.getString(52));
             order.setTruckNo(cursor.getString(53));
             order.setSendtoserver_timestamp(cursor.getString(54));
-            order.setLat(cursor.getString(55));
-            order.setLon(cursor.getString(56));
+            order.setMsllat(cursor.getString(55));
+            order.setMsllng(cursor.getString(56));
             orders.add(order);
 
             cursor.moveToNext();
