@@ -1241,8 +1241,9 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
             mListReturnDataALL.clear();
             mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
+
             mListReturnDataY.clear();
-            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
+            mListReturnDataY = mHelper.getOrdersReturnListSummary("YC");
 
 
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataSend.size()+"/"+mListOrderDataALL.size()+")");
