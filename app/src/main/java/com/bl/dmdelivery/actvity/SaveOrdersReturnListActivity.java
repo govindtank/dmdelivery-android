@@ -409,7 +409,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mListSearchDataALL = mHelper.getOrdersReturnListSummary("ALL");
 
             mListReturnDataY.clear();
-            mListReturnDataY = mHelper.getOrdersReturnListSummary("Y");
+            mListReturnDataY = mHelper.getOrdersReturnListSummary("YC");
 
 
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataSend.size()+"/"+mListOrderDataALL.size()+")");
@@ -460,11 +460,11 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mListMenuData.add(f1);
 
 
-            MenuSaveOrder f2 = new MenuSaveOrder();
-            f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
-            f2.setMenuname_type("0");
-            f2.setMenuname_mode("0");
-            mListMenuData.add(f2);
+//            MenuSaveOrder f2 = new MenuSaveOrder();
+//            f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
+//            f2.setMenuname_type("0");
+//            f2.setMenuname_mode("0");
+//            mListMenuData.add(f2);
 
 
             MenuSaveOrder f3 = new MenuSaveOrder();
@@ -476,7 +476,6 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
         else  if(mListReturnDataALL.get(selectedPosition).getReturn_status() == "รับคืนไม่ได้")
         {
             //รับคืนไม่ได้
-
             MenuSaveOrder f2 = new MenuSaveOrder();
             f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
             f2.setMenuname_type("0");
@@ -493,25 +492,17 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
         else
         {
             //ยังไม่รับคืน
-
-//            MenuSaveOrder f3 = new MenuSaveOrder();
-//            f3.setMenuname("กิจกรรม");
-//            f3.setMenuname_type("1");
-//            f3.setMenuname_mode("0");
-//            mListMenuData.add(f3);
-
-
             mHelper = new DBHelper(getApplicationContext());
             String sigGetTransNo = mHelper.getInvOnOrder(mListReturnDataALL.get(selectedPosition).getRep_seq());
 
             mHelper = new DBHelper(getApplicationContext());
             if(mHelper.IsCheckOrdersShowMenuOnReturnList(sigGetTransNo))
             {
-                MenuSaveOrder f2 = new MenuSaveOrder();
-                f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
-                f2.setMenuname_type("0");
-                f2.setMenuname_mode("0");
-                mListMenuData.add(f2);
+//                MenuSaveOrder f2 = new MenuSaveOrder();
+//                f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
+//                f2.setMenuname_type("0");
+//                f2.setMenuname_mode("0");
+//                mListMenuData.add(f2);
 
 
                 MenuSaveOrder f3 = new MenuSaveOrder();

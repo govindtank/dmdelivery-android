@@ -810,6 +810,9 @@ public class DBHelper extends SQLiteOpenHelper {
             case "C":
                 sigCriteriaSql="return_status='2'";
                 break;
+            case "YC":
+                sigCriteriaSql="return_status IN ('1','2')";
+                break;
             case "ALL":
                 sigCriteriaSql="return_status IN ('0','1','2')";
                 break;
@@ -1047,6 +1050,9 @@ public class DBHelper extends SQLiteOpenHelper {
             case "YSW":
                 sigCriteriaSql="delivery_status IN ('S','W','Y')";
                 break;
+            case "YS":
+                sigCriteriaSql="delivery_status IN ('Y','S')";
+                break;
             case "ALL":
                 sigCriteriaSql="TransNo IS NOT NULL";
                 break;
@@ -1128,6 +1134,8 @@ public class DBHelper extends SQLiteOpenHelper {
             order.setDelivery_date(cursor.getString(52));
             order.setTruckNo(cursor.getString(53));
             order.setSendtoserver_timestamp(cursor.getString(54));
+            order.setLat(cursor.getString(55));
+            order.setLon(cursor.getString(56));
             orders.add(order);
 
             cursor.moveToNext();
