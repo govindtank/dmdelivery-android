@@ -66,6 +66,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".actvity.ViewSlipActivity" />
+        <activity android:name=".actvity.MapActivity" />
         <activity android:name=".actvity.ViewSlipReturnActivity"></activity>
 
         <provider

@@ -126,13 +126,13 @@ public class CanvasView extends View {
 
 					String unpacktext = "";
 
-					if(mListUnpackData.get(i).getUnpack_desc().toString().length() < 50)
+					if(mListUnpackData.get(i).getUnpack_desc().toString().length() < 35)
 					{
 						unpacktext = mListUnpackData.get(i).getUnpack_desc().toString();
 					}
 					else
 					{
-						unpacktext = mListUnpackData.get(i).getUnpack_desc().toString().substring(0,49)+"...";
+						unpacktext = mListUnpackData.get(i).getUnpack_desc().toString().substring(0,34)+"...";
 					}
 
 					canvas.drawText(unpacktext+" x "+mListUnpackData.get(i).getUnpack_qty().toString(), xUnpack, yUnpack, paint);
@@ -146,7 +146,7 @@ public class CanvasView extends View {
 
 
 		xOrder = 720;
-		yOrder = 1020;
+		yOrder = 50;
 
 
 		if(mListOrderData != null)
@@ -155,16 +155,30 @@ public class CanvasView extends View {
 			{
 				for(int i=0; i<mListOrderData.size();i++){
 
-					String inv = "";
-					String carton = "";
+					if(i<20)
+					{
+						String inv = "";
+						String carton = "";
 
-					inv = mListOrderData.get(i).getTransNo().toString();
-					carton = mListOrderData.get(i).getCont_desc().toString();
+						inv = mListOrderData.get(i).getTransNo().toString();
+						carton = mListOrderData.get(i).getCont_desc().toString();
 
-					canvas.drawText(inv+" "+carton, xOrder, yOrder, paint);
-					//canvas.drawText(mListUnpackData.get(i).getFsname().toString(), 10, 25, paint);
-					//canvas.drawText("ของนอกกล่อง"+yUnpack, xUnpack, yUnpack, paint);
-					yOrder=yOrder-50;
+						canvas.drawText(inv+" "+carton, xOrder, yOrder, paint);
+						//canvas.drawText(mListUnpackData.get(i).getFsname().toString(), 10, 25, paint);
+						//canvas.drawText("ของนอกกล่อง"+yUnpack, xUnpack, yUnpack, paint);
+						yOrder=yOrder+45;
+					}else
+					{
+						if(i==20)
+						{
+							canvas.drawText(" ........... > 20", xOrder, yOrder, paint);
+							//canvas.drawText(mListUnpackData.get(i).getFsname().toString(), 10, 25, paint);
+							//canvas.drawText("ของนอกกล่อง"+yUnpack, xUnpack, yUnpack, paint);
+							yOrder=yOrder+45;
+						}
+					}
+
+
 				}
 			}
 		}

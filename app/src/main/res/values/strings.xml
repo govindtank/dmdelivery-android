@@ -83,6 +83,7 @@
     <string name="txt_text_headder_send_data">ส่งข้อมูล</string>
 
     <string name="txt_text_headder_check_map">ตำแหน่งปัจจุบัน</string>
+    <string name="txt_text_headder_check_map_msl">ตำแหน่งสมาชิก</string>
 
     <string name="txt_text_remark">หมายเหตุ : </string>
     <string name="txt_text_reason_remark">เหตุผล/หมายเหตุ</string>
@@ -111,6 +112,9 @@
     <string name="menu_text_check_order">ตรวจสอบ</string>
     <string name="menu_text_print_order">พิมพ์รายงาน</string>
     <string name="menu_text_logout">ออกจากระบบ</string>
+    <string name="menu_text_msl_latlon_googlemap">พิกัดของสมาชิก (google map)</string>
+    <string name="menu_text_msl_latlon_mapsme">พิกัดของสมาชิก (maps.me)</string>
+    <string name="menu_text_msl_nav">นำทาง</string>
     <string name="dialog_text_title_confirm">ยืนยันการจองออเดอร์ ?</string>
     <string name="dialog_text_title_cancel">ยืนยันการยกเลิกการจองออเดอร์ ?</string>
     <string name="dialog_text_title_info">รายละเอียดออเดอร์</string>
@@ -154,6 +158,7 @@
     <string name="btn_text_logout">ออกจากระบบ</string>
 
     <string name="txt_text_no_gps">ไม่สามารถดึงข้อมูลตำแหน่งปัจจุบัน</string>
+    <string name="txt_text_no_latlon">ไม่พบข้อมูลตำแหน่งสมาชิก</string>
 
 
     <!-- header -->

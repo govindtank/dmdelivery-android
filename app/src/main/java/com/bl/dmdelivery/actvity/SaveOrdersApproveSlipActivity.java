@@ -345,17 +345,17 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                         if(allbox>0 && allbag>0)
                         {
-                            txtCarton.setText(String.valueOf(allbox)+"C"+" + "+String.valueOf(allbag)+"B");
+                            txtCarton.setText(String.valueOf(order.size())+" ออเดอร์ "+String.valueOf(allbox)+"C"+" + "+String.valueOf(allbag)+"B");
                         }
                         else
                         {
                             if(allbox == 0)
                             {
-                                txtCarton.setText(String.valueOf(allbag)+"B");
+                                txtCarton.setText(String.valueOf(order.size())+" ออเดอร์ "+String.valueOf(allbag)+"B");
                             }
                             else
                             {
-                                txtCarton.setText(String.valueOf(allbox)+"C");
+                                txtCarton.setText(String.valueOf(order.size())+" ออเดอร์ "+String.valueOf(allbox)+"C");
                             }
 
                         }

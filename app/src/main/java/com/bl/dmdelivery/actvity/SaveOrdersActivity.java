@@ -94,6 +94,8 @@ import java.util.TimerTask;
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 
+//import com.mapswithme.maps.api.MapsWithMeApi;
+
 public class SaveOrdersActivity extends AppCompatActivity {
 
 
@@ -174,6 +176,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
     private Button mBtnScan;
 
     private String mIsScan = "0";
+
+    public String google_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -931,7 +935,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                     for(int x=0; x<mListOrderReturnWaitSend.size(); x++){
 
 
-                        returnOrderdelivery.setTrack_no(mListOrderReturnWaitSend.get(x).getTrack_no());
+                        returnOrderdelivery.setTruck_no(mListOrderReturnWaitSend.get(x).getTrack_no());
                         returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
                         returnOrderdelivery.setReturn_no(mListOrderReturnWaitSend.get(x).getReturn_no());
                         returnOrderdelivery.setRep_code(mListOrderReturnWaitSend.get(x).getRep_code());
@@ -1262,6 +1266,12 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //        f3.setMenuname_mode("0");
 //        mListMenuData.add(f3);
 
+        MenuSaveOrder f3 = new MenuSaveOrder();
+        f3.setMenuname(getResources().getString(R.string.menu_text_msl_nav));
+        f3.setMenuname_type("7");
+        f3.setMenuname_mode("0");
+        mListMenuData.add(f3);
+
 
         final String[] telsMSL = mListOrderDataN.get(selectedPosition).getRep_telno().split(",");
         final String[] telsDSM = mListOrderDataN.get(selectedPosition).getDsm_telno().split(",");
@@ -1437,6 +1447,32 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                         break;
 
+
+                    case "7":
+                        //นำทาง
+                        DialogBuilder.dismiss();
+
+                        if(!mListOrderDataN.get(selectedPosition).getLat().equals("") || !mListOrderDataN.get(selectedPosition).getLon().equals(""))
+                        {
+                            google_position = mListOrderDataN.get(selectedPosition).getMsllat() + "," + mListOrderDataN.get(selectedPosition).getMsllng();
+                            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + google_position);
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);
+
+
+                        }
+                        else
+                        {
+                            showMsgDialog(getResources().getString(R.string.txt_text_no_latlon));
+                        }
+
+
+
+
+                        break;
+
+
                     default:
 
                         DialogBuilder.dismiss();
@@ -1553,6 +1589,22 @@ public class SaveOrdersActivity extends AppCompatActivity {
         f3.setMenuname_type(selectType);
         f3.setMenuname_mode("0");
         mListMenuData.add(f3);
+
+
+
+        MenuSaveOrder f4 = new MenuSaveOrder();
+        f4.setMenuname(getResources().getString(R.string.menu_text_msl_latlon_mapsme));
+        f4.setMenuname_type("5");
+        f4.setMenuname_mode("0");
+        mListMenuData.add(f4);
+
+
+        MenuSaveOrder f5 = new MenuSaveOrder();
+        f5.setMenuname(getResources().getString(R.string.menu_text_msl_latlon_googlemap));
+        f5.setMenuname_type("6");
+        f5.setMenuname_mode("0");
+        mListMenuData.add(f5);
+
 
 
 
@@ -1679,6 +1731,32 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         }
 
                         break;
+
+                    case "5":
+                        //พิกัดของสมาชิก (maps.me)
+                        DialogBuilder.dismiss();
+
+//                        final double lat = Double.parseDouble(pos[1]);
+//                        final double lon = Double.parseDouble(pos[0]);
+//                        final String name = rep_name.trim();
+//                        MapsWithMeApi.showPointOnMap(this, lat, lon, name);
+
+
+                        break;
+
+                    case "6":
+                        //พิกัดของสมาชิก (google map)
+                        DialogBuilder.dismiss();
+
+                        myIntent = new Intent(getApplicationContext(),MapActivity.class);
+                        //myIntent.putExtra("data",order);
+                        //myIntent.putExtra("latlng", "0"+","+"0");
+                        startActivity(myIntent);
+
+
+                        break;
+
+
 
                     default:
 

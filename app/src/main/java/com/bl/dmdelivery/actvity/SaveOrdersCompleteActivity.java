@@ -631,7 +631,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                     for(int x=0; x<mListOrderReturnWaitSend.size(); x++){
 
 
-                        returnOrderdelivery.setTrack_no(mListOrderReturnWaitSend.get(x).getTrack_no());
+                        returnOrderdelivery.setTruck_no(mListOrderReturnWaitSend.get(x).getTrack_no());
                         returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
                         returnOrderdelivery.setReturn_no(mListOrderReturnWaitSend.get(x).getReturn_no());
                         returnOrderdelivery.setRep_code(mListOrderReturnWaitSend.get(x).getRep_code());
