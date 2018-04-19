@@ -268,7 +268,7 @@ public class Delivery {
          * return_item : [{"fscode":"sample string 1","fsdesc":"sample string 2","return_request":"sample string 3","return_actual":"sample string 4"},{"fscode":"sample string 1","fsdesc":"sample string 2","return_request":"sample string 3","return_actual":"sample string 4"}]
          */
 
-        private String track_no;
+        private String truck_no;
         private String delivery_date;
         private String return_no;
         private String rep_code;
@@ -281,12 +281,12 @@ public class Delivery {
         private String signature_image;
         private List<ReturnItem> return_item;
 
-        public String getTrack_no() {
-            return track_no;
+        public String getTruck_no() {
+            return truck_no;
         }
 
-        public void setTrack_no(String track_no) {
-            this.track_no = track_no;
+        public void setTruck_no(String track_no) {
+            this.truck_no = track_no;
         }
 
         public String getDelivery_date() {
