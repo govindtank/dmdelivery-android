@@ -193,7 +193,7 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
             btnNew = (Button) findViewById(R.id.btnNew);
             btnUnpack = (Button) findViewById(R.id.btnUnpack);
-            btnNote = (Button) findViewById(R.id.btnNote);
+            //btnNote = (Button) findViewById(R.id.btnNote);
 
 
             lilUnpack = (LinearLayout) findViewById(R.id.lilUnpack);
@@ -409,15 +409,15 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 //                arrayListReason.add(mDeliveryAcceptList.get(i).getReason_code() + " " + mDeliveryAcceptList.get(i).getReason_desc());
 //            }
 
-            if(arrayListReason.size() > 0)
-            {
-                mSelectReson =  arrayListReason.get(0).getReason_desc();
-                mResonCode =  arrayListReason.get(0).getReason_code();
-                mSelectYResonIndex = 0;
-                customCanvas.reason = mSelectReson;
-                customCanvas.invalidate();
-
-            }
+//            if(arrayListReason.size() > 0)
+//            {
+//                mSelectReson =  arrayListReason.get(0).getReason_desc();
+//                mResonCode =  arrayListReason.get(0).getReason_code();
+//                mSelectYResonIndex = 0;
+//                customCanvas.reason = mSelectReson;
+//                customCanvas.invalidate();
+//
+//            }
 
 
 
@@ -501,74 +501,76 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                     if ( (customCanvas.totalDx > 100) || (customCanvas.totalDy > 100)) {
 
-                        for(int i=0; i<=order.size()-1; i++){
-                            takeScreenshot(i,"1");
+                        showMsgReasonIsApproveSelectedSingleDialog(mSendStatus);
 
-
-                            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
-                            java.util.Date currentLocalTime = cal.getTime();
-                            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
-                            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-                            String localTime = date.format(currentLocalTime);
-                            localTime = localTime.replace(" ", "").replace("-", "");
-
-                            order.get(i).setFullpathimage(mFileName);
-                            order.get(i).setLat(mLatitude);
-                            order.get(i).setLon(mLongitude);
-                            order.get(i).setSignature_timestamp(localTime);
-                            order.get(i).setReason_code(mResonCode);
-                            order.get(i).setReason_note(mNote);
-                            order.get(i).setSend_status(mSendStatus);
-                            order.get(i).setMobile_serial(mMobileSerial);
-                            order.get(i).setMobile_emei(mMobileEmei);
-                            order.get(i).setMobile_battery(mMobileBattery);
-
-                            if(order.get(i).getReturn_flag().equals("R"))
-                            {
-                                order.get(i).setDelivery_status("W");
-                            }else
-                            {
-                                order.get(i).setDelivery_status("S");
-                            }
-                        }
-
-                        boolean isRes = true;
-
-                        mHelper = new DBHelper(getApplicationContext());
-                        isRes = mHelper.updateOrderDeliveryStatus(order);
-
-                        isRes = mHelper.updateOrderFullpathimage(order);
-
-
-                        customCanvas.totalDx = 0;
-                        customCanvas.totalDy  = 0;
-
-                        if(returnflag.equals(""))
-                        {
-                            finish();
-                        }
-                        else {
-
-                            boolean isRet = true;
-
-                            mHelper = new DBHelper(getApplicationContext());
-                            isRet = mHelper.IsCheckOrdersReturnBalance(order);
-
-                            if(isRet)
-                            {
-                                finish();
-                                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                                myIntent.putExtra("data",order);
-                                startActivity(myIntent);
-                            }
-                            else
-                            {
-                                finish();
-                            }
-
-
-
-                        }
+//                        for(int i=0; i<=order.size()-1; i++){
+//                            takeScreenshot(i,"1");
+//
+//
+//                            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+//                            java.util.Date currentLocalTime = cal.getTime();
+//                            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+//                            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+//                            String localTime = date.format(currentLocalTime);
+//                            localTime = localTime.replace(" ", "").replace("-", "");
+//
+//                            order.get(i).setFullpathimage(mFileName);
+//                            order.get(i).setLat(mLatitude);
+//                            order.get(i).setLon(mLongitude);
+//                            order.get(i).setSignature_timestamp(localTime);
+//                            order.get(i).setReason_code(mResonCode);
+//                            order.get(i).setReason_note(mNote);
+//                            order.get(i).setSend_status(mSendStatus);
+//                            order.get(i).setMobile_serial(mMobileSerial);
+//                            order.get(i).setMobile_emei(mMobileEmei);
+//                            order.get(i).setMobile_battery(mMobileBattery);
+//
+//                            if(order.get(i).getReturn_flag().equals("R"))
+//                            {
+//                                order.get(i).setDelivery_status("W");
+//                            }else
+//                            {
+//                                order.get(i).setDelivery_status("S");
+//                            }
+//                        }
+//
+//                        boolean isRes = true;
+//
+//                        mHelper = new DBHelper(getApplicationContext());
+//                        isRes = mHelper.updateOrderDeliveryStatus(order);
+//
+//                        isRes = mHelper.updateOrderFullpathimage(order);
+//
+//
+//                        customCanvas.totalDx = 0;
+//                        customCanvas.totalDy  = 0;
+//
+//                        if(returnflag.equals(""))
+//                        {
+//                            finish();
+//                        }
+//                        else {
+//
+//                            boolean isRet = true;
+//
+//                            mHelper = new DBHelper(getApplicationContext());
+//                            isRet = mHelper.IsCheckOrdersReturnBalance(order);
+//
+//                            if(isRet)
+//                            {
+//                                finish();
+//                                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                                myIntent.putExtra("data",order);
+//                                startActivity(myIntent);
+//                            }
+//                            else
+//                            {
+//                                finish();
+//                            }
+//
+//
+//
+//                        }
                     }
                     else
                     {
@@ -586,72 +588,76 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                     mSendStatus = "3";
 
                     if ( (customCanvas.totalDx > 100) || (customCanvas.totalDy > 100)) {
-                        for(int i=0; i<=order.size()-1; i++){
-                            takeScreenshot(i,"3");
+
+                        showMsgReasonIsApproveSelectedSingleDialog(mSendStatus);
 
 
-                            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
-                            java.util.Date currentLocalTime = cal.getTime();
-                            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
-                            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-                            String localTime = date.format(currentLocalTime);
-                            localTime = localTime.replace(" ", "").replace("-", "");
-
-                            order.get(i).setFullpathimage(mFileName);
-                            order.get(i).setLat(mLatitude);
-                            order.get(i).setLon(mLongitude);
-                            order.get(i).setSignature_timestamp(localTime);
-                            order.get(i).setReason_code(mResonCode);
-                            order.get(i).setReason_note(mNote);
-                            order.get(i).setSend_status(mSendStatus);
-                            order.get(i).setMobile_serial(mMobileSerial);
-                            order.get(i).setMobile_emei(mMobileEmei);
-                            order.get(i).setMobile_battery(mMobileBattery);
-
-                            if(order.get(i).getReturn_flag().equals("R"))
-                            {
-                                order.get(i).setDelivery_status("W");
-                            }else
-                            {
-                                order.get(i).setDelivery_status("S");
-                            }
-                        }
-
-
-                        boolean isRes = true;
-
-                        mHelper = new DBHelper(getApplicationContext());
-                        isRes = mHelper.updateOrderDeliveryStatus(order);
-
-                        isRes = mHelper.updateOrderFullpathimage(order);
-
-                        customCanvas.totalDx = 0;
-                        customCanvas.totalDy  = 0;
-
-                        if(returnflag.equals(""))
-                        {
-                            finish();
-                        }
-                        else {
-
-                            boolean isRet = true;
-
-                            mHelper = new DBHelper(getApplicationContext());
-                            isRet = mHelper.IsCheckOrdersReturnBalance(order);
-
-                            if(isRet)
-                            {
-                                finish();
-                                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-                                myIntent.putExtra("data",order);
-                                startActivity(myIntent);
-                            }
-                            else
-                            {
-                                finish();
-                            }
-
-                        }
+//                        for(int i=0; i<=order.size()-1; i++){
+//                            takeScreenshot(i,"3");
+//
+//
+//                            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+//                            java.util.Date currentLocalTime = cal.getTime();
+//                            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+//                            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+//                            String localTime = date.format(currentLocalTime);
+//                            localTime = localTime.replace(" ", "").replace("-", "");
+//
+//                            order.get(i).setFullpathimage(mFileName);
+//                            order.get(i).setLat(mLatitude);
+//                            order.get(i).setLon(mLongitude);
+//                            order.get(i).setSignature_timestamp(localTime);
+//                            order.get(i).setReason_code(mResonCode);
+//                            order.get(i).setReason_note(mNote);
+//                            order.get(i).setSend_status(mSendStatus);
+//                            order.get(i).setMobile_serial(mMobileSerial);
+//                            order.get(i).setMobile_emei(mMobileEmei);
+//                            order.get(i).setMobile_battery(mMobileBattery);
+//
+//                            if(order.get(i).getReturn_flag().equals("R"))
+//                            {
+//                                order.get(i).setDelivery_status("W");
+//                            }else
+//                            {
+//                                order.get(i).setDelivery_status("S");
+//                            }
+//                        }
+//
+//
+//                        boolean isRes = true;
+//
+//                        mHelper = new DBHelper(getApplicationContext());
+//                        isRes = mHelper.updateOrderDeliveryStatus(order);
+//
+//                        isRes = mHelper.updateOrderFullpathimage(order);
+//
+//                        customCanvas.totalDx = 0;
+//                        customCanvas.totalDy  = 0;
+//
+//                        if(returnflag.equals(""))
+//                        {
+//                            finish();
+//                        }
+//                        else {
+//
+//                            boolean isRet = true;
+//
+//                            mHelper = new DBHelper(getApplicationContext());
+//                            isRet = mHelper.IsCheckOrdersReturnBalance(order);
+//
+//                            if(isRet)
+//                            {
+//                                finish();
+//                                myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+//                                myIntent.putExtra("data",order);
+//                                startActivity(myIntent);
+//                            }
+//                            else
+//                            {
+//                                finish();
+//                            }
+//
+//                        }
                     }
                     else
                     {
@@ -683,11 +689,14 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
                 }
             });
 
-            btnNote.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    showMsgReasonApproveSelectedSingleDialog();
-                }
-            });
+            //btnNote.setVisibility(View.GONE);
+
+//            btnNote.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    showMsgReasonApproveSelectedSingleDialog();
+//                }
+//            });
+
 //
 //            mBtnSendGps.setOnClickListener(new View.OnClickListener() {
 //                public void onClick(View view) {
@@ -1363,6 +1372,291 @@ public class SaveOrdersApproveSlipActivity extends AppCompatActivity implements
 
                 for(int i=0; i<=order.size()-1; i++){
                         takeScreenshot(i,sendstatus);
+
+
+                    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+                    java.util.Date currentLocalTime = cal.getTime();
+                    SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+                    date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                    String localTime = date.format(currentLocalTime);
+                    localTime = localTime.replace(" ", "").replace("-", "");
+
+                    order.get(i).setFullpathimage(mFileName);
+                    order.get(i).setLat(mLatitude);
+                    order.get(i).setLon(mLongitude);
+                    order.get(i).setSignature_timestamp(localTime);
+                    order.get(i).setReason_code(mResonCode);
+                    order.get(i).setReason_note(mNote);
+                    order.get(i).setSend_status(mSendStatus);
+                    order.get(i).setMobile_serial(mMobileSerial);
+                    order.get(i).setMobile_emei(mMobileEmei);
+                    order.get(i).setMobile_battery(mMobileBattery);
+
+                    if(order.get(i).getReturn_flag().equals("R"))
+                    {
+                        order.get(i).setDelivery_status("W");
+                    }else
+                    {
+                        order.get(i).setDelivery_status("S");
+                    }
+
+
+                }
+
+                boolean isRes = true;
+
+                mHelper = new DBHelper(getApplicationContext());
+                isRes = mHelper.updateOrderDeliveryStatus(order);
+
+                isRes = mHelper.updateOrderFullpathimage(order);
+
+
+                if(returnflag.equals(""))
+                {
+                    finish();
+                }
+                else
+                {
+
+                    boolean isRet = true;
+
+                    mHelper = new DBHelper(getApplicationContext());
+                    isRet = mHelper.IsCheckOrdersReturnBalance(order);
+
+                    if(isRet)
+                    {
+                        finish();
+                        myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
+                        myIntent.putExtra("data",order);
+                        startActivity(myIntent);
+                    }
+                    else
+                    {
+                        finish();
+                    }
+
+                }
+
+
+            }
+        });
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
+
+
+
+//    public void showMsgDialog(String msg)
+//    {
+//        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
+//        final AlertDialog alert = DialogBuilder.create();
+//        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = li.inflate(R.layout.dialog_message, null, false);
+//
+//        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+//
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mTxtMsg.setTypeface(tf);
+//        mTxtMsg.setText(msg);
+//
+//        DialogBuilder.setView(v);
+//        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                dialog.dismiss();
+//            }
+//        });
+//        DialogBuilder.show();
+//
+//
+//
+//
+//
+    }
+
+    public void showMsgReasonIsApproveSelectedSingleDialog(final String sendstatus)
+    {
+//
+
+
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_reason_save_order, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnOk = (Button) v.findViewById(R.id.btnok);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+        mmedtNote = (EditText) v.findViewById(R.id.edtNote);
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+        mmedtNote.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.txt_text_reason_remark));
+        //mmTxtMsg.setText(msg);
+        mmBtnOk.setText(getResources().getString(R.string.btn_text_ok));
+        mmedtNote.setText(textnote);
+
+
+        lvDeliveryAcceptList = (RecyclerView) v.findViewById(R.id.lvacceptList);
+        lvDeliveryAcceptList.setLayoutManager(new LinearLayoutManager(this));
+        lvDeliveryAcceptList.setHasFixedSize(true);
+
+
+        arrayListReason.clear();
+        mHelper = new DBHelper(getApplicationContext());
+        arrayListReason = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT'");
+
+        if(mSelectNResonIndex > 0)
+        {
+
+            arrayListReason.get(mSelectNResonIndex).setIsselect("1");
+            mResonCode = arrayListReason.get(mSelectNResonIndex).getReason_code();
+        }
+        else
+        {
+            arrayListReason.get(0).setIsselect("1");
+            mResonCode = arrayListReason.get(0).getReason_code();
+            String description = arrayListReason.get(mSelectNResonIndex).getReason_desc();
+            mSelectReson = description;
+        }
+
+
+
+        mDeliveryAcceptListAdapter = new SaveOrderReasonViewAdapter(getApplicationContext(),arrayListReason);
+        lvDeliveryAcceptList.setAdapter(mDeliveryAcceptListAdapter);
+
+
+
+        lvDeliveryAcceptList.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+                for(int i = arrayListReason.size()-1 ; i >= 0; i--)
+                {
+
+                    mSelect = arrayListReason.get(i).getIsselect().toString();
+
+                    if(mSelect.equals("1"))
+                    {
+                        arrayListReason.get(i).setIsselect("0");
+                    }
+
+                }
+
+
+                mSelect = arrayListReason.get(position).getIsselect();
+
+                arrayListReason.get(position).setIsselect("1");
+
+                mResonCode = arrayListReason.get(position).getReason_code();
+
+                String description = arrayListReason.get(position).getReason_desc();
+//
+                mSelectReson = description;
+
+                mSelectNResonIndex = position;
+
+//                if(mSelect.equals("0"))
+//                {
+//                    arrayListReason.get(position).setIsselect("1");
+//
+//                }else
+//                {
+//                    arrayListReason.get(position).setIsselect("0");
+//
+//
+//                }
+
+                mDeliveryAcceptListAdapter.notifyDataSetChanged();
+
+
+
+
+            }
+        }));
+
+
+//        lvDeliveryAcceptList = (ListView) v.findViewById(R.id.lv);
+//        lvDeliveryAcceptList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+//        mDeliveryAcceptList.clear();
+//        mHelper = new DBHelper(getApplicationContext());
+//        mDeliveryAcceptList = mHelper.getReasonListForCondition("'DELIVERY_ACCEPT'");
+//
+//        ArrayList<String> arrayList = new ArrayList<String>();
+//        for(int i = 0; i < mDeliveryAcceptList.size();i++)
+//        {
+//            arrayList.add(mDeliveryAcceptList.get(i).getReason_code() + " " + mDeliveryAcceptList.get(i).getReason_desc());
+//        }
+
+//        if(arrayListReason.size() > 0)
+//        {
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,arrayListReason);
+//            lvDeliveryAcceptList.setAdapter(adapter);
+//
+//            //ถ้ามีข้อมูลบน ListView ให้เลือกรายการแรกเสมอ
+//
+//
+//            if(mSelectResonIndex > 0)
+//            {
+//
+//                lvDeliveryAcceptList.setItemChecked(mSelectResonIndex,true);
+//            }
+//            else
+//            {
+//                lvDeliveryAcceptList.setItemChecked(0,true);
+//            }
+//
+//
+//        }
+//
+//        lvDeliveryAcceptList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String description = mDeliveryAcceptList.get(position).getReason_desc();
+//
+//                mSelectReson = description;
+//                mSelectResonIndex = position;
+//
+//                //Toast.makeText(SaveOrdersApproveSlipActivity.this, description, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
+
+        DialogBuilder.setView(v);
+
+        mmBtnOk.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //loadData();
+                DialogBuilder.dismiss();
+
+                textnote = mmedtNote.getText().toString();
+
+                mNote = textnote;
+
+                customCanvas.reason = mSelectReson;
+                customCanvas.note = textnote;
+                customCanvas.invalidate();
+
+                for(int i=0; i<=order.size()-1; i++){
+                    takeScreenshot(i,sendstatus);
 
 
                     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));

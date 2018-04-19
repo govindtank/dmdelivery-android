@@ -216,6 +216,9 @@ public class CanvasView extends View {
 		if(!reason.equals(""))
 		{
 			canvas.drawText("เหตุผล : "+reason, xReason, yReason, paint);
+		}else
+		{
+			canvas.drawText("เหตุผล : ", xReason, yReason, paint);
 		}
 
 

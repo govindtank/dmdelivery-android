@@ -159,7 +159,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.InfoWind
             View infoWindow = inflater.inflate(R.layout.info_window, null);
 
             ImageView icon = (ImageView) infoWindow.findViewById(R.id.icon);
-            icon.setImageResource(R.mipmap.ic_homeaddressfilled100);
+            icon.setImageResource(R.mipmap.ic_homeaddressfilled50);
 
             TextView tv = (TextView) infoWindow.findViewById(R.id.title);
             tv.setText(marker.getTitle());
@@ -183,7 +183,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.InfoWind
             layout.setBackgroundResource(R.drawable.background_dialog);
 
             ImageView icon = (ImageView) infoWindow.findViewById(R.id.icon);
-            icon.setImageResource(R.mipmap.ic_homeaddressfilled100);
+            icon.setImageResource(R.mipmap.ic_homeaddressfilled50);
 
             TextView tv = (TextView) infoWindow.findViewById(R.id.title);
             tv.setText(marker.getTitle());
@@ -263,15 +263,15 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.InfoWind
         for(int i=0; i<mListOrderDataALL.size();i++){
 
 
-            if(!mListOrderDataALL.get(i).getMsllat().equals("") || !mListOrderDataALL.get(i).getMsllng().equals(""))
+            if(!mListOrderDataALL.get(i).getMsllat().equals("") || !mListOrderDataALL.get(i).getMsllng().equals("") || !mListOrderDataALL.get(i).getMsllat().equals("null") || !mListOrderDataALL.get(i).getMsllng().equals("null"))
             {
                 pos = new LatLng (Double.parseDouble(mListOrderDataALL.get(i).getMsllat()), Double.parseDouble(mListOrderDataALL.get(i).getMsllng()));
 
                 map.addMarker(new MarkerOptions()
                         .position(pos)
                         .title(mListOrderDataALL.get(i).getRep_name())
-                        .snippet(mListOrderDataALL.get(i).getLat()+","+mListOrderDataALL.get(i).getLon())
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_homeaddressfilled100)));
+                        .snippet(mListOrderDataALL.get(i).getMsllat()+","+mListOrderDataALL.get(i).getMsllng())
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_homeaddressfilled50)));
 
 
                 if ( match == true  ) {

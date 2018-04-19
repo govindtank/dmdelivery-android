@@ -440,8 +440,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
                 @Override
                 public boolean onItemClick(final Order item, int position) {
 //                    //Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Click event on the " + item.getItemno() + " position", Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(SaveOrdersActivity.this, "Click event on the " + item.getItemno() + " position", Toast.LENGTH_SHORT);
+//                    toast.show();
 //                    myIntent = new Intent(getApplicationContext(), SaveOrdersSlipActivity.class);
 //                    myIntent.putExtra("inv", "'" + mListOrderData.get(position).getTransNo() + "'");
 //                    startActivity(myIntent);
@@ -1452,7 +1452,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
                         //นำทาง
                         DialogBuilder.dismiss();
 
-                        if(!mListOrderDataN.get(selectedPosition).getLat().equals("") || !mListOrderDataN.get(selectedPosition).getLon().equals(""))
+                        if(!mListOrderDataN.get(selectedPosition).getLat().equals("") || !mListOrderDataN.get(selectedPosition).getLon().equals("") || !mListOrderDataN.get(selectedPosition).getLat().equals("null") || !mListOrderDataN.get(selectedPosition).getLon().equals("null"))
                         {
                             google_position = mListOrderDataN.get(selectedPosition).getMsllat() + "," + mListOrderDataN.get(selectedPosition).getMsllng();
                             Uri gmmIntentUri = Uri.parse("google.navigation:q=" + google_position);
