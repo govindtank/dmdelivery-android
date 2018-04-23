@@ -1061,8 +1061,15 @@ public class SaveOrdersActivity extends AppCompatActivity {
         OutputStream out = null;
         try {
 
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+            java.util.Date currentLocalTime = cal.getTime();
+            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+            date.setTimeZone(TimeZone.getTimeZone("GMT"));
+            String localTime = date.format(currentLocalTime);
+            localTime = localTime.replace(" ", "").replace("-", "");
+
             //create output directory if it doesn't exist
-            File dir = new File (outputPath);
+            File dir = new File (outputPath+ localTime.substring(0, 8)+"/");
             if (!dir.exists())
             {
                 dir.mkdirs();
@@ -1070,7 +1077,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
             in = new FileInputStream(inputPath + inputFile);
-            out = new FileOutputStream(outputPath + inputFile);
+            out = new FileOutputStream(outputPath+localTime.substring(0, 8)+"/" + inputFile);
 
             byte[] buffer = new byte[1024];
             int read;

@@ -144,7 +144,7 @@ public class MainMenuActivity extends AppCompatActivity {
 //    } ;
 
     private String[] gridViewString = {
-            "แสกนสินค้าขึ้นรถ", "โหลดข้อมูล", "สินค้านอกกล่อง", "บันทึกผลการจัดส่ง", "โหลดเบอร์ติดต่อ", "กิจกรรมอื่นๆ","อัพเดทโปรแกรม","ออกจากระบบ"
+            "แสกนสินค้าขึ้นรถ", "โหลดข้อมูล", "สินค้านอกกล่อง", "บันทึกผลการจัดส่ง", "โหลดเบอร์ติดต่อ", "อื่นๆ","อัพเดทโปรแกรม","ออกจากระบบ"
     } ;
 
 
@@ -299,7 +299,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         case "โหลดเบอร์ติดต่อ":
                             showMsgConfirmSelectedSingleDialog();
                             break;
-                        case "กิจกรรมอื่นๆ":
+                        case "อื่นๆ":
                             showMsgDialog("กิจกรรมอื่นๆ");
                             break;
                         case "อัพเดทโปรแกรม":
