@@ -1285,6 +1285,21 @@ public class SaveOrdersActivity extends AppCompatActivity {
         mListMenuData.add(f3);
 
 
+        //ถ้ามีการเลือกเครื่องหมายถูกให้แสดงเมนูนี้
+        for(int i= 0; i< mListOrderDataN.size();i++)
+        {
+            if (mListOrderDataN.get(i).getIsselect().equals("1")){
+                MenuSaveOrder f4 = new MenuSaveOrder();
+                f4.setMenuname(getResources().getString(R.string.menu_text_move_items));
+                f4.setMenuname_type("8");
+                f4.setMenuname_mode("0");
+                mListMenuData.add(f4);
+                break;
+            }
+        }
+
+
+
         final String[] telsMSL = mListOrderDataN.get(selectedPosition).getRep_telno().split(",");
         final String[] telsDSM = mListOrderDataN.get(selectedPosition).getDsm_telno().split(",");
 
@@ -1484,7 +1499,12 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                         break;
 
+                    case "8":
+                        //จัดเรียงหลายออร์เดอร์
 
+
+
+                        break;
                     default:
 
                         DialogBuilder.dismiss();

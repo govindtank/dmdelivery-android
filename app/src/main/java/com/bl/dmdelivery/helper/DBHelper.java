@@ -2274,8 +2274,166 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public  void update_DragandDrop_items_Multi(int xTo_ItemNo,ArrayList<Order> mOrdersMulti)
+    {
+        try
+        {
 
-    public  void updateOrdersItemno(int sigItemno,String sigTransNo)
+            if(mOrdersMulti.size() == 0)
+            {
+                return;
+            }
+
+
+            //ตัวแปร
+            int getItemno = 0;
+            int xForm_ItemNo = 0;
+            int xTo_ItemNo_NextStep = 0;
+            int xTo_ItemNo_NextStep_Del = 0;
+            int xTo_ItemNo_NextStep_Count = 0;
+
+
+//            int xTo_ItemNo = 0;
+//            boolean IsSelected = false;
+            String sigxForm_ItemNo = "";
+
+
+            //ตรวจสอบรายการที่เลือก
+            for(int i=0;i < mOrdersMulti.size();i++)
+            {
+                if(mOrdersMulti.get(i).getIsselect().equals("1"))
+                {
+                    if(sigxForm_ItemNo.equals(""))
+                    {
+                        //ถ้ามีการเลือกให้เก็ยรายการแรก
+                        xForm_ItemNo = mOrdersMulti.get(i).getItemno();
+                        sigxForm_ItemNo = String.valueOf(mOrdersMulti.get(i).getItemno());
+                    }
+
+
+                    //เก็บจำนวนรายการที่เลือกมีกี่รายการ
+                    xTo_ItemNo_NextStep_Count = xTo_ItemNo_NextStep_Count + 1;
+
+                    //ถ้ามีการเลือกให้เก็บรายการสุดท้าย
+//                    xTo_ItemNo = mOrdersMulti.get(i).getItemno();
+                }
+            }
+
+
+            //ถ้าไม่มีรายการที่เลือกให้ออกจาก function นี้
+            if(sigxForm_ItemNo.equals("")){ return; }
+
+
+            //ดึงข้อมูลทั้งหมด
+            ArrayList<Order> mOrders = new ArrayList<Order>();
+            mOrders = getOrderWaitList("ALL");
+
+
+
+            for(int i=0;i < mOrders.size();i++)
+            {
+                //ดึงข้อมูล itemno รายการล่าสุด
+                getItemno = mOrders.get(i).getItemno();
+
+
+                //ถ้า xForm_ItemNo มากกว่า xTo_ItemNo นั้นแสสดงว่า จาก ล่าง-->บน
+                if(xForm_ItemNo > xTo_ItemNo)
+                {
+
+                    //ล่าง-->บน
+                    if (getItemno == xForm_ItemNo)
+                    {
+
+                        //เรียงออร์เดอร์ ระหว่าง xForm_ItemNo --> xTo_ItemNo ใหม่อีกครั้ง
+                        for(int j=0;j < mOrders.size();j++)
+                        {
+                            //ดึงข้อมูล itemno รายการล่าสุด
+                            int iGET_ITEMNO = mOrders.get(j).getItemno();
+
+                            //ถ้าดึงข้อมูล itemno รายการล่าสุด เท่ากับ xForm_ItemNo
+                            if (iGET_ITEMNO == xForm_ItemNo)
+                            {
+
+//                                xTo_ItemNo_NextStep_Del = xTo_ItemNo;
+                                for(int x=0;x < mOrdersMulti.size();x++)
+                                {
+
+                                    if(mOrdersMulti.get(x).getIsselect().equals("1"))
+                                    {
+
+                                        //ปรับปรุงข้อมูลปกติ (itemno)
+                                        xTo_ItemNo_NextStep_Del++;
+                                        updateOrdersItemno(xTo_ItemNo + xTo_ItemNo_NextStep_Del, mOrders.get(j).getTransNo());
+                                    }
+                                    else
+                                    {
+
+                                        //ถ้าอยู่ในช่วงรายการที่เลือก แต่ไม่ใช่รายการที่เลือก
+                                        if (xTo_ItemNo >= mOrders.get(j).getItemno() && xForm_ItemNo <= mOrders.get(j).getItemno())
+                                        {
+                                            //ให้นำ form-next step
+                                            updateOrdersItemno(xForm_ItemNo - xTo_ItemNo_NextStep_Count, mOrders.get(j).getTransNo());
+
+                                            //ลดลงทีละ 1
+                                            xTo_ItemNo_NextStep_Count--;
+                                        }
+
+                                    }
+                                }
+
+                            }
+//                            else
+//                            {
+//
+////                                //ถ้าดึงข้อมูล itemno รายการล่าสุด น้อยกว่า xForm_ItemNo
+////                                if (iGET_ITEMNO < xForm_ItemNo )
+////                                {
+////                                    //ถ้าดึงข้อมูล itemno รายการล่าสุด เท่ากับ xTo_ItemNo
+////                                    if (iGET_ITEMNO == xTo_ItemNo)
+////                                    {
+////                                        //ปรับปรุงข้อมูลปกติ (itemno)
+////                                        updateOrdersItemno(iGET_ITEMNO + 1,mOrders.get(j).getTransNo());
+////                                    }
+////                                    else  if (iGET_ITEMNO > xTo_ItemNo)
+////                                    {
+////                                        //ถ้าดึงข้อมูล itemno รายการล่าสุด มากกว่า toitemno
+////                                        //ปรับปรุงข้อมูลปกติ (itemno)
+////                                        updateOrdersItemno(iGET_ITEMNO + 1,mOrders.get(j).getTransNo());
+////                                    }
+////                                }
+//
+//                            }
+                        }
+
+                    }
+
+                }
+                else if(xForm_ItemNo < xTo_ItemNo)
+                {
+
+                    //ถ้า xForm_ItemNo น้อยกว่า xTo_ItemNo นั้นแสสดงว่า จาก บน-->ล่าง
+                    // บน-->ล่าง
+                    if (getItemno == xTo_ItemNo)
+                    {
+
+
+
+
+                    }
+
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+        }
+    }
+
+
+
+
+        public  void updateOrdersItemno(int sigItemno,String sigTransNo)
     {
         if (sigTransNo == null || sigTransNo.equals("null") ||  sigTransNo.equals("")){return;}
 
