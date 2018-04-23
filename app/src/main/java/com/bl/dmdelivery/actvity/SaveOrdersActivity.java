@@ -857,7 +857,9 @@ public class SaveOrdersActivity extends AppCompatActivity {
             try {
 
 
-                setHeader();
+                //setHeader();
+
+                setHeaderAfterSend();
 
 
             } catch (Exception e) {
@@ -1923,6 +1925,48 @@ public class SaveOrdersActivity extends AppCompatActivity {
             mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataSend.size()+"/"+mListOrderDataALL.size()+")");
 
             mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataN.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnReturnList.setText("ใบรับคืน\n("+mListReturnDataY.size()+"/"+mListReturnDataALL.size()+")");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    private void setHeaderAfterSend() {
+
+        try {
+
+
+            mHelper = new DBHelper(getApplicationContext());
+
+            mListOrderDataALL.clear();
+            mListOrderDataALL = mHelper.getOrderWaitList("ALL");
+
+            mListOrderDataY.clear();
+            mListOrderDataY = mHelper.getOrderWaitList("SWY");
+
+            mListOrderDataNN.clear();
+            mListOrderDataNN = mHelper.getOrderWaitList("N");
+
+            mListOrderDataSend.clear();
+            mListOrderDataSend = mHelper.getOrderWaitList("Y");
+
+            mListReturnDataALL.clear();
+            mListReturnDataALL = mHelper.getOrdersReturnListSummary("ALL");
+
+
+            mListReturnDataY.clear();
+            mListReturnDataY = mHelper.getOrdersReturnListSummary("YC");
+
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_send_data)+" ("+mListOrderDataSend.size()+"/"+mListOrderDataALL.size()+")");
+
+            mBtnSaveOrders.setText("ยังไม่บันทึกผล\n("+mListOrderDataNN.size()+"/"+mListOrderDataALL.size()+")");
 
             mBtnSaveOrdersComplete.setText("บันทึกผลแล้ว\n("+mListOrderDataY.size()+"/"+mListOrderDataALL.size()+")");
 
