@@ -11,6 +11,7 @@ import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -95,6 +96,8 @@ import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 
 //import com.mapswithme.maps.api.MapsWithMeApi;
+
+
 
 public class SaveOrdersActivity extends AppCompatActivity {
 
@@ -1739,7 +1742,77 @@ public class SaveOrdersActivity extends AppCompatActivity {
 //                        final double lat = Double.parseDouble(pos[1]);
 //                        final double lon = Double.parseDouble(pos[0]);
 //                        final String name = rep_name.trim();
-//                        MapsWithMeApi.showPointOnMap(this, lat, lon, name);
+                        //MapsWithMeApi.showPointOnMap(this, lat, lon, name);
+
+                        ArrayList<Order> ordergps = new ArrayList<Order>();
+
+                        for(int i=0; i<mListOrderDataN.size();i++){
+
+                            if(mListOrderDataN.get(i).getIsselect().equals("1"))
+                            {
+                                mOrder = new Order();
+                                mOrder.setRep_code(mListOrderDataN.get(i).getRep_code());
+                                mOrder.setRep_name(mListOrderDataN.get(i).getRep_name());
+                                mOrder.setMsllat(mListOrderDataN.get(i).getMsllat());
+                                mOrder.setMsllng(mListOrderDataN.get(i).getMsllng());
+
+
+
+                                ordergps.add(mOrder);
+                            }
+
+
+                        }
+
+                        //TinyDB tinydb = new TinyDB(getApplicationContext());
+
+
+                        if(ordergps.size() > 0)
+                        {
+                            Intent intent = new Intent("com.mapswithme.maps.pro.action.BUILD_ROUTE");
+                            intent.setPackage("com.mapswithme.maps.pro");
+                            PackageManager pm = getPackageManager();
+                            List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
+                            // Check whether MapsMe is installed or not.
+                            if (infos == null || infos.size() == 0) {
+                                // If not - open MapsMe page on Google Play
+                                intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse("market://details?id=com.mapswithme.maps.pro"));
+                            }
+                            else
+                            {
+
+//                            intent.putExtra("lat_from", 55.800800);
+//                            intent.putExtra("lon_from", 37.532754);
+                            intent.putExtra("saddr", "Start point");
+//                            intent.putExtra("lat_to", 14.027672);
+//                            intent.putExtra("lon_to", 100.3754494);
+
+                                intent.putExtra("lat_to", Float.parseFloat(ordergps.get(0).getMsllat().toString()));
+                                intent.putExtra("lon_to", Float.parseFloat(ordergps.get(0).getMsllng().toString()));
+
+
+//                                intent.putExtra("lat", 14.027672);
+//                                intent.putExtra("lon", 100.3754494);
+
+//                                intent.putExtra("lat", ordergps.get(0).getMsllat());
+//                                intent.putExtra("lon", ordergps.get(0).getMsllng());
+
+
+                            intent.putExtra("daddr", ordergps.get(0).getRep_name().toString());
+                            intent.putExtra("router", "vehicle");
+                            }
+                            // Launch MapsMe.
+                            startActivity(intent);
+
+                        }
+                        else
+                        {
+                            showMsgDialog("กรุณาเลือกออเดอร์");
+                        }
+
+
+
 
 
                         break;
