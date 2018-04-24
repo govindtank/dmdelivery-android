@@ -7,12 +7,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.os.StrictMode;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +34,25 @@ import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.helper.WebServiceHelper;
+import com.bl.dmdelivery.model.BaseResponse;
 import com.bl.dmdelivery.model.Order;
+import com.bl.dmdelivery.model.UrlWebsReq;
+import com.bl.dmdelivery.utility.TagUtils;
+import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.StringTokenizer;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
+
+import static com.bl.dmdelivery.utility.TagUtils.WEBSERVICEPASS;
+import static com.bl.dmdelivery.utility.TagUtils.WEBSERVICEUSER;
 
 public class WebViewActivity extends AppCompatActivity {
 
@@ -39,6 +60,8 @@ public class WebViewActivity extends AppCompatActivity {
     private Button mBtnBack,mBtnMenu;
     private WebView mWebViewDisplay;
     private ProgressDialog prDialog;
+    private ACProgressFlower mProgressDialog;
+    private String serverUrl,contenttype = "0",webUrl="";
 
     private String defaultFonts = "fonts/PSL162pro-webfont.ttf";
 
@@ -80,7 +103,7 @@ public class WebViewActivity extends AppCompatActivity {
 
             //textbox
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_activity));
+            //mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_activity));
         }
         catch (Exception e) {
             showMsgDialog(e.toString());
@@ -89,16 +112,6 @@ public class WebViewActivity extends AppCompatActivity {
 
     private void setWidgetControl() {
         try {
-            Order mOrder=null;
-            Intent intInv= getIntent();
-            Bundle bdlInv = intInv.getExtras();
-
-            if(bdlInv != null)
-            {
-                mOrder=new Order();
-                mOrder =(Order)bdlInv.get("data");
-            }
-
 
             mBtnMenu.setVisibility(View.INVISIBLE);
 
@@ -111,25 +124,28 @@ public class WebViewActivity extends AppCompatActivity {
             });
 
 
-            if(mOrder !=null){
-                mWebViewDisplay.setWebViewClient(new MyWebViewClient());
-                mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
-                mWebViewDisplay.getSettings().setDisplayZoomControls(true);
-                mWebViewDisplay.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
 
-                //Other webview settings
-                mWebViewDisplay.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-                mWebViewDisplay.setScrollbarFadingEnabled(false);
-                mWebViewDisplay.loadUrl("http://distributioncenter01.mistine.co.th:9090/dm_delivery_addin/index.php?" +
-                                  "rep_code=" + mOrder.getRep_code() +
-                                  "&rep_name=" + mOrder.getRep_name() +
-                                  "&inv=" + mOrder.getTransNo() +
-                                  "&deliverydate=" + mOrder.getDelivery_date() +
-                                  "&truck=" + mOrder.getTruckNo() +
-                                  "&msltel=" + mOrder.getRep_telno() +
-                                  "&dsmtel=" + mOrder.getDsm_telno());
+            Intent intent= getIntent();
+            Bundle bdlInv = intent.getExtras();
+
+            if(bdlInv != null)
+            {
+
+                String ct = intent.getStringExtra("contenttype");
+
+                contenttype = ct;
+
+                getUrl();
+
+
+
             }
+
+
+
+
+
         }
         catch (Exception e)
         {
@@ -151,7 +167,8 @@ public class WebViewActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-            handler.proceed("bladmin", "P@ssw0rdblSD");
+            //handler.proceed("bladmin", "P@ssw0rdblSD");
+            handler.proceed(WEBSERVICEUSER,WEBSERVICEPASS);
         }
 
         @Override
@@ -168,6 +185,190 @@ public class WebViewActivity extends AppCompatActivity {
             if(prDialog!=null){
                 prDialog.dismiss();
             }
+        }
+    }
+
+    private void getUrl() {
+
+        try {
+
+
+            new getUrlAsync().execute();
+
+
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            showMsgDialog(e.toString());
+        }
+
+    }
+
+    private class getUrlAsync extends AsyncTask<URL, Integer, Long> {
+        protected Long doInBackground(URL... urls) {
+            int count;
+            HttpURLConnection connection = null;
+            InputStream input = null;
+            OutputStream output = null;
+
+            long total = 0;
+
+            try
+            {
+                UrlWebsReq urlobj = new UrlWebsReq();
+                urlobj.setURL_TYPE(contenttype);
+
+                serverUrl = TagUtils.WEBSERVICEURI + "/DeliveryOrder/UrlWebs";
+                Gson gson = new Gson();
+                String json = gson.toJson(urlobj);
+                String result = new WebServiceHelper().postServiceAPI(serverUrl,json);
+                Log.i("Result", result.toString());
+
+                //convert json to obj
+                BaseResponse obj = gson.fromJson(result,BaseResponse.class);
+
+                if(obj.getResponseCode().equals("1"))
+                {
+                    webUrl = obj.getResponseMessage().toString();
+                }else
+                {
+                    webUrl = "0";
+                }
+
+
+
+            } catch (Exception e) {
+
+                showMsgDialog(e.toString());
+
+            }
+
+            return total;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+//            mProgressDialog = new ACProgressFlower.Builder(WebViewActivity.this)
+//                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+//                    .text(getResources().getString(R.string.progress_loading))
+//                    .themeColor(getResources().getColor(R.color.colorBackground))
+//                    //.text(getResources().getString(R.string.progress_loading))
+//                    .fadeColor(Color.DKGRAY).build();
+//            mProgressDialog.show();
+
+        }
+
+
+        protected void onPostExecute(final Long result) {
+
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Do something after 100ms
+
+                    //mProgressDialog.dismiss();
+
+                    Order mOrder=null;
+                    Intent intent= getIntent();
+                    Bundle bdlInv = intent.getExtras();
+
+                    mOrder=new Order();
+                    mOrder =(Order)bdlInv.get("data");
+
+
+                    switch(contenttype) {
+                        case "WEB1":
+
+                            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_activity));
+
+                            if(mOrder !=null){
+
+
+
+                                if(!webUrl.equals("0"))
+                                {
+
+                                    mWebViewDisplay.setWebViewClient(new MyWebViewClient());
+                                    mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
+                                    mWebViewDisplay.getSettings().setDisplayZoomControls(true);
+                                    mWebViewDisplay.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
+
+
+                                    //Other webview settings
+                                    mWebViewDisplay.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+                                    mWebViewDisplay.setScrollbarFadingEnabled(false);
+                                    mWebViewDisplay.loadUrl(webUrl+"?" +
+                                            "rep_code=" + mOrder.getRep_code() +
+                                            "&rep_name=" + mOrder.getRep_name() +
+                                            "&inv=" + mOrder.getTransNo() +
+                                            "&deliverydate=" + mOrder.getDelivery_date() +
+                                            "&truck=" + mOrder.getTruckNo() +
+                                            "&msltel=" + mOrder.getRep_telno() +
+                                            "&dsmtel=" + mOrder.getDsm_telno());
+
+                                }
+
+
+                            }else
+                            {
+
+                                if(!webUrl.equals("0"))
+                                {
+                                    mWebViewDisplay.setWebViewClient(new MyWebViewClient());
+                                    mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
+                                    mWebViewDisplay.getSettings().setDisplayZoomControls(true);
+                                    mWebViewDisplay.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
+
+                                    //Other webview settings
+                                    mWebViewDisplay.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+                                    mWebViewDisplay.setScrollbarFadingEnabled(false);
+                                    mWebViewDisplay.loadUrl(webUrl);
+                                }
+
+                            }
+
+                            break;
+
+
+                        case "WEB2":
+
+                            mTxtHeader.setText(getResources().getString(R.string.menu_text_manual));
+
+                            if(!webUrl.equals("0"))
+                            {
+
+                                mWebViewDisplay.setWebViewClient(new MyWebViewClient());
+                                mWebViewDisplay.getSettings().setJavaScriptEnabled(true);
+                                mWebViewDisplay.getSettings().setDisplayZoomControls(true);
+                                mWebViewDisplay.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
+
+
+                                //Other webview settings
+                                mWebViewDisplay.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+                                mWebViewDisplay.setScrollbarFadingEnabled(false);
+                                mWebViewDisplay.loadUrl(webUrl);
+
+                            }
+
+
+                            break;
+
+
+                        default:
+
+                    }
+
+
+                }
+            }, 200);
+
         }
     }
 

@@ -1143,6 +1143,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
                         myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("contenttype","WEB1");
                         startActivity(myIntent);
                         break;
 

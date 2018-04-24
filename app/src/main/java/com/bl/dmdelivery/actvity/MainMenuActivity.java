@@ -55,6 +55,7 @@ import android.widget.Toast;
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.adapter.CustomGridViewAdapter;
 import com.bl.dmdelivery.adapter.DownloadTelViewAdapter;
+import com.bl.dmdelivery.adapter.MenuSaveOrderViewAdapter;
 import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
@@ -62,6 +63,7 @@ import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.helper.WebServiceHelper;
 import com.bl.dmdelivery.model.BaseResponse;
 import com.bl.dmdelivery.model.LoadOrderResponse;
+import com.bl.dmdelivery.model.MenuSaveOrder;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.OrderScan;
@@ -114,8 +116,9 @@ public class MainMenuActivity extends AppCompatActivity {
     String deliveryDate = "";
     String mDC = "";
 
-    private RecyclerView lvList;
-    private RecyclerView.Adapter mListAdapter;
+    private RecyclerView lvList,lvmenu;
+    private RecyclerView.Adapter mListAdapter,mMenuAdapter;
+
 
     DBHelper mHelper;
     SQLiteDatabase mDb;
@@ -129,6 +132,8 @@ public class MainMenuActivity extends AppCompatActivity {
     private Integer mSelectDcListIndex = 0;
 
     private ArrayList<TelListMenu> arrayTelListMenu = new ArrayList<TelListMenu>();
+
+    private ArrayList<MenuSaveOrder> mListMenuData = new ArrayList<MenuSaveOrder>();
 
     private String mInputPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/";
     private String mOutputPath = Environment.getExternalStorageDirectory().toString() + "/DMPROCESSED/";
@@ -300,7 +305,8 @@ public class MainMenuActivity extends AppCompatActivity {
                             showMsgConfirmSelectedSingleDialog();
                             break;
                         case "อื่นๆ":
-                            showMsgDialog("กิจกรรมอื่นๆ");
+                            //showMsgDialog("กิจกรรมอื่นๆ");
+                            showMsgDialogMenu();
                             break;
                         case "อัพเดทโปรแกรม":
                             showMsgUpdateConfirmDialog("ยืนยันการอัพเดทโปรแกรม ?",getResources().getString(R.string.btn_text_update_program));
@@ -319,6 +325,108 @@ public class MainMenuActivity extends AppCompatActivity {
 
             showMsgDialog(e.toString());
         }
+    }
+
+    public void showMsgDialogMenu()
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_menu_order_save, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+        lvmenu = (RecyclerView) v.findViewById(R.id.lvmenu);
+        lvmenu.setLayoutManager(new LinearLayoutManager(this));
+        lvmenu.setHasFixedSize(true);
+
+        //mListMenuData
+
+        mListMenuData.clear();
+
+        MenuSaveOrder f1 = new MenuSaveOrder();
+        f1.setMenuname(getResources().getString(R.string.menu_text_activety));
+        f1.setMenuname_type("1");
+        f1.setMenuname_mode("0");
+        mListMenuData.add(f1);
+
+
+        MenuSaveOrder f2 = new MenuSaveOrder();
+        f2.setMenuname(getResources().getString(R.string.menu_text_manual));
+        f2.setMenuname_type("9");
+        f2.setMenuname_mode("0");
+        mListMenuData.add(f2);
+
+
+
+
+        mMenuAdapter = new MenuSaveOrderViewAdapter(getApplicationContext(),mListMenuData);
+        lvmenu.setAdapter(mMenuAdapter);
+
+
+        lvmenu.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+                switch (mListMenuData.get(position).getMenuname_type()){
+
+                    case "1":
+                        //กิจกรรมอื่นๆ
+                        DialogBuilder.dismiss();
+
+
+                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
+                        myIntent.putExtra("contenttype","WEB1");
+                        startActivity(myIntent);
+                        break;
+
+                    case "9":
+                        //คู่มือ
+                        DialogBuilder.dismiss();
+
+                        myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
+                        myIntent.putExtra("contenttype","WEB2");
+                        startActivity(myIntent);
+
+                        break;
+
+
+                    default:
+
+                        DialogBuilder.dismiss();
+                        showMsgDialog("default");
+
+
+                }
+
+            }
+        }));
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText("เมนู");
+        //mmTxtMsg.setText(msg);
+
+        DialogBuilder.setView(v);
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
     }
 
     public void showMsgDialog(String msg)

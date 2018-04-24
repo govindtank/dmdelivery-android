@@ -1455,6 +1455,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
                         myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("contenttype","WEB1");
                         startActivity(myIntent);
                         break;
 
@@ -1709,6 +1710,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
                         myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("contenttype","WEB1");
                         startActivity(myIntent);
                         break;
 
