@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -22,7 +23,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,11 +43,27 @@ import android.widget.Toast;
 import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.helper.WebServiceHelper;
 import com.bl.dmdelivery.utility.TagUtils;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +92,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
+
+    public static String imeiNumber = "";
+    public static int screen_width;
+    public static int screen_height;
 
 
 //    private String mInputPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/";
@@ -210,9 +233,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     //checkLogin();
 
+                    configGPSLog();
+
                     clearSlip();
 
                     setTruck();
+
+                    processLog();
 
 
                     //serverUrl = TagUtils.WEBSERVICEURI + "IsTruckActiveState/"+mEdtTroukno;
@@ -255,8 +282,6 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString(TagUtils.PREF_LOGIN_TRUCK_NO, truckNo);
                 editor.apply();
 
-
-
                 mBtnlogin.setEnabled(true);
 
                 finish();
@@ -268,6 +293,7 @@ public class LoginActivity extends AppCompatActivity {
                 mBtnlogin.setEnabled(true);
                 showMsgDialog(getResources().getString(R.string.error_truck_no_empty));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -324,6 +350,258 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private void configGPSLog() {
+
+        try {
+
+            TelephonyManager telephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            imeiNumber = telephony.getDeviceId();
+
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            screen_width = size.x;
+            screen_height = size.y;
+
+
+            String configFileName = "gpslogger.properties";
+
+                int j=64;
+                char c=(char)j;
+
+                j=37;
+                char p=(char)j;
+
+
+                String fcontent = 	"startonbootup=true%n" +
+                        "log_gpx=false%n" +
+                        "log_kml=false%n" +
+                        "log_plain_text=true%n" +
+                        "keep_fix=true%n"	+
+                        "time_before_logging=30%n"	+
+                        "accuracy_before_logging=20%n" +
+                        "distance_before_logging=%n"	+
+                        "retry_time=30%n" +
+                        "absolute_timeout=30%n"	+
+                        "new_file_creation=onceaday%n" +
+                        "new_file_prefix_serial=true%n" 	+
+                        "autosend_enabled=true%n" +
+                        "autosend_frequency_whenstoppressed=true%n" +
+                        "autosend_sendzip=false%n"	+
+                        "autoftp_enabled=false%n" +
+                        "autoftp_server=gpslog.mistine.co.th%n" +
+                        "autoftp_directory=%n"	+
+                        "autoftp_username=ck%n" +
+                        "autoftp_password=supcsd%n"	+
+                        "autosend_frequency_minutes=10%n"	+
+                        "log_customurl_enabled=true%n"	+
+                        "log_customurl_url=http://fleet.mistine.co.th/log.php?sn="+c+"SER&acc="+c+"ACC&dir="+c+"DIR&lat="+c+"LAT&lng="+c+"LON&time="+c+"TIME&speed="+c+"SPD&batt="+c+"BATT%n";
+
+
+                fcontent = String.format(fcontent);
+                fcontent = fcontent.replace(c, p);
+
+                String strConfigDirectory = Environment.getExternalStorageDirectory().toString() + "/Android/data/com.mendhak.gpslogger/files/";
+                File configDirectory = new File(strConfigDirectory);
+
+                    configDirectory.mkdirs();
+
+            try {
+
+                File file = new File(strConfigDirectory + configFileName );
+                if (!file.exists()) {
+
+                    file.createNewFile();
+                }
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(fcontent);
+                bw.close();
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void processLog () {
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+        java.util.Date currentLocalTime = cal.getTime();
+        SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd");
+        date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+        String curDate = date.format(currentLocalTime).replace("-", "");
+
+        String path = Environment.getExternalStorageDirectory().toString() + "/Android/data/com.mendhak.gpslogger/files/";
+
+        File f = new File(path);
+        File file[] = f.listFiles();
+        String fileName = "";
+        Integer i = 0;
+        for (i=0; i < file.length; i++){
+            fileName = file[i].getName();
+            if (!fileName.contains(curDate) && (fileName.contains("txt"))) {
+
+                uploadGpsLog(fileName);
+
+            }
+            //Toast.makeText(getApplicationContext(),"file[" + i + "] = " + fileName, Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    public void uploadGpsLog (String logFileName) {
+
+
+        FileInputStream inputStream;
+        FileOutputStream outputStream;
+
+        String Uri = Environment.getExternalStorageDirectory().toString() + "/Android/data/com.mendhak.gpslogger/files/" + logFileName;
+
+        File file = new File(Uri);
+        if (!file.exists()) {
+            return;
+        }
+
+        try {
+            inputStream = new FileInputStream(Uri);
+            File mFile = new File(getCacheDir(), logFileName);
+            outputStream = new FileOutputStream(mFile);
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+
+            outputStream.flush();
+            outputStream.close();
+
+//            UploadTask task = new UploadTask(getApplicationContext(), imageFile, logFileName);
+//            task.execute("http://fleet.mistine.co.th/get_file.php");
+
+            String charset = Charset.defaultCharset().displayName();
+            String boundary = Long.toHexString(System.currentTimeMillis());
+            String strResult = "";
+
+            URL url = new URL("http://fleet.mistine.co.th/get_file.php");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+            con.setDoOutput(true);
+            con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            writeMultipart(boundary, charset, bos, false,mFile);
+            byte[] extra = bos.toByteArray();
+            int contentLength = extra.length;
+            contentLength += mFile.length();
+
+            con.setFixedLengthStreamingMode(contentLength);
+
+            OutputStream out = con.getOutputStream();
+            writeMultipart(boundary, charset, out, true,mFile);
+
+            strResult = readStream(con.getInputStream());
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext()," Error !" +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext()," Error !" +  e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext()," Send File Error !" +  logFileName, Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    private void writeMultipart(String boundary, String charset,
+                                OutputStream output, boolean writeContent,File mFile) throws IOException {
+
+        BufferedWriter writer = null;
+
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(output,
+                    Charset.forName(charset)), 8192);
+
+            writer.write("--" + boundary);
+            writer.write("\r\n");
+            writer.write("Content-Disposition: form-data; name=\"myfile\"; filename=\""
+                    + mFile.getName() + "\"");
+            writer.write("\r\n");
+            writer.write("Content-Type: "
+                    + URLConnection.guessContentTypeFromName(
+                    mFile.getName()));
+            writer.write("\r\n");
+            writer.write("Content-Transfer-Encoding: binary");
+            writer.write("\r\n");
+            writer.write("\r\n");
+            writer.flush();
+
+            if (writeContent) {
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(mFile);
+                    byte[] buffer = new byte[1024];
+                    for (int len = 0; (len = fis.read(buffer)) > 0;) {
+                        output.write(buffer, 0, len);
+                    }
+                    output.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                        }
+                    }
+                }
+            }
+            writer.write("\r\n");
+            writer.flush();
+
+            writer.write("--" + boundary + "--");
+            writer.write("\r\n");
+            writer.flush();
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+    }
+
+    private String readStream(InputStream in) {
+        BufferedReader reader = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            reader = new BufferedReader(new InputStreamReader(in));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return sb.toString();
     }
 
     private void checkLogin() {
