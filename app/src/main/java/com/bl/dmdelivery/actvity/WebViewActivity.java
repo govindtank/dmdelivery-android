@@ -173,18 +173,32 @@ public class WebViewActivity extends AppCompatActivity {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-            prDialog = new ProgressDialog(WebViewActivity.this);
-            prDialog.setMessage("Please wait ...");
-            prDialog.show();
+//            super.onPageStarted(view, url, favicon);
+//            prDialog = new ProgressDialog(WebViewActivity.this);
+//            prDialog.setMessage("Please wait ...");
+//            prDialog.show();
+
+            mProgressDialog = new ACProgressFlower.Builder(WebViewActivity.this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .text(getResources().getString(R.string.progress_loading))
+                    .themeColor(getResources().getColor(R.color.colorBackground))
+                    //.text(getResources().getString(R.string.progress_loading))
+                    .fadeColor(Color.DKGRAY).build();
+            mProgressDialog.show();
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            if(prDialog!=null){
-                prDialog.dismiss();
+//            if(prDialog!=null){
+//                prDialog.dismiss();
+//            }
+
+            if(mProgressDialog!=null){
+                mProgressDialog.dismiss();
             }
+
+
         }
     }
 
