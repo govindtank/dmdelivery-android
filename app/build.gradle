@@ -29,6 +29,8 @@ android {
     buildToolsVersion '27.0.3'
     productFlavors {
     }
+
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {

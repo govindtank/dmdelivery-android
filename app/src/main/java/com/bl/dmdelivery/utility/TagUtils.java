@@ -11,6 +11,7 @@ public class TagUtils {
     public static final String PREF_DELIVERY_DATE = "deliveryDate";
     public static final String PREF_LOGIN_TRUCK_NO = "loginTruckno";
     public static final String PREF_BACK_TO_PAGE = "backToPage";
+    public static final String PREF_IMEI = "imeiNumber";
 
     public static final String PREF_RESUME_ORDER_LIST = "resumeOrderList";
     public static final String PREF_SELECT_ORDER_POSITION = "selectedOrderPosition";

@@ -1101,9 +1101,9 @@ public class MainMenuActivity extends AppCompatActivity {
                 BaseResponse obj = gson.fromJson(result,BaseResponse.class);
 
                 version = getVersionCode(MainMenuActivity.this);
-                //String serverVersion = obj.getResponseCode();
+                String serverVersion = obj.getResponseCode();
 
-                String serverVersion = "101";
+                //String serverVersion = "101";
 
 
                 if(version < Integer.parseInt(serverVersion))

@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     private ACProgressFlower mProgressDialog;
     private Response resResponse;
     private String truckNo = "";
+    private String imei = "";
     private String deliveryDate = "";
 
     private SharedPreferences sp;
@@ -169,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        } catch (Exception e) {
+        } catch (SecurityException e) {
             showMsgDialog(e.toString());
         }
     }
@@ -235,6 +236,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     //checkLogin();
 
+
+
                     configGPSLog();
 
                     clearSlip();
@@ -277,14 +280,19 @@ public class LoginActivity extends AppCompatActivity {
 
             hideSoftKeyboard(LoginActivity.this);
 
+            TelephonyManager telephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            imeiNumber = telephony.getDeviceId();
+
             if(!mEdtTroukno.getText().toString().trim().equals(""))
             {
                 deliveryDate = mTxtDate.getText().toString().trim().toUpperCase();
                 truckNo = mEdtTroukno.getText().toString().trim().toUpperCase();
 
+
                 editor = sp.edit();
                 editor.putString(TagUtils.PREF_DELIVERY_DATE, deliveryDate);
                 editor.putString(TagUtils.PREF_LOGIN_TRUCK_NO, truckNo);
+                editor.putString(TagUtils.PREF_IMEI, imeiNumber);
                 editor.apply();
 
                 mBtnlogin.setEnabled(true);
@@ -299,7 +307,7 @@ public class LoginActivity extends AppCompatActivity {
                 showMsgDialog(getResources().getString(R.string.error_truck_no_empty));
             }
 
-        } catch (Exception e) {
+        } catch (SecurityException e) {
             e.printStackTrace();
         }
 
@@ -361,8 +369,7 @@ public class LoginActivity extends AppCompatActivity {
 
         try {
 
-            TelephonyManager telephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            imeiNumber = telephony.getDeviceId();
+
 
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
@@ -520,9 +527,9 @@ public class LoginActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext()," Error !" +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext()," Error !" +  e.getMessage(), Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext()," Send File Error !" +  logFileName, Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Error !" +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Error !" +  e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Send File Error !" +  logFileName, Toast.LENGTH_LONG).show();
         }
 
 
@@ -649,7 +656,7 @@ public class LoginActivity extends AppCompatActivity {
         managedCursor.close();
 
         String fcontent = sb.toString();
-        String callLogFileName = "call_log " + imeiNumber  + ".txt";
+        String callLogFileName = "call_log" + imeiNumber  + ".txt";
         String strCallLogDirectory = Environment.getExternalStorageDirectory().toString() + "/CALL_LOG/";
         File callLogDirectory = new File(strCallLogDirectory);
 
@@ -737,9 +744,9 @@ public class LoginActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext()," Error !" +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext()," Error !" +  e.getMessage(), Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext()," Send File Error !" +  logFileName, Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Error !" +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Error !" +  e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Send File Error !" +  logFileName, Toast.LENGTH_LONG).show();
         }
 
 
