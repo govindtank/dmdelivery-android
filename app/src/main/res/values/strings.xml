@@ -115,7 +115,7 @@
     <string name="menu_text_msl_latlon_googlemap">พิกัดของสมาชิก (google map)</string>
     <string name="menu_text_msl_latlon_mapsme">พิกัดของสมาชิก (maps.me)</string>
     <string name="menu_text_msl_nav">นำทาง</string>
-    <string name="menu_text_move_items">จัดเรียงหลายออร์เดอร์</string>
+    <string name="menu_text_move_items">เรียงต่อจากรายการนี้</string>
     <string name="menu_text_manual">คู่มือ</string>
     <string name="menu_text_activety">กิจกรรม</string>
     <string name="dialog_text_title_confirm">ยืนยันการจองออเดอร์ ?</string>

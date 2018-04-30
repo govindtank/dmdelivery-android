@@ -503,9 +503,18 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                         }
 
-                        adapter.clearData();
-                        adapter.setData(mListOrderDataN);
-                        adapter.notifyDataSetChanged();
+
+
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.clearData();
+                                adapter.setData(mListOrderDataN);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }, 100);
+
 
 
                         return true;
@@ -1502,8 +1511,87 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                     case "8":
                         //จัดเรียงหลายออร์เดอร์
+                        DialogBuilder.dismiss();
 
 
+                        //ตรวจสอบรายการที่เลือก
+                        int xForm_ItemNo = 0;
+                        int xTo_ItemNo = 0;
+                        int xUserSelected = 0;
+
+                        Order mOrderSelected = null;
+                        Order mOrderUpdate = null;
+
+                        ArrayList<Order> mOrderSelectedList = new ArrayList<>();
+                        ArrayList<Order> mOrderUpdateList = new ArrayList<Order>();
+
+
+                        int iUPDATE_NEXT_STEP = 0;
+                        int iUPDATE_NEXT_COUNT = 0;
+                        String sigGetData="";
+
+                        for(int i=0;i < mListOrderDataN.size();i++)
+                        {
+
+                            if(mListOrderDataN.get(i).getItemno() == 999)
+                            {
+                                iUPDATE_NEXT_COUNT++;
+                                iUPDATE_NEXT_STEP = mListOrderDataN.get(i).getItemno() + iUPDATE_NEXT_COUNT;
+                            }
+                            else
+                            {
+                                iUPDATE_NEXT_STEP = mListOrderDataN.get(i).getItemno();
+                            }
+
+
+                            mOrderUpdate = new Order();
+                            mOrderUpdate.setItemno(iUPDATE_NEXT_STEP);
+                            mOrderUpdate.setTransNo(mListOrderDataN.get(i).getTransNo());
+                            mOrderUpdate.setIsselect(mListOrderDataN.get(i).getIsselect());
+                            mOrderUpdateList.add(mOrderUpdate);
+
+
+
+                            if(mListOrderDataN.get(i).getIsselect().equals("1"))
+                            {
+                                if(sigGetData.equals(""))
+                                {
+                                    sigGetData = String.valueOf(iUPDATE_NEXT_STEP);
+                                    xForm_ItemNo = iUPDATE_NEXT_STEP;
+                                }
+
+                                xTo_ItemNo = iUPDATE_NEXT_STEP;
+
+
+                                mOrderSelected = new Order();
+                                mOrderSelected.setItemno(iUPDATE_NEXT_STEP);
+                                mOrderSelected.setTransNo(mListOrderDataN.get(i).getTransNo());
+                                mOrderSelectedList.add(mOrderSelected);
+                            }
+
+
+                            //update itemno
+                            mHelper = new DBHelper(getApplicationContext());
+                            mHelper.updateOrdersItemno(iUPDATE_NEXT_STEP, mListOrderDataN.get(i).getTransNo());
+                        }
+
+
+                        xUserSelected = mOrderUpdateList.get(selectedPosition).getItemno();
+
+
+                        //update
+                        mHelper = new DBHelper(getApplicationContext());
+                        mHelper.update_DragandDrop_items_Multi(xForm_ItemNo, xTo_ItemNo, xUserSelected,mOrderSelectedList,mOrderUpdateList);
+
+
+                        //sort
+                        mHelper = new DBHelper(getApplicationContext());
+                        mListOrderDataN.clear();
+                        mListOrderDataN = mHelper.getOrderWaitList("N");
+
+                        adapter.clearData();
+                        adapter.setData(mListOrderDataN);
+                        adapter.notifyDataSetChanged();
 
                         break;
                     default:
