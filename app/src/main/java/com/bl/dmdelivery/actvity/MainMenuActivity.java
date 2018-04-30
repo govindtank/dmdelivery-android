@@ -60,6 +60,7 @@ import com.bl.dmdelivery.adapter.RecyclerItemClickListener;
 import com.bl.dmdelivery.adapter.SaveOrderReasonViewAdapter;
 import com.bl.dmdelivery.helper.CheckNetwork;
 import com.bl.dmdelivery.helper.DBHelper;
+import com.bl.dmdelivery.helper.TheTask;
 import com.bl.dmdelivery.helper.WebServiceHelper;
 import com.bl.dmdelivery.model.BaseResponse;
 import com.bl.dmdelivery.model.LoadOrderResponse;
@@ -90,6 +91,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -631,6 +633,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
         mmBtnOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+
+                saveLogout();
 
                 DialogBuilder.dismiss();
                 finish();
@@ -1956,6 +1960,32 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     }
+
+    public void saveLogout () {
+
+        try {
+
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+            java.util.Date currentLocalTime = cal.getTime();
+            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String time = date.format(currentLocalTime).replace(" ", "T");
+            //***********************************************************************************
+            String sn = Build.SERIAL.trim();
+
+
+            String url = "http://fleet.mistine.co.th/logout_version.php?truck_no=" + truckNo + "&sn=" + sn + "&lat=" + "0" + "&lng=" + "0" + "&time=" + time + "&version=" + getResources().getString(R.string.app_version_slip);
+            new TheTask().execute(url);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+//            Toast.makeText(getApplicationContext()," Error !" +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Error !" +  e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Send File Error !" +  logFileName, Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

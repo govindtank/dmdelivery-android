@@ -16,7 +16,7 @@ import org.apache.http.util.EntityUtils;
  * Created by sd-m003 on 25/4/2018 AD.
  */
 
-class TheTask extends AsyncTask<String,String,String>
+public class TheTask extends AsyncTask<String,String,String>
 {
 
     protected void onPostExecute(String result) {

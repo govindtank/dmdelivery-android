@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bl.dmdelivery.R;
+import com.bl.dmdelivery.helper.TheTask;
 import com.bl.dmdelivery.helper.WebServiceHelper;
 import com.bl.dmdelivery.utility.TagUtils;
 import com.google.firebase.storage.UploadTask;
@@ -78,6 +79,7 @@ import cc.cloudist.acplibrary.ACProgressFlower;
 import okhttp3.Response;
 import pl.tajchert.nammu.Nammu;
 import pl.tajchert.nammu.PermissionCallback;
+import android.os.AsyncTask;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -247,7 +249,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     getCallDetails();
 
+                    saveLogin();
+
                     setTruck();
+
+
 
 
                     //serverUrl = TagUtils.WEBSERVICEURI + "IsTruckActiveState/"+mEdtTroukno;
@@ -750,6 +756,31 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void saveLogin () {
+
+        try {
+
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+            java.util.Date currentLocalTime = cal.getTime();
+            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String time = date.format(currentLocalTime).replace(" ", "T");
+            //***********************************************************************************
+            String sn = Build.SERIAL.trim();
+
+
+            String url = "http://fleet.mistine.co.th/login_version.php?truck_no=" + mEdtTroukno.getText().toString().trim() + "&sn=" + sn + "&lat=" + "0" + "&lng=" + "0" + "&time=" + time + "&version="+getResources().getString(R.string.app_version_slip);
+            new TheTask().execute(url);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+//            Toast.makeText(getApplicationContext()," Error !" +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Error !" +  e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext()," Send File Error !" +  logFileName, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void checkLogin() {
