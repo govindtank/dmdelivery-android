@@ -60,6 +60,7 @@
         <activity android:name=".actvity.SaveOrdersReasonApproveActivity" />
         <activity android:name=".actvity.WebViewActivity" />
         <activity android:name=".actvity.CheckMapActivity" />
+        <activity android:name=".actvity.ReturnSummaryActivity"/>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -70,7 +71,7 @@
 
         <activity android:name=".actvity.ViewSlipActivity" />
         <activity android:name=".actvity.MapActivity" />
-        <activity android:name=".actvity.ViewSlipReturnActivity"></activity>
+        <activity android:name=".actvity.ViewSlipReturnActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -79,39 +80,37 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
-        <!--<receiver android:name=".helper.BlockCallReceiver" >-->
-            <!--<intent-filter  android:priority="1" >-->
-                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <!-- <receiver android:name=".helper.BlockCallReceiver" > -->
+        <!-- <intent-filter  android:priority="1" > -->
+        <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
 
-        <!--<receiver android:name=".ShutdownReceiver">-->
-            <!--android:enabled="true"-->
-            <!--android:permission="android.permission.RECEIVE_BOOT_COMPLETED">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.ACTION_SHUTDOWN" />-->
-                <!--<action android:name="android.intent.action.QUICKBOOT_POWEROFF" />-->
-                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-            <!--</intent-filter> </receiver>-->
 
-        <receiver android:name=".helper.LogCall" >
-            <intent-filter android:priority="1" >
+        <!-- <receiver android:name=".ShutdownReceiver"> -->
+        <!-- android:enabled="true" -->
+        <!-- android:permission="android.permission.RECEIVE_BOOT_COMPLETED"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.ACTION_SHUTDOWN" /> -->
+        <!-- <action android:name="android.intent.action.QUICKBOOT_POWEROFF" /> -->
+        <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
+        <!-- </intent-filter> </receiver> -->
+
+        <receiver android:name=".helper.LogCall">
+            <intent-filter android:priority="1">
                 <action android:name="android.intent.action.PHONE_STATE" />
-                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
+                <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
             </intent-filter>
         </receiver>
-
-
-        <receiver android:name=".helper.BlockCallReceiver" >
-            <intent-filter android:priority="0" >
+        <receiver android:name=".helper.BlockCallReceiver">
+            <intent-filter android:priority="0">
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
-                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
+                <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
             </intent-filter>
         </receiver>
-
 
     </application>
 

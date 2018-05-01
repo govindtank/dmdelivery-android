@@ -151,7 +151,6 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
     }
 
 
-
     private void bindWidget()
     {
         try{
@@ -170,7 +169,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
             //mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_saveorders_return_list));
 
-            mBtnMenu.setVisibility(View.INVISIBLE);
+//            mBtnMenu.setVisibility(View.INVISIBLE);
 
             lv = (RecyclerView) findViewById(R.id.lv);
 
@@ -217,7 +216,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                 @Override
                 public boolean onItemClick(final OrderReturn item, final int position) {
                     selectedPositionNotifyDataSetChanged = position;
-                    showMsgDialogMenu(position);
+                    showMsgDialogMenu(position,"");
                     return true;
                 }
 
@@ -293,15 +292,13 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                 }
             });
 
-//            mBtnMenu.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View view) {
-////                    myIntent = new Intent(getApplicationContext(), OthersMenuActivity.class);
-////                    startActivity(myIntent);
-////                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-//
-//                    showMsgDialogMenu();
-//                }
-//            });
+            mBtnMenu.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+
+                    showMsgDialogMenu(0,"GET_RIGHT_MENU");
+
+                }
+            });
 
             mBtnSaveOrders.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -429,7 +426,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
     }
 
-    public void showMsgDialogMenu(final int selectedPosition)
+    public void showMsgDialogMenu(final int selectedPosition,String sigGetMenu)
     {
         final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
         DialogBuilder.setIcon(R.mipmap.ic_launcher);
@@ -450,59 +447,38 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
 
 
-        if(mListReturnDataALL.get(selectedPosition).getReturn_status() == "รับคืนได้")
+        if(sigGetMenu.equals("GET_RIGHT_MENU"))
         {
-            //รับคืนได้
-            MenuSaveOrder f1 = new MenuSaveOrder();
-            f1.setMenuname("ดูสลิปเซ็นรับคืนสินค้า");
-            f1.setMenuname_type("0");
-            f1.setMenuname_mode("1");
-            mListMenuData.add(f1);
-
-
-//            MenuSaveOrder f2 = new MenuSaveOrder();
-//            f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
-//            f2.setMenuname_type("0");
-//            f2.setMenuname_mode("0");
-//            mListMenuData.add(f2);
-
-
-            MenuSaveOrder f3 = new MenuSaveOrder();
-            f3.setMenuname("กิจกรรม");
-            f3.setMenuname_type("1");
-            f3.setMenuname_mode("0");
-            mListMenuData.add(f3);
-        }
-        else  if(mListReturnDataALL.get(selectedPosition).getReturn_status() == "รับคืนไม่ได้")
-        {
-            //รับคืนไม่ได้
-            MenuSaveOrder f2 = new MenuSaveOrder();
-            f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
-            f2.setMenuname_type("0");
-            f2.setMenuname_mode("0");
-            mListMenuData.add(f2);
-
-
-            MenuSaveOrder f3 = new MenuSaveOrder();
-            f3.setMenuname("กิจกรรม");
-            f3.setMenuname_type("1");
-            f3.setMenuname_mode("0");
-            mListMenuData.add(f3);
+            //get Right menu
+            MenuSaveOrder f4 = new MenuSaveOrder();
+            f4.setMenuname("สรุปรายการรับคืนสินค้า");
+            f4.setMenuname_type("10");
+            f4.setMenuname_mode("0");
+            mListMenuData.add(f4);
         }
         else
         {
-            //ยังไม่รับคืน
-            mHelper = new DBHelper(getApplicationContext());
-            String sigGetTransNo = mHelper.getInvOnOrder(mListReturnDataALL.get(selectedPosition).getRep_seq());
 
-            mHelper = new DBHelper(getApplicationContext());
-            if(mHelper.IsCheckOrdersShowMenuOnReturnList(sigGetTransNo))
-            {
-//                MenuSaveOrder f2 = new MenuSaveOrder();
-//                f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
-//                f2.setMenuname_type("0");
-//                f2.setMenuname_mode("0");
-//                mListMenuData.add(f2);
+            if (mListReturnDataALL.get(selectedPosition).getReturn_status() == "รับคืนได้") {
+                //รับคืนได้
+                MenuSaveOrder f1 = new MenuSaveOrder();
+                f1.setMenuname("ดูสลิปเซ็นรับคืนสินค้า");
+                f1.setMenuname_type("0");
+                f1.setMenuname_mode("1");
+                mListMenuData.add(f1);
+
+                MenuSaveOrder f3 = new MenuSaveOrder();
+                f3.setMenuname("กิจกรรม");
+                f3.setMenuname_type("1");
+                f3.setMenuname_mode("0");
+                mListMenuData.add(f3);
+            } else if (mListReturnDataALL.get(selectedPosition).getReturn_status() == "รับคืนไม่ได้") {
+                //รับคืนไม่ได้
+                MenuSaveOrder f2 = new MenuSaveOrder();
+                f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
+                f2.setMenuname_type("0");
+                f2.setMenuname_mode("0");
+                mListMenuData.add(f2);
 
 
                 MenuSaveOrder f3 = new MenuSaveOrder();
@@ -510,38 +486,29 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                 f3.setMenuname_type("1");
                 f3.setMenuname_mode("0");
                 mListMenuData.add(f3);
-            }
-            else
-            {
+            } else {
                 //ยังไม่รับคืน
-                MenuSaveOrder f3 = new MenuSaveOrder();
-                f3.setMenuname("กิจกรรม");
-                f3.setMenuname_type("1");
-                f3.setMenuname_mode("0");
-                mListMenuData.add(f3);
+                mHelper = new DBHelper(getApplicationContext());
+                String sigGetTransNo = mHelper.getInvOnOrder(mListReturnDataALL.get(selectedPosition).getRep_seq());
+
+                mHelper = new DBHelper(getApplicationContext());
+                if (mHelper.IsCheckOrdersShowMenuOnReturnList(sigGetTransNo)) {
+                    MenuSaveOrder f3 = new MenuSaveOrder();
+                    f3.setMenuname("กิจกรรม");
+                    f3.setMenuname_type("1");
+                    f3.setMenuname_mode("0");
+                    mListMenuData.add(f3);
+                } else {
+                    //ยังไม่รับคืน
+                    MenuSaveOrder f3 = new MenuSaveOrder();
+                    f3.setMenuname("กิจกรรม");
+                    f3.setMenuname_type("1");
+                    f3.setMenuname_mode("0");
+                    mListMenuData.add(f3);
+                }
+
             }
         }
-
-
-//        MenuSaveOrder f1 = new MenuSaveOrder();
-//        f1.setMenuname("ดูสลิปเซ็นรับคืนสินค้า");
-//        f1.setMenuname_type("0");
-//        f1.setMenuname_mode("1");
-//        mListMenuData.add(f1);
-//
-//
-//        MenuSaveOrder f2 = new MenuSaveOrder();
-//        f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
-//        f2.setMenuname_type("0");
-//        f2.setMenuname_mode("0");
-//        mListMenuData.add(f2);
-//
-//
-//        MenuSaveOrder f3 = new MenuSaveOrder();
-//        f3.setMenuname("กิจกรรม");
-//        f3.setMenuname_type("1");
-//        f3.setMenuname_mode("0");
-//        mListMenuData.add(f3);
 
 
 
@@ -565,18 +532,6 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                         {
                             //แก้ไขการเซ็นต์รับคืนสินค้า
                             isResumeState = true;
-
-//                            mOrders = new ArrayList<Order>();
-//                            mOrder = new Order();
-////                            mOrder.setRep_seq(mListReturnDataALL.get(selectedPosition).getRep_seq());
-//                            mOrder.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
-//                            mOrders.add(mOrder);
-//
-//                            myIntent = new Intent(getApplicationContext(), SaveOrdersReturnDocActivity.class);
-//                            myIntent.putExtra("data",mOrders);
-//                            startActivity(myIntent);
-
-
 
 
                             mHelper = new DBHelper(getApplicationContext());
@@ -627,6 +582,15 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
                         myIntent = new Intent(getApplicationContext(), WebViewActivity.class);
                         myIntent.putExtra("data",mOrder);
+                        myIntent.putExtra("contenttype","WEB1");
+                        startActivity(myIntent);
+
+                        break;
+                    case "10":
+                        //get right menu
+                        DialogBuilder.dismiss();
+
+                        myIntent = new Intent(getApplicationContext(), ReturnSummaryActivity.class);
                         startActivity(myIntent);
 
                         break;

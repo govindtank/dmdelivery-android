@@ -866,6 +866,74 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public ArrayList<OrderReturn> getReturnSummary(String sigCriteria) {
+
+        if(sigCriteria.isEmpty() || sigCriteria.equals("") || sigCriteria==null){ return null;}
+        ArrayList<OrderReturn>  mOrderReturnlist = new ArrayList<OrderReturn>();
+
+        String sigCriteriaSql="";
+        switch(sigCriteria.toUpperCase().toString()){
+            case "N":
+                sigCriteriaSql="return_status='0'";
+                break;
+            case "Y":
+                sigCriteriaSql="return_status='1'";
+                break;
+            case "C":
+                sigCriteriaSql="return_status='2'";
+                break;
+            case "YC":
+                sigCriteriaSql="return_status IN ('1','2')";
+                break;
+            case "ALL":
+                sigCriteriaSql="return_status IN ('0','1','2')";
+                break;
+        }
+
+        if(sigCriteriaSql.isEmpty() || sigCriteriaSql==null || sigCriteriaSql.equals("null") || sigCriteriaSql.equals("")){return null;}
+
+        Cursor cursor=null;
+        sqLiteDatabase = this.getReadableDatabase();
+
+        cursor = sqLiteDatabase.rawQuery(" SELECT rep_code,rep_name,fs_code,fs_desc,return_status,SUM(return_unit_real) AS return_unit_real FROM " + TableOrderReturn + " WHERE " + sigCriteriaSql + " GROUP BY fs_code" ,null);
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+            OrderReturn mOrderReturn = new OrderReturn();
+
+            mOrderReturn.setRep_code(cursor.getString(0));
+            mOrderReturn.setRep_name(cursor.getString(1));
+            mOrderReturn.setFs_code(cursor.getString(2));
+            mOrderReturn.setFs_desc(cursor.getString(3));
+
+            if(cursor.getString(4).equals("")){
+                mOrderReturn.setReturn_status("ยังไม่รับคืน");
+            }
+            else if(cursor.getString(4).equals("0"))
+            {
+                mOrderReturn.setReturn_status("ยังไม่รับคืน");
+            }
+            else if(cursor.getString(4).equals("1"))
+            {
+                mOrderReturn.setReturn_status("รับคืนได้");
+            }
+            else if(cursor.getString(4).equals("2"))
+            {
+                mOrderReturn.setReturn_status("รับคืนไม่ได้");
+            }
+
+            mOrderReturn.setReturn_unit_real(cursor.getString(5));
+            mOrderReturnlist.add(mOrderReturn);
+
+            cursor.moveToNext();
+        }
+
+        return mOrderReturnlist;
+    }
+
+
 
     public void addUnpack(Unpack order) {
         sqLiteDatabase = this.getWritableDatabase();
