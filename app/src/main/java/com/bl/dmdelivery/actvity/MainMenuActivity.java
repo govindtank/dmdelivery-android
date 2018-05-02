@@ -288,26 +288,14 @@ public class MainMenuActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             break;
                         case "โหลดข้อมูล":
-
-                            if(chkNetwork.isConnectionAvailable(getApplicationContext()))
-                            {
-                                if(chkNetwork.isWebserviceConnected(getApplicationContext()))
-                                {
-                                    mHelper = new DBHelper(getApplicationContext());
-                                    boolean _order = mHelper.getCheckSenddata();
-                                    if(_order==true){
-                                        showMsgError("โปรดรอเนื่องจากยังมีข้อมูลบางรายการที่ยังไม่ถูกส่งเข้า Server");
-                                        return;
-                                    }else {
-                                        showMsgConfirmDialog("ยืนยันการโหลดข้อมูล ?",getResources().getString(R.string.btn_text_load_data));
-                                    }
-                                }else{
-                                    showMsgDialog(getResources().getString(R.string.error_webservice));
-                                }
+                            mHelper = new DBHelper(getApplicationContext());
+                            boolean _order = mHelper.getCheckSenddata();
+                            if(_order==true){
+                                showMsgError("โปรดรอเนื่องจากยังมีข้อมูลบางรายการที่ยังไม่ถูกส่งเข้า Server");
+                                return;
                             }else {
-                                showMsgDialog(getResources().getString(R.string.error_network));
+                                showMsgConfirmDialog("ยืนยันการโหลดข้อมูล ?",getResources().getString(R.string.btn_text_load_data));
                             }
-
 
                             //showMsgConfirmDialog("ยืนยันการโหลดข้อมูล ?",getResources().getString(R.string.btn_text_load_data));
                            /* mHelper = new DBHelper(getApplicationContext());
