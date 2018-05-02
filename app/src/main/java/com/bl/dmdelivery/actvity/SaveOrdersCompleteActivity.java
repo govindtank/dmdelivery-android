@@ -626,13 +626,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
                 if(mListOrderReturnWaitSend.size() > 0)
                 {
-                    Delivery.ReturnOrder returnOrderdelivery = new Delivery.ReturnOrder();
-                    Delivery.ReturnOrder.ReturnItem orderReturnItem = new Delivery.ReturnOrder.ReturnItem();
+                    Delivery.ReturnOrder returnOrderdelivery = null;
+                    Delivery.ReturnOrder.ReturnItem orderReturnItem = null;
 
 
                     for(int x=0; x<mListOrderReturnWaitSend.size(); x++){
 
-
+                        returnOrderdelivery = new Delivery.ReturnOrder();
                         returnOrderdelivery.setTruck_no(mListOrderReturnWaitSend.get(x).getTrack_no());
                         returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
                         returnOrderdelivery.setReturn_no(mListOrderReturnWaitSend.get(x).getReturn_no());
@@ -652,6 +652,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
                         for(int y=0; y<mListOrderReturnItemSend.size(); y++){
 
+                            orderReturnItem = new Delivery.ReturnOrder.ReturnItem();
                             orderReturnItem.setFscode(mListOrderReturnItemSend.get(y).getFs_code());
                             orderReturnItem.setFsdesc(mListOrderReturnItemSend.get(y).getFs_desc());
                             orderReturnItem.setReturn_request(mListOrderReturnItemSend.get(y).getReturn_unit());

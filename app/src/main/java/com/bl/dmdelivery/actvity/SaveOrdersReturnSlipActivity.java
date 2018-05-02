@@ -10,6 +10,7 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -536,6 +537,7 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity implements
 
 
         String fileName= "V" + getResources().getString(R.string.app_version_slip) + "_" + Build.SERIAL.trim() +  "-" + truckNo + "-" + mOrderReturnGetData.getReftrans_no() + "-" + mOrderReturnGetData.getRep_code() + "-" + localTime + "-" + latlng + "-" + getImeiNumber() + "-" + batteryPercent + ".jpg";
+
 
         try {
             // image naming and path  to include sd card  appending name you choose for file
