@@ -1089,6 +1089,7 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                         mOrder.setReturn_flag(mListOrderDataY.get(selectedPosition).getReturn_flag());
                         mOrder.setCont_desc(mListOrderDataY.get(selectedPosition).getCont_desc());
                         mOrder.setFullpathimage(mListOrderDataY.get(selectedPosition).getFullpathimage());
+                        mOrder.setSendtoserver_timestamp(mListOrderDataY.get(selectedPosition).getSendtoserver_timestamp());
 
                         if(mListMenuData.get(position).getMenuname_mode().equals("0"))
                         {

@@ -20,7 +20,10 @@ import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.helper.DBHelper;
 import com.bl.dmdelivery.model.Order;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class ViewSlipActivity extends AppCompatActivity {
 
@@ -97,13 +100,33 @@ public class ViewSlipActivity extends AppCompatActivity {
             else
             {
 
+
                 String mPath = "";
                 if(order.get(0).getDelivery_status().equals("W"))
                 {
                     mPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIP/" + order.get(0).getFullpathimage();
                 }else
                 {
-                    mPath = Environment.getExternalStorageDirectory().toString() + "/DMPROCESSED/" + order.get(0).getFullpathimage();
+
+                    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+                    java.util.Date currentLocalTime = cal.getTime();
+                    SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+                    date.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    String localTime = date.format(currentLocalTime);
+                    localTime = localTime.replace(" ", "").replace("-", "");
+
+
+                    String sendtime = "";
+
+                    sendtime = order.get(0).getSendtoserver_timestamp();
+
+                    if(sendtime.length()>8)
+                    {
+                        localTime = sendtime.substring(0, 8);
+                    }
+
+
+                    mPath = Environment.getExternalStorageDirectory().toString() + "/DMPROCESSED/" +localTime+"/"+ order.get(0).getFullpathimage();
                 }
                 imvSlip.setImageBitmap(BitmapFactory.decodeFile(mPath));
             }
