@@ -1022,6 +1022,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                     moveSlip(inputPath,mListOrderDataWaitSend.get(i).getFullpathimage(),outputPath);
 
+                    if(mListOrderDataWaitSend.get(i).getReturn_flag().equals("R"))
+                    {
+                        moveReturnSlip(inputPathReturn,mListOrderReturnWaitSend.get(i).getFullpathimage(),outputPathReturn);
+                    }
+
 
 
 
@@ -1065,6 +1070,58 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
 
     private void moveSlip(String inputPath, String inputFile, String outputPath) {
+
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+            java.util.Date currentLocalTime = cal.getTime();
+            SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+            date.setTimeZone(TimeZone.getTimeZone("GMT"));
+            String localTime = date.format(currentLocalTime);
+            localTime = localTime.replace(" ", "").replace("-", "");
+
+            //create output directory if it doesn't exist
+            File dir = new File (outputPath+ localTime.substring(0, 8)+"/");
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+
+
+            in = new FileInputStream(inputPath + inputFile);
+            out = new FileOutputStream(outputPath+localTime.substring(0, 8)+"/" + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            in = null;
+
+            // write the output file
+            out.flush();
+            out.close();
+            out = null;
+
+            // delete the original file
+            new File(inputPath + inputFile).delete();
+
+
+        }
+
+        catch (FileNotFoundException fnfe1) {
+            Log.e("tag", fnfe1.getMessage());
+        }
+        catch (Exception e) {
+            Log.e("tag", e.getMessage());
+        }
+
+    }
+
+    private void moveReturnSlip(String inputPath, String inputFile, String outputPath) {
 
         InputStream in = null;
         OutputStream out = null;

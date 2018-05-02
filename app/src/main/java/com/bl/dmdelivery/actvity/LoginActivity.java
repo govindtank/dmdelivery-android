@@ -244,6 +244,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     clearSlip();
 
+                    clearReturnSlip();
 
                     processLog();
 
@@ -363,6 +364,57 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 s = s + 1;
                 Log.d("DM","Delete Folder  " + Environment.getExternalStorageDirectory()+"/DMPROCESSED/" + localTime2);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void clearReturnSlip() {
+
+        try {
+
+            File dir;
+
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+            Calendar cal2 = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
+
+            cal.add(Calendar.DATE, -7); /* save last 7 days */
+            cal2.add(Calendar.DATE, -120); /* start from last 120 days */
+
+
+            java.util.Date currentLocalTime = cal.getTime();
+            SimpleDateFormat date = new SimpleDateFormat("yyyMMdd");
+            date.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String localTime = date.format(currentLocalTime);
+            Log.d("DM","local time " + localTime);
+
+
+            java.util.Date currentLocalTime2 = cal2.getTime();
+            SimpleDateFormat date2 = new SimpleDateFormat("yyyMMdd");
+            date2.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String localTime2 = date2.format(currentLocalTime2);
+            Log.d("DM","local time 2 " + localTime2);
+            Integer s = 1;
+            while ((!localTime2.equals(localTime))) {
+
+                cal2.add(Calendar.DATE, 1);
+                currentLocalTime2 = cal2.getTime();
+                localTime2 = date2.format(currentLocalTime2);
+
+                dir = new File(Environment.getExternalStorageDirectory()+"/DMRETURNPROCESSED/" + localTime2);
+                if (dir.isDirectory()) {
+                    String[] children = dir.list();
+                    for (int i = 0; i < children.length; i++) {
+                        new File(dir, children[i]).delete();
+                    }
+                    dir.delete();
+
+                }
+                s = s + 1;
+                Log.d("DM","Delete Folder  " + Environment.getExternalStorageDirectory()+"/DMRETURNPROCESSED/" + localTime2);
             }
 
         } catch (Exception e) {
