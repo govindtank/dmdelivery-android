@@ -141,7 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
                         "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT," +
-                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
+                        "%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT,%s TEXT)",
                 TableOrderReturn,
                 OrderReturn.Column.ou_code,
                 OrderReturn.Column.return_no,
@@ -167,7 +167,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 OrderReturn.Column.lat,
                 OrderReturn.Column.lon,
                 OrderReturn.Column.signature_timestamp,
-                OrderReturn.Column.sendtoserver_timestamp
+                OrderReturn.Column.sendtoserver_timestamp,
+                OrderReturn.Column.return_order_status
         );
 
         Log.i(TAG, CREATE_RETURN_TABLE);
