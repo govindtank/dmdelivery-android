@@ -1199,10 +1199,10 @@ public class SaveOrdersActivity extends AppCompatActivity {
             }
             else
             {
-//                intent.setData(Uri.parse("tel:" + tel));
-//                startActivity(intent);
+                intent.setData(Uri.parse("tel:" + tel));
+                startActivity(intent);
 
-                showMsgDialog("tel:" + tel);
+                //showMsgDialog("tel:" + tel);
 
             }
 
