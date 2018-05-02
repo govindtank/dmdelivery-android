@@ -129,6 +129,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity implements
     private String mLatitude = "0";
     private String mLongitude = "0";
 
+    private String sigTruckNo = "";
+    private String sigDeliveryDate = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +195,9 @@ public class SaveOrdersReturnActivity extends AppCompatActivity implements
     private void bindWidget()
     {
         try{
+
+            sigTruckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
+            sigDeliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
 
             Intent ineGetIntent= getIntent();
             Bundle bdlGetExtras= ineGetIntent.getExtras();
@@ -753,6 +759,8 @@ public class SaveOrdersReturnActivity extends AppCompatActivity implements
                 mOrderReturnSaveData.setLat(mLatitude);
                 mOrderReturnSaveData.setLon(mLongitude);
                 mOrderReturnSaveData.setSignature_timestamp(formattedDate);
+                mOrderReturnSaveData.setTrack_no(sigTruckNo);
+                mOrderReturnSaveData.setDelivery_date(sigDeliveryDate);
                 mHelper.updateOrderReturnDetails(mOrderReturnSaveData);
 
 

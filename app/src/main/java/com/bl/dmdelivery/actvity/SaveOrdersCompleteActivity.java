@@ -701,6 +701,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                     isRes = mHelper.updateOrderDeliveryStatusToServer(mListOrderDataWaitSend);
 
 
+
+                    //update timestap to server
+                    mHelper = new DBHelper(getApplicationContext());
+                    mHelper.updateOrderReturnSendToServerTimestampToServer(mListOrderReturnSend);
+
+
+
                     moveSlip(inputPath,mListOrderDataWaitSend.get(i).getFullpathimage(),outputPath);
 
 

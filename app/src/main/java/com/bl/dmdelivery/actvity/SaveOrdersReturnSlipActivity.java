@@ -137,6 +137,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity implements
     private String mLatitude = "0";
     private String mLongitude = "0";
 
+    private String sigTruckNo = "";
+    private String sigDeliveryDate = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +177,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity implements
     private void bindWidget()
     {
         try{
+
+            sigTruckNo = sp.getString(TagUtils.PREF_LOGIN_TRUCK_NO, "");
+            sigDeliveryDate = sp.getString(TagUtils.PREF_DELIVERY_DATE, "");
 
             Intent ineGetIntent= getIntent();
             Bundle bdlGetExtras= ineGetIntent.getExtras();
@@ -301,6 +307,9 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity implements
                     editor = sp.edit();
                     editor.putString(TagUtils.PREF_BACK_TO_PAGE, backToPage);
                     editor.apply();
+
+                    CanvasViewSlipReturn.totalDx = 0;
+                    CanvasViewSlipReturn.totalDy = 0;
 
                     finish();
                 }
@@ -680,6 +689,8 @@ public class SaveOrdersReturnSlipActivity extends AppCompatActivity implements
                     mOrderReturn.setLat(mLatitude);
                     mOrderReturn.setLon(mLongitude);
                     mOrderReturn.setSignature_timestamp(formattedDate);
+                    mOrderReturn.setTrack_no(sigTruckNo);
+                    mOrderReturn.setDelivery_date(sigDeliveryDate);
                     mHelper.updateOrderReturnSlip(mOrderReturn);
                 }
 

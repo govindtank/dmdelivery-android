@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -23,13 +24,18 @@ import com.bl.dmdelivery.R;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.utility.TagUtils;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 public class ViewSlipReturnActivity extends AppCompatActivity {
 
     private OrderReturn mOrderReturnGetData = null;
 
-    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtRefReturnNo,mTxtRepcode;
-    private  Button mBtnBack;
-    private ImageView mimvSlip;
+    private TextView mTxtMsg,mTxtHeader,mmTxtTitle,mTxtRefReturnNo,mTxtRepcode,mmTxtMsg;
+    private  Button mBtnBack,mmBtnClose;
+    private ImageView mimvSlip,mmImvTitle;
 
 //    private String sigDataFullPathimage = "";
 
@@ -100,8 +106,55 @@ public class ViewSlipReturnActivity extends AppCompatActivity {
             }
             else
             {
-                String mPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIPRETURN/" + mOrderReturnGetData.getFullpathimage();
-                mimvSlip.setImageBitmap(BitmapFactory.decodeFile(mPath));
+//                String mPathDMSLIPRETURN = Environment.getExternalStorageDirectory().toString() + "/DMSLIPRETURN/" + mOrderReturnGetData.getFullpathimage();
+//                mimvSlip.setImageBitmap(BitmapFactory.decodeFile(mPath));
+
+
+                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+                java.util.Date currentLocalTime = cal.getTime();
+                SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
+                date.setTimeZone(TimeZone.getTimeZone("GMT"));
+                String localTime = date.format(currentLocalTime);
+                localTime = localTime.replace(" ", "").replace("-", "");
+
+
+                String sendtime = "";
+                String mInputPath ="";
+                String mInputPathProcess ="";
+
+                sendtime = mOrderReturnGetData.getSendtoserver_timestamp();
+
+
+
+                if(sendtime.equals("") || sendtime.equals("null") || sendtime==null) {
+                    //ถ้ามีใน DMSLIPRETURN
+                    mimvSlip.setImageBitmap(BitmapFactory.decodeFile(mInputPath));
+                }
+                else
+                {
+                    if (sendtime.length() > 8) {
+                        localTime = sendtime.substring(0, 8);
+                    }
+
+                    mInputPath = Environment.getExternalStorageDirectory().toString() + "/DMSLIPRETURN/" + mOrderReturnGetData.getFullpathimage();
+                    mInputPathProcess = Environment.getExternalStorageDirectory().toString() + "/DMRETURNPROCESSED/" + localTime + "/" + mOrderReturnGetData.getFullpathimage();
+
+                    File dirInputDMSLIPRETURN = new File(mInputPath);
+                    if (!dirInputDMSLIPRETURN.exists()) {
+                        //ถ้าไม่มี DMSLIPRETURN ให้ไปหาที่ DMRETURNPROCESSED
+                        File dirInputDMRETURNPROCESSED = new File(mInputPathProcess);
+                        if (!dirInputDMRETURNPROCESSED.exists()) {
+                            //ให้แสดงภาพว่าง
+                            mimvSlip.setImageResource(R.mipmap.ic_noimg);
+                        } else {
+                            //ถ้ามีใน DMRETURNPROCESSED ให้แสดงภาพ
+                            mimvSlip.setImageBitmap(BitmapFactory.decodeFile(mInputPathProcess));
+                        }
+                    } else {
+                        //ถ้ามีใน DMSLIPRETURN
+                        mimvSlip.setImageBitmap(BitmapFactory.decodeFile(mInputPath));
+                    }
+                }
             }
 
 
@@ -117,39 +170,35 @@ public class ViewSlipReturnActivity extends AppCompatActivity {
         }
     }
 
-//    private void getData() {
-//        try{
-//
-//
-//        } catch (Exception e) {
-//            showMsgDialog(e.toString());
-//        }
-//    }
-
-
     public void showMsgDialog(String msg)
     {
-        final AlertDialog.Builder DialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog alert = DialogBuilder.create();
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
         final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = li.inflate(R.layout.dialog_message, null, false);
 
-        mTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
-        mTxtMsg.setTypeface(tf);
-        mTxtMsg.setText(msg);
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
 
         DialogBuilder.setView(v);
-        DialogBuilder.setNegativeButton(getResources().getString(R.string.btn_text_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
 
-                dialog.dismiss();
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
             }
         });
+
         DialogBuilder.show();
     }
-
 
 
 }

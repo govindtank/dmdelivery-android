@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 
 import com.bl.dmdelivery.adapter.OrderAdapter;
+import com.bl.dmdelivery.model.Delivery;
 import com.bl.dmdelivery.model.Order;
 import com.bl.dmdelivery.model.OrderReturn;
 import com.bl.dmdelivery.model.OrderTemp;
@@ -826,7 +827,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor=null;
         sqLiteDatabase = this.getReadableDatabase();
 
-        cursor = sqLiteDatabase.rawQuery(" SELECT return_no,rep_code,rep_name,return_status, SUM(return_unit_real) AS return_unit_real,SUM(return_unit) AS return_unit,reftrans_no,fullpathimage,rep_seq FROM " + TableOrderReturn + " WHERE " + sigCriteriaSql + " GROUP BY return_no" ,null);
+        cursor = sqLiteDatabase.rawQuery(" SELECT return_no,rep_code,rep_name,return_status, SUM(return_unit_real) AS return_unit_real,SUM(return_unit) AS return_unit,reftrans_no,fullpathimage,rep_seq,sendtoserver_timestamp FROM " + TableOrderReturn + " WHERE " + sigCriteriaSql + " GROUP BY return_no" ,null);
         if (cursor != null  && cursor.getCount()>0) {
             cursor.moveToFirst();
         }
@@ -859,6 +860,7 @@ public class DBHelper extends SQLiteOpenHelper {
             mOrderReturn.setReftrans_no(cursor.getString(6));
             mOrderReturn.setFullpathimage(cursor.getString(7));
             mOrderReturn.setRep_seq(cursor.getString(8));
+            mOrderReturn.setSendtoserver_timestamp(cursor.getString(9));
             mOrderReturnlist.add(mOrderReturn);
 
             cursor.moveToNext();
@@ -1639,6 +1641,38 @@ public class DBHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    public void updateOrderReturnSendToServerTimestampToServer(ArrayList<Delivery.ReturnOrder> mOrderReturn) {
+
+        try{
+//            int intResult=0;
+            for(int i=0;i<mOrderReturn.size();i++)
+            {
+                sqLiteDatabase = this.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put("sendtoserver_timestamp",mOrderReturn.get(i).getSignature_timestamp());
+
+//                String sigRepcode = mOrderReturn.get(i).getRep_code();
+                String sigReturn_no= mOrderReturn.get(i).getReturn_no();
+
+                sqLiteDatabase.update("OrderReturns",cv,"return_no='" + sigReturn_no + "'",null);
+
+                if(sqLiteDatabase != null){
+                    sqLiteDatabase.close();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+    }
+
 
 
 
@@ -1750,7 +1784,8 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(OrderReturn.Column.lat,mOrderReturn.getLat());
             cv.put(OrderReturn.Column.lon,mOrderReturn.getLon());
             cv.put(OrderReturn.Column.signature_timestamp,mOrderReturn.getSignature_timestamp());
-
+            cv.put(OrderReturn.Column.track_no,mOrderReturn.getTrack_no());
+            cv.put(OrderReturn.Column.delivery_date,mOrderReturn.getDelivery_date());
 
             int intResult = sqLiteDatabase.update("OrderReturns", cv,
                     "return_no='" + mOrderReturn.getReturn_no()
@@ -1788,6 +1823,8 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(OrderReturn.Column.lat,mOrderReturn.getLat());
             cv.put(OrderReturn.Column.lon,mOrderReturn.getLon());
             cv.put(OrderReturn.Column.signature_timestamp,mOrderReturn.getSignature_timestamp());
+            cv.put(OrderReturn.Column.track_no,mOrderReturn.getTrack_no());
+            cv.put(OrderReturn.Column.delivery_date,mOrderReturn.getDelivery_date());
 
             int intResult = sqLiteDatabase.update("OrderReturns", cv,
                     "return_no='" + mOrderReturn.getReturn_no()

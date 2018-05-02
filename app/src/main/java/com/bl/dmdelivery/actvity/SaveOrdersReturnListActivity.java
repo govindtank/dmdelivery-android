@@ -560,6 +560,7 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
                             mOrderReturn.setRep_code(mListReturnDataALL.get(selectedPosition).getRep_code());
                             mOrderReturn.setRep_name(mListReturnDataALL.get(selectedPosition).getRep_name());
                             mOrderReturn.setFullpathimage(mListReturnDataALL.get(selectedPosition).getFullpathimage());
+                            mOrderReturn.setSendtoserver_timestamp(mListReturnDataALL.get(selectedPosition).getSendtoserver_timestamp());
 
 
                             myIntent = new Intent(getApplicationContext(), ViewSlipReturnActivity.class);
