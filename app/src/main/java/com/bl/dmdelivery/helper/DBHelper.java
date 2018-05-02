@@ -569,6 +569,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(OrderReturn.Column.lon, order.getLon());
         values.put(OrderReturn.Column.signature_timestamp, order.getSignature_timestamp());
         values.put(OrderReturn.Column.sendtoserver_timestamp, order.getSendtoserver_timestamp());
+        values.put(OrderReturn.Column.return_order_status,order.getReturn_order_status());
 
 
         sqLiteDatabase.insert(TableOrderReturn, null, values);
@@ -2551,6 +2552,44 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean getCheckSenddata() {
+        boolean result = false;
+        sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM " + TableOrder + " WHERE  delivery_status ='S'",null);
+
+        if (cursor != null  && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            result =  true;
+        }else {
+            result = false;
+        }
+
+        return result;
+    }
+
+
+    public  void UpdateOrderDelivery(String Transno,String status)
+    {
+        if (Transno == null || Transno.isEmpty() || Transno.equals("null")){return;}
+        try{
+            sqLiteDatabase = this.getWritableDatabase();
+
+            ContentValues cv = new ContentValues();
+            cv.put(Order.Column.delivery_status,status); //These Fields should be your String values of actual column names
+            sqLiteDatabase.update(TableOrder,cv,"TransNo='" + Transno.toString().trim() + "'",null);
+
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+
+        }finally {
+
+            sqLiteDatabase.close();
+
+        }
+    }
 
 
 

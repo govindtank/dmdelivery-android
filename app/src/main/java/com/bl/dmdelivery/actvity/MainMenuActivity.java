@@ -288,7 +288,16 @@ public class MainMenuActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             break;
                         case "โหลดข้อมูล":
-                            showMsgConfirmDialog("ยืนยันการโหลดข้อมูล ?",getResources().getString(R.string.btn_text_load_data));
+                            mHelper = new DBHelper(getApplicationContext());
+                            boolean _order = mHelper.getCheckSenddata();
+                            if(_order==true){
+                                showMsgError("โปรดรอเนื่องจากยังมีข้อมูลบางรายการที่ยังไม่ถูกส่งเข้า Server");
+                                return;
+                            }else {
+                                showMsgConfirmDialog("ยืนยันการโหลดข้อมูล ?",getResources().getString(R.string.btn_text_load_data));
+                            }
+
+                            //showMsgConfirmDialog("ยืนยันการโหลดข้อมูล ?",getResources().getString(R.string.btn_text_load_data));
                            /* mHelper = new DBHelper(getApplicationContext());
                             ArrayList<Unpack> unpacks = new ArrayList<Unpack>();
                             unpacks = mHelper.getUnpackList();*/
@@ -1576,7 +1585,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         //check orderload
                         boolean _order = mHelper.getCheckLoadOrder(f.getOucode(),f.getYear(),f.getGroup(),f.getTransNo());
                         if(_order==true){
-
+                            mHelper.UpdateOrderDelivery(f.getTransNo(),f.getDelivery_status());
                         }else {
                             mHelper.addOrders(f);
                         }
@@ -1612,6 +1621,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         f.setLon("");
                         f.setSignature_timestamp("");
                         f.setSendtoserver_timestamp("");
+                        f.setReturn_order_status(obj.getOrderReturn().get(i).getReturn_order_status().toString());
 
                         orderReturns.add(f);
 
@@ -2033,6 +2043,42 @@ public class MainMenuActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
         }
+    }
+
+
+    public void showMsgError(String msg)
+    {
+        final AlertDialog DialogBuilder = new AlertDialog.Builder(this).create();
+        DialogBuilder.setIcon(R.mipmap.ic_launcher);
+        final LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = li.inflate(R.layout.dialog_message, null, false);
+
+
+        DialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.RED));
+
+        mmTxtMsg = (TextView) v.findViewById(R.id.txtMsg);
+        mmImvTitle = (ImageView) v.findViewById(R.id.imvTitle);
+        mmTxtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        mmBtnClose = (Button) v.findViewById(R.id.btClose);
+
+//        Typeface tf = Typeface.createFromAsset(getAssets(), defaultFonts);
+//        mmTxtMsg.setTypeface(tf);
+//        mmTxtTitle.setTypeface(tf);
+//        mmBtnClose.setTypeface(tf);
+
+        mmImvTitle.setImageResource(R.mipmap.ic_launcher);
+        mmTxtTitle.setText(getResources().getString(R.string.app_name));
+        mmTxtMsg.setText(msg);
+
+        DialogBuilder.setView(v);
+
+        mmBtnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogBuilder.dismiss();
+            }
+        });
+
+        DialogBuilder.show();
     }
 
 

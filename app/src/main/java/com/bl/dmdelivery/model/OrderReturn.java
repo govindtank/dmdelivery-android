@@ -33,6 +33,8 @@ public class OrderReturn implements Parcelable {
     private String lon;
     private String signature_timestamp;
     private String sendtoserver_timestamp;
+    private String return_order_status;
+
 
 
     public class Column{
@@ -62,6 +64,7 @@ public class OrderReturn implements Parcelable {
         public static final String lon = "lon";
         public static final String signature_timestamp = "signature_timestamp";
         public static final String sendtoserver_timestamp = "sendtoserver_timestamp";
+        public static final String return_order_status = "return_order_status";
     }
 
     public String getOu_code() {
@@ -262,8 +265,16 @@ public class OrderReturn implements Parcelable {
         this.sendtoserver_timestamp = sendtoserver_timestamp;
     }
 
+    public String getReturn_order_status() {
+        return return_order_status;
+    }
 
+    public void setReturn_order_status(String return_order_status) {
+        this.return_order_status = return_order_status;
+    }
 
+    public OrderReturn() {
+    }
 
     @Override
     public int describeContents() {
@@ -297,9 +308,7 @@ public class OrderReturn implements Parcelable {
         dest.writeString(this.lon);
         dest.writeString(this.signature_timestamp);
         dest.writeString(this.sendtoserver_timestamp);
-    }
-
-    public OrderReturn() {
+        dest.writeString(this.return_order_status);
     }
 
     protected OrderReturn(Parcel in) {
@@ -328,6 +337,7 @@ public class OrderReturn implements Parcelable {
         this.lon = in.readString();
         this.signature_timestamp = in.readString();
         this.sendtoserver_timestamp = in.readString();
+        this.return_order_status = in.readString();
     }
 
     public static final Creator<OrderReturn> CREATOR = new Creator<OrderReturn>() {
