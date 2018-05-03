@@ -493,11 +493,32 @@ public class SaveOrdersReturnListActivity extends AppCompatActivity {
 
                 mHelper = new DBHelper(getApplicationContext());
                 if (mHelper.IsCheckOrdersShowMenuOnReturnList(sigGetTransNo)) {
-                    MenuSaveOrder f3 = new MenuSaveOrder();
-                    f3.setMenuname("กิจกรรม");
-                    f3.setMenuname_type("1");
-                    f3.setMenuname_mode("0");
-                    mListMenuData.add(f3);
+
+                    mHelper = new DBHelper(getApplicationContext());
+                    if(mHelper.IsCheckReturnStatusBlank(mListReturnDataALL.get(selectedPosition).getReturn_no()))
+                    {
+                        //บัยทึกออร์เดอร์ปกติและยังไม่รับคืน
+                        MenuSaveOrder f2 = new MenuSaveOrder();
+                        f2.setMenuname("แก้ไขการเซ็นรับคืนสินค้า");
+                        f2.setMenuname_type("0");
+                        f2.setMenuname_mode("0");
+                        mListMenuData.add(f2);
+
+                        MenuSaveOrder f3 = new MenuSaveOrder();
+                        f3.setMenuname("กิจกรรม");
+                        f3.setMenuname_type("1");
+                        f3.setMenuname_mode("0");
+                        mListMenuData.add(f3);
+                    }
+                    else
+                    {
+                        //บัยทึกออร์เดอร์ปกติและยบันทึกรับับคืน
+                        MenuSaveOrder f3 = new MenuSaveOrder();
+                        f3.setMenuname("กิจกรรม");
+                        f3.setMenuname_type("1");
+                        f3.setMenuname_mode("0");
+                        mListMenuData.add(f3);
+                    }
                 } else {
                     //ยังไม่รับคืน
                     MenuSaveOrder f3 = new MenuSaveOrder();

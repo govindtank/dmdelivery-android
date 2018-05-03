@@ -2267,6 +2267,37 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean IsCheckReturnStatusBlank(String sigReturn_no) {
+        boolean IsCheckedStatus = false;
+        try{
+            sqLiteDatabase = this.getReadableDatabase();
+            Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TableOrderReturn + " WHERE return_no='" + sigReturn_no + "' AND return_status IS NULL OR return_status='0'" ,null);
+
+            if (cursor != null  && cursor.getCount()>0) {
+                cursor.moveToFirst();
+            }
+
+
+            if(!cursor.isAfterLast()){
+                //ถ้ามีการรับคืนแล้ว
+                IsCheckedStatus = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG,e.getMessage());
+        }
+        finally
+        {
+            //clean up
+            if(sqLiteDatabase != null){
+                sqLiteDatabase.close();
+            }
+        }
+
+        return  IsCheckedStatus;
+    }
+
     public  void update_DragandDrop_items(int xForm_ItemNo , int xTo_ItemNo)
     {
         try{
