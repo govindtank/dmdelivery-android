@@ -282,7 +282,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
                     switch (gridViewString[+i]){
-                        case "แสกนสินค้าขึ้นรถ":
+                        case "สแกนสินค้าขึ้นรถ":
                             myIntent = new Intent(getApplicationContext(), ScanOrdersActivity.class);
                             startActivity(myIntent);
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
