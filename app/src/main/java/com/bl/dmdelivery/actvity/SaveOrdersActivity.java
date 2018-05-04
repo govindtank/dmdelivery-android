@@ -914,7 +914,7 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
             for(int i=0; i<mListOrderDataWaitSend.size(); i++){
 
-
+                mOrderReturnItemSend.clear();
                 Delivery delivery = new Delivery();
 
                 delivery.setTruck_no(mListOrderDataWaitSend.get(i).getTruckNo());
@@ -948,6 +948,8 @@ public class SaveOrdersActivity extends AppCompatActivity {
 
                     for(int x=0; x<mListOrderReturnWaitSend.size(); x++){
 
+                        mOrderReturnItemSend.clear();
+
                         returnOrderdelivery = new Delivery.ReturnOrder();
                         returnOrderdelivery.setTruck_no(mListOrderReturnWaitSend.get(x).getTrack_no());
                         returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
@@ -978,14 +980,11 @@ public class SaveOrdersActivity extends AppCompatActivity {
                             orderReturnItem.setReturn_actual(mListOrderReturnItemSend.get(y).getReturn_unit_real());
 
                             mOrderReturnItemSend.add(orderReturnItem);
-
+                            returnOrderdelivery.setReturn_item(mOrderReturnItemSend);
                         }
 
-                        returnOrderdelivery.setReturn_item(mOrderReturnItemSend);
-
+                        mListOrderReturnSend.add(returnOrderdelivery);
                     }
-
-                    mListOrderReturnSend.add(returnOrderdelivery);
 
                 }
 
