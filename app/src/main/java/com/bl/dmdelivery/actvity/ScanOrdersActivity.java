@@ -1051,7 +1051,7 @@ public class ScanOrdersActivity extends AppCompatActivity {
                     if (result.content.equals("1"))
                     {
 
-                        result.content = getResources().getString(R.string.txt_text_update_success);
+                        result.content = getResources().getString(R.string.txt_text_scan_success);
                     }
                     else
                     {

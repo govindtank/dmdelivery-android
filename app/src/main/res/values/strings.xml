@@ -156,6 +156,7 @@
     <string name="menu_text_unpack">นอกกล่อง</string>
     <string name="txt_text_scan_yes">สแกนสำเร็จ</string>
     <string name="txt_text_scan_no">ไม่สำเร็จ!!โปรดตรวจสินค้าที่สแกน</string>
+    <string name="txt_text_scan_success">ยืนยันการสแกนสินค้าเรียบร้อยแล้ว !!</string>
 
     <string name="btn_text_load_data">โหลดข้อมูล</string>
     <string name="btn_text_update_program">อัพเดท</string>
