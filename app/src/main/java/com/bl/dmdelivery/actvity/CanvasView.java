@@ -107,8 +107,8 @@ public class CanvasView extends View {
 		paint.setStyle(Paint.Style.FILL);
 		canvas.drawPaint(paint);*/
 
-		paint.setColor(context.getResources().getColor(R.color.colorStroke));
-		paint.setTextSize(50);
+		paint.setColor(context.getResources().getColor(R.color.colorDarkBlue));
+		paint.setTextSize(60);
 		paint.setTypeface(tf);
 
 		//canvas.drawText("Some Text", 10, 25, paint);
@@ -138,7 +138,7 @@ public class CanvasView extends View {
 					canvas.drawText(unpacktext+" x "+mListUnpackData.get(i).getUnpack_qty().toString(), xUnpack, yUnpack, paint);
 					//canvas.drawText(mListUnpackData.get(i).getFsname().toString(), 10, 25, paint);
 					//canvas.drawText("ของนอกกล่อง"+yUnpack, xUnpack, yUnpack, paint);
-					yUnpack=yUnpack+45;
+					yUnpack=yUnpack+75;
 				}
 			}
 		}

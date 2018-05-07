@@ -66,8 +66,8 @@
     <string name="txt_text_headder_my_list">รายการจอง</string>
     <string name="txt_text_headder_scanorders_list">แสกนสินค้า</string>
     <string name="txt_text_headder_download_data">โหลดข้อมูล</string>
-    <string name="txt_text_headder_unpack_list">สรุปรายการรับคืนสินค้า</string>
-    <string name="txt_text_headder_returnsummary_list">สรุป</string>
+    <string name="txt_text_headder_unpack_list">สรุปรายการสินค้านอกกล่อง</string>
+    <string name="txt_text_headder_returnsummary_list">สรุปสรุปรายการรับคืนสินค้า</string>
     <string name="txt_text_headder_delivery_list">จัดส่งสินค้า</string>
     <string name="txt_text_headder_tel_list">โหลดข้อมูลเบอร์ติดต่อ</string>
     <string name="txt_text_headder_update_program">อัพเดทโปรแกรม</string>

@@ -77,7 +77,7 @@ public class ReturnSummaryActivity extends AppCompatActivity {
             mmTxtsum.setText("แสดงรายการ: 0, จำนวนชิ้นรวม: 0");
 
             mTxtHeader = (TextView) findViewById(R.id.txtHeader);
-            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_unpack_list));
+            mTxtHeader.setText(getResources().getString(R.string.txt_text_headder_returnsummary_list));
 
             //listview
             lv = (RecyclerView) findViewById(R.id.lv);

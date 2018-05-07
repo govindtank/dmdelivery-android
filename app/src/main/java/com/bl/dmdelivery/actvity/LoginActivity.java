@@ -246,11 +246,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     clearReturnSlip();
 
-                    processLog();
+                    //processLog();
 
-                    getCallDetails();
+                    //getCallDetails();
 
-                    saveLogin();
+                    //saveLogin();
 
                     setTruck();
 

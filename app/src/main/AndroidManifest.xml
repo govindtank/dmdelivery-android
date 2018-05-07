@@ -83,34 +83,20 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <!-- <receiver android:name=".helper.BlockCallReceiver" > -->
-        <!-- <intent-filter  android:priority="1" > -->
-        <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
 
+        <!--<receiver android:name=".helper.LogCall">-->
+            <!--<intent-filter android:priority="1">-->
+                <!--<action android:name="android.intent.action.PHONE_STATE" />-->
+                <!--&lt;!&ndash; <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> &ndash;&gt;-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
-        <!-- <receiver android:name=".ShutdownReceiver"> -->
-        <!-- android:enabled="true" -->
-        <!-- android:permission="android.permission.RECEIVE_BOOT_COMPLETED"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.ACTION_SHUTDOWN" /> -->
-        <!-- <action android:name="android.intent.action.QUICKBOOT_POWEROFF" /> -->
-        <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
-        <!-- </intent-filter> </receiver> -->
-
-        <receiver android:name=".helper.LogCall">
-            <intent-filter android:priority="1">
-                <action android:name="android.intent.action.PHONE_STATE" />
-                <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".helper.BlockCallReceiver">
-            <intent-filter android:priority="0">
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
-                <!-- <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> -->
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:name=".helper.BlockCallReceiver">-->
+            <!--<intent-filter android:priority="0">-->
+                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
+                <!--&lt;!&ndash; <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> &ndash;&gt;-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
     </application>
 
