@@ -598,7 +598,6 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
             for(int i=0; i<mListOrderDataWaitSend.size(); i++){
 
-
                 Delivery delivery = new Delivery();
 
                 delivery.setTruck_no(mListOrderDataWaitSend.get(i).getTruckNo());
@@ -632,6 +631,8 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
 
                     for(int x=0; x<mListOrderReturnWaitSend.size(); x++){
 
+                        mOrderReturnItemSend.clear();
+
                         returnOrderdelivery = new Delivery.ReturnOrder();
                         returnOrderdelivery.setTruck_no(mListOrderReturnWaitSend.get(x).getTrack_no());
                         returnOrderdelivery.setDelivery_date(mListOrderDataWaitSend.get(i).getDelivery_date());
@@ -643,8 +644,11 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                         returnOrderdelivery.setLat(mListOrderReturnWaitSend.get(x).getLat());
                         returnOrderdelivery.setLon(mListOrderReturnWaitSend.get(x).getLon());
                         returnOrderdelivery.setSignature_timestamp(mListOrderReturnWaitSend.get(x).getSignature_timestamp());
-                        //returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
 
+                        if(!mListOrderReturnWaitSend.get(x).getFullpathimage().equals(""))
+                        {
+                            returnOrderdelivery.setSignature_image(getBytesFromBitmap(inputPathReturn + mListOrderReturnWaitSend.get(x).getFullpathimage()));
+                        }
 
                         mListOrderReturnItemSend.clear();
                         mListOrderReturnItemSend = mHelper.getOrderReturnDtl(returnOrderdelivery.getReturn_no());
@@ -659,14 +663,13 @@ public class SaveOrdersCompleteActivity extends AppCompatActivity {
                             orderReturnItem.setReturn_actual(mListOrderReturnItemSend.get(y).getReturn_unit_real());
 
                             mOrderReturnItemSend.add(orderReturnItem);
-
+                            returnOrderdelivery.setReturn_item(mOrderReturnItemSend);
                         }
 
-                        returnOrderdelivery.setReturn_item(mOrderReturnItemSend);
-
+                        mListOrderReturnSend.add(returnOrderdelivery);
                     }
 
-                    mListOrderReturnSend.add(returnOrderdelivery);
+
 
                 }
 
